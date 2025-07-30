@@ -1,0 +1,78 @@
+repo link,language,relevance_filter,note,commit_hash,license
+https://github.com/volvo-cars/function_dispatcher,cpp,1,,8e969666c84b09195b7669b4fd4f2c24e45f5faa,Apache License Version 2.0
+https://github.com/volvo-cars/remoteperf,python,1,,91483699bb41dddf90ab4c0e862b0b127b53cd7d,Apache License Version 2.0
+https://github.com/volvo-cars/FB-SSEM-dataset,python,1,"note: repository named as ""dataset"" but also includes code",d26049fb209f706cc9e1ceb4f3d39049c40ea7d5,Attribution-ShareAlike 4.0 International
+https://github.com/volvo-cars/eene-nav-bandit-sim,python,1,,6ce69ee2e4ceaf002005506fcb8eb4b66743aeeb,Apache License Version 2.0
+https://github.com/COVESA/aosp_device_covesa_emulator,java,1,,063f1782fab8dcb427cf7de31d6c00bcb9b6cb4e,Apache License Version 2.0
+https://github.com/COVESA/android-vss-authentication-service,java,1,,e4a7c1e3deebc0a53243151bcf1002198d3bee4b,Mozilla Public License Version 2.0
+https://github.com/COVESA/android-vehicleplugin-vss-graphql,java,1,,045db45d6fe74e6847070d47df19d444621e8389,Mozilla Public License Version 2.0
+https://github.com/COVESA/vss-tools,python,1,,8a8e64de6b1ecdb831e880e105f0644e81af782f,Mozilla Public License Version 2.0
+https://github.com/COVESA/s2dm,python,1,,07c12840f4f0741f78d5212838ed6e92cf818868,Mozilla Public License Version 2.0
+https://github.com/COVESA/ifex,python,1,,a3e742be121ea027c12d97d9e3b1f4c732a320e0,Mozilla Public License Version 2.0
+https://github.com/COVESA/commercial-vehicles,python,1,,ccbd40bf87957ae8c655673ab369c12e1cf70c7c,Apache License Version 2.0
+https://github.com/COVESA/vsomeip_py,python,1,,7976510429a7458ec2e3e82f6ae4368c187a3445,Apache License Version 2.0
+https://github.com/COVESA/akm,python,1,,6b8c50abd23ad68d7fe856e9ad633f15952644eb,Mozilla Public License Version 2.0
+https://github.com/COVESA/vss2graphql_schema,python,1,,95263c779dea13f61b70e6f37a04115cfb153027,Mozilla Public License Version 2.0
+https://github.com/COVESA/graphql_schema2cpp_codegen,python,1,,3be75d8d96f43c1be0dc3a932cecfb8349b5869f,Mozilla Public License Version 2.0
+https://github.com/COVESA/vehicle_signal_manager,python,1,,1853a28ec7aa15ba259fd800a33bede036817120,Mozilla Public License Version 2.0
+https://github.com/COVESA/vsomeip,cpp,1,,3d9972ea10543b4ad702a098f4ddb1d481dd2f2a,Mozilla Public License Version 2.0
+https://github.com/COVESA/dlt-viewer,cpp,1,,524c71dfc81c68cabfca18e2a113758eb3d60e7d,"Copyright (C) 2016, BMW AG - Alexander Wenzel"
+https://github.com/COVESA/cdsp,cpp,1,,f644c6e2535e4e602df806e55337f719ab628b80,Mozilla Public License Version 2.0
+https://github.com/COVESA/capicxx-dbus-tools,cpp,1,,2603c1bf9ca151c9b691b3e4292981362255bf8d,Mozilla Public License Version 2.0
+https://github.com/COVESA/capicxx-core-tools,cpp,1,,3ffd442877b2e3e248c3f90d396fd8691a2dcb82,Mozilla Public License Version 2.0
+https://github.com/COVESA/capicxx-someip-runtime,cpp,1,,86dfd69802e673d00aed0062f41eddea4670b571,Mozilla Public License Version 2.0
+https://github.com/COVESA/capicxx-core-runtime,cpp,1,,0e1d97ef0264622194a42f20be1d6b4489b310b5,Mozilla Public License Version 2.0
+https://github.com/COVESA/capicxx-dbus-runtime,cpp,1,,eacbbde07cb0f944cabdfcb5bd50ac637ea94e1a,Mozilla Public License Version 2.0
+https://github.com/COVESA/graphql-vss-server-libs,cpp,1,,616a88eba0e947de5983ec08ac5079bd345a158f,Mozilla Public License Version 2.0
+https://github.com/COVESA/graphql-vss-data-server,cpp,1,,8de02c3d9826e21a59e3bc1b3046159bf7768933,Mozilla Public License Version 2.0
+https://github.com/COVESA/test-someip-service,cpp,1,,e427cc0f630edd2116411e3c053aaa41966c9b2f,Mozilla Public License Version 2.0
+https://github.com/COVESA/aasig-vhal-demo,cpp,1,,e21615adcaf6b8a7a51814b2eb2136d60fa2edd1,License file not found
+https://github.com/COVESA/ramses-citymodel-demo,cpp,1,,976dbcfa41e517ece7bf85d9319c502ca27f2661,Mozilla Public License Version 2.0
+https://github.com/COVESA/franca_ara_integration,cpp,1,note: clone issue,d2c27f91d29faa0f05cd97954c8f05e033d3136e,Mozilla Public License Version 2.0
+https://github.com/COVESA/capicxx-wamp-tools,cpp,1,,e8a0b4fad83ffa93238406e7fc2bbfb7dc3a5d0c,Mozilla Public License Version 2.0
+https://github.com/COVESA/capicxx-wamp-runtime,cpp,1,,f92158f578da3837cde2d70a54de559bf2793d6b,Mozilla Public License Version 2.0
+https://github.com/COVESA/dlt-daemon,c,1,,c5fc99c76eaad3201aec31656bc093104313d736,Mozilla Public License Version 2.0
+https://github.com/COVESA/Open1722,c,1,,440e07e68669242a9413c04cc62000c7075874f6,BSD 3
+https://github.com/COVESA/wayland-ivi-extension,c,1,,60d616ad3abd925956207b9b6ff981afa004e792,Apache License Version 2.0
+https://github.com/COVESA/android-external-audio-mixing,c,1,,deb0257d513eb39c761b4a11fa892e8565d26c33,Apache License Version 2.0
+https://github.com/COVESA/vehicle_signal_interface,c,1,,8563753f8c95f5105a735ac5de0d12aa35045ee0,Mozilla Public License Version 2.0
+https://github.com/mercedes-benz/ardep,c,1,,b971483809c29057020e9b68f05b092937886dbb,Apache License Version 2.0
+https://github.com/mercedes-benz/roadC,c,1,,c880435ea794698071077c9c8c6bc47254dbaec0,MIT License
+https://github.com/mercedes-benz/valhalla,cpp,1,,d769e7a5f53f7be63101a8ab891a84f17a6e22c7,MIT License
+https://github.com/mercedes-benz/EclipseDataSpaceConnector,java,1,,7f3d26850f765eb355c3f5009b7a982adacfe966,Apache License Version 2.0
+https://github.com/mercedes-benz/eclipse-tractusx_tractusx-edc-merge,java,1,,435d2206535f2c657b1afbb274b0d7844071508c,Apache License Version 2.0
+https://github.com/mercedes-benz/odxtools,python,1,,bac838f9495e8b27e35310e1988d0c3edd719c1c,MIT License
+https://github.com/mercedes-benz/automotive_regression_xai,python,1,,b027ba6588c94a863dac4584da6d62c5b4e1098f,MIT License
+https://github.com/mercedes-benz/automotive_feature_engineering,python,1,,92e49696fd6fbf06c3625283f70ca6d7acf942e1,MIT License
+https://github.com/mercedes-benz/mf4_ai_importer,python,1,,c7b307b884d8020614717646ff60cc1f76959107,MIT License
+https://github.com/mercedes-benz/selfsupervised_flow,python,1,,0087833ff5333cd6d39eead9fe5cfeb6c44441a0,MIT License
+https://github.com/mercedes-benz/open-simulation-interface,python,1,,222a8f408621f159f61dd26d85a2df84a5e76e65,Mozilla Public License Version 2.0
+https://github.com/mercedes-benz/leaderboard,python,1,,111a48f9099c08a2f1068ee8aea2ad56ce52ef9d,MIT License
+https://github.com/bmwcarit/ramses-logic,cpp,1,,6fda37096f8e1163f7a090dafbf866e31ef2656d,Mozilla Public License Version 2.0
+https://github.com/bmwcarit/ramses-composer,cpp,1,,7861761de439d0f7a02769a17cdfe2d3aa676668,Mozilla Public License Version 2.0
+https://github.com/bmwcarit/ramses,cpp,1,,068163a64bde899c55e05bfbc99fbfe379ccec7b,Mozilla Public License Version 2.0
+https://github.com/bmwcarit/MoCOCrW,cpp,1,,5aa1b5e32788b5dd83ed291c5b23b0f313f9ab43,Apache License Version 2.0
+https://github.com/bmwcarit/wscpp,cpp,1,note: domain-agnostic but meant for vehicle software,36fab44c883e38ac7e549df3f75d7e3897bcc2a2,Apache License Version 2.0
+https://github.com/bmwcarit/smrf,cpp,1,note: domain-agnostic but meant for vehicle software,1df475f7f391c44221135443bf137a3b6c584f10,Apache License Version 2.0
+https://github.com/bmwcarit/ros_realtime_tests,cpp,1,note: domain-agnostic but very relevant for automotive software,b53739cab799372e2de1010b097916fd6b44fb68,BSD/GPL
+https://github.com/bmwcarit/muesli,cpp,1,note: domain-agnostic but relevant for automotive software and made by bmw,2db29283fb510545f1d989be2910452a7760d9e2,Apache License Version 2.0
+https://github.com/bmwcarit/ros_chatter,cpp,1,note: domain-agnostic but meant for vehicle software,25d961f34968ebf8c7f89472d913c3c65a7d99f0,BSD 3
+https://github.com/bmwcarit/capu,cpp,1,note: domain-agnostic but meant for vehicle software,b04f0c2b44ed875fea6cbbaf326b73a7210272a8,Apache License Version 2.0
+https://github.com/bmwcarit/pcl-people-tracker-timing-test,cpp,1,note: domain-agnostic but highly relevant,624e7aee57e74dd77f1db929910bb81d3d3f9090,BSD 3
+https://github.com/bmwcarit/lua,c,1,note: domain-agnostic but used for on-vehicle software,9c3ea1aade414143fa77933103373b32ef78f5f0,MIT License
+https://github.com/bmwcarit/joynr,java,1,note: domain-agnostic but meant for vehicle software,9488763bd6c8c63b684d524d94c174c8837c8a54,Apache License Version 2.0
+https://github.com/bmwcarit/barefoot,java,1,,97f1c03e5df96ef2571f8af443fc6dc39e8b217d,Apache License Version 2.0
+https://github.com/bmwcarit/paho.mqtt.java,java,1,note: domain-agnostic but used for on-vehicle software,0468c1ac13d0eb0a33aecfe8984ab6d119ee7c24,Eclipse Public License Version 2.0
+https://github.com/bmwcarit/jeromq,java,1,note: domain-agnostic but used for on-vehicle software,4d35ecdad987d74050508f822cf57f2fcedf89f6,Mozilla Public License Version 2.0
+https://github.com/bmwcarit/ramses-android,java,1,,d5e561b0ac21f9d879eecd29ecd4b1df2be7fe53,Mozilla Public License Version 2.0
+https://github.com/bmwcarit/hmm-lib,java,1,,18f483637138a273406ea397c79ede4999803855,Apache License Version 2.0
+https://github.com/bmwcarit/offline-map-matching,java,1,,5b6ad51d9856f56194e392806d1c8866717ac535,Apache License Version 2.0
+https://github.com/bmwcarit/acme,java,1,note: domain-agnostic but made by bmw for automotive software engineering,4628df884d1077508380acf99a194f3b51b5b8b7,Apache License Version 2.0
+https://github.com/bmwcarit/Emma,python,1,note: domain-agnostic but made by bmw for automotive software engineering,0aed9c7f62f690f96b6d51a88f0a5c93cdde7e24,GNU GENERAL PUBLIC LICENSE
+https://github.com/bmwcarit/python-dlt,python,1,,96e0b1602a4b7508952c55158e988a0aa943daeb,Mozilla Public License Version 2.0
+https://github.com/bmwcarit/dltlyse,python,1,,b70a24ec09b0bac2eb631279f8b6313195e8a202,Mozilla Public License Version 2.0
+https://github.com/bmwcarit/pybip,python,1,note: domain-agnostic but made by bmw for automotive software engineering,e1f02ba23f55f62e6b0a0f67ae2eb75de9db09d1,GNU General Public License Version 3.0
+https://github.com/bmwcarit/pypbap,python,1,,9e550213185e23ca44399b6232b02b891b9ccf54,GNU General Public License Version 3.0
+https://github.com/bmwcarit/stracepy,python,1,note: domain-agnostic but made by bmw for automotive software engineering,5db2ddc28bb6c6c507fa94eff8d9ca63fe005f14,MIT License
+https://github.com/renault/cananalyze,python,1,,103533cfae610313dad0a690266b4a0f663710e9,GNU Lesser General Public License Version 3.0
+https://github.com/COVESA/vehicle_signal_specification,YAML,1,,0f9198ff7e305dfeaa979a0c81afccd1cb0ba522,Mozilla Public License Version 2.0

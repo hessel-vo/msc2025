@@ -1,0 +1,42 @@
+# EXCLUSION
+EXCLUDED_DIRS = {
+    ".git", ".github", ".svn", ".idea", ".vscode",
+    "__pycache__", "node_modules", "vendor", "release-notes", "changelog"
+
+    "build", "bin", "obj", "dist", "out", "target", "third_party",
+    "license", "licenses",
+}
+
+EXCLUDED_FILENAME_ROOTS = {
+    "license", "licenses", "copying", 
+    "changelog", "contributing", "security",
+    "code_of_conduct", "notice", "provider_information",
+    "changes", "maintainers", "releasenotes"
+}
+
+EXCLUDED_EXACT_FILENAMES = {".gitignore", ".gitattributes"}
+
+EXCLUDED_EXTENSIONS = {
+    ".o", ".so", ".a", ".lib", ".dll", ".exe", ".class", ".jar", ".pyc", ".pyd",
+    ".png", ".jpg", ".jpeg", ".gif", ".svg", ".ico", ".webp",
+    ".zip", ".tar", ".gz", ".rar", ".7z", ".pdf", ".docx",
+    ".pcap", ".bag", ".bin", ".csv", ".log", ".npy", ".pdx",
+    ".config",
+}
+
+# INCLUSION
+INCLUDED_FILES = {
+    "CMakeLists.txt", "Makefile", "Kconfig", "west.yml", "pom.xml",
+    "setup.py", "pyproject.toml", "poetry.lock", "requirements.txt",
+    "Android.bp", "Android.mk",
+}
+
+INCLUDED_EXTENSIONS = {
+    ".c", ".cpp", ".h", ".hpp", ".py", ".java", 
+    
+    ".gradle", ".gradle.kts", ".map", ".rc", ".pc.in", ".spec.in", ".vspec",
+    ".dtsi", ".overlay", ".ui",".js", ".ts", ".html", ".css", ".m", ".mm",
+    ".kt", ".go", ".rs", ".swift", ".proto", ".fbs", ".fidl", ".arxml", ".md",
+    ".rst", ".adoc", ".dox", ".doxyfile", ".puml", ".jinja2", ".j2", ".tpl", 
+    ".sh", ".bat", ".lua", ".conf", ".json", ".xml", ".yaml", ".yml", ".toml",
+}

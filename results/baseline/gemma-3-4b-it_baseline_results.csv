@@ -1,0 +1,13 @@
+id,summary,generated_summary
+1,"Checks if a data type is a subtype of a specified base type.",Checks if a given type is a subtype of another type.
+2,"Validates if a value conforms to a datatype specified by a string.",Checks if a value is of a specific datatype.
+3,"Checks if an integer value fits within the range of a specified bit-width and signedness.",Checks if a value (or list of values) is a valid signed or unsigned integer within a specified number of bits.
+26,"Lazily initializes and returns an audio card presenter with data models for media and in-call status.","Creates or retrieves a `HomeAudioCardPresenter` with associated models, handling the absence of a `ViewModelProvider`."
+27,"Lazily initializes and returns the audio card view fragment.",Retrieves or creates an AudioFragment and associates it with a presenter.
+28,"Inflates a card fragment's layout and initializes its view components.",Inflates a layout and initializes UI elements for a card fragment.
+51,"Creates a D-Bus signal message addressed to a specific client.",Creates a DBus signal message with specified parameters.
+52,"Notifies a newly added listener if the D-Bus connection is already available.","Handles the addition of a listener to a subscription, reporting availability if the DBus connection is active."
+53,"For an active connection, adds a thread to a list to be joined on exit, avoiding duplicates.","Manages and associates threads with connections, preventing duplicate thread registrations."
+76,"Sends a UDS negative response message containing the failed service ID and a negative response code.",Sends a negative UDS response via ISO-TP to a specified CAN ID.
+77,"Sends a UDS positive response for the Diagnostic Session Control service.",Sends a UDS session control response via ISOTP over CAN.
+78,"Sends a positive UDS response for the ECU Reset service.",Sends a positive reset response via ISO-TP to a specified CAN ID.

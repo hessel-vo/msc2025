@@ -1,0 +1,249 @@
+id,repo,commit_hash,filepath,language,code,function_signature,imports,summary
+1,https://github.com/COVESA/vss-tools,8a8e64de6b1ecdb831e880e105f0644e81af782f,vss-tools/src/vss_tools/datatypes.py,python,"def is_subtype_of(cls, check: str, base: str) -> bool:
+    check_type = cls.get_type(check)
+    if not check_type:
+        raise DatatypesException(f""Not a valid type: '{check}'"")
+    base_type = cls.get_type(base)
+    if not base_type:
+        raise DatatypesException(f""Not a valid type: '{base}'"")
+    return check in base_type[2] or check == base","def is_subtype_of(cls, check: str, base: str) -> bool:","from __future__ import annotations
+
+from typing import TYPE_CHECKING, Any, Callable, Set
+
+from vss_tools import log
+
+if TYPE_CHECKING:
+    from vss_tools.model import VSSUnit","Checks if a data type is a subtype of a specified base type."
+2,https://github.com/COVESA/vss-tools,8a8e64de6b1ecdb831e880e105f0644e81af782f,vss-tools/src/vss_tools/datatypes.py,python,"def is_datatype(cls, value: Any, datatype: str) -> bool:
+    t = cls.get_type(datatype)
+    if t is None:
+        raise DatatypesException(f""Unsupported datatype: {datatype}"")
+    return t[1](value)","def is_datatype(cls, value: Any, datatype: str) -> bool:","from __future__ import annotations
+
+from typing import TYPE_CHECKING, Any, Callable, Set
+
+from vss_tools import log
+
+if TYPE_CHECKING:
+    from vss_tools.model import VSSUnit","Validates if a value conforms to a datatype specified by a string."
+3,https://github.com/COVESA/vss-tools,8a8e64de6b1ecdb831e880e105f0644e81af782f,vss-tools/src/vss_tools/datatypes.py,python,"def is_xintx(value: Any, signed: bool, bits: int):
+    values = [value]
+    if isinstance(value, list):
+        values = value
+
+    for v in values:
+        if not isinstance(v, int):
+            return False
+        if not signed and v < 0:
+            return False
+        max = 2**bits - 1
+        min = 0
+        if signed:
+            max = 2 ** (bits - 1) - 1
+            min = -(2 ** (bits - 1))
+        if not (v <= max and v >= min):
+            return False
+    return True","def is_xintx(value: Any, signed: bool, bits: int):","from __future__ import annotations
+
+from typing import TYPE_CHECKING, Any, Callable, Set
+
+from vss_tools import log
+
+if TYPE_CHECKING:
+    from vss_tools.model import VSSUnit","Checks if an integer value fits within the range of a specified bit-width and signedness."
+26,https://github.com/COVESA/aosp_device_covesa_emulator,063f1782fab8dcb427cf7de31d6c00bcb9b6cb4e,aosp_device_covesa_emulator/CustomCarLauncher/src/com/android/car/carlauncher/homescreen/audio/AudioCard.java,java,"public CardPresenter getCardPresenter() {
+    if (mAudioCardPresenter == null) {
+        mAudioCardPresenter = new HomeAudioCardPresenter();
+        if (mViewModelProvider == null) {
+            Log.w(TAG, ""No ViewModelProvider set. Cannot get MediaViewModel"");
+            mAudioCardPresenter.setModels(
+                    Collections.unmodifiableList(Collections.singletonList(
+                            new InCallModel(SystemClock.elapsedRealtimeClock()))));
+        } else {
+            mAudioCardPresenter.setModels(Collections.unmodifiableList(Arrays.asList(
+                    mViewModelProvider.get(MediaViewModel.class),
+                    new InCallModel(SystemClock.elapsedRealtimeClock()))));
+        }
+    }
+    return mAudioCardPresenter;",public CardPresenter getCardPresenter() {,"import android.os.SystemClock;
+import android.util.Log;
+
+import androidx.lifecycle.ViewModelProvider;
+
+import com.android.car.carlauncher.R;
+import com.android.car.carlauncher.homescreen.CardPresenter;
+import com.android.car.carlauncher.homescreen.HomeCardFragment;
+import com.android.car.carlauncher.homescreen.HomeCardModule;
+
+import java.util.Arrays;
+import java.util.Collections;","Lazily initializes and returns an audio card presenter with data models for media and in-call status."
+27,https://github.com/COVESA/aosp_device_covesa_emulator,063f1782fab8dcb427cf7de31d6c00bcb9b6cb4e,aosp_device_covesa_emulator/CustomCarLauncher/src/com/android/car/carlauncher/homescreen/audio/AudioCard.java,java,"public HomeCardFragment getCardView() {
+    if (mAudioCardView == null) {
+        mAudioCardView = new AudioFragment();
+        getCardPresenter().setView(mAudioCardView);
+        mAudioCardView.setPresenter(getCardPresenter());
+    }
+    return mAudioCardView;
+}",public HomeCardFragment getCardView() {,"import android.os.SystemClock;
+import android.util.Log;
+
+import androidx.lifecycle.ViewModelProvider;
+
+import com.android.car.carlauncher.R;
+import com.android.car.carlauncher.homescreen.CardPresenter;
+import com.android.car.carlauncher.homescreen.HomeCardFragment;
+import com.android.car.carlauncher.homescreen.HomeCardModule;
+
+import java.util.Arrays;
+import java.util.Collections;","Lazily initializes and returns the audio card view fragment."
+28,https://github.com/COVESA/aosp_device_covesa_emulator,063f1782fab8dcb427cf7de31d6c00bcb9b6cb4e,aosp_device_covesa_emulator/CustomCarLauncher/src/com/android/car/carlauncher/homescreen/HomeCardFragment.java,java,"public View onCreateView(LayoutInflater inflater, ViewGroup container,
+        Bundle savedInstanceState) {
+    mRootView = inflater.inflate(R.layout.card_fragment, container, false);
+    mCardTitle = mRootView.findViewById(R.id.card_name);
+    mCardIcon = mRootView.findViewById(R.id.card_icon);
+    return mRootView;
+}
+","public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {","
+import android.graphics.drawable.Drawable;
+import android.os.Bundle;
+import android.util.Size;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewStub;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.fragment.app.Fragment;
+
+import com.android.car.apps.common.CrossfadeImageView;
+import com.android.car.carlauncher.R;
+import com.android.car.carlauncher.homescreen.ui.CardContent;
+import com.android.car.carlauncher.homescreen.ui.CardHeader;
+import com.android.car.carlauncher.homescreen.ui.DescriptiveTextView;
+import com.android.car.carlauncher.homescreen.ui.DescriptiveTextWithControlsView;
+import com.android.car.carlauncher.homescreen.ui.TextBlockView;","Inflates a card fragment's layout and initializes its view components."
+51,https://github.com/COVESA/capicxx-dbus-runtime,eacbbde07cb0f944cabdfcb5bd50ac637ea94e1a,src/CommonAPI/DBus/DBusClientId.cpp,cpp,"DBusMessage DBusClientId::createMessage(const std::string objectPath, const std::string interfaceName, const std::string signalName) const
+{
+    DBusMessage returnMessage = DBusMessage::createSignal(objectPath, interfaceName, signalName);
+    returnMessage.setDestination(dbusId_.c_str());
+
+    return (returnMessage);
+}","DBusMessage DBusClientId::createMessage(const std::string objectPath, const std::string interfaceName, const std::string signalName) const {","#include <typeinfo>
+
+#include <CommonAPI/DBus/DBusClientId.hpp>
+#include <CommonAPI/DBus/DBusMessage.hpp>","Creates a D-Bus signal message addressed to a specific client."
+52,https://github.com/COVESA/capicxx-dbus-runtime,eacbbde07cb0f944cabdfcb5bd50ac637ea94e1a,src/CommonAPI/DBus/DBusConnection.cpp,cpp,"void DBusConnectionStatusEvent::onListenerAdded(const Listener &_listener, const Subscription _subscription) {
+    (void)_subscription;
+    if (dbusConnection_->isConnected())
+        _listener(AvailabilityStatus::AVAILABLE);
+}","void DBusConnectionStatusEvent::onListenerAdded(const Listener &_listener, const Subscription _subscription) {","#include <algorithm>
+#include <chrono>
+#include <future>
+#include <sstream>
+#include <thread>
+
+#include <CommonAPI/Logger.hpp>
+#include <CommonAPI/DBus/DBusConnection.hpp>
+#include <CommonAPI/DBus/DBusInputStream.hpp>
+#include <CommonAPI/DBus/DBusMainLoop.hpp>
+#include <CommonAPI/DBus/DBusProxy.hpp>
+#include <CommonAPI/DBus/DBusAddressTranslator.hpp>","Notifies a newly added listener if the D-Bus connection is already available."
+53,https://github.com/COVESA/capicxx-dbus-runtime,eacbbde07cb0f944cabdfcb5bd50ac637ea94e1a,src/CommonAPI/DBus/DBusConnection.cpp,cpp,"void joinOnExit(std::uintptr_t conn, std::thread & t) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    if (connections_.end() != connections_.find(conn)) {
+        bool found(false);
+        std::vector<std::thread*>::const_iterator it = threads_.begin();
+        while (!found && it != threads_.end()) {
+            found = (&t == *it++);
+        }
+        if (!found) {
+            threads_.push_back(&t);
+        }
+    }
+}","void joinOnExit(std::uintptr_t conn, std::thread & t) {","#include <algorithm>
+#include <chrono>
+#include <future>
+#include <sstream>
+#include <thread>
+
+#include <CommonAPI/Logger.hpp>
+#include <CommonAPI/DBus/DBusConnection.hpp>
+#include <CommonAPI/DBus/DBusInputStream.hpp>
+#include <CommonAPI/DBus/DBusMainLoop.hpp>
+#include <CommonAPI/DBus/DBusProxy.hpp>
+#include <CommonAPI/DBus/DBusAddressTranslator.hpp>","For an active connection, adds a thread to a list to be joined on exit, avoiding duplicates."
+76,https://github.com/mercedes-benz/ardep,b971483809c29057020e9b68f05b092937886dbb,lib/uds/uds.c,c,"void send_negative_response(enum UDS_SID request_sid,
+                            enum UDS_NRC response_code) {
+  int ret;
+  uint8_t tx_data[] = {UDS_SID_NEGATIVE_RESPONSE, request_sid, response_code};
+  ret = isotp_send(&send_ctx, can_dev, tx_data, sizeof(tx_data), &tx_addr,
+                   &rx_addr, send_complete_cb, NULL);
+  if (ret != ISOTP_N_OK) {
+    LOG_ERR(""Error while sending data to ID %d [%d]\n"", tx_addr.std_id, ret);
+  }
+}","void send_negative_response(enum UDS_SID request_sid, enum UDS_NRC response_code) {","#include <zephyr/canbus/isotp.h>
+#include <zephyr/kernel.h>
+#include <zephyr/logging/log.h>
+
+#include ""uds.h""
+#include ""uds_session.h""
+
+#include <zephyr/dfu/flash_img.h>
+#include <zephyr/dfu/mcuboot.h>
+#include <zephyr/storage/flash_map.h>
+#include <zephyr/sys/reboot.h>","Sends a UDS negative response message containing the failed service ID and a negative response code."
+77,https://github.com/mercedes-benz/ardep,b971483809c29057020e9b68f05b092937886dbb,lib/uds/uds.c,c,"static void send_session_control_response(enum UdsSessionState session_type,
+                                          uint16_t p2_timeout_ms,
+                                          uint16_t p2_star_timeout_ms) {
+  int ret;
+  uint8_t positive_sid = UDS_SID_DIAGNOSTIC_SESSION_CONTROL + 0x40;
+
+  uint8_t tx_data[] = {
+    positive_sid,
+    session_type,
+    (p2_timeout_ms >> 8) & 0xFF,
+    p2_timeout_ms & 0xFF,
+    ((p2_star_timeout_ms / 10) >> 8) & 0xFF,
+    (p2_star_timeout_ms / 10) & 0xFF,
+  };
+
+  ret = isotp_send(&send_ctx, can_dev, tx_data, sizeof(tx_data), &tx_addr,
+                   &rx_addr, send_complete_cb, NULL);
+  if (ret != ISOTP_N_OK) {
+    LOG_ERR(""Error while sending data to ID %d [%d]\n"", tx_addr.std_id, ret);
+  }
+}","static void send_session_control_response(enum UdsSessionState session_type, uint16_t p2_timeout_ms, uint16_t p2_star_timeout_ms) {","#include <zephyr/canbus/isotp.h>
+#include <zephyr/kernel.h>
+#include <zephyr/logging/log.h>
+
+#include ""uds.h""
+#include ""uds_session.h""
+
+#include <zephyr/dfu/flash_img.h>
+#include <zephyr/dfu/mcuboot.h>
+#include <zephyr/storage/flash_map.h>
+#include <zephyr/sys/reboot.h>","Sends a UDS positive response for the Diagnostic Session Control service."
+78,https://github.com/mercedes-benz/ardep,b971483809c29057020e9b68f05b092937886dbb,lib/uds/uds.c,c,"void send_positive_reset_response(uint8_t reset_type) {
+  int ret;
+  uint8_t positive_sid = UDS_SID_ECU_RESET + 0x40;
+
+  uint8_t tx_data[] = {positive_sid, reset_type};
+
+  ret = isotp_send(&send_ctx, can_dev, tx_data, sizeof(tx_data), &tx_addr,
+                   &rx_addr, send_complete_cb, NULL);
+  if (ret != ISOTP_N_OK) {
+    LOG_ERR(""Error while sending data to ID %d [%d]\n"", tx_addr.std_id, ret);
+  }
+}",void send_positive_reset_response(uint8_t reset_type) {,"#include <zephyr/canbus/isotp.h>
+#include <zephyr/kernel.h>
+#include <zephyr/logging/log.h>
+
+#include ""uds.h""
+#include ""uds_session.h""
+
+#include <zephyr/dfu/flash_img.h>
+#include <zephyr/dfu/mcuboot.h>
+#include <zephyr/storage/flash_map.h>
+#include <zephyr/sys/reboot.h>","Sends a positive UDS response for the ECU Reset service."

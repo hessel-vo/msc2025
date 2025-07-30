@@ -1,0 +1,12 @@
+--extra-index-url https://download.pytorch.org/whl/cu128
+
+torch
+torchvision
+
+huggingface-hub
+transformers
+accelerate
+evaluate
+bitsandbytes
+peft
+python-dotenv
