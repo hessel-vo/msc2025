@@ -38,7 +38,7 @@ INCLUDED_FILES = {
 INCLUDED_EXTENSIONS = {
     # Core 
     ".c", ".cpp", ".h", ".hpp", ".java", ".py",
-    ".gradle", ".gradle.kts", ".dtsi", ".overlay", ".map", ".rc",
+    ".gradle", ".kts", ".dtsi", ".overlay", ".map", ".rc",
     ".proto", ".fbs", ".fidl", ".arxml", ".franca",
     ".md", ".rst", ".adoc", ".vspec",
 
@@ -49,7 +49,6 @@ INCLUDED_EXTENSIONS = {
     ".dox", ".doxyfile", ".puml",
     ".jinja2", ".j2", ".tpl",
     ".conf", ".json", ".xml", ".yaml", ".yml", ".toml",
-    ".pc.in", ".spec.in",
 }
 
 

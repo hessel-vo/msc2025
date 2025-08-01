@@ -20,7 +20,6 @@ ramses/src/client/internal/logic/flatbuffers/generated/PropertyGen.h
 ramses/src/client/internal/logic/flatbuffers/generated/NodeBindingGen.h
 ramses/src/client/internal/logic/flatbuffers/generated/LinkGen.h
 ramses/src/client/internal/logic/flatbuffers/generated/RenderPassBindingGen.h
-remoteperf/docs/source/index.rst
 graphql-vss-data-server/commonapi-wrappers/generated/org.genivi.vehicle.playground/core/stub/v1/org/genivi/vehicle/playground/PlaygroundStub.hpp
 graphql-vss-data-server/commonapi-wrappers/generated/org.genivi.vehicle.playground/core/proxy/v1/org/genivi/vehicle/playground/PlaygroundProxy.hpp
 graphql-vss-data-server/commonapi-wrappers/generated/org.genivi.vehicle.playground/core/proxy/v1/org/genivi/vehicle/playground/PlaygroundProxyBase.hpp

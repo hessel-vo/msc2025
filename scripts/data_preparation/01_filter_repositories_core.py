@@ -37,7 +37,7 @@ INCLUDED_FILES = {
 
 INCLUDED_EXTENSIONS = {
     ".c", ".cpp", ".h", ".hpp", ".java", ".py",
-    ".gradle", ".gradle.kts", ".dtsi", ".overlay", ".map", ".rc",
+    ".gradle", ".kts", ".dtsi", ".overlay", ".map", ".rc",
     ".proto", ".fbs", ".fidl", ".arxml", ".franca",
     ".md", ".rst", ".adoc", ".vspec",
 }
