@@ -10,3 +10,4 @@ evaluate
 bitsandbytes
 peft
 python-dotenv
+detect-secrets

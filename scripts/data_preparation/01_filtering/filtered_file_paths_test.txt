@@ -1,0 +1,11 @@
+/home/hessel/workspace/RUG/MSc2025/project/code/repositories/all_repos/test-someip-service/include/MockedValues.hpp
+/home/hessel/workspace/RUG/MSc2025/project/code/repositories/all_repos/test-someip-service/franca/org/genivi/vehicle/playgroundTypes.fidl
+/home/hessel/workspace/RUG/MSc2025/project/code/repositories/all_repos/test-someip-service/franca/org/genivi/vehicle/playground.fidl
+/home/hessel/workspace/RUG/MSc2025/project/code/repositories/all_repos/test-someip-service/src/PlaygroundStubImpl.hpp
+/home/hessel/workspace/RUG/MSc2025/project/code/repositories/all_repos/test-someip-service/src/PlaygroundStubImpl.cpp
+/home/hessel/workspace/RUG/MSc2025/project/code/repositories/all_repos/test-someip-service/src/PlaygroundService.cpp
+/home/hessel/workspace/RUG/MSc2025/project/code/repositories/all_repos/test-someip-service/src/PlaygroundClient.cpp
+/home/hessel/workspace/RUG/MSc2025/project/code/repositories/all_repos/test-someip-service/src/mock/MockedAttributes.hpp
+/home/hessel/workspace/RUG/MSc2025/project/code/repositories/all_repos/test-someip-service/src/mock/MockedAttributes.cpp
+/home/hessel/workspace/RUG/MSc2025/project/code/repositories/all_repos/test-someip-service/src/mock/MockedValue.hpp
+/home/hessel/workspace/RUG/MSc2025/project/code/repositories/all_repos/pybip/canary_file.py

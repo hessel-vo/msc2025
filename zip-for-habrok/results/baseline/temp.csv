@@ -1,13 +1,0 @@
-id,summary,generated_summary
-1,"Checks if a data type is a subtype of a specified base type.","Checks if one class is a subtype of another based on their type definitions."
-2,"Validates if a value conforms to a datatype specified by a string.","Checks if a value matches a specified data type."
-3,"Checks if an integer value fits within the range of a specified bit-width and signedness.","Checks if a value is a valid integer within a specified range, considering signedness and bit length."
-26,"Lazily initializes and returns an audio card presenter with data models for media and in-call status.","Creates and initializes an `HomeAudioCardPresenter` with associated models, handling potential ViewModelProvider absence."
-27,"Lazily initializes and returns the audio card view fragment.","Retrieves or creates an `AudioFragment` and associates it with a presenter."
-28,"Inflates a card fragment's layout and initializes its view components.","Inflates a layout and retrieves UI elements for a card fragment."
-51,"Creates a D-Bus signal message addressed to a specific client.","Creates a new DBus signal message with specified properties."
-52,"Notifies a newly added listener if the D-Bus connection is already available.","Handles listener addition to a DBus connection and reports availability if the connection is established."
-53,"For an active connection, adds a thread to a list to be joined on exit, avoiding duplicates.","Manages thread connections and adds new threads to a list for exit handling."
-76,"Sends a UDS negative response message containing the failed service ID and a negative response code.","Sends a negative UDS response with a specified SID and NRC code via ISO-TP."
-77,"Sends a UDS positive response for the Diagnostic Session Control service.","Sends a UDS diagnostic session control response message over ISO TP using CAN communication."
-78,"Sends a positive UDS response for the ECU Reset service.",Sends a positive reset response via ISO-TP CAN communication.
