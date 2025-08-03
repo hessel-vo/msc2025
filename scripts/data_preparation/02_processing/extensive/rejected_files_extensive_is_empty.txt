@@ -15,8 +15,8 @@ capu/cmake/acme2/tests/test9/test9c_sharedA.cpp
 capu/cmake/acme2/tests/test9/test9b_binary_single_dll.cpp
 capu/cmake/acme2/tests/test9/test9d_sharedB.cpp
 capu/cmake/acme2/tests/test9/test9d_binary_nested.cpp
-capu/cmake/acme2/tests/test9/test9b_sharedA.cpp
 capu/cmake/acme2/tests/test9/test9a_staticA.cpp
+capu/cmake/acme2/tests/test9/test9b_sharedA.cpp
 capu/cmake/acme2/tests/test9/test9c_staticA.cpp
 capu/cmake/acme2/tests/test5/test5_object/test5_object_object.cpp
 capu/cmake/acme2/tests/test5/test5_object/include/inc.h

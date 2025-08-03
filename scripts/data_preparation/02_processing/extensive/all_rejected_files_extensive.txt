@@ -24,6 +24,7 @@ android-vehicleplugin-vss-graphql/src/main/apollo/org/genivi/vss/GetFuelDataQuer
 android-vehicleplugin-vss-graphql/src/main/apollo/org/genivi/vss/type/CustomType.java
 android-vehicleplugin-vss-graphql/src/main/graphql/org/genivi/vss/schema.json
 android-vss-authentication-service/ExampleAppJava/src/main/graphql/org/genivi/vss/schema.json
+android-vss-authentication-service/vss-sdk-lib/src/main/java/org/genivi/vss/authenticationservice/VSS.java
 automotive_regression_xai/src/__init__.py
 automotive_regression_xai/src/xai_classes/__init__.py
 barefoot/barefoot-style.xml
@@ -35,6 +36,8 @@ cananalyze/cananalyze/__init__.py
 cananalyze/docs/source/conf.py
 cananalyze/scripts/__init__.py
 cananalyze/tests/__init__.py
+capicxx-core-tools/org.genivi.commonapi.console/src/org/genivi/commonapi/console/CommandlineTool.java
+capicxx-core-tools/org.genivi.commonapi.core/src/org/genivi/commonapi/core/generator/GeneratorFileSystemAccess.java
 capicxx-dbus-tools/test/fakeLegacyService/fake.legacy.service.xml
 capicxx-wamp-runtime/include/CommonAPI/Wamp/WampProxy.hpp
 capicxx-wamp-tools/org.genivi.commonapi.wamp.examples/src/example10/client/autobahn.min.js
@@ -137,6 +140,8 @@ cdsp/cdsp/information-layer/handlers/src/iotdb/gen-nodejs/common_types.js
 cdsp/cdsp/information-layer/tsconfig.json
 cdsp/docs/docs-gen/layouts/partials/favicon.html
 commercial-vehicles/tmp/convert-spreadsheet/vss_rel_4.0.yaml
+dlt-daemon/examples/example2/dlt_id.h
+dlt-daemon/examples/example3/dlt_id.h
 dlt-daemon/include/dlt/dlt.h
 dlt-viewer/doc/convert.sh
 dlt-viewer/parser/examples/example_4/capp/dlt_id_CAPP.h
@@ -212,6 +217,7 @@ graphql-vss-data-server/cpp-server/generated/no_introspection/VehicleSchema.cpp
 graphql-vss-data-server/cpp-server/generated/no_introspection/VehicleSchema.h
 graphql-vss-data-server/cpp-server/implementation/franca_idl/vehicle/currentlocation.cpp
 graphql-vss-data-server/cpp-server/implementation/franca_idl/vehicle/powertrain/combustionengine/engine.cpp
+graphql-vss-server-libs/graphql_vss_server_libs/protocol/graphqlrequeststate.hpp
 graphql_schema2cpp_codegen/graphql_schema2cpp_codegen/__init__.py
 graphql_schema2cpp_codegen/graphql_schema2cpp_codegen/generators/cppgraphqlgen/collectors/__init__.py
 graphql_schema2cpp_codegen/vss_deploy/model/deploy/types/__init__.py
@@ -219,6 +225,7 @@ graphql_schema2cpp_codegen/vss_deploy/model/franca_idl/__init__.py
 ifex/docs/static-footer.md
 ifex/input_filters/__init__.py
 ifex/input_filters/franca/__init__.py
+ifex/input_filters/franca/franca_to_ifex.py
 ifex/input_filters/protobuf/__init__.py
 ifex/models/__init__.py
 ifex/models/ifex/__init__.py
@@ -234,6 +241,7 @@ ifex/output_filters/templates/__init__.py
 ifex/packaging/__init__.py
 ifex/packaging/entrypoints/__init__.py
 ifex/tests/__init__.py
+ifex/tests/protobuf/unit_test_files/grpc/fuzz_config_vars.proto
 ifex/tests/protobuf/unit_test_files/protobuf/unittest_enormous_descriptor.proto
 ifex/transformers/__init__.py
 jeromq/src/checkstyle/eclipse-format-profile.xml
@@ -272,6 +280,7 @@ ramses-composer/datamodel/libCore/tests/expectations/NodeWithAnnotations.json
 ramses-composer/datamodel/libCore/tests/expectations/NodeWithChildMeshNode.json
 ramses-logic/ci/scripts/code_style_checker/__init__.py
 ramses-logic/ci/scripts/code_style_checker/common_modules/__init__.py
+ramses-logic/include/ramses-logic/TimerNode.h
 ramses-logic/lib/flatbuffers/generated/AnchorPointGen.h
 ramses-logic/lib/flatbuffers/generated/AnimationNodeGen.h
 ramses-logic/lib/flatbuffers/generated/ApiObjectsGen.h
@@ -293,6 +302,12 @@ ramses-logic/lib/flatbuffers/generated/RamsesRenderGroupBindingGen.h
 ramses-logic/lib/flatbuffers/generated/RamsesRenderPassBindingGen.h
 ramses-logic/lib/flatbuffers/generated/SkinBindingGen.h
 ramses-logic/lib/flatbuffers/generated/TimerNodeGen.h
+ramses/external/khronos/GL/glcorearb.h
+ramses/external/khronos/GL/glext.h
+ramses/external/khronos/GL/wgl.h
+ramses/external/khronos/GL/wglext.h
+ramses/include/ramses/client/logic/TimerNode.h
+ramses/scripts/ci/config/clang-tidy-wrapper.yaml
 ramses/scripts/ci/test/test_compilationdb.py
 ramses/scripts/code_style_checker/__init__.py
 ramses/scripts/code_style_checker/common_modules/__init__.py
@@ -325,6 +340,7 @@ remoteperf/remoteperf/cli/__init__.py
 remoteperf/remoteperf/models/__init__.py
 remoteperf/remoteperf/utils/__init__.py
 remoteperf/tests/__init__.py
+ros_chatter/chatter_receiver/src/Receiver.cpp
 s2dm/docs-gen/IMAGE_REFERENCE_GUIDE.md
 s2dm/docs-gen/content/tools/3.1-cli/_index.md
 s2dm/docs-gen/content/tools/3.2-automation/_index.md
@@ -386,6 +402,7 @@ vsomeip/test/common/examples_policies/vsomeip/4003014_4003014/vsomeip_security.j
 vsomeip/test/common/examples_policies/vsomeip/4003015_4003015/vsomeip_security.json
 vsomeip/test/common/examples_policies/vsomeip/4003016_4003016/vsomeip_security.json
 vsomeip/test/common/examples_policies/vsomeip/vsomeip_policy_extensions.json
+vsomeip/test/network_tests/npdu_tests/npdu_test_rmd.cpp
 vsomeip/vsomeip.xml
 vss2graphql_schema/vss2graphql_schema/__init__.py
 vss2graphql_schema/vss2graphql_schema/graphql_generators/__init__.py
