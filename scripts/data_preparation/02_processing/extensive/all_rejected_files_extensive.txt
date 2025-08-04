@@ -355,6 +355,7 @@ s2dm/src/s2dm/exporters/__init__.py
 s2dm/src/s2dm/idgen/__init__.py
 s2dm/src/s2dm/tools/__init__.py
 s2dm/tests/__init__.py
+s2dm/tests/test_vss_Seat/15_05_2025/result.json
 selfsupervised_flow/unsup_flow/experiment/raft/layers/__init__.py
 smrf/java/java-formatter/code-formatter-config.xml
 smrf/javascript/smrf-javascript/flatbuffers_generated/smrf_generated.js

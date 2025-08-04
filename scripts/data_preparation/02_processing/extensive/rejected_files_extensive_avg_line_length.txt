@@ -16,8 +16,8 @@ joynr/tools/build-resources/src/main/resources/java-formatter/code-formatter-con
 cdsp/docs/docs-gen/layouts/partials/favicon.html
 cdsp/cdsp/information-layer/tsconfig.json
 vehicle_signal_specification/docs-gen/layouts/partials/favicon.html
-capicxx-wamp-tools/org.genivi.commonapi.wamp.examples/src/example10/client/autobahn.min.js
 capicxx-wamp-tools/org.genivi.commonapi.wamp.examples/src/example32/client/autobahn.min.js
+capicxx-wamp-tools/org.genivi.commonapi.wamp.examples/src/example10/client/autobahn.min.js
 capicxx-wamp-tools/org.genivi.commonapi.wamp.examples/src/example12/client/autobahn.min.js
 capicxx-wamp-tools/org.genivi.commonapi.wamp.examples/src/example77/client/autobahn.min.js
 capicxx-wamp-tools/org.genivi.commonapi.wamp.examples/src/example30/client/autobahn.min.js

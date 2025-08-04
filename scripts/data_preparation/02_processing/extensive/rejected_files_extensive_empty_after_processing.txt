@@ -2,8 +2,8 @@ muesli/include/muesli/Muesli.h
 python-dlt/tests/__init__.py
 ifex/packaging/__init__.py
 ifex/packaging/entrypoints/__init__.py
-ifex/models/__init__.py
 ifex/models/ifex/__init__.py
+ifex/models/__init__.py
 ifex/output_filters/__init__.py
 ifex/output_filters/templates/__init__.py
 ifex/output_filters/schema/__init__.py
