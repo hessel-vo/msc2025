@@ -26,6 +26,8 @@ charset-normalizer==3.4.2
     # via requests
 datasets==4.0.0
     # via evaluate
+datasketch==1.6.5
+    # via -r requirements.in
 detect-secrets==1.5.0
     # via -r requirements.in
 dill==0.3.8
@@ -87,9 +89,11 @@ numpy==2.3.1
     #   accelerate
     #   bitsandbytes
     #   datasets
+    #   datasketch
     #   evaluate
     #   pandas
     #   peft
+    #   scipy
     #   torchvision
     #   transformers
 nvidia-cublas-cu12==12.6.4.1
@@ -183,6 +187,8 @@ safetensors==0.5.3
     #   accelerate
     #   peft
     #   transformers
+scipy==1.16.1
+    # via datasketch
 six==1.17.0
     # via python-dateutil
 sympy==1.14.0
@@ -200,6 +206,7 @@ torchvision==0.22.1+cu128
     # via -r requirements.in
 tqdm==4.67.1
     # via
+    #   -r requirements.in
     #   datasets
     #   evaluate
     #   huggingface-hub
@@ -218,7 +225,7 @@ typing-extensions==4.14.1
     #   torch
 tzdata==2025.2
     # via pandas
-urllib3==2.5.0
+urllib3==1.26.20
     # via requests
 xxhash==3.5.0
     # via

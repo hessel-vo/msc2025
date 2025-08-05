@@ -10,8 +10,8 @@ joynr/wiki/images/multiple-backends_draw.io.xml
 commercial-vehicles/tmp/convert-spreadsheet/vss_rel_4.0.yaml
 pypbap/doc/Architecture_PBAP.xml
 vehicle_signal_specification/docs-gen/static/data/outputplus.json
-barefoot/src/test/resources/com/bmwcarit/barefoot/matcher/x0001-001.json
 barefoot/src/test/resources/com/bmwcarit/barefoot/matcher/x0001-015.json
+barefoot/src/test/resources/com/bmwcarit/barefoot/matcher/x0001-001.json
 pcl-people-tracker-timing-test/res/trainedLinearSVMForPeopleDetectionWithHOG.yaml
 android-vehicleplugin-vss-graphql/src/main/graphql/org/genivi/vss/schema.json
 eclipse-tractusx_tractusx-edc-merge/docs/development/postman/collection.json

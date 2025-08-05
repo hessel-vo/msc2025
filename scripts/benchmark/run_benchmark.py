@@ -67,7 +67,6 @@ model = Gemma3ForConditionalGeneration.from_pretrained(
 ).eval() # Set model to evaluation mode
 print("Model and processor loaded successfully.")
 
-
 # --- 4. Main Benchmarking Logic ---
 def run_benchmark():
     try:

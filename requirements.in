@@ -11,3 +11,5 @@ bitsandbytes
 peft
 python-dotenv
 detect-secrets
+datasketch
+tqdm
