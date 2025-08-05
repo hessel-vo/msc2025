@@ -12,16 +12,13 @@ from concurrent.futures import ProcessPoolExecutor, as_completed
 
 from tqdm import tqdm
 
-# MODIFIED: Renamed import to reflect the new structure in pii_redaction.py
-from pii_redaction import redact_pii, ALL_PATTERNS
+from pii_redaction import redact_emails
 
 # --- Configuration & Helper Functions ---
 
-# --- Configuration ---
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # --- Quality Heuristic Constants ---
-# NEW: Added a constant for the maximum file size in bytes (1MB)
 MAX_FILE_SIZE_BYTES = 450000
 MAX_AVG_LINE_LENGTH = 100
 MAX_LINE_LENGTH = 1000
@@ -40,7 +37,6 @@ BOILERPLATE_KEYWORDS = {
     "bsd license",
 }
 
-# The comprehensive COMMENT_MARKERS dictionary remains the same
 COMMENT_MARKERS = {
     "CMakeLists.txt": {"#"}, ".py": {"#"}, ".sh": {"#"}, ".conf": {"#"},
     ".toml": {"#"}, ".yaml": {"#"}, ".yml": {"#"}, ".vspec": {"#"},
@@ -59,7 +55,6 @@ COMMENT_MARKERS = {
 
 
 def load_documents_from_manifest(manifest_path: Path, repos_root: Path, failed_decodes: List[str]) -> Iterator[Dict[str, str]]:
-    # This function remains unchanged
     logging.info(f"Reading file paths from manifest: '{manifest_path}'")
     with open(manifest_path, 'r', encoding='utf-8') as f:
         for line in f:
@@ -90,13 +85,11 @@ def load_documents_from_manifest(manifest_path: Path, repos_root: Path, failed_d
                 continue
 
 
-# MODIFIED: Added the check for file size
 def passes_quality_heuristics(doc: Dict[str, str]) -> Tuple[bool, str]:
     content = doc['content']
     path_in_repo = doc['path_in_repo']
     lines = content.splitlines()
     
-    # Check for file size first, as it's a very cheap and effective filter
     if len(content) > MAX_FILE_SIZE_BYTES:
         return False, "file_too_large"
 
@@ -124,7 +117,6 @@ def passes_quality_heuristics(doc: Dict[str, str]) -> Tuple[bool, str]:
 
 
 def _find_comment_block(lines: List[str], start_index: int, line_marker: str, block_markers: tuple) -> Tuple[int, str]:
-    # This helper function remains unchanged
     stripped_line = lines[start_index].strip()
 
     if block_markers and stripped_line.startswith(block_markers[0]):
@@ -152,7 +144,6 @@ def _find_comment_block(lines: List[str], start_index: int, line_marker: str, bl
 
 
 def remove_boilerplate(doc: Dict[str, str]) -> Dict[str, str]:
-    # This function remains unchanged
     path = Path(doc['path_in_repo'])
     markers = COMMENT_MARKERS.get(path.suffix.lower())
     
@@ -204,7 +195,7 @@ def remove_boilerplate(doc: Dict[str, str]) -> Dict[str, str]:
 
 
 def process_document(doc: Dict[str, str]) -> Dict:
-    # This worker function remains unchanged
+    # This is the primary worker function for each parallel process.
     repo_and_path = f"{doc['repo_id']}/{doc['path_in_repo']}"
     
     passes, reason = passes_quality_heuristics(doc)
@@ -213,13 +204,13 @@ def process_document(doc: Dict[str, str]) -> Dict:
         
     doc = remove_boilerplate(doc)
 
-    # In the provided code, the import was updated but not the function call. Correcting it here.
-    redacted_text, found_pii = redact_pii(doc['content'], ALL_PATTERNS)
+    # Call the new redaction function.
+    redacted_text, found_pii = redact_emails(doc['content'])
     doc['content'] = redacted_text
 
     if not doc['content'].strip():
         return {"status": "rejected", "reason": "empty_after_processing", "path": repo_and_path}
-        
+    
     return {"status": "passed", "doc": doc, "found_pii": found_pii, "path": repo_and_path}
 
 
@@ -228,7 +219,6 @@ def main():
     
     # --- Path Setup ---
     load_dotenv()
-    # ... (rest of path setup is unchanged)
     project_root_str = os.getenv('PROJECT_ROOT')
     if not project_root_str:
         logging.error("'PROJECT_ROOT' environment variable not set. Please check your .env file.")
@@ -258,7 +248,6 @@ def main():
 
     # --- Data Loading ---
     failed_decodes = []
-    # ... (rest of data loading is unchanged)
     logging.info("Loading all documents from manifest into memory...")
     document_generator = load_documents_from_manifest(manifest_path, repos_root, failed_decodes)
     docs_to_process = list(document_generator)
@@ -268,13 +257,12 @@ def main():
     # --- Parallel Processing ---
     passed_docs_count = 0
     
-    # MODIFIED: Add the new rejection reason
     rejection_reasons = defaultdict(list)
     rejection_reasons_keys = [
         "file_too_large", "generated", "is_empty", "max_line_length",
         "avg_line_length", "alphanum_ratio", "empty_after_processing",
     ]
-        
+    
     pii_detections = {}
 
     with ProcessPoolExecutor(max_workers=8) as executor, open(processed_data_path, 'w', encoding='utf-8') as f_out:
@@ -306,18 +294,15 @@ def main():
                 logging.error(f"A document failed during processing: {e}", exc_info=True)
 
     # --- Final Logging and Artifact Generation ---
-    # The rest of the function remains unchanged.
     logging.info("--- Processing Summary ---")
     logging.info(f"Total documents loaded: {total_docs_loaded:,}")
     logging.info(f"Documents passed processing: {passed_docs_count:,}")
     logging.info(f"Documents rejected: {total_docs_loaded - passed_docs_count:,}")
     logging.info("Rejection reasons:")
-    # MODIFIED: Iterate through the pre-defined keys to ensure consistent order
     for reason in rejection_reasons_keys:
         count = len(rejection_reasons[reason])
         logging.info(f"  - {reason}: {count:,}")
     
-    # ... (rest of logging remains unchanged)
     logging.info("--- PII Detections Summary ---")
     pii_counts = defaultdict(int)
     for pii_list in pii_detections.values():
@@ -353,9 +338,9 @@ def main():
             for path_str in sorted(all_rejected_paths):
                 f_all.write(f"{path_str}\n")
     
-    logging.info("Writing PII detection log...")
+    pii_log_path = processing_dir / f"pii_detections_log_{filter_level}.csv"
+    logging.info(f"Writing PII detection log to: {pii_log_path}")
     if pii_detections:
-        pii_log_path = processing_dir / f"pii_detections_log_{filter_level}.csv"
         with open(pii_log_path, 'w', newline='', encoding='utf-8') as f_pii:
             csv_writer = csv.writer(f_pii)
             csv_writer.writerow(['filepath', 'pii_type', 'matched_value'])

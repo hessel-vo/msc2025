@@ -16,15 +16,15 @@ joynr/tools/build-resources/src/main/resources/java-formatter/code-formatter-con
 cdsp/docs/docs-gen/layouts/partials/favicon.html
 cdsp/cdsp/information-layer/tsconfig.json
 vehicle_signal_specification/docs-gen/layouts/partials/favicon.html
-capicxx-wamp-tools/org.genivi.commonapi.wamp.examples/src/example32/client/autobahn.min.js
 capicxx-wamp-tools/org.genivi.commonapi.wamp.examples/src/example10/client/autobahn.min.js
+capicxx-wamp-tools/org.genivi.commonapi.wamp.examples/src/example32/client/autobahn.min.js
 capicxx-wamp-tools/org.genivi.commonapi.wamp.examples/src/example12/client/autobahn.min.js
 capicxx-wamp-tools/org.genivi.commonapi.wamp.examples/src/example77/client/autobahn.min.js
 capicxx-wamp-tools/org.genivi.commonapi.wamp.examples/src/example30/client/autobahn.min.js
 barefoot/barefoot-style.xml
 barefoot/doc-files/style/eclipse-java-style.xml
-s2dm/docs-gen/resources/_gen/assets/scss/app.scss_bee030cf6e8c6b035b46933094959a46.json
 s2dm/docs-gen/resources/_gen/assets/scss/app.scss_901a6e181e810c5c7347a10d84f037ab.json
+s2dm/docs-gen/resources/_gen/assets/scss/app.scss_bee030cf6e8c6b035b46933094959a46.json
 leaderboard/data/routes_training.xml
 leaderboard/data/routes_devtest.xml
 leaderboard/data/routes_testing.xml
