@@ -5,10 +5,8 @@ import os
 from dotenv import load_dotenv
 
 # --- CONFIGURATION ---
-# These lists will be modified to create the 3 different filtering levels.
-# This version represents the "base" configuration.
 
-# EXCLUSION (Directory and Filename-based)
+# EXCLUSION
 EXCLUDED_DIRS = {
     ".git", ".github", ".svn", ".idea", ".vscode",
     "__pycache__", "node_modules", "vendor", "release-notes", "changelog"
@@ -26,9 +24,7 @@ EXCLUDED_FILENAME_ROOTS = {
 
 EXCLUDED_EXACT_FILENAMES = {".gitignore", ".gitattributes"}
 
-# REMOVED: The EXCLUDED_EXTENSIONS set is no longer needed.
-
-# INCLUSION (File and Extension-based)
+# INCLUSION
 INCLUDED_FILES = {
     "CMakeLists.txt", "Makefile", "Kconfig", "west.yml", "pom.xml",
     "setup.py", "pyproject.toml", "requirements.txt",
@@ -55,12 +51,8 @@ INCLUDED_EXTENSIONS = {
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 class PathFilter:
-    """
-    A simplified filter that only checks file-level attributes.
-    Directory-level filtering is now handled in the main walk.
-    """
+
     def __init__(self):
-        # MODIFIED: Removed self.excluded_extensions
         self.excluded_dirs = EXCLUDED_DIRS
         self.excluded_filename_roots = EXCLUDED_FILENAME_ROOTS
         self.excluded_exact_filenames = EXCLUDED_EXACT_FILENAMES
@@ -82,13 +74,10 @@ class PathFilter:
     def is_included(self, path: Path) -> bool:
         """
         Determines if a file should be included in the final dataset.
-        This function now uses a pure allow-list model for extensions.
         """
-        # MODIFIED: Streamlined the logic by removing the check for excluded_extensions
         if self._is_in_excluded_dir(path): return False
         if self._is_excluded_by_filename(path): return False
         
-        # Inclusion Check: The file is included if its name or extension is on the allow-list.
         if path.name in self.included_files: return True
         if path.suffix.lower() in self.included_extensions: return True
         
@@ -107,8 +96,6 @@ def main():
     project_root = Path(project_root_str)
     repos_root = project_root / "repositories/all_repos"
     
-    # MODIFIED: Added a version string to the output filename for clarity
-    # This can be changed for each of the 3 versions.
     VERSION = "extensive"
     output_dir = project_root / "scripts" / "data_preparation" / "01_filtering"
     output_dir.mkdir(parents=True, exist_ok=True)

@@ -9,6 +9,7 @@ accelerate
 evaluate
 bitsandbytes
 peft
+nltk
 python-dotenv
 detect-secrets
 datasketch

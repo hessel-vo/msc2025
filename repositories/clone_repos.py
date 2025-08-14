@@ -39,7 +39,7 @@ def find_license(repo_path):
         return f"Error reading license: {e}"
 
 def get_commit_hash(repo_path):
-    """Gets the latest commit hash from a local git repository."""
+    # Get commit hash
     try:
         result = subprocess.run(
             ['git', '-C', repo_path, 'rev-parse', 'HEAD'],

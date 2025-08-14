@@ -6,7 +6,6 @@ from dotenv import load_dotenv
 from typing import Iterator
 from collections import Counter
 
-# Use the correct, high-level public API that is proven to work
 from detect_secrets import SecretsCollection
 from detect_secrets.settings import default_settings
 
@@ -15,7 +14,6 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 
 
 def load_file_paths_from_manifest(manifest_path: Path) -> Iterator[str]:
-    """Reads a manifest file and yields the full path of each file."""
     logging.info(f"Reading file paths from manifest: '{manifest_path}'")
     with open(manifest_path, 'r', encoding='utf-8') as f:
         for line in f:
@@ -24,10 +22,7 @@ def load_file_paths_from_manifest(manifest_path: Path) -> Iterator[str]:
                 yield stripped_line
 
 def main():
-    """
-    Main execution function to analyze secrets across all files in a manifest
-    and generate a detailed report.
-    """
+
     start_time = time.time()
     
     # --- Path Setup ---
@@ -39,10 +34,8 @@ def main():
         
     project_root = Path(project_root_str)
     data_prep_dir = project_root / "scripts" / "data_preparation"
-    # Point this to the full manifest you want to analyze
     manifest_path = data_prep_dir / "01_filtering" / "filtered_file_paths_extensive.txt"
     
-    # NEW: Define the path for our detailed output report
     report_output_path = data_prep_dir / "secrets_report.txt"
     
     if not manifest_path.is_file():
@@ -51,14 +44,13 @@ def main():
 
     # --- Analysis Initialization ---
     secret_type_counts = Counter()
-    report_lines = [] # NEW: A list to hold the formatted lines for our report
+    report_lines = []
     docs_scanned = 0
     
     logging.info("Starting secret analysis and report generation...")
     
     path_generator = load_file_paths_from_manifest(manifest_path)
     
-    # --- Correct Scanning Logic (This part is correct) ---
     secrets = SecretsCollection()
     with default_settings():
         for file_path in path_generator:
@@ -68,18 +60,14 @@ def main():
             if docs_scanned % 2000 == 0:
                 logging.info(f"Scanned {docs_scanned:,} documents...")
 
-    # --- Tallying and Report Generation ---
     results_dict = secrets.json()
     
     for filename, found_secrets_list in results_dict.items():
-        # Shorten filename for cleaner report
         relative_filename = str(Path(filename).relative_to(project_root))
         
         for secret in found_secrets_list:
-            # Tally the counts for the console summary
             secret_type_counts[secret['type']] += 1
             
-            # NEW: Create a formatted string for the report file
             report_line = (
                 f"File: {relative_filename}\n"
                 f"  - Type: {secret['type']}\n"
@@ -100,7 +88,7 @@ def main():
     logging.info("Report written successfully.")
 
 
-    # --- Console Reporting ---
+    # --- Console Logging ---
     logging.info(f"--- Secret Analysis Complete ---")
     logging.info(f"Total documents scanned: {docs_scanned:,}")
     

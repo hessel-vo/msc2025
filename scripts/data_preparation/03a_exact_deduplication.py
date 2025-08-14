@@ -14,12 +14,11 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 
 def main():
     """
-    Performs a fast, hash-based exact deduplication on the processed dataset.
+    Hash-based exact deduplication 
     """
     start_time = time.time()
 
     # --- Path & Argument Setup ---
-    # ... (This section remains unchanged)
     load_dotenv()
     project_root_str = os.getenv('PROJECT_ROOT')
     if not project_root_str:
@@ -49,7 +48,6 @@ def main():
         return
 
     # --- 1. Load Data ---
-    # ... (This section remains unchanged)
     logging.info(f"Loading processed data from '{input_path}'...")
     with open(input_path, 'r', encoding='utf-8') as f:
         all_docs = [json.loads(line) for line in tqdm(f, desc="Loading documents")]
@@ -60,23 +58,20 @@ def main():
         logging.warning("Input file is empty. Nothing to process.")
         return
 
-    # --- 2. Deterministic Sorting (Improved Readability) ---
+    # --- 2. Deterministic Sorting ---
     logging.info("Sorting documents to ensure replicable selection of 'kept' files...")
 
-    # MODIFIED: Define a helper function for the sort key to improve readability
     def get_sort_key(doc):
         metrics = doc.get('metrics', {})
         # Use negative values for descending order
         content_length = -metrics.get('content_length')
         alnum_ratio = -metrics.get('alnum_ratio')
-        # Use the path as the final tie-breaker
         return (content_length, alnum_ratio)
 
     all_docs.sort(key=get_sort_key)
     logging.info("Sorting complete.")
 
-    # --- 3. Exact Deduplication via Hashing ---
-    # ... (This section remains unchanged)
+    # --- 3. Exact Deduplication using Hashing ---
     logging.info("Finding exact duplicates via SHA-256 hashing...")
     seen_hashes = set()
     docs_to_keep = []
@@ -97,8 +92,7 @@ def main():
             duplicate_file = f"{doc['repo_id']}/{doc['path_in_repo']}"
             duplicate_log.append((kept_file, duplicate_file))
 
-    # --- 4. Save Final Dataset and Log ---
-    # ... (This section remains unchanged)
+    # --- 4. Save Dataset and Log ---
     logging.info(f"Saving {len(docs_to_keep):,} unique documents to '{output_path}'...")
     with open(output_path, 'w', encoding='utf-8') as f_out:
         for doc in docs_to_keep:
@@ -112,7 +106,6 @@ def main():
             writer.writerow([kept_file, duplicate_file])
 
     # --- 5. Final Summary ---
-    # ... (This section remains unchanged)
     num_final_docs = len(docs_to_keep)
     num_duplicates = total_docs_loaded - num_final_docs
     logging.info("--- Exact Deduplication Summary ---")

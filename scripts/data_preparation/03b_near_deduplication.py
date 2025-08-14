@@ -19,16 +19,19 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 
 # --- Deduplication Constants ---
 DEDUPE_CONFIG = {
-    "description": "Aggressive, token n-gram based near-deduplication.",
-    "threshold": 0.90,
+    "threshold": 0.9,
     "num_perm": 256,
     "ngram_size": 5,
 }
 NON_ALPHA = re.compile(r'[^a-zA-Z0-9]')
 SEED = 42
 
+"""
+This script performs near-deduplication using datasketch library (MinHash and LSH).
+Based on BigCode Project data processing pipeline.
+"""
+
 class UnionFind:
-    # ... (UnionFind class remains unchanged)
     def __init__(self, n):
         self.parent = list(range(n))
 
@@ -48,7 +51,6 @@ class UnionFind:
                 self.parent[root_i] = root_j
 
 def _create_token_ngram_minhash(doc_tuple):
-    # ... (This worker function remains unchanged)
     index, content = doc_tuple
     num_perm = DEDUPE_CONFIG['num_perm']
     ngram_size = DEDUPE_CONFIG['ngram_size']
@@ -68,11 +70,10 @@ def _create_token_ngram_minhash(doc_tuple):
 def main():
     """
     Main execution function for token-based near-deduplication.
-    This script should be run AFTER 03a_exact_deduplication.py.
     """
     start_time = time.time()
 
-    # --- Path & Argument Setup ---
+    # --- Path and Argument Setup ---
     load_dotenv()
     project_root_str = os.getenv('PROJECT_ROOT')
     if not project_root_str:
@@ -92,7 +93,6 @@ def main():
     deduplication_dir = data_prep_dir / "03_deduplication" / filter_level
     deduplication_dir.mkdir(parents=True, exist_ok=True)
 
-    # MODIFIED: Input path is now the output of the exact deduplication script
     input_path = deduplication_dir / f"exact_deduplicated_data_{filter_level}.jsonl"
     output_path = deduplication_dir / f"final_dataset_{filter_level}.jsonl"
     duplicate_log_path = deduplication_dir / f"near_duplicate_log_{filter_level}.csv"
@@ -111,12 +111,9 @@ def main():
     
     if not docs_to_process:
         logging.warning("Input file is empty. Nothing to process.")
-        # Create empty output files for pipeline consistency
-        output_path.touch()
-        duplicate_log_path.touch()
-        return
+        sys.exit(1)
 
-    # --- 2. Deterministic Sorting (Still necessary for this stage) ---
+    # --- 2. Deterministic Sorting ---
     logging.info("Sorting documents to ensure replicable near-deduplication...")
     def get_sort_key(doc):
         metrics = doc.get('metrics', {})
@@ -127,7 +124,7 @@ def main():
     docs_to_process.sort(key=get_sort_key)
     logging.info("Sorting complete.")
 
-    # --- 3. Parallel Token N-gram MinHash Creation ---
+    # --- 3. Create Token N-gram MinHash ---
     logging.info("Creating TOKEN n-gram MinHash fingerprints in parallel...")
     minhashes = [None] * total_docs_loaded
     with ProcessPoolExecutor() as executor:
@@ -144,7 +141,7 @@ def main():
         if minhash:
             lsh.insert(i, minhash)
 
-    # --- 5. Identify and Merge Overlapping Clusters (Union-Find) ---
+    # --- 5. Identify and Merge Overlapping Clusters (with Union-Find) ---
     logging.info("Querying LSH and merging overlapping clusters using Union-Find...")
     uf = UnionFind(total_docs_loaded)
     for i, minhash in enumerate(tqdm(minhashes, desc="Clustering")):
@@ -197,7 +194,6 @@ def main():
     logging.info(f"Initial document count (after exact dedupe): {total_docs_loaded:,}")
     logging.info(f"Near-duplicates removed: {num_duplicates:,}")
     logging.info(f"Final unique document count: {num_final_docs:,}")
-    # MODIFIED: Removed icons from log messages
     logging.info(f"Final dataset saved successfully to: {output_path}")
     logging.info(f"Near-duplicate log saved successfully to: {duplicate_log_path}")
     

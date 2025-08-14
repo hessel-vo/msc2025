@@ -1,22 +1,25 @@
 import re
 from typing import List, Tuple
 
-TLD = [ 
-    "bmw",
-    "com",
-    "de",
-    "io",
-    "me",
-    "mobi",
-    "net",
-    "org",
-    "uk",
-    "ibm",
-    ]
 
 EMAIL = (
     re.compile(r"""(^|[\b\s@,?!;:)(\'".<\[\]])([^\b\s@?!;,:)(’\"<]+@[^\b\s@!?;,/]*[^\b\s@?!;,/:)(’\">.]\.\w{2,})(?=$|[\b\s@,?!;:)(’'".>\[\]])"""),
     r'\1[EMAIL_ADDRESS]'
+)
+
+IPV4 = (
+    re.compile(r'(^|[\b\s@?,!;:’\"(.)])((?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3})($|[\s@,?!;:’\"(.)])'),
+    '[IPV4]'
+)
+
+IPV6 = (
+    re.compile(r'(^|[\b\s@?,!;:’\"(.)])((?:[0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|(?:[0-9a-fA-F]{1,4}:){1,7}:|(?:[0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|(?:[0-9a-fA-F]{1,4}:){1,5}(?::[0-9a-fA-F]{1,4}){1,2}|(?:[0-9a-fA-F]{1,4}:){1,4}(?::[0-9a-fA-F]{1,4}){1,3}|(?:[0-9a-fA-F]{1,4}:){1,3}(?::[0-9a-fA-F]{1,4}){1,4}|(?:[0-9a-fA-F]{1,4}:){1,2}(?::[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:(?:(?::[0-9a-fA-F]{1,4}){1,6})|:(?:(?::[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(?::[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(?:ffff(?::0{1,4}){0,1}:){0,1}(?:(?:25[0-5]|(?:2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(?:25[0-5]|(?:2[0-4]|1{0,1}[0-9]){0,1}[0-9])|(?:[0-9a-fA-F]{1,4}:){1,4}:(?:(?:25[0-5]|(?:2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(?:25[0-5]|(?:2[0-4]|1{0,1}[0-9]){0,1}[0-9]))($|[\s@,?!;:’\"(.)])'),
+    '[IPV6]'
+)
+
+SECRET = (
+    re.compile(r'\b(api_key|secret|token|password|auth_token|bearer)\s*[:=]\s*["\']?([A-Za-z0-9+/_-]{16,})["\']?', re.IGNORECASE),
+    r'\1:[SECRET]'
 )
 
 
@@ -25,7 +28,6 @@ ALL_PATTERNS = [EMAIL, IPV4, IPV6, SECRET]
 def redact_pii(text: str, patterns: List[Tuple[re.Pattern, str]]) -> Tuple[str, List[Tuple[str, str]]]:
     """
     Iterates through PII patterns, replaces any matches, and reports which patterns were found
-    along with the specific text that was matched.
     """
     found_instances: List[Tuple[str, str]] = []
 
@@ -57,9 +59,6 @@ def redact_pii(text: str, patterns: List[Tuple[re.Pattern, str]]) -> Tuple[str, 
             log_name = replacement[bracket_index:]
 
             def standard_replacer(match: re.Match) -> str:
-                """
-                Logs the found PII and returns the replacement string.
-                """
                 sensitive_data = match.group(2)
                 
                 found_instances.append((log_name, sensitive_data))

@@ -11,8 +11,7 @@ PROJECT_ROOT = Path(project_root_str)
 
 HF_CACHE_DIR = PROJECT_ROOT / "hf_cache"
 
-# Set the HF_HOME environment variable *before* importing transformers
-# This tells transformers to use our project-specific cache directory.
+# Set the HF_HOME environment variable before importing transformers
 os.environ['HF_HOME'] = str(HF_CACHE_DIR)
 HF_TOKEN = os.getenv('HUGGING_FACE_HUB_TOKEN')
 
@@ -21,8 +20,6 @@ print(f"Project Root: {PROJECT_ROOT}")
 print(f"Hugging Face Cache Directory (HF_HOME) set to: {os.environ['HF_HOME']}")
 print("---------------------------------")
 
-# --- Updated Imports ---
-# We now use AutoProcessor and Gemma3ForConditionalGeneration as per the documentation
 from transformers import AutoProcessor, Gemma3ForConditionalGeneration
 
 # --- 1. Configuration ---
@@ -33,11 +30,11 @@ PROMPTS_DIR = PROJECT_ROOT / "benchmark_dataset" / "prompts" / "generated_prompt
 OUTPUT_DIR = PROJECT_ROOT / "results" / "baseline"
 OUTPUT_FILENAME = OUTPUT_DIR / "gemma-3-4b-it_baseline_results.csv"
 
-# 3. Make sure the output directory exists
+# 3. Ensure output directory exists/is made
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 
-# --- For demonstration: Print the paths to verify they are correct ---
+# Check configuration
 print(f"Input CSV: {INPUT_CSV_PATH}")
 print(f"Prompts Directory: {PROMPTS_DIR}")
 print(f"Output Directory: {OUTPUT_DIR}")
@@ -56,15 +53,15 @@ else:
 
 # --- 3. Load Model and Processor ---
 print(f"Loading model: {MODEL_ID}...")
-# Use AutoProcessor to handle the specific templating for the model
+
 processor = AutoProcessor.from_pretrained(MODEL_ID, token=HF_TOKEN)
-# Use Gemma3ForConditionalGeneration for this specific model family
+
 model = Gemma3ForConditionalGeneration.from_pretrained(
     MODEL_ID,
     torch_dtype=torch.bfloat16,
     device_map="auto",
     token=HF_TOKEN
-).eval() # Set model to evaluation mode
+).eval()
 print("Model and processor loaded successfully.")
 
 # --- 4. Main Benchmarking Logic ---
@@ -92,37 +89,33 @@ def run_benchmark():
             print(f"    - Warning: Prompt file not found for ID '{problem_id}'. Skipping.")
             continue
 
-        # --- Updated Generation Logic ---
-        # 1. Format the input using the model's chat template
-        # We are not using images, so the content is just a single text item.
+        # 1. Format the input using chat template
         messages = [
             {"role": "user", "content": [{"type": "text", "text": prompt_text}]}
         ]
         
         # 2. Apply the template and tokenize the input
-        # This converts the chat structure into the format the model expects.
         inputs = processor.apply_chat_template(
             messages,
-            add_generation_prompt=True, # Important for instruction-tuned models
+            add_generation_prompt=True,
             tokenize=True,
             return_tensors="pt"
         ).to(model.device)
 
-        # Store the length of the input to slice it out of the output later
+        # Store the length of the input to remove from output
         input_len = inputs.shape[-1]
 
         # 3. Generate the response
-        with torch.inference_mode(): # Use inference_mode for efficiency
+        with torch.inference_mode():
             outputs = model.generate(
                 input_ids=inputs,
                 max_new_tokens=100,
-                do_sample=False # Use greedy decoding for deterministic output
+                do_sample=False
             )
         
         # 4. Decode only the newly generated tokens
         generated_ids = outputs[0][input_len:]
         generated_summary = processor.decode(generated_ids, skip_special_tokens=True).strip()
-        # --- End of Updated Logic ---
 
         print(f"    - Generated Summary: {generated_summary}...")
         results.append({
@@ -145,6 +138,5 @@ def run_benchmark():
     
     print(f"Results saved successfully to '{output_path}'")
 
-# --- Entry point of the script ---
 if __name__ == "__main__":
     run_benchmark()
