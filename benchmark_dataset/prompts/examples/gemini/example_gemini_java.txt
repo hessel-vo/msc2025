@@ -1,0 +1,21 @@
+**Code:**
+```java
+public CardPresenter getCardPresenter() {
+    if (mAudioCardPresenter == null) {
+        mAudioCardPresenter = new HomeAudioCardPresenter();
+        if (mViewModelProvider == null) {
+            Log.w(TAG, "No ViewModelProvider set. Cannot get MediaViewModel");
+            mAudioCardPresenter.setModels(
+                    Collections.unmodifiableList(Collections.singletonList(
+                            new InCallModel(SystemClock.elapsedRealtimeClock()))));
+        } else {
+            mAudioCardPresenter.setModels(Collections.unmodifiableList(Arrays.asList(
+                    mViewModelProvider.get(MediaViewModel.class),
+                    new InCallModel(SystemClock.elapsedRealtimeClock()))));
+        }
+    }
+    return mAudioCardPresenter;
+```
+
+**Summary:**
+"Lazily initializes and returns a `HomeAudioCardPresenter`, setting its data models with both a `MediaViewModel` and an `InCallModel` if a `ViewModelProvider` is available, otherwise logging a warning and using only the `InCallModel`."

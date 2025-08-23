@@ -1,12 +1,15 @@
 import os
 import csv
 import sys
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # --- Configuration ---
-TEMPLATE_FILE_PATH = "prompt_template.txt"
+TEMPLATE_FILE_PATH = "prompt_template_summarization.txt"
 CSV_FILE_PATH = "benchmark_dataset.csv"
-OUTPUT_DIR = "generated_prompts"
-EXAMPLES_DIR = "examples"
+OUTPUT_DIR = "prompts_summarization"
+EXAMPLES_DIR = "examples/summarization"
 
 def load_text_file(filepath):
     try:
@@ -53,9 +56,11 @@ def create_prompts():
 
                     # 5. Load the language-specific example (use cache if available)
                     if lang_key not in example_cache:
-                        example_path = os.path.join(EXAMPLES_DIR, f"example_{lang_key}.txt")
+                        example_path = os.path.join(EXAMPLES_DIR, f"summarization/{num_examples}_shot_example_{lang_key}.txt")
                         if os.path.exists(example_path):
                             example_cache[lang_key] = load_text_file(example_path)
+                            print(f"Loaded example for '{language}' from '{example_path}'.")
+                            print(example_cache[lang_key])
                         else:
                             print(f"Example file missing '{language}' at '{example_path}'.")
                             sys.exit(1)

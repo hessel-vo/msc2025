@@ -1,0 +1,48 @@
+The target code below is part of the automotive software engineering domain.
+Provide a concise, single-line summary of the target Cpp code below.
+Do not provide any other output.
+
+---
+
+**[Example]**
+```cpp
+int FindMaxSum(vector<int> arr, int n) {
+    int incl = arr[0];
+    int excl = 0;
+    int excl_new;
+    int i;
+
+    for (i = 1; i < n; i++) {
+        excl_new = (incl > excl) ? incl : excl;
+        incl = excl + arr[i];
+        excl = excl_new;
+    }
+
+    return ((incl > excl) ? incl : excl);
+}
+```
+
+**Summary:**
+"Maximum sum such that no two elements are adjacent”
+
+---
+
+**[Target]**
+**Summarize the following Cpp code (do not provide any other output):**
+```cpp
+void
+DBusProxyManager::instancesAsyncCallback(
+        std::shared_ptr<Proxy> _proxy,
+        const CommonAPI::CallStatus &_status,
+        const std::vector<DBusAddress> &_availableServiceInstances,
+        GetAvailableInstancesCallback &_call) {
+    (void)_proxy;
+    std::vector<std::string> itsAvailableInstances;
+    if (_status == CommonAPI::CallStatus::SUCCESS) {
+        translate(_availableServiceInstances, itsAvailableInstances);
+    }
+    _call(_status, itsAvailableInstances);
+}
+```
+
+**Summary:**

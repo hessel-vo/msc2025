@@ -1,0 +1,21 @@
+The target code below is part of the automotive software engineering domain.
+Use the target summary below to generate the related <code lanuage> function.
+Do not provide any other output.
+
+---
+
+**[Example]**
+<generation example>
+
+---
+
+**[Target]**
+**Generate a <code language> function based on the summary and function signature below (do not provide any other output)**
+
+**Summary:**
+"<target summary>"
+
+**Code:**
+```<target language>
+<function signature>
+```

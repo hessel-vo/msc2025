@@ -1,0 +1,35 @@
+The target code below is part of the automotive software engineering domain.
+Provide a concise, single-line summary of the target Python code below.
+Do not provide any other output.
+
+---
+
+**[Example]**
+```python
+def find_max_sum(arr):
+    incl = 0
+    excl = 0
+    for i in arr:
+        new_excl = excl if excl > incl else incl
+        incl = excl + i
+        excl = new_excl
+    return excl if excl > incl else incl
+```
+
+**Summary:**
+"Maximum sum such that no two elements are adjacent”
+
+---
+
+**[Target]**
+**Summarize the following Python code (do not provide any other output):**
+```python
+def count_instance_children_depth(self) -> int:
+    for child in self.children:
+        if isinstance(child.data, VSSDataBranch):
+            if child.data.is_instance:
+                return 1 + child.count_instance_children_depth()
+    return 0
+```
+
+**Summary:**

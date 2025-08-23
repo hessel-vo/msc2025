@@ -1,0 +1,56 @@
+The target code below is part of the automotive software engineering domain.
+Provide a concise, single-line summary of the target Cpp code below.
+Do not provide any other output.
+
+---
+
+**[Example]**
+```cpp
+int FindMaxSum(vector<int> arr, int n) {
+    int incl = arr[0];
+    int excl = 0;
+    int excl_new;
+    int i;
+
+    for (i = 1; i < n; i++) {
+        excl_new = (incl > excl) ? incl : excl;
+        incl = excl + arr[i];
+        excl = excl_new;
+    }
+
+    return ((incl > excl) ? incl : excl);
+}
+```
+
+**Summary:**
+"Maximum sum such that no two elements are adjacent”
+
+---
+
+**[Target]**
+**Summarize the following Cpp code (do not provide any other output):**
+```cpp
+bool DBusConnection::releaseServiceName(const std::string& serviceName) const {
+    DBusError dbusError;
+    bool isServiceNameReleased = false;
+    std::lock_guard<std::recursive_mutex> dbusConnectionLock(connectionGuard_);
+    auto conIter = connectionNameCount_.find(serviceName);
+    if (conIter != connectionNameCount_.end()) {
+        if (conIter->second == 1) {
+            const int libdbusStatus = dbus_bus_release_name(connection_,
+                            serviceName.c_str(),
+                            &dbusError.libdbusError_);
+            isServiceNameReleased = (libdbusStatus == DBUS_RELEASE_NAME_REPLY_RELEASED);
+            if (isServiceNameReleased) {
+                connectionNameCount_.erase(conIter);
+            }
+        } else {
+            conIter->second--;
+            isServiceNameReleased = true;
+        }
+    }
+    return isServiceNameReleased;
+}
+```
+
+**Summary:**

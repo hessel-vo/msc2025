@@ -1,5 +1,5 @@
-id,repo,commit_hash,filepath,language,code,function_signature,imports,summary,old_summary
-1,https://github.com/COVESA/vss-tools,f0f5822d047cb62df488f132160deacdf96ddc63,vss-tools/src/vss_tools/datatypes.py,python,"def is_subtype_of(cls, check: str, base: str) -> bool:
+id,repo,commit_hash,filepath,language,code,function_signature,imports,summary_short,summary_long
+1,https://github.com/COVESA/vss-tools,8a8e64de6b1ecdb831e880e105f0644e81af782f,vss-tools/src/vss_tools/datatypes.py,python,"def is_subtype_of(cls, check: str, base: str) -> bool:
     check_type = cls.get_type(check)
     if not check_type:
         raise DatatypesException(f""Not a valid type: '{check}'"")
@@ -13,8 +13,8 @@ from typing import TYPE_CHECKING, Any, Callable, Set
 from vss_tools import log
 
 if TYPE_CHECKING:
-    from vss_tools.model import VSSUnit",,"Checks if a given type is a subtype of, or the same as, a base type."
-2,https://github.com/COVESA/vss-tools,f0f5822d047cb62df488f132160deacdf96ddc63,vss-tools/src/vss_tools/datatypes.py,python,"def is_datatype(cls, value: Any, datatype: str) -> bool:
+    from vss_tools.model import VSSUnit",Checks if a data type is a subtype of a specified base type.,"Validates that 'check' and 'base' are known types, then returns true if the 'check' type is identical to the 'base' type or if its name is found within the 'base' type's predefined list of subtypes."
+2,https://github.com/COVESA/vss-tools,8a8e64de6b1ecdb831e880e105f0644e81af782f,vss-tools/src/vss_tools/datatypes.py,python,"def is_datatype(cls, value: Any, datatype: str) -> bool:
     t = cls.get_type(datatype)
     if t is None:
         raise DatatypesException(f""Unsupported datatype: {datatype}"")
@@ -25,8 +25,8 @@ from typing import TYPE_CHECKING, Any, Callable, Set
 from vss_tools import log
 
 if TYPE_CHECKING:
-    from vss_tools.model import VSSUnit",,Validates a value against a datatype specified by a string.
-3,https://github.com/COVESA/vss-tools,f0f5822d047cb62df488f132160deacdf96ddc63,vss-tools/src/vss_tools/datatypes.py,python,"def is_xintx(value: Any, signed: bool, bits: int):
+    from vss_tools.model import VSSUnit",Validates if a value conforms to a datatype specified by a string.,"Raises an exception if the specified 'datatype' is unsupported, otherwise retrieves that type's validation function and returns the boolean result of calling it with the provided 'value'."
+3,https://github.com/COVESA/vss-tools,8a8e64de6b1ecdb831e880e105f0644e81af782f,vss-tools/src/vss_tools/datatypes.py,python,"def is_xintx(value: Any, signed: bool, bits: int):
     values = [value]
     if isinstance(value, list):
         values = value
@@ -50,8 +50,8 @@ from typing import TYPE_CHECKING, Any, Callable, Set
 from vss_tools import log
 
 if TYPE_CHECKING:
-    from vss_tools.model import VSSUnit",,
-4,https://github.com/COVESA/vss-tools,f0f5822d047cb62df488f132160deacdf96ddc63,vss-tools/src/vss_tools/datatypes.py,python,"def get_type(cls, datatype: str) -> tuple[str, Callable, list[str]] | None:
+    from vss_tools.model import VSSUnit",Checks if an integer value fits within the range of a specified bit-width and signedness.,"Validates that a given value, or each value in a list, is an integer that fits within the numerical range defined by a specified bit-width and signedness."
+4,https://github.com/COVESA/vss-tools,8a8e64de6b1ecdb831e880e105f0644e81af782f,vss-tools/src/vss_tools/datatypes.py,python,"def get_type(cls, datatype: str) -> tuple[str, Callable, list[str]] | None:
         for t in cls.types:
             if datatype == t[0]:
                 return t
@@ -62,8 +62,8 @@ from typing import TYPE_CHECKING, Any, Callable, Set
 from vss_tools import log
 
 if TYPE_CHECKING:
-    from vss_tools.model import VSSUnit",,
-5,https://github.com/COVESA/vss-tools,f0f5822d047cb62df488f132160deacdf96ddc63,vss-tools/src/vss_tools/exporters/samm/helpers/vss_helper.py,python,"def populate_unique_node_names(node_names_dict: dict[str, Any], vss_node: VSSNode) -> None:
+    from vss_tools.model import VSSUnit",Looks up a type definition tuple by its string name from a list of types.,"Returns the type definition tuple from a class-level list of types that matches the provided 'datatype' name, or returns None if no match is found."
+5,https://github.com/COVESA/vss-tools,8a8e64de6b1ecdb831e880e105f0644e81af782f,vss-tools/src/vss_tools/exporters/samm/helpers/vss_helper.py,python,"def populate_unique_node_names(node_names_dict: dict[str, Any], vss_node: VSSNode) -> None:
     if not node_names_dict.get(vss_node.name):
         node_names_dict.__setitem__(vss_node.name, {""counter"": 1, ""vss_paths"": [vss_node.get_fqn()]})
     else:
@@ -85,8 +85,8 @@ from vss_tools.tree import VSSNode
 from ..config import config as cfg
 from .data_types_and_units import DataTypes, DataUnits
 from .samm_concepts import SammCConcepts, SammConcepts
-from .string_helper import str_to_lc_first_camel_case, str_to_uc_first_camel_case",,Recursively counts occurrences and collects paths for each unique node name in a tree.
-6,https://github.com/COVESA/vss-tools,f0f5822d047cb62df488f132160deacdf96ddc63,vss-tools/src/vss_tools/exporters/samm/helpers/vss_helper.py,python,"def get_fqn_namespaced_datatypes(fqn: str | None = None) -> dict[str, str]:
+from .string_helper import str_to_lc_first_camel_case, str_to_uc_first_camel_case",Traverses a VSS tree to count the occurrences and collect the fully qualified paths of each node name.,Recursively traverses a VSS node tree to populate a dictionary with the occurrence count and a list of fully qualified paths for each unique node name.
+6,https://github.com/COVESA/vss-tools,8a8e64de6b1ecdb831e880e105f0644e81af782f,vss-tools/src/vss_tools/exporters/samm/helpers/vss_helper.py,python,"def get_fqn_namespaced_datatypes(fqn: str | None = None) -> dict[str, str]:
     if not fqn:
         return {}
     fqn_namespaced_datatypes = {}
@@ -112,8 +112,8 @@ from vss_tools.tree import VSSNode
 from ..config import config as cfg
 from .data_types_and_units import DataTypes, DataUnits
 from .samm_concepts import SammCConcepts, SammConcepts
-from .string_helper import str_to_lc_first_camel_case, str_to_uc_first_camel_case",,
-7,https://github.com/COVESA/vss-tools,f0f5822d047cb62df488f132160deacdf96ddc63,vss-tools/src/vss_tools/exporters/apigear.py,python,"def get_apigear_datatype(t: str) -> typing.Optional[ApiGearType]:
+from .string_helper import str_to_lc_first_camel_case, str_to_uc_first_camel_case",Finds all datatypes within the current namespace and any parent namespaces of a given FQN.,Returns a dictionary mapping the short name to the full FQN for all dynamic datatypes that exist in the same namespace as the provided FQN.
+7,https://github.com/COVESA/vss-tools,8a8e64de6b1ecdb831e880e105f0644e81af782f,vss-tools/src/vss_tools/exporters/apigear.py,python,"def get_apigear_datatype(t: str) -> typing.Optional[ApiGearType]:
     is_array = False
     apigear_type = None
     if t.endswith(""[]""):
@@ -152,8 +152,8 @@ from vss_tools import log
 from vss_tools.datatypes import Datatypes
 from vss_tools.main import get_trees
 from vss_tools.model import VSSDataBranch, VSSDataDatatype, VSSDataStruct
-from vss_tools.tree import VSSNode",,"Converts a type string into a structured ApiGearType object, handling arrays and mapping basic types."
-8,https://github.com/COVESA/vss-tools,f0f5822d047cb62df488f132160deacdf96ddc63,vss-tools/src/vss_tools/exporters/apigear.py,python,"def generate_property(node: VSSNode, datatype: str) -> ApiGearProperty | None:
+from vss_tools.tree import VSSNode",Converts a string-based data type definition into an ApiGearType object.,"Parses a type string to create an `ApiGearType` object, mapping common primitive types to their ApiGear equivalents, sanitizing custom type names by replacing dots with underscores, and setting an array flag based on a ""[]"" suffix."
+8,https://github.com/COVESA/vss-tools,8a8e64de6b1ecdb831e880e105f0644e81af782f,vss-tools/src/vss_tools/exporters/apigear.py,python,"def generate_property(node: VSSNode, datatype: str) -> ApiGearProperty | None:
     apigear_type = get_apigear_datatype(datatype)
     data = node.get_vss_data()
 
@@ -178,8 +178,8 @@ from vss_tools import log
 from vss_tools.datatypes import Datatypes
 from vss_tools.main import get_trees
 from vss_tools.model import VSSDataBranch, VSSDataDatatype, VSSDataStruct
-from vss_tools.tree import VSSNode",,"Generates an ApiGear property from a VSS node and datatype, returning None if unsupported."
-9,https://github.com/COVESA/vss-tools,f0f5822d047cb62df488f132160deacdf96ddc63,vss-tools/src/vss_tools/vspec.py,python,"def get_vspecs(includes: list[Path], spec: Path, prefix: str | None = None) -> list[VSpec]:
+from vss_tools.tree import VSSNode",Generates an ApiGear property from a VSS (Vehicle Signal Specification) node.,"Creates an `ApiGearProperty` by converting the VSS node's datatype to a supported ApiGear type and copying its description, returning `None` and logging a warning if the datatype is not supported."
+9,https://github.com/COVESA/vss-tools,8a8e64de6b1ecdb831e880e105f0644e81af782f,vss-tools/src/vss_tools/vspec.py,python,"def get_vspecs(includes: list[Path], spec: Path, prefix: str | None = None) -> list[VSpec]:
     vspecs: list[VSpec] = []
     vspec = VSpec(spec, prefix)
     vspecs.append(vspec)
@@ -195,8 +195,8 @@ from typing import Any
 
 import yaml
 
-from vss_tools import log",,Recursively collects VSpec objects from a given spec file and all its nested includes.
-10,https://github.com/COVESA/vss-tools,f0f5822d047cb62df488f132160deacdf96ddc63,vss-tools/src/vss_tools/vspec.py,python,"def load_vspec(include_dirs: list[Path], specs: list[Path], identifier: str | None = None) -> VSpec:
+from vss_tools import log",Recursively resolves and flattens a specification file and all its include dependencies.,"Recursively parses a given specification file and any files it includes, returning a single, flattened list of all resulting VSpec objects."
+10,https://github.com/COVESA/vss-tools,8a8e64de6b1ecdb831e880e105f0644e81af782f,vss-tools/src/vss_tools/vspec.py,python,"def load_vspec(include_dirs: list[Path], specs: list[Path], identifier: str | None = None) -> VSpec:
     spec = None
     vspecs: list[VSpec] = []
     for s in specs:
@@ -223,8 +223,8 @@ from typing import Any
 
 import yaml
 
-from vss_tools import log",,Loads and merges VSpec specifications from multiple paths into a single object.
-11,https://github.com/COVESA/vss-tools,f0f5822d047cb62df488f132160deacdf96ddc63,vss-tools/src/vss_tools/vspec.py,python,"def deep_update(base: dict[str, Any], update: dict[str, Any]) -> None:
+from vss_tools import log",Loads and merges multiple VSpec files from specified paths into a single VSpec object.,"Loads and parses multiple VSpec files from specified paths, using a list of include directories, then merges them into a single composite VSpec object and returns it, raising an exception if no files are successfully loaded."
+11,https://github.com/COVESA/vss-tools,8a8e64de6b1ecdb831e880e105f0644e81af782f,vss-tools/src/vss_tools/vspec.py,python,"def deep_update(base: dict[str, Any], update: dict[str, Any]) -> None:
     for key, value in update.items():
         if isinstance(value, dict):
             if key in base and isinstance(base[key], dict):
@@ -239,8 +239,8 @@ from typing import Any
 
 import yaml
 
-from vss_tools import log",,Recursively updates a dictionary by merging nested dictionaries from another.
-12,https://github.com/COVESA/vss-tools,f0f5822d047cb62df488f132160deacdf96ddc63,vss-tools/src/vss_tools/model.py,python,"def check_const_uid_format(cls, v: str | None) -> str | None:
+from vss_tools import log","Recursively updates a dictionary with values from another, merging nested dictionaries.","Recursively updates a 'base' dictionary with an 'update' dictionary, merging nested dictionaries for common keys and overwriting or adding all other key-value pairs."
+12,https://github.com/COVESA/vss-tools,8a8e64de6b1ecdb831e880e105f0644e81af782f,vss-tools/src/vss_tools/model.py,python,"def check_const_uid_format(cls, v: str | None) -> str | None:
     if v is None:
         return v
     pattern = r""^0x[0-9A-Fa-f]{8}$""
@@ -271,8 +271,8 @@ from vss_tools.datatypes import (
     get_all_datatypes,
     is_array,
     resolve_datatype,
-)",,
-13,https://github.com/COVESA/vss-tools,f0f5822d047cb62df488f132160deacdf96ddc63,vss-tools/src/vss_tools/model.py,python,"def get_vss_raw(data: dict[str, Any], fqn: str | None) -> VSSRaw:
+)",Validates a constant unique identifier (constUID) is a 32-bit hexadecimal string.,"Asserts that the input value, if not None, is a valid 'constUID' formatted as an 8-digit hexadecimal string prefixed with '0x', returning the value if the check passes."
+13,https://github.com/COVESA/vss-tools,8a8e64de6b1ecdb831e880e105f0644e81af782f,vss-tools/src/vss_tools/model.py,python,"def get_vss_raw(data: dict[str, Any], fqn: str | None) -> VSSRaw:
     model = VSSRaw(fqn=fqn, **data)
     try:
         model = resolve_vss_raw(model)
@@ -305,8 +305,8 @@ from vss_tools.datatypes import (
     get_all_datatypes,
     is_array,
     resolve_datatype,
-)",,
-14,https://github.com/COVESA/vss-tools,f0f5822d047cb62df488f132160deacdf96ddc63,vss-tools/src/vss_tools/model.py,python,"def check_valid_datatypes(cls, values: list[str]) -> list[str]:
+)","Initializes and attempts to resolve a VSS raw model, returning the unresolved model on failure.","Initializes a VSSRaw model and attempts to resolve it, returning the successfully resolved model or the original unresolved model if resolution fails due to a validation or model error."
+14,https://github.com/COVESA/vss-tools,8a8e64de6b1ecdb831e880e105f0644e81af782f,vss-tools/src/vss_tools/model.py,python,"def check_valid_datatypes(cls, values: list[str]) -> list[str]:
     datatypes = get_all_datatypes()
     for value in values:
         assert value in datatypes, f""Invalid datatype: '{value}'""
@@ -336,8 +336,8 @@ from vss_tools.datatypes import (
     get_all_datatypes,
     is_array,
     resolve_datatype,
-)",,
-15,https://github.com/COVESA/vss-tools,f0f5822d047cb62df488f132160deacdf96ddc63,vss-tools/src/vss_tools/exporters/tree.py,python,"def get_rendered_tree(tree: VSSNode, attributes: tuple[str]) -> str:
+)",Validates that a list of strings are all known datatypes.,"Asserts that each string in the input list is a valid datatype by checking against a master list, returning the original list if all values are valid."
+15,https://github.com/COVESA/vss-tools,8a8e64de6b1ecdb831e880e105f0644e81af782f,vss-tools/src/vss_tools/exporters/tree.py,python,"def get_rendered_tree(tree: VSSNode, attributes: tuple[str]) -> str:
     tree_content_lines = []
     for pre, fill, node in RenderTree(tree):
         tree_content_lines.append(""%s%s"" % (pre, node.name))
@@ -357,8 +357,8 @@ from anytree import RenderTree
 import vss_tools.cli_options as clo
 from vss_tools import log
 from vss_tools.main import get_trees
-from vss_tools.tree import VSSNode",,
-16,https://github.com/COVESA/vss-tools,f0f5822d047cb62df488f132160deacdf96ddc63,vss-tools/src/vss_tools/tree.py,python,"def get_instance_root(self, depth: int = 0) -> tuple[VSSNode, int]:
+from vss_tools.tree import VSSNode","Renders a VSS tree into a string, displaying specified attributes for each node.","Traverses a VSSNode tree to generate a formatted string, displaying each node's name followed by the values of any specified attributes found on it."
+16,https://github.com/COVESA/vss-tools,8a8e64de6b1ecdb831e880e105f0644e81af782f,vss-tools/src/vss_tools/tree.py,python,"def get_instance_root(self, depth: int = 0) -> tuple[VSSNode, int]:
     if not isinstance(self.data, VSSDataBranch):
         raise NoInstanceRootException()
 
@@ -390,8 +390,8 @@ from vss_tools.model import (
     get_vss_raw,
     resolve_vss_raw,
 )
-from vss_tools.vspec import deep_update",,
-17,https://github.com/COVESA/vss-tools,f0f5822d047cb62df488f132160deacdf96ddc63,vss-tools/src/vss_tools/tree.py,python,"def count_instance_children_depth(self) -> int:
+from vss_tools.vspec import deep_update",Finds the root of a VSS instance by recursively traversing up the parent hierarchy.,"Recursively traverses up the parent hierarchy to find and return the first non-instance ancestor node and the traversal depth, raising an exception if the starting node is not a branch or if no root is found."
+17,https://github.com/COVESA/vss-tools,8a8e64de6b1ecdb831e880e105f0644e81af782f,vss-tools/src/vss_tools/tree.py,python,"def count_instance_children_depth(self) -> int:
     for child in self.children:
         if isinstance(child.data, VSSDataBranch):
             if child.data.is_instance:
@@ -418,8 +418,8 @@ from vss_tools.model import (
     get_vss_raw,
     resolve_vss_raw,
 )
-from vss_tools.vspec import deep_update",,
-18,https://github.com/COVESA/vss-tools,f0f5822d047cb62df488f132160deacdf96ddc63,vss-tools/src/vss_tools/tree.py,python,"def find_children_ids(node_ids: list[str], name: str) -> list[str]:
+from vss_tools.vspec import deep_update",Counts the depth of a chain of instance branches.,Recursively calculates the depth of the first-found branch of children where each node is a `VSSDataBranch` with its `is_instance` flag set.
+18,https://github.com/COVESA/vss-tools,8a8e64de6b1ecdb831e880e105f0644e81af782f,vss-tools/src/vss_tools/tree.py,python,"def find_children_ids(node_ids: list[str], name: str) -> list[str]:
     ids = []
     for i in node_ids:
         if get_expected_parent(i) == name:
@@ -446,14 +446,14 @@ from vss_tools.model import (
     get_vss_raw,
     resolve_vss_raw,
 )
-from vss_tools.vspec import deep_update",,
-19,https://github.com/COVESA/vss-tools,f0f5822d047cb62df488f132160deacdf96ddc63,src/vss_tools/utils/misc.py,python,"def getattr_nn(o: object, name: str, default: Any | None = None) -> Any:
+from vss_tools.vspec import deep_update",Finds all child node IDs that belong to a specific parent name.,Returns a list of node IDs from an input list whose expected parent's name matches the provided `name`.
+19,https://github.com/COVESA/vss-tools,8a8e64de6b1ecdb831e880e105f0644e81af782f,src/vss_tools/utils/misc.py,python,"def getattr_nn(o: object, name: str, default: Any | None = None) -> Any:
     result = getattr(o, name, default)
     if result is None and default is not None:
         result = default
     return result","def getattr_nn(o: object, name: str, default: Any | None = None) -> Any:","import re
-from typing import Any",,
-20,https://github.com/COVESA/vss-tools,f0f5822d047cb62df488f132160deacdf96ddc63,src/vss_tools/exporters/protobuf.py,python,"def traverse_signal_tree(tree: VSSNode, fd: TextIOWrapper, static_uid: bool, add_optional: bool):
+from typing import Any","Gets an attribute, returning a default value if the attribute is missing or its value is None.","Retrieves an attribute from an object, returning a specified default value if the attribute is missing or its value is `None`."
+20,https://github.com/COVESA/vss-tools,8a8e64de6b1ecdb831e880e105f0644e81af782f,src/vss_tools/exporters/protobuf.py,python,"def traverse_signal_tree(tree: VSSNode, fd: TextIOWrapper, static_uid: bool, add_optional: bool):
     fd.write('syntax = ""proto3"";\n\n')
 
     imports = []
@@ -484,8 +484,8 @@ from vss_tools.model import (
     VSSDataDatatype,
     VSSDataStruct,
 )
-from vss_tools.tree import VSSNode",,
-21,https://github.com/COVESA/vss-tools,f0f5822d047cb62df488f132160deacdf96ddc63,src/vss_tools/exporters/utils.py,python,"def get_instances_meta(root: VSSNode) -> dict[str, list[str]]:
+from vss_tools.tree import VSSNode",Generates a Protobuf schema from a Vehicle Signal Specification (VSS) tree.,Generates a `proto3` file from a VSS tree by first writing import statements for complex data types and then converting each branch in the tree into a corresponding protobuf message.
+21,https://github.com/COVESA/vss-tools,8a8e64de6b1ecdb831e880e105f0644e81af782f,src/vss_tools/exporters/utils.py,python,"def get_instances_meta(root: VSSNode) -> dict[str, list[str]]:
     meta: dict[str, list[str]] = {}
     for node in PreOrderIter(root, filter_=lambda n: isinstance(n.data, VSSDataBranch) and n.data.is_instance):
         if any(c.data.is_instance for c in node.children if isinstance(c.data, VSSDataBranch)):
@@ -502,37 +502,37 @@ from vss_tools.tree import VSSNode",,
     return meta","def get_instances_meta(root: VSSNode) -> dict[str, list[str]]:","from anytree import PreOrderIter
 
 from vss_tools.model import VSSDataBranch, VSSDataDatatype
-from vss_tools.tree import VSSNode",,
-22,https://github.com/COVESA/vss-tools,f0f5822d047cb62df488f132160deacdf96ddc63,src/vss_tools/exporters/utils.py,python,"def is_VSS_leaf(node: VSSNode) -> bool:
+from vss_tools.tree import VSSNode",Groups all leaf VSS branch instances by the fully qualified name of their original branch definition.,"Traverses a VSS tree to find all terminal instance branches, grouping their relative names into a dictionary where each key is the fully qualified name of the original branch they instantiate."
+22,https://github.com/COVESA/vss-tools,8a8e64de6b1ecdb831e880e105f0644e81af782f,src/vss_tools/exporters/utils.py,python,"def is_VSS_leaf(node: VSSNode) -> bool:
    if isinstance(node.data, VSSDataDatatype):
         return True
     return False",def is_VSS_leaf(node: VSSNode) -> bool:,"from anytree import PreOrderIter
 
 from vss_tools.model import VSSDataBranch, VSSDataDatatype
-from vss_tools.tree import VSSNode",,
-23,https://github.com/COVESA/vss-tools,f0f5822d047cb62df488f132160deacdf96ddc63,src/vss_tools/exporters/utils.py,python,"def is_VSS_branch(node: VSSNode) -> bool:
+from vss_tools.tree import VSSNode",Determines if a VSS node is a leaf based on its data type.,Checks if a given VSSNode is a leaf by verifying its 'data' attribute is an instance of VSSDataDatatype.
+23,https://github.com/COVESA/vss-tools,8a8e64de6b1ecdb831e880e105f0644e81af782f,src/vss_tools/exporters/utils.py,python,"def is_VSS_branch(node: VSSNode) -> bool:
    if isinstance(node.data, VSSDataBranch):
         if not node.data.is_instance:
             return True
     return False",def is_VSS_branch(node: VSSNode) -> bool:,"from anytree import PreOrderIter
 
 from vss_tools.model import VSSDataBranch, VSSDataDatatype
-from vss_tools.tree import VSSNode",,
-24,https://github.com/COVESA/vss-tools,f0f5822d047cb62df488f132160deacdf96ddc63,src/vss_tools/exporters/utils.py,python,"def is_VSS_branch_instance(node: VSSNode) -> bool:
+from vss_tools.tree import VSSNode",Checks if a VSS node is a branch that is not an instance.,Returns `True` if the given `VSSNode`'s data is a `VSSDataBranch` and its `is_instance` attribute is `False`.
+24,https://github.com/COVESA/vss-tools,8a8e64de6b1ecdb831e880e105f0644e81af782f,src/vss_tools/exporters/utils.py,python,"def is_VSS_branch_instance(node: VSSNode) -> bool:
     if isinstance(node.data, VSSDataBranch):
         if node.data.is_instance:
             return True
     return False",def is_VSS_branch_instance(node: VSSNode) -> bool:,"from anytree import PreOrderIter
 
 from vss_tools.model import VSSDataBranch, VSSDataDatatype
-from vss_tools.tree import VSSNode",,
+from vss_tools.tree import VSSNode",Checks if a VSS node represents a branch instance.,Returns True if the node's data is a VSSDataBranch and its 'is_instance' attribute is True.
 25,https://github.com/COVESA/vss-tools,f0f5822d047cb62df488f132160deacdf96ddc63,src/vss_tools/utils/idgen_utils.py,python,"def fnv1_32_hash(identifier: bytes) -> int:
     id_hash = 2166136261
     for byte in identifier:
         id_hash = (id_hash * 16777619) & 0xFFFFFFFF
         id_hash ^= byte
 
-    return id_hash",def fnv1_32_hash(identifier: bytes) -> int:,No imports,,
+    return id_hash",def fnv1_32_hash(identifier: bytes) -> int:,No imports,FNV-1 32-bit hashing algorithm for a byte sequence.,"Calculates a 32-bit FNV-1 hash for a given byte string by iterating through each byte, multiplying the current hash by the FNV prime, and then performing a bitwise XOR with the byte."
 26,https://github.com/COVESA/aosp_device_covesa_emulator,063f1782fab8dcb427cf7de31d6c00bcb9b6cb4e,aosp_device_covesa_emulator/CustomCarLauncher/src/com/android/car/carlauncher/homescreen/audio/AudioCard.java,java,"public CardPresenter getCardPresenter() {
     if (mAudioCardPresenter == null) {
         mAudioCardPresenter = new HomeAudioCardPresenter();
@@ -558,7 +558,7 @@ import com.android.car.carlauncher.homescreen.HomeCardFragment;
 import com.android.car.carlauncher.homescreen.HomeCardModule;
 
 import java.util.Arrays;
-import java.util.Collections;",,Lazily initializes a HomeAudioCardPresenter with an InCallModel and an optional MediaViewModel.
+import java.util.Collections;",Lazily initializes and returns an audio card presenter with data models for media and in-call status.,"Lazily initializes and returns a `HomeAudioCardPresenter`, setting its data models with both a `MediaViewModel` and an `InCallModel` if a `ViewModelProvider` is available, otherwise logging a warning and using only the `InCallModel`."
 27,https://github.com/COVESA/aosp_device_covesa_emulator,063f1782fab8dcb427cf7de31d6c00bcb9b6cb4e,aosp_device_covesa_emulator/CustomCarLauncher/src/com/android/car/carlauncher/homescreen/audio/AudioCard.java,java,"public HomeCardFragment getCardView() {
     if (mAudioCardView == null) {
         mAudioCardView = new AudioFragment();
@@ -577,7 +577,7 @@ import com.android.car.carlauncher.homescreen.HomeCardFragment;
 import com.android.car.carlauncher.homescreen.HomeCardModule;
 
 import java.util.Arrays;
-import java.util.Collections;",,Lazily initializes and returns the audio card view.
+import java.util.Collections;",Lazily initializes and returns the audio card view fragment.,"Lazily initializes and returns an `AudioFragment`, bidirectionally linking it with its presenter upon first creation."
 28,https://github.com/COVESA/aosp_device_covesa_emulator,063f1782fab8dcb427cf7de31d6c00bcb9b6cb4e,aosp_device_covesa_emulator/CustomCarLauncher/src/com/android/car/carlauncher/homescreen/HomeCardFragment.java,java,"public View onCreateView(LayoutInflater inflater, ViewGroup container,
         Bundle savedInstanceState) {
     mRootView = inflater.inflate(R.layout.card_fragment, container, false);
@@ -605,7 +605,7 @@ import com.android.car.carlauncher.homescreen.ui.CardContent;
 import com.android.car.carlauncher.homescreen.ui.CardHeader;
 import com.android.car.carlauncher.homescreen.ui.DescriptiveTextView;
 import com.android.car.carlauncher.homescreen.ui.DescriptiveTextWithControlsView;
-import com.android.car.carlauncher.homescreen.ui.TextBlockView;",,Inflates a fragment's layout and initializes its views.
+import com.android.car.carlauncher.homescreen.ui.TextBlockView;",Inflates a card fragment's layout and initializes its view components.,"Inflates the `card_fragment` layout, finds and assigns the card's title and icon views, and returns the resulting root view."
 29,https://github.com/COVESA/aosp_device_covesa_emulator,063f1782fab8dcb427cf7de31d6c00bcb9b6cb4e,aosp_device_covesa_emulator/CustomCarLauncher/src/com/android/car/carlauncher/homescreen/HomeCardFragment.java,java,"private void updateControlBarButton(DescriptiveTextWithControlsView.Control buttonContent,
         ImageButton buttonView) {
     if (buttonContent != null) {
@@ -634,7 +634,7 @@ import com.android.car.carlauncher.homescreen.ui.CardContent;
 import com.android.car.carlauncher.homescreen.ui.CardHeader;
 import com.android.car.carlauncher.homescreen.ui.DescriptiveTextView;
 import com.android.car.carlauncher.homescreen.ui.DescriptiveTextWithControlsView;
-import com.android.car.carlauncher.homescreen.ui.TextBlockView;",,"Updates a button's content and visibility, hiding it if the provided content is null."
+import com.android.car.carlauncher.homescreen.ui.TextBlockView;","Sets a button's icon and click listener to make it visible, or hides it if no content is provided.","Updates an `ImageButton`'s icon and click listener from a content object and makes it visible, or hides the button if the content is null."
 30,https://github.com/COVESA/aosp_device_covesa_emulator,063f1782fab8dcb427cf7de31d6c00bcb9b6cb4e,aosp_device_covesa_emulator/CustomCarLauncher/src/com/android/car/carlauncher/homescreen/HomeCardFragment.java,java,"protected final View getDescriptiveTextOnlyLayoutView() {
     if (mDescriptiveTextOnlyLayoutView == null) {
         ViewStub stub = mRootView.findViewById(R.id.descriptive_text_layout);
@@ -668,7 +668,7 @@ import com.android.car.carlauncher.homescreen.ui.CardContent;
 import com.android.car.carlauncher.homescreen.ui.CardHeader;
 import com.android.car.carlauncher.homescreen.ui.DescriptiveTextView;
 import com.android.car.carlauncher.homescreen.ui.DescriptiveTextWithControlsView;
-import com.android.car.carlauncher.homescreen.ui.TextBlockView;",,Lazily inflates and returns a descriptive text layout view from a ViewStub.
+import com.android.car.carlauncher.homescreen.ui.TextBlockView;",Lazily inflates and initializes a descriptive text layout view on first access.,"Lazily inflates a `ViewStub` to create a descriptive text layout, caches references to its child views (title, subtitle, image), and returns the inflated layout."
 31,https://github.com/COVESA/aosp_device_covesa_emulator,063f1782fab8dcb427cf7de31d6c00bcb9b6cb4e,aosp_device_covesa_emulator/CustomCarLauncher/src/com/android/car/carlauncher/homescreen/HomeCardFragment.java,java,"public void updateHeaderView(CardHeader header) {
     requireActivity().runOnUiThread(() -> {
         mRootView.setVisibility(View.VISIBLE);
@@ -694,7 +694,7 @@ import com.android.car.carlauncher.homescreen.ui.CardContent;
 import com.android.car.carlauncher.homescreen.ui.CardHeader;
 import com.android.car.carlauncher.homescreen.ui.DescriptiveTextView;
 import com.android.car.carlauncher.homescreen.ui.DescriptiveTextWithControlsView;
-import com.android.car.carlauncher.homescreen.ui.TextBlockView;",,
+import com.android.car.carlauncher.homescreen.ui.TextBlockView;",Updates and displays a card header view with a new title and icon.,Updates the header view on the main UI thread by making its root view visible and setting the card's title and icon from the provided `CardHeader` object.
 32,https://github.com/COVESA/aosp_device_covesa_emulator,063f1782fab8dcb427cf7de31d6c00bcb9b6cb4e,aosp_device_covesa_emulator/CustomCarLauncher/src/com/android/car/carlauncher/homescreen/HomeCardFragment.java,java,"private View getTextBlockLayoutView() {
     if (mTextBlockLayoutView == null) {
         ViewStub stub = mRootView.findViewById(R.id.text_block_layout);
@@ -722,7 +722,7 @@ import com.android.car.carlauncher.homescreen.ui.CardContent;
 import com.android.car.carlauncher.homescreen.ui.CardHeader;
 import com.android.car.carlauncher.homescreen.ui.DescriptiveTextView;
 import com.android.car.carlauncher.homescreen.ui.DescriptiveTextWithControlsView;
-import com.android.car.carlauncher.homescreen.ui.TextBlockView;",,
+import com.android.car.carlauncher.homescreen.ui.TextBlockView;",Lazily inflates and returns a text block layout view from a ViewStub.,"Lazily inflates a `ViewStub` to create and return the text block layout view, while also finding and caching references to its child text views on the first call."
 33,https://github.com/COVESA/aosp_device_covesa_emulator,063f1782fab8dcb427cf7de31d6c00bcb9b6cb4e,aosp_device_covesa_emulator/CustomCarLauncher/src/com/android/car/carlauncher/AppLauncherUtils.java,java,"static ComponentName getMediaSource(@NonNull PackageManager packageManager,
         @NonNull String packageName) {
     Intent mediaIntent = new Intent();
@@ -771,7 +771,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;",,Finds the default MediaBrowserService component for a given package.
+import java.util.Set;",Gets the media browser service component from a given package.,"Queries the `PackageManager` for a `MediaBrowserService` within a given package and returns a `ComponentName` for the first one found, or `null` if none exist."
 34,https://github.com/COVESA/aosp_device_covesa_emulator,063f1782fab8dcb427cf7de31d6c00bcb9b6cb4e,aosp_device_covesa_emulator/CustomCarLauncher/src/com/android/car/carlauncher/AppLauncherUtils.java,java,"private static boolean shouldAddToLaunchables(@NonNull ComponentName componentName,
         @NonNull Set<String> appsToHide,
         @NonNull Set<String> customMediaComponents,
@@ -824,7 +824,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;",,"Determines if a component is launchable, filtering against a hide list and preventing duplicate icons for media services."
+import java.util.Set;",Determines if an app component should be launchable by filtering against a hide list and de-duplicating media services.,"Determines if a component should be added to a launchable list, returning `false` if its package is explicitly hidden or if it's a custom media component and launchable apps are also being shown, otherwise returning `true` for valid launchable or media service types."
 35,https://github.com/COVESA/aosp_device_covesa_emulator,063f1782fab8dcb427cf7de31d6c00bcb9b6cb4e,aosp_device_covesa_emulator/CustomCarLauncher/src/com/android/car/carlauncher/AppLauncherUtils.java,java,"private static void selectMediaSourceAndFinish(Context context, ComponentName componentName,
         CarMediaManager carMediaManager) {
     try {
@@ -866,7 +866,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;",,Attempts to set the car's media source and finish the current activity.
+import java.util.Set;",Sets the media source and finishes the current activity.,"Sets the car's media source to a given component in browse mode and finishes the context if it's an Activity, catching and logging a `CarNotConnectedException` if the car service is unavailable."
 36,https://github.com/COVESA/aosp_device_covesa_emulator,063f1782fab8dcb427cf7de31d6c00bcb9b6cb4e,aosp_device_covesa_emulator/CustomCarLauncher/src/com/android/car/carlauncher/AppLauncherUtils.java,java,"static boolean isActivityDistractionOptimized(
         CarPackageManager carPackageManager, String packageName, String activityName) {
     boolean isDistractionOptimized = false;
@@ -910,7 +910,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;",,"Safely queries the distraction optimization status of a given activity, returning false on error."
+import java.util.Set;","Safely checks if a given activity is distraction-optimized, handling potential connection errors.","Safely checks if a given activity is distraction optimized using the `CarPackageManager`, returning `false` and logging an error if the manager is null or a `CarNotConnectedException` is caught."
 37,https://github.com/COVESA/aosp_device_covesa_emulator,063f1782fab8dcb427cf7de31d6c00bcb9b6cb4e,aosp_device_covesa_emulator/CustomCarLauncher/src/com/android/car/carlauncher/CarLauncher.java,java,"private void setUpTaskView(ViewGroup parent) {
     mTaskViewManager = new TaskViewManager(this,
             new HandlerExecutor(getMainThreadHandler()));
@@ -948,7 +948,7 @@ import com.android.wm.shell.TaskView;
 import com.android.wm.shell.common.HandlerExecutor;
 
 import java.net.URISyntaxException;
-import java.util.Set;",,
+import java.util.Set;","Asynchronously creates, configures, and adds a task view to a parent view group.","Initializes a `TaskViewManager` to asynchronously create a `TaskView`, which upon creation is configured with a listener, added to the parent `ViewGroup`, and stored as a member variable."
 38,https://github.com/COVESA/aosp_device_covesa_emulator,063f1782fab8dcb427cf7de31d6c00bcb9b6cb4e,aosp_device_covesa_emulator/CustomCarLauncher/src/com/android/car/carlauncher/CarLauncher.java,java,"private Intent getMapsIntent() {
     Intent defaultIntent =
             Intent.makeMainSelectorActivity(Intent.ACTION_MAIN, Intent.CATEGORY_APP_MAPS);
@@ -1004,7 +1004,7 @@ import com.android.wm.shell.TaskView;
 import com.android.wm.shell.common.HandlerExecutor;
 
 import java.net.URISyntaxException;
-import java.util.Set;",,
+import java.util.Set;","Retrieves a specific, configured Intent for the default maps app, falling back to a generic one.","Retrieves a specific, resolvable map `Intent` from a configured list if it matches the system's default map app, otherwise falls back to a generic `Intent` for any map application."
 39,https://github.com/COVESA/aosp_device_covesa_emulator,063f1782fab8dcb427cf7de31d6c00bcb9b6cb4e,aosp_device_covesa_emulator/CustomCarLauncher/src/com/android/car/carlauncher/CarLauncher.java,java,"private void initializeCards() {
     if (mHomeCardModules == null) {
         mHomeCardModules = new ArraySet<>();
@@ -1061,7 +1061,7 @@ import com.android.wm.shell.TaskView;
 import com.android.wm.shell.common.HandlerExecutor;
 
 import java.net.URISyntaxException;
-import java.util.Set;",,
+import java.util.Set;",Dynamically instantiates and displays home card modules defined in a configuration resource.,"Lazily initializes a set of `HomeCardModule`s by reflectively instantiating class names from a configuration array, and then uses a `FragmentTransaction` to add each module's card view to the UI layout."
 40,https://github.com/COVESA/aosp_device_covesa_emulator,063f1782fab8dcb427cf7de31d6c00bcb9b6cb4e,CustomCarLauncher/src/com/android/car/carlauncher/TaskViewManager.java,java,"private static void cleanUpExistingTaskViewTasks(List<TaskAppearedInfo> taskAppearedInfos) {
     ActivityTaskManager atm = ActivityTaskManager.getInstance();
     for (TaskAppearedInfo taskAppearedInfo : taskAppearedInfos) {
@@ -1095,7 +1095,7 @@ import com.android.wm.shell.startingsurface.StartingWindowController;
 import com.android.wm.shell.startingsurface.phone.PhoneStartingWindowTypeAlgorithm;
 
 import java.util.List;
-import java.util.function.Consumer;",,
+import java.util.function.Consumer;",Removes dangling tasks that are in multi-window mode.,"Iterates through a list of appeared tasks and uses the `ActivityTaskManager` to remove any task that is in multi-window mode, logging it as a dangling task."
 41,https://github.com/COVESA/aosp_device_covesa_emulator,063f1782fab8dcb427cf7de31d6c00bcb9b6cb4e,CustomCarLauncher/src/com/android/car/carlauncher/AppGridActivity.java,java,"private void updateMode() {
     mMode = parseMode(getIntent());
     setTitle(mMode.mTitleStringId);
@@ -1148,7 +1148,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;",,
+import java.util.Set;",Updates the mode from the intent and sets the UI title accordingly.,Parses the mode from the current Intent and sets the title for both the Activity and the CarUi toolbar using the string resource ID defined in that mode.
 42,https://github.com/COVESA/aosp_device_covesa_emulator,063f1782fab8dcb427cf7de31d6c00bcb9b6cb4e,CustomCarLauncher/src/com/android/car/carlauncher/homescreen/audio/AudioFragment.java,java,"private Chronometer getChronometer() {
     if (mChronometer == null) {
         mChronometer = getDescriptiveTextWithControlsLayoutView().findViewById(
@@ -1172,7 +1172,7 @@ import com.android.car.carlauncher.R;
 import com.android.car.carlauncher.homescreen.HomeCardFragment;
 import com.android.car.carlauncher.homescreen.HomeCardInterface;
 import com.android.car.carlauncher.homescreen.ui.CardContent;
-import com.android.car.carlauncher.homescreen.ui.DescriptiveTextWithControlsView;",,
+import com.android.car.carlauncher.homescreen.ui.DescriptiveTextWithControlsView;",Lazily initializes and returns the Chronometer view on first access.,"Lazily initializes and returns a `Chronometer` by finding it in the layout, while also finding and caching its associated separator view on the first call."
 43,https://github.com/COVESA/aosp_device_covesa_emulator,063f1782fab8dcb427cf7de31d6c00bcb9b6cb4e,CustomCarLauncher/src/com/android/car/carlauncher/homescreen/audio/AudioFragment.java,java,"private View getMediaLayoutView() {
     if (mMediaLayoutView == null) {
         ViewStub stub = getRootView().findViewById(R.id.media_layout);
@@ -1199,7 +1199,7 @@ import com.android.car.carlauncher.R;
 import com.android.car.carlauncher.homescreen.HomeCardFragment;
 import com.android.car.carlauncher.homescreen.HomeCardInterface;
 import com.android.car.carlauncher.homescreen.ui.CardContent;
-import com.android.car.carlauncher.homescreen.ui.DescriptiveTextWithControlsView;",,
+import com.android.car.carlauncher.homescreen.ui.DescriptiveTextWithControlsView;",Blurs and scales an image to set as a card's visible background.,"Lazily inflates a media layout from a `ViewStub`, finds and caches its title and subtitle views, initializes its media playback controls bar via a presenter, and returns the inflated view."
 44,https://github.com/COVESA/aosp_device_covesa_emulator,063f1782fab8dcb427cf7de31d6c00bcb9b6cb4e,CustomCarLauncher/src/com/android/car/carlauncher/homescreen/audio/AudioFragment.java,java,"private void updateBackgroundImage(Drawable image) {
     if (image != null && getCardSize() != null) {
         int maxDimen = Math.max(getCardSize().getWidth(), getCardSize().getHeight());
@@ -1226,7 +1226,7 @@ import com.android.car.carlauncher.R;
 import com.android.car.carlauncher.homescreen.HomeCardFragment;
 import com.android.car.carlauncher.homescreen.HomeCardInterface;
 import com.android.car.carlauncher.homescreen.ui.CardContent;
-import com.android.car.carlauncher.homescreen.ui.DescriptiveTextWithControlsView;",,
+import com.android.car.carlauncher.homescreen.ui.DescriptiveTextWithControlsView;",Blurs and scales an image to set as a card's visible background.,"If a valid `Drawable` and card size are provided, this method scales the image to a square based on the card's largest dimension, blurs it, and sets the resulting bitmap as the animated, visible card background."
 45,https://github.com/COVESA/aosp_device_covesa_emulator,063f1782fab8dcb427cf7de31d6c00bcb9b6cb4e,CustomCarLauncher/src/com/android/car/carlauncher/homescreen/audio/AudioFragment.java,java,"private void updateMediaView(CharSequence title, CharSequence subtitle) {
     getMediaLayoutView().setVisibility(View.VISIBLE);
     mMediaTitle.setText(title);
@@ -1246,7 +1246,7 @@ import com.android.car.carlauncher.R;
 import com.android.car.carlauncher.homescreen.HomeCardFragment;
 import com.android.car.carlauncher.homescreen.HomeCardInterface;
 import com.android.car.carlauncher.homescreen.ui.CardContent;
-import com.android.car.carlauncher.homescreen.ui.DescriptiveTextWithControlsView;",,
+import com.android.car.carlauncher.homescreen.ui.DescriptiveTextWithControlsView;",Makes the media view visible and sets its title and subtitle.,Makes the media layout view visible and updates its title and subtitle with the provided text.
 46,https://github.com/COVESA/aosp_device_covesa_emulator,063f1782fab8dcb427cf7de31d6c00bcb9b6cb4e,CustomCarLauncher/src/com/android/car/carlauncher/homescreen/audio/AudioFragment.java,java,"private void updateAudioDuration(DescriptiveTextWithControlsView content) {
     if (content.getStartTime() > 0) {
         getChronometer().setVisibility(View.VISIBLE);
@@ -1272,7 +1272,7 @@ import com.android.car.carlauncher.R;
 import com.android.car.carlauncher.homescreen.HomeCardFragment;
 import com.android.car.carlauncher.homescreen.HomeCardInterface;
 import com.android.car.carlauncher.homescreen.ui.CardContent;
-import com.android.car.carlauncher.homescreen.ui.DescriptiveTextWithControlsView;",,
+import com.android.car.carlauncher.homescreen.ui.DescriptiveTextWithControlsView;","Starts and shows a chronometer if a start time is positive; otherwise, hides it.","If the content's start time is positive, this method makes a chronometer and a separator visible, sets the chronometer's base time, and starts it; otherwise, it hides both views."
 47,https://github.com/COVESA/aosp_device_covesa_emulator,063f1782fab8dcb427cf7de31d6c00bcb9b6cb4e,CustomCarLauncher/src/com/android/car/carlauncher/homescreen/audio/InCallModel.java,java,"public void onCallAdded(Call call) {
     if (call != null) {
         call.registerCallback(mCallback);
@@ -1305,7 +1305,7 @@ import com.android.internal.annotations.VisibleForTesting;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.time.Clock;
-import java.util.concurrent.CompletableFuture;",,
+import java.util.concurrent.CompletableFuture;",Registers a callback on a newly added call.,Registers a member callback to the provided `Call` object after verifying it is not null.
 48,https://github.com/COVESA/aosp_device_covesa_emulator,063f1782fab8dcb427cf7de31d6c00bcb9b6cb4e,CustomCarLauncher/src/com/android/car/carlauncher/homescreen/audio/InCallModel.java,java,"public void onCallRemoved(Call call) {
     mCurrentCall = null;
     mCardContent = null;
@@ -1341,7 +1341,7 @@ import com.android.internal.annotations.VisibleForTesting;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.time.Clock;
-import java.util.concurrent.CompletableFuture;",,
+import java.util.concurrent.CompletableFuture;",Resets state and unregisters the callback when a call is removed.,"Handles the removal of a call by clearing the current call and card content, notifying the presenter of the model update, and unregistering its callback from the call object for cleanup."
 49,https://github.com/COVESA/aosp_device_covesa_emulator,063f1782fab8dcb427cf7de31d6c00bcb9b6cb4e,CustomCarLauncher/src/com/android/car/carlauncher/homescreen/audio/InCallModel.java,java,"void updateModelWithPhoneNumber(String number) {
     String formattedNumber = TelecomUtils.getFormattedNumber(mContext, number);
     mCardContent = new DescriptiveTextWithControlsView(null, formattedNumber,
@@ -1376,7 +1376,7 @@ import com.android.internal.annotations.VisibleForTesting;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.time.Clock;
-import java.util.concurrent.CompletableFuture;",,
+import java.util.concurrent.CompletableFuture;",Updates the ongoing call view model with a formatted phone number and UI controls.,"Formats a phone number to create a new `DescriptiveTextWithControlsView` with call details and controls, then notifies the presenter that the model has been updated."
 50,https://github.com/COVESA/aosp_device_covesa_emulator,063f1782fab8dcb427cf7de31d6c00bcb9b6cb4e,CustomCarLauncher/src/com/android/car/carlauncher/homescreen/audio/InCallModel.java,java,"private void initializeAudioControls() {
     mMuteButton = new DescriptiveTextWithControlsView.Control(
             mContext.getDrawable(R.drawable.ic_mic_off),
@@ -1417,8 +1417,33 @@ import com.android.internal.annotations.VisibleForTesting;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.time.Clock;
-import java.util.concurrent.CompletableFuture;",,
-51,https://github.com/COVESA/capicxx-dbus-runtime,eacbbde07cb0f944cabdfcb5bd50ac637ea94e1a,src/CommonAPI/DBus/DBusClientId.cpp,cpp,"DBusMessage DBusClientId::createMessage(const std::string objectPath, const std::string interfaceName, const std::string signalName) const
+import java.util.concurrent.CompletableFuture;","Initializes the Mute, End Call, and Dialpad buttons for an in-call user interface.","Initializes mute, end call, and dialpad buttons by assigning each an icon and a click listener to toggle mute status, disconnect the current call, and delegate to an onClick handler, respectively."
+51,https://github.com/COVESA/capicxx-dbus-runtime,eacbbde07cb0f944cabdfcb5bd50ac637ea94e1a,src/CommonAPI/DBus/DBusConnection.cpp,cpp,"bool DBusConnection::sendDBusMessage(const DBusMessage &_message) const {
+    if (!_message) {
+        COMMONAPI_ERROR(std::string(__FUNCTION__), ""message == NULL"");
+        return false;
+    }
+    if (!isConnected()) {
+        COMMONAPI_ERROR(std::string(__FUNCTION__), ""not connected"");
+        return false;
+    }
+
+    dbus_uint32_t dbusSerial;
+    const bool result = (0 != dbus_connection_send(connection_, _message.message_, &dbusSerial));
+    return result;
+}",bool DBusConnection::sendDBusMessage(const DBusMessage &_message) const {,"#include <algorithm>
+#include <chrono>
+#include <future>
+#include <sstream>
+#include <thread>
+
+#include <CommonAPI/Logger.hpp>
+#include <CommonAPI/DBus/DBusConnection.hpp>
+#include <CommonAPI/DBus/DBusInputStream.hpp>
+#include <CommonAPI/DBus/DBusMainLoop.hpp>
+#include <CommonAPI/DBus/DBusProxy.hpp>
+#include <CommonAPI/DBus/DBusAddressTranslator.hpp>",Sends a D-Bus message over the connection and returns a boolean indicating success.,"Sends a given `DBusMessage` over an established D-Bus connection, returning `true` on success and `false` if the message is invalid, the connection is down, or the underlying send operation fails."
+52,https://github.com/COVESA/capicxx-dbus-runtime,eacbbde07cb0f944cabdfcb5bd50ac637ea94e1a,src/CommonAPI/DBus/DBusClientId.cpp,cpp,"DBusMessage DBusClientId::createMessage(const std::string objectPath, const std::string interfaceName, const std::string signalName) const
 {
     DBusMessage returnMessage = DBusMessage::createSignal(objectPath, interfaceName, signalName);
     returnMessage.setDestination(dbusId_.c_str());
@@ -1427,8 +1452,8 @@ import java.util.concurrent.CompletableFuture;",,
 }","DBusMessage DBusClientId::createMessage(const std::string objectPath, const std::string interfaceName, const std::string signalName) const {","#include <typeinfo>
 
 #include <CommonAPI/DBus/DBusClientId.hpp>
-#include <CommonAPI/DBus/DBusMessage.hpp>",,
-52,https://github.com/COVESA/capicxx-dbus-runtime,eacbbde07cb0f944cabdfcb5bd50ac637ea94e1a,src/CommonAPI/DBus/DBusConnection.cpp,cpp,"void DBusConnectionStatusEvent::onListenerAdded(const Listener &_listener, const Subscription _subscription) {
+#include <CommonAPI/DBus/DBusMessage.hpp>",Creates a D-Bus signal message addressed to a specific client.,"Creates and returns a D-Bus signal message, constructed from the provided object path, interface, and signal name, with its destination set to the current client's D-Bus ID."
+53,https://github.com/COVESA/capicxx-dbus-runtime,eacbbde07cb0f944cabdfcb5bd50ac637ea94e1a,src/CommonAPI/DBus/DBusConnection.cpp,cpp,"void DBusConnectionStatusEvent::onListenerAdded(const Listener &_listener, const Subscription _subscription) {
     (void)_subscription;
     if (dbusConnection_->isConnected())
         _listener(AvailabilityStatus::AVAILABLE);
@@ -1443,8 +1468,8 @@ import java.util.concurrent.CompletableFuture;",,
 #include <CommonAPI/DBus/DBusInputStream.hpp>
 #include <CommonAPI/DBus/DBusMainLoop.hpp>
 #include <CommonAPI/DBus/DBusProxy.hpp>
-#include <CommonAPI/DBus/DBusAddressTranslator.hpp>",,
-53,https://github.com/COVESA/capicxx-dbus-runtime,eacbbde07cb0f944cabdfcb5bd50ac637ea94e1a,src/CommonAPI/DBus/DBusConnection.cpp,cpp,"void joinOnExit(std::uintptr_t conn, std::thread & t) {
+#include <CommonAPI/DBus/DBusAddressTranslator.hpp>",Notifies a newly added listener if the D-Bus connection is already available.,"When a new listener is added, this callback immediately notifies it with an `AVAILABLE` status if the D-Bus connection is already active."
+54,https://github.com/COVESA/capicxx-dbus-runtime,eacbbde07cb0f944cabdfcb5bd50ac637ea94e1a,src/CommonAPI/DBus/DBusConnection.cpp,cpp,"void joinOnExit(std::uintptr_t conn, std::thread & t) {
     std::lock_guard<std::mutex> lock(mutex_);
     if (connections_.end() != connections_.find(conn)) {
         bool found(false);
@@ -1467,8 +1492,8 @@ import java.util.concurrent.CompletableFuture;",,
 #include <CommonAPI/DBus/DBusInputStream.hpp>
 #include <CommonAPI/DBus/DBusMainLoop.hpp>
 #include <CommonAPI/DBus/DBusProxy.hpp>
-#include <CommonAPI/DBus/DBusAddressTranslator.hpp>",,
-54,https://github.com/COVESA/capicxx-dbus-runtime,eacbbde07cb0f944cabdfcb5bd50ac637ea94e1a,src/CommonAPI/DBus/DBusConnection.cpp,cpp,"void DBusConnection::onWakeupMainContext(void* data) {
+#include <CommonAPI/DBus/DBusAddressTranslator.hpp>","For an active connection, adds a thread to a list to be joined on exit, avoiding duplicates.","Atomically registers a given thread to be joined later by adding it to a list, but only if its associated connection is active and the thread is not already present in the list."
+55,https://github.com/COVESA/capicxx-dbus-runtime,eacbbde07cb0f944cabdfcb5bd50ac637ea94e1a,src/CommonAPI/DBus/DBusConnection.cpp,cpp,"void DBusConnection::onWakeupMainContext(void* data) {
     std::weak_ptr<MainLoopContext>* mainloop = static_cast<std::weak_ptr<MainLoopContext>*>(data);
 
     if (!mainloop) {
@@ -1487,8 +1512,8 @@ import java.util.concurrent.CompletableFuture;",,
 #include <CommonAPI/DBus/DBusInputStream.hpp>
 #include <CommonAPI/DBus/DBusMainLoop.hpp>
 #include <CommonAPI/DBus/DBusProxy.hpp>
-#include <CommonAPI/DBus/DBusAddressTranslator.hpp>",,
-55,https://github.com/COVESA/capicxx-dbus-runtime,eacbbde07cb0f944cabdfcb5bd50ac637ea94e1a,src/CommonAPI/DBus/DBusConnection.cpp,cpp,"void DBusConnection::onRemoveWatch(::DBusWatch* libdbusWatch, void* data) {
+#include <CommonAPI/DBus/DBusAddressTranslator.hpp>",A callback that wakes up a main loop context if it has not been destroyed.,Wakes up a `MainLoopContext` by locking a `weak_ptr` (passed via a `void*` pointer) to ensure the context object still exists before calling its `wakeup()` method.
+56,https://github.com/COVESA/capicxx-dbus-runtime,eacbbde07cb0f944cabdfcb5bd50ac637ea94e1a,src/CommonAPI/DBus/DBusConnection.cpp,cpp,"void DBusConnection::onRemoveWatch(::DBusWatch* libdbusWatch, void* data) {
     if (NULL == static_cast<WatchContext*>(data)) {
         COMMONAPI_ERROR(std::string(__FUNCTION__), ""data (WatchContext) == NULL"");
     }
@@ -1511,8 +1536,8 @@ import java.util.concurrent.CompletableFuture;",,
 #include <CommonAPI/DBus/DBusInputStream.hpp>
 #include <CommonAPI/DBus/DBusMainLoop.hpp>
 #include <CommonAPI/DBus/DBusProxy.hpp>
-#include <CommonAPI/DBus/DBusAddressTranslator.hpp>",,
-56,https://github.com/COVESA/capicxx-dbus-runtime,eacbbde07cb0f944cabdfcb5bd50ac637ea94e1a,src/CommonAPI/DBus/DBusConnection.cpp,cpp,"void DBusConnection::onToggleWatch(::DBusWatch* libdbusWatch, void* data) {
+#include <CommonAPI/DBus/DBusAddressTranslator.hpp>",A callback to stop monitoring a D-Bus watch and clean up its associated data.,A callback function that handles the removal of a D-Bus watch by stopping its monitoring and disassociating the high-level wrapper object from the underlying `libdbus` watch.
+57,https://github.com/COVESA/capicxx-dbus-runtime,eacbbde07cb0f944cabdfcb5bd50ac637ea94e1a,src/CommonAPI/DBus/DBusConnection.cpp,cpp,"void DBusConnection::onToggleWatch(::DBusWatch* libdbusWatch, void* data) {
     WatchContext* watchContext = static_cast<WatchContext*>(data);
 
     if (NULL == watchContext) {
@@ -1549,8 +1574,8 @@ import java.util.concurrent.CompletableFuture;",,
 #include <CommonAPI/DBus/DBusInputStream.hpp>
 #include <CommonAPI/DBus/DBusMainLoop.hpp>
 #include <CommonAPI/DBus/DBusProxy.hpp>
-#include <CommonAPI/DBus/DBusAddressTranslator.hpp>",,
-57,https://github.com/COVESA/capicxx-dbus-runtime,eacbbde07cb0f944cabdfcb5bd50ac637ea94e1a,src/CommonAPI/DBus/DBusConnection.cpp,cpp,"const std::shared_ptr<DBusObjectManager> DBusConnection::getDBusObjectManager() {
+#include <CommonAPI/DBus/DBusAddressTranslator.hpp>","A libdbus callback that creates, starts, or stops a D-Bus watch based on its readiness status.","Handles the toggling of a D-Bus watch by creating a C++ wrapper object for it on first use, and then starting or stopping its monitoring based on its readiness status."
+58,https://github.com/COVESA/capicxx-dbus-runtime,eacbbde07cb0f944cabdfcb5bd50ac637ea94e1a,src/CommonAPI/DBus/DBusConnection.cpp,cpp,"const std::shared_ptr<DBusObjectManager> DBusConnection::getDBusObjectManager() {
     if (!dbusObjectManager_) {
         std::lock_guard<std::mutex> itsLock(objectManagerGuard_);
         if (!dbusObjectManager_) {
@@ -1569,8 +1594,8 @@ import java.util.concurrent.CompletableFuture;",,
 #include <CommonAPI/DBus/DBusInputStream.hpp>
 #include <CommonAPI/DBus/DBusMainLoop.hpp>
 #include <CommonAPI/DBus/DBusProxy.hpp>
-#include <CommonAPI/DBus/DBusAddressTranslator.hpp>",,
-58,https://github.com/COVESA/capicxx-dbus-runtime,eacbbde07cb0f944cabdfcb5bd50ac637ea94e1a,src/CommonAPI/DBus/DBusConnection.cpp,cpp,"bool DBusConnection::releaseServiceName(const std::string& serviceName) const {
+#include <CommonAPI/DBus/DBusAddressTranslator.hpp>",Thread-safely gets or creates a singleton DBusObjectManager instance using double-checked locking.,"Lazily initializes and returns a thread-safe, singleton `DBusObjectManager` instance using a double-checked locking pattern."
+59,https://github.com/COVESA/capicxx-dbus-runtime,eacbbde07cb0f944cabdfcb5bd50ac637ea94e1a,src/CommonAPI/DBus/DBusConnection.cpp,cpp,"bool DBusConnection::releaseServiceName(const std::string& serviceName) const {
     DBusError dbusError;
     bool isServiceNameReleased = false;
     std::lock_guard<std::recursive_mutex> dbusConnectionLock(connectionGuard_);
@@ -1601,32 +1626,7 @@ import java.util.concurrent.CompletableFuture;",,
 #include <CommonAPI/DBus/DBusInputStream.hpp>
 #include <CommonAPI/DBus/DBusMainLoop.hpp>
 #include <CommonAPI/DBus/DBusProxy.hpp>
-#include <CommonAPI/DBus/DBusAddressTranslator.hpp>",,
-59,https://github.com/COVESA/capicxx-dbus-runtime,eacbbde07cb0f944cabdfcb5bd50ac637ea94e1a,src/CommonAPI/DBus/DBusConnection.cpp,cpp,"bool DBusConnection::sendDBusMessage(const DBusMessage &_message) const {
-    if (!_message) {
-        COMMONAPI_ERROR(std::string(__FUNCTION__), ""message == NULL"");
-        return false;
-    }
-    if (!isConnected()) {
-        COMMONAPI_ERROR(std::string(__FUNCTION__), ""not connected"");
-        return false;
-    }
-
-    dbus_uint32_t dbusSerial;
-    const bool result = (0 != dbus_connection_send(connection_, _message.message_, &dbusSerial));
-    return result;
-}",bool DBusConnection::sendDBusMessage(const DBusMessage &_message) const {,"#include <algorithm>
-#include <chrono>
-#include <future>
-#include <sstream>
-#include <thread>
-
-#include <CommonAPI/Logger.hpp>
-#include <CommonAPI/DBus/DBusConnection.hpp>
-#include <CommonAPI/DBus/DBusInputStream.hpp>
-#include <CommonAPI/DBus/DBusMainLoop.hpp>
-#include <CommonAPI/DBus/DBusProxy.hpp>
-#include <CommonAPI/DBus/DBusAddressTranslator.hpp>",,
+#include <CommonAPI/DBus/DBusAddressTranslator.hpp>",Performs a reference-counted release of a D-Bus service name.,"Decrements a reference count for a given D-Bus service name, releasing it from the bus if the count reaches zero, and returns `true` on success or `false` if the name was not being tracked."
 60,https://github.com/COVESA/capicxx-dbus-runtime,eacbbde07cb0f944cabdfcb5bd50ac637ea94e1a,src/CommonAPI/DBus/DBusConnection.cpp,cpp,"DBusMessage DBusConnection::convertToDBusMessage(::DBusPendingCall* _libdbusPendingCall) {
     if (NULL == _libdbusPendingCall) {
         COMMONAPI_ERROR(std::string(__FUNCTION__), ""_libdbusPendingCall == NULL"");
@@ -1649,7 +1649,7 @@ import java.util.concurrent.CompletableFuture;",,
 #include <CommonAPI/DBus/DBusInputStream.hpp>
 #include <CommonAPI/DBus/DBusMainLoop.hpp>
 #include <CommonAPI/DBus/DBusProxy.hpp>
-#include <CommonAPI/DBus/DBusAddressTranslator.hpp>",,
+#include <CommonAPI/DBus/DBusAddressTranslator.hpp>",Steals the reply from a pending D-Bus call and wraps it in a DBusMessage object.,"Steals the reply from a `DBusPendingCall` handle and wraps it in a new `DBusMessage` object that takes ownership, returning an empty message if the input handle is null."
 61,https://github.com/COVESA/capicxx-dbus-runtime,eacbbde07cb0f944cabdfcb5bd50ac637ea94e1a,src/CommonAPI/DBus/DBusConnection.cpp,cpp,"void DBusConnection::deleteAsyncHandlers() {
     std::vector<DBusMessageReplyAsyncHandler*> asyncHandlers;
     {
@@ -1674,7 +1674,7 @@ import java.util.concurrent.CompletableFuture;",,
 #include <CommonAPI/DBus/DBusInputStream.hpp>
 #include <CommonAPI/DBus/DBusMainLoop.hpp>
 #include <CommonAPI/DBus/DBusProxy.hpp>
-#include <CommonAPI/DBus/DBusAddressTranslator.hpp>",,
+#include <CommonAPI/DBus/DBusAddressTranslator.hpp>",Safely deletes all pending asynchronous handlers from a shared list.,Thread-safely deallocates a collection of asynchronous D-Bus message reply handlers by moving them from a protected member list to a local copy before iterating through and deleting each one.
 62,https://github.com/COVESA/capicxx-dbus-runtime,eacbbde07cb0f944cabdfcb5bd50ac637ea94e1a,src/CommonAPI/DBus/DBusConnection.cpp,cpp,"void DBusConnection::handleSignalStates() {
     std::map<std::shared_ptr<DBusProxyConnection::DBusSignalHandler>, std::set<uint32_t>> tmpHandlers;
     {
@@ -1697,7 +1697,7 @@ import java.util.concurrent.CompletableFuture;",,
 #include <CommonAPI/DBus/DBusInputStream.hpp>
 #include <CommonAPI/DBus/DBusMainLoop.hpp>
 #include <CommonAPI/DBus/DBusProxy.hpp>
-#include <CommonAPI/DBus/DBusAddressTranslator.hpp>",,
+#include <CommonAPI/DBus/DBusAddressTranslator.hpp>",Reports a success status to all registered signal handlers for their associated tags.,Thread-safely notifies all registered signal handlers of a successful state by invoking their `onSpecificError` callback with a `SUCCESS` status for each associated signal tag.
 63,https://github.com/COVESA/capicxx-dbus-runtime,eacbbde07cb0f944cabdfcb5bd50ac637ea94e1a,src/CommonAPI/DBus/DBusFactory.cpp,cpp,"void Factory::releaseConnection(const ConnectionId_t& _connectionId) {
     std::lock_guard<std::recursive_mutex> itsConnectionGuard(connectionsMutex_);
     auto itsConnection = connections_.find(_connectionId);
@@ -1714,7 +1714,7 @@ import java.util.concurrent.CompletableFuture;",,
 #include <CommonAPI/DBus/DBusConnection.hpp>
 #include <CommonAPI/DBus/DBusFactory.hpp>
 #include <CommonAPI/DBus/DBusProxy.hpp>
-#include <CommonAPI/DBus/DBusStubAdapter.hpp>",,
+#include <CommonAPI/DBus/DBusStubAdapter.hpp>",Thread-safely removes a connection from a collection if it exists.,"Thread-safely removes a connection, identified by its ID, from an internal collection if it exists."
 64,https://github.com/COVESA/capicxx-dbus-runtime,eacbbde07cb0f944cabdfcb5bd50ac637ea94e1a,src/CommonAPI/DBus/DBusInstanceAvailabilityStatusChangedEvent.cpp,cpp,"void DBusInstanceAvailabilityStatusChangedEvent::SignalHandler::onSignalDBusMessage(const DBusMessage& dbusMessage) {
     if (dbusMessage.hasMemberName(""InterfacesAdded"")) {
         instanceAvblStatusEvent_->onInterfacesAddedSignal(dbusMessage);
@@ -1723,7 +1723,7 @@ import java.util.concurrent.CompletableFuture;",,
    }
 }",void DBusInstanceAvailabilityStatusChangedEvent::SignalHandler::onSignalDBusMessage(const DBusMessage& dbusMessage) {,"#include <CommonAPI/DBus/DBusInstanceAvailabilityStatusChangedEvent.hpp>
 
-#include <CommonAPI/DBus/DBusAddressTranslator.hpp>",,
+#include <CommonAPI/DBus/DBusAddressTranslator.hpp>",Dispatches D-Bus signals for interface addition or removal to specific handlers.,"Handles an incoming D-Bus signal by dispatching it to the appropriate handler for either ""InterfacesAdded"" or ""InterfacesRemoved"" events based on the message's member name."
 65,https://github.com/COVESA/capicxx-dbus-runtime,eacbbde07cb0f944cabdfcb5bd50ac637ea94e1a,src/CommonAPI/DBus/DBusInstanceAvailabilityStatusChangedEvent.cpp,cpp,"void DBusInstanceAvailabilityStatusChangedEvent::getAvailableServiceInstances(
         CommonAPI::CallStatus &_status,
         std::vector<DBusAddress> &_availableServiceInstances) {
@@ -1738,7 +1738,7 @@ import java.util.concurrent.CompletableFuture;",,
     translate(itsAvailableServiceInstances, _availableServiceInstances);
 }","void DBusInstanceAvailabilityStatusChangedEvent::getAvailableServiceInstances(CommonAPI::CallStatus &_status, std::vector<DBusAddress> &_availableServiceInstances) {","#include <CommonAPI/DBus/DBusInstanceAvailabilityStatusChangedEvent.hpp>
 
-#include <CommonAPI/DBus/DBusAddressTranslator.hpp>",,
+#include <CommonAPI/DBus/DBusAddressTranslator.hpp>",Retrieves the addresses of available service instances from a D-Bus registry.,"Retrieves available service instances from a registry, translates the internal D-Bus representation into a vector of `DBusAddress` objects, and populates the provided output vector and status parameter."
 66,https://github.com/COVESA/capicxx-dbus-runtime,eacbbde07cb0f944cabdfcb5bd50ac637ea94e1a,src/CommonAPI/DBus/DBusInstanceAvailabilityStatusChangedEvent.cpp,cpp,"void DBusInstanceAvailabilityStatusChangedEvent::getServiceInstanceAvailabilityStatus(
         const std::string &_instance,
         CallStatus &_callStatus,
@@ -1758,7 +1758,7 @@ import java.util.concurrent.CompletableFuture;",,
     _callStatus = CallStatus::SUCCESS;
 }","void DBusInstanceAvailabilityStatusChangedEvent::getServiceInstanceAvailabilityStatus(const std::string &_instance, CallStatus &_callStatus, AvailabilityStatus &_availabilityStatus) {","#include <CommonAPI/DBus/DBusInstanceAvailabilityStatusChangedEvent.hpp>
 
-#include <CommonAPI/DBus/DBusAddressTranslator.hpp>",,
+#include <CommonAPI/DBus/DBusAddressTranslator.hpp>",Queries a D-Bus registry to determine if a specific service instance is available.,"Gets the availability status of a service instance by translating its identifier to a D-Bus address and querying a registry, setting the result and a success status in output parameters."
 67,https://github.com/COVESA/capicxx-dbus-runtime,eacbbde07cb0f944cabdfcb5bd50ac637ea94e1a,src/CommonAPI/DBus/DBusInstanceAvailabilityStatusChangedEvent.cpp,cpp,"void DBusInstanceAvailabilityStatusChangedEvent::onInterfacesRemovedSignal(const DBusMessage &_message) {
     DBusInputStream dbusInputStream(_message);
     std::string dbusObjectPath;
@@ -1784,7 +1784,7 @@ import java.util.concurrent.CompletableFuture;",,
     }
 }",void DBusInstanceAvailabilityStatusChangedEvent::onInterfacesRemovedSignal(const DBusMessage &_message) {,"#include <CommonAPI/DBus/DBusInstanceAvailabilityStatusChangedEvent.hpp>
 
-#include <CommonAPI/DBus/DBusAddressTranslator.hpp>",,
+#include <CommonAPI/DBus/DBusAddressTranslator.hpp>",Notifies that a service is unavailable when its corresponding D-Bus interface is removed.,"Handles a D-Bus ""InterfacesRemoved"" signal by parsing the object path and interface names, and for any interface matching the one being observed, notifies listeners that its status has changed to ""NOT_AVAILABLE""."
 68,https://github.com/COVESA/capicxx-dbus-runtime,eacbbde07cb0f944cabdfcb5bd50ac637ea94e1a,src/CommonAPI/DBus/DBusInstanceAvailabilityStatusChangedEvent.cpp,cpp,"void DBusInstanceAvailabilityStatusChangedEvent::notifyInterfaceStatusChanged(
         const std::string &_objectPath,
         const std::string &_interfaceName,
@@ -1799,7 +1799,7 @@ import java.util.concurrent.CompletableFuture;",,
     notifyListeners(itsAddress.getAddress(), _availability);
 }","void DBusInstanceAvailabilityStatusChangedEvent::notifyInterfaceStatusChanged(const std::string &_objectPath, const std::string &_interfaceName, const AvailabilityStatus &_availability) {","#include <CommonAPI/DBus/DBusInstanceAvailabilityStatusChangedEvent.hpp>
 
-#include <CommonAPI/DBus/DBusAddressTranslator.hpp>",,
+#include <CommonAPI/DBus/DBusAddressTranslator.hpp>",Notifies CommonAPI listeners of a D-Bus interface's availability status change.,Notifies listeners of an interface's availability change by translating its D-Bus path and name into a generic CommonAPI address.
 69,https://github.com/COVESA/capicxx-dbus-runtime,eacbbde07cb0f944cabdfcb5bd50ac637ea94e1a,src/CommonAPI/DBus/DBusProxy.cpp,cpp,"void DBusProxyStatusEvent::onListenerAdded(const Listener &_listener,
                                            const Subscription _subscription) {
     std::lock_guard<std::recursive_mutex> listenersLock(listenersMutex_);
@@ -1818,7 +1818,7 @@ import java.util.concurrent.CompletableFuture;",,
 #include <CommonAPI/DBus/DBusProxyAsyncSignalMemberCallbackHandler.hpp>
 #include <CommonAPI/DBus/DBusConnection.hpp>
 #include <CommonAPI/DBus/DBusAddressTranslator.hpp>
-#include <CommonAPI/Logger.hpp>",,
+#include <CommonAPI/Logger.hpp>",Schedules an asynchronous notification of the current proxy status for a newly added listener.,"Thread-safely schedules a task on the main event loop to notify a newly added listener, passing along its specific subscription details."
 70,https://github.com/COVESA/capicxx-dbus-runtime,eacbbde07cb0f944cabdfcb5bd50ac637ea94e1a,src/CommonAPI/DBus/DBusProxy.cpp,cpp,"void DBusProxyStatusEvent::onListenerRemoved(const Listener& _listener,
                                              const Subscription _subscription) {
     std::lock_guard<std::recursive_mutex> listenersLock(listenersMutex_);
@@ -1838,7 +1838,7 @@ import java.util.concurrent.CompletableFuture;",,
 #include <CommonAPI/DBus/DBusProxyAsyncSignalMemberCallbackHandler.hpp>
 #include <CommonAPI/DBus/DBusConnection.hpp>
 #include <CommonAPI/DBus/DBusAddressTranslator.hpp>
-#include <CommonAPI/Logger.hpp>",,
+#include <CommonAPI/Logger.hpp>",Removes all listener entries that match a given subscription in a thread-safe manner.,Thread-safely removes all listeners from an internal collection that match the provided `Subscription` identifier.
 71,https://github.com/COVESA/capicxx-dbus-runtime,eacbbde07cb0f944cabdfcb5bd50ac637ea94e1a,src/CommonAPI/DBus/DBusProxyBase.cpp,cpp,"void DBusProxyBase::addSignalStateHandler(
             std::shared_ptr<DBusProxyConnection::DBusSignalHandler> _handler,
             const uint32_t _subscription) {
@@ -1848,7 +1848,7 @@ import java.util.concurrent.CompletableFuture;",,
 #include <CommonAPI/DBus/DBusProxyBase.hpp>
 #include <CommonAPI/DBus/DBusMessage.hpp>
 #include <CommonAPI/DBus/DBusProxy.hpp>
-#include <CommonAPI/DBus/DBusDaemonProxy.hpp>",,
+#include <CommonAPI/DBus/DBusDaemonProxy.hpp>",Forwards the addition of a D-Bus signal state handler to the underlying connection object.,Delegates the registration of a signal state handler for a specific subscription to the underlying connection object.
 72,https://github.com/COVESA/capicxx-dbus-runtime,eacbbde07cb0f944cabdfcb5bd50ac637ea94e1a,src/CommonAPI/DBus/DBusProxyManager.cpp,cpp,"void
 DBusProxyManager::instancesAsyncCallback(
         std::shared_ptr<Proxy> _proxy,
@@ -1863,7 +1863,7 @@ DBusProxyManager::instancesAsyncCallback(
     _call(_status, itsAvailableInstances);
 }","void DBusProxyManager::instancesAsyncCallback(std::shared_ptr<Proxy> _proxy, const CommonAPI::CallStatus &_status, const std::vector<DBusAddress> &_availableServiceInstances, GetAvailableInstancesCallback &_call) {","#include <CommonAPI/Runtime.hpp>
 #include <CommonAPI/DBus/DBusAddressTranslator.hpp>
-#include <CommonAPI/DBus/DBusProxyManager.hpp>",,
+#include <CommonAPI/DBus/DBusProxyManager.hpp>",Callback to translate available D-Bus service instance addresses to strings and forward the result.,Handles the result of an asynchronous service instance query by translating the `DBusAddress` list to a string list on success and invoking a final callback with the call status and the translated list.
 73,https://github.com/COVESA/capicxx-dbus-runtime,eacbbde07cb0f944cabdfcb5bd50ac637ea94e1a,src/CommonAPI/DBus/DBusObjectManager.cpp,cpp,"bool DBusObjectManager::handleMessage(const DBusMessage& dbusMessage) {
     const char* objectPath = dbusMessage.getObjectPath();
     const char* interfaceName = dbusMessage.getInterface();
@@ -1906,7 +1906,7 @@ DBusProxyManager::instancesAsyncCallback(
 #include <CommonAPI/DBus/DBusObjectManager.hpp>
 #include <CommonAPI/DBus/DBusOutputStream.hpp>
 #include <CommonAPI/DBus/DBusStubAdapter.hpp>
-#include <CommonAPI/DBus/DBusUtils.hpp>",,
+#include <CommonAPI/DBus/DBusUtils.hpp>",Routes a D-Bus message to a registered handler or handles standard introspection requests.,"Dispatches an incoming `DBusMessage` to a registered handler based on its object path and interface, or handles it as a standard introspection request, returning `true` if the message was processed."
 74,https://github.com/COVESA/capicxx-dbus-runtime,eacbbde07cb0f944cabdfcb5bd50ac637ea94e1a,src/CommonAPI/DBus/DBusObjectManager.cpp,cpp,"bool DBusObjectManager::addDBusInterfaceHandler(const DBusInterfaceHandlerPath& dbusInterfaceHandlerPath,
                                                 std::shared_ptr<DBusInterfaceHandler> dbusInterfaceHandler) {
     const auto& dbusRegisteredObjectsTableIter = dbusRegisteredObjectsTable_.find(dbusInterfaceHandlerPath);
@@ -1939,7 +1939,7 @@ DBusProxyManager::instancesAsyncCallback(
 #include <CommonAPI/DBus/DBusObjectManager.hpp>
 #include <CommonAPI/DBus/DBusOutputStream.hpp>
 #include <CommonAPI/DBus/DBusStubAdapter.hpp>
-#include <CommonAPI/DBus/DBusUtils.hpp>",,
+#include <CommonAPI/DBus/DBusUtils.hpp>","Adds a D-Bus interface handler to a path, preventing duplicate registration except for standard interfaces.","Registers a D-Bus interface handler for a specific path, returning `false` if the exact handler is already registered, but allowing idempotent registration for standard `ObjectManager` and `Properties` interfaces."
 75,https://github.com/COVESA/capicxx-dbus-runtime,eacbbde07cb0f944cabdfcb5bd50ac637ea94e1a,src/CommonAPI/DBus/DBusObjectManager.cpp,cpp,"bool DBusObjectManager::addToRegisteredObjectsTable(DBusInterfaceHandlerPath ifpath, std::shared_ptr<DBusInterfaceHandler> handler) {
     auto handlerRecord = dbusRegisteredObjectsTable_.find(ifpath);
     if (handlerRecord == dbusRegisteredObjectsTable_.end()) {
@@ -1973,7 +1973,7 @@ DBusProxyManager::instancesAsyncCallback(
 #include <CommonAPI/DBus/DBusObjectManager.hpp>
 #include <CommonAPI/DBus/DBusOutputStream.hpp>
 #include <CommonAPI/DBus/DBusStubAdapter.hpp>
-#include <CommonAPI/DBus/DBusUtils.hpp>",,
+#include <CommonAPI/DBus/DBusUtils.hpp>","Registers a D-Bus handler for a specific path, preventing duplicates.","Registers a given `DBusInterfaceHandler` to a specific path in a table, returning `true` on success and `false` if the handler is already registered for that path."
 76,https://github.com/mercedes-benz/ardep,b971483809c29057020e9b68f05b092937886dbb,lib/uds/uds.c,c,"void send_negative_response(enum UDS_SID request_sid,
                             enum UDS_NRC response_code) {
   int ret;
@@ -1993,7 +1993,7 @@ DBusProxyManager::instancesAsyncCallback(
 #include <zephyr/dfu/flash_img.h>
 #include <zephyr/dfu/mcuboot.h>
 #include <zephyr/storage/flash_map.h>
-#include <zephyr/sys/reboot.h>",,
+#include <zephyr/sys/reboot.h>",Sends a UDS negative response message containing the failed service ID and a negative response code.,"Constructs and sends a 3-byte UDS negative response message (containing the original request SID and a negative response code) over a CAN bus using the ISO-TP protocol, logging an error if the transmission fails."
 77,https://github.com/mercedes-benz/ardep,b971483809c29057020e9b68f05b092937886dbb,lib/uds/uds.c,c,"static void send_session_control_response(enum UdsSessionState session_type,
                                           uint16_t p2_timeout_ms,
                                           uint16_t p2_star_timeout_ms) {
@@ -2024,7 +2024,7 @@ DBusProxyManager::instancesAsyncCallback(
 #include <zephyr/dfu/flash_img.h>
 #include <zephyr/dfu/mcuboot.h>
 #include <zephyr/storage/flash_map.h>
-#include <zephyr/sys/reboot.h>",,
+#include <zephyr/sys/reboot.h>",Sends a UDS positive response for the Diagnostic Session Control service.,"Constructs and sends a 6-byte UDS positive response for a Diagnostic Session Control request—containing the session type, P2, and P2* server timeout values—over a CAN bus via the ISO-TP protocol, logging an error if the transmission fails."
 78,https://github.com/mercedes-benz/ardep,b971483809c29057020e9b68f05b092937886dbb,lib/uds/uds.c,c,"void send_positive_reset_response(uint8_t reset_type) {
   int ret;
   uint8_t positive_sid = UDS_SID_ECU_RESET + 0x40;
@@ -2046,7 +2046,7 @@ DBusProxyManager::instancesAsyncCallback(
 #include <zephyr/dfu/flash_img.h>
 #include <zephyr/dfu/mcuboot.h>
 #include <zephyr/storage/flash_map.h>
-#include <zephyr/sys/reboot.h>",,
+#include <zephyr/sys/reboot.h>",Sends a positive UDS response for the ECU Reset service.,"Constructs and sends a 2-byte UDS positive response to an ECU Reset request, containing the positive response SID and the echoed reset type, over a CAN bus using the ISO-TP protocol, logging an error if the transmission fails."
 79,https://github.com/mercedes-benz/ardep,b971483809c29057020e9b68f05b092937886dbb,lib/uds/uds.c,c,"void handle_ecu_reset(uint8_t *data, size_t len) {
   if (len != 2) {
     send_negative_response(UDS_SID_ECU_RESET,
@@ -2077,7 +2077,7 @@ DBusProxyManager::instancesAsyncCallback(
 #include <zephyr/dfu/flash_img.h>
 #include <zephyr/dfu/mcuboot.h>
 #include <zephyr/storage/flash_map.h>
-#include <zephyr/sys/reboot.h>",,
+#include <zephyr/sys/reboot.h>","Handles a UDS ECU Reset request, supporting only the hard reset sub-function which reboots the system.","Processes a UDS ECU Reset request, validating the 2-byte message length, sending a positive response before triggering a system reboot for a 'hard reset', and sending a negative response for either an incorrect length or an unsupported reset sub-function."
 80,https://github.com/mercedes-benz/ardep,b971483809c29057020e9b68f05b092937886dbb,lib/uds/uds.c,c,"void send_request_download_response() {
   int ret;
   uint8_t positive_sid = UDS_SID_REQUEST_DOWNLOAD + 0x40;
@@ -2105,7 +2105,7 @@ DBusProxyManager::instancesAsyncCallback(
 #include <zephyr/dfu/flash_img.h>
 #include <zephyr/dfu/mcuboot.h>
 #include <zephyr/storage/flash_map.h>
-#include <zephyr/sys/reboot.h>",,
+#include <zephyr/sys/reboot.h>","Sends a positive UDS response to a Request Download, specifying the maximum block length.","Constructs and sends a 4-byte UDS positive response for a ""Request Download"" service, specifying a maximum block length of 0x00D2, over a CAN bus using the ISO-TP protocol and logging an error on failure."
 81,https://github.com/mercedes-benz/ardep,b971483809c29057020e9b68f05b092937886dbb,lib/uds/uds.c,c,"static void send_transfer_data_response(uint8_t block_sequence_counter) {
   int ret;
   uint8_t positive_sid = UDS_SID_TRANSFER_DATA + 0x40;
@@ -2127,7 +2127,7 @@ DBusProxyManager::instancesAsyncCallback(
 #include <zephyr/dfu/flash_img.h>
 #include <zephyr/dfu/mcuboot.h>
 #include <zephyr/storage/flash_map.h>
-#include <zephyr/sys/reboot.h>",,
+#include <zephyr/sys/reboot.h>",Sends a UDS Transfer Data positive response containing the block sequence counter.,"Constructs and sends a 2-byte UDS positive response for a Transfer Data request (containing the positive SID and the block sequence counter) over a CAN bus using the ISO-TP protocol, logging an error if the transmission fails."
 82,https://github.com/mercedes-benz/ardep,b971483809c29057020e9b68f05b092937886dbb,lib/uds/uds.c,c,"static void send_routine_control_result(uint16_t routine_id, uint8_t result) {
   int ret;
   uint8_t positive_sid = UDS_SID_ROUTINE_CONTROL + 0x40;
@@ -2150,7 +2150,7 @@ DBusProxyManager::instancesAsyncCallback(
 #include <zephyr/dfu/flash_img.h>
 #include <zephyr/dfu/mcuboot.h>
 #include <zephyr/storage/flash_map.h>
-#include <zephyr/sys/reboot.h>",,
+#include <zephyr/sys/reboot.h>",Sends a UDS positive response for the Routine Control service containing a result code over ISO-TP.,"Constructs and sends a 5-byte UDS positive response for the Routine Control service (containing the routine control type, routine ID, and a result code) over a CAN bus via ISO-TP, logging an error if the transmission fails."
 83,https://github.com/mercedes-benz/ardep,b971483809c29057020e9b68f05b092937886dbb,lib/uds/uds.c,c,"static void send_transer_exit_positive_response() {
   int ret;
   uint8_t positive_sid = UDS_SID_REQUEST_TRANSFER_EXIT + 0x40;
@@ -2172,7 +2172,7 @@ DBusProxyManager::instancesAsyncCallback(
 #include <zephyr/dfu/flash_img.h>
 #include <zephyr/dfu/mcuboot.h>
 #include <zephyr/storage/flash_map.h>
-#include <zephyr/sys/reboot.h>",,
+#include <zephyr/sys/reboot.h>",Sends a UDS Transfer Exit positive response message via the ISO-TP protocol.,"Constructs and sends a 1-byte UDS positive response for a Transfer Exit request (containing the request SID + 0x40) over a CAN bus using the ISO-TP protocol, logging an error if the transmission fails."
 84,https://github.com/mercedes-benz/ardep,b971483809c29057020e9b68f05b092937886dbb,drivers/hv_shield/dac/hv_shield_dac.c,c,"static int hvs_dac_convert_gain(int raw_gain,
                                 enum hv_shield_dac_gains_t* gain) {
   switch (raw_gain) {
@@ -2197,7 +2197,7 @@ DBusProxyManager::instancesAsyncCallback(
 }","static int hvs_dac_convert_gain(int raw_gain, enum hv_shield_dac_gains_t* gain) {","#include <zephyr/device.h>
 #include <zephyr/devicetree.h>
 #include <zephyr/drivers/dac.h>
-#include <zephyr/logging/log.h>",,
+#include <zephyr/logging/log.h>","Converts a raw integer gain value to a corresponding DAC gain enumeration, returning an error if unsupported.","Maps a raw integer gain value (1, 2, 4, 8, or 16) to its corresponding `hv_shield_dac_gains_t` enum representation, returning 0 on success or an `-ENOTSUP` error code for any unsupported input."
 85,https://github.com/mercedes-benz/ardep,b971483809c29057020e9b68f05b092937886dbb,drivers/can/lin2can/lin2can.c,c,"static inline uint8_t map_from_can_id(uint32_t can_id) {
   for (int i = 0; i < TRANSLATABLE_ADDRESSES_LEN; i++) {
     if (id_mapping[i] == can_id) {
@@ -2210,7 +2210,7 @@ DBusProxyManager::instancesAsyncCallback(
 #include <zephyr/kernel.h>
 #include <zephyr/logging/log.h>
 
-#include <ardep/drivers/abstract_lin.h>",,
+#include <ardep/drivers/abstract_lin.h>",Finds the index of a given CAN ID in a mapping table.,"Searches a predefined `id_mapping` array for a given CAN ID and returns its corresponding index, or `0xff` if the ID is not found."
 86,https://github.com/mercedes-benz/ardep,b971483809c29057020e9b68f05b092937886dbb,drivers/can/lin2can/lin2can.c,c,"static void lin2can_remove_rx_filter(const struct device *dev, int filter_id) {
   struct lin2can_data *data = dev->data;
 
@@ -2230,7 +2230,7 @@ DBusProxyManager::instancesAsyncCallback(
 #include <zephyr/kernel.h>
 #include <zephyr/logging/log.h>
 
-#include <ardep/drivers/abstract_lin.h>",,
+#include <ardep/drivers/abstract_lin.h>","Removes a specific LIN-to-CAN receive filter, or all filters, by clearing the associated callback.","Disables a specific LIN-to-CAN receive filter by clearing its callback pointer, or disables all filters if a special ID is passed, while ignoring out-of-bounds IDs."
 87,https://github.com/mercedes-benz/ardep,b971483809c29057020e9b68f05b092937886dbb,drivers/can/lin2can/lin2can.c,c,"static bool lin_outgoing_cb(struct lin_frame *frame, void *user_data) {
   const struct device *dev = (const struct device *)user_data;
   struct lin2can_data *data = dev->data;
@@ -2252,7 +2252,7 @@ DBusProxyManager::instancesAsyncCallback(
 #include <zephyr/kernel.h>
 #include <zephyr/logging/log.h>
 
-#include <ardep/drivers/abstract_lin.h>",,
+#include <ardep/drivers/abstract_lin.h>",A LIN callback that dequeues a frame for transmission and executes its completion callback.,"A LIN driver callback that retrieves a pending outgoing frame from a message queue, copies its data for transmission, invokes a frame-specific completion callback, and returns a boolean indicating if a frame was successfully prepared."
 88,https://github.com/mercedes-benz/ardep,b971483809c29057020e9b68f05b092937886dbb,drivers/can/lin2can/lin2can.c,c,"static void lin_incoming_cb(const struct lin_frame *frame, void *user_data) {
   const struct device *dev = (const struct device *)user_data;
   const struct lin2can_data *data = dev->data;
@@ -2284,7 +2284,7 @@ DBusProxyManager::instancesAsyncCallback(
 #include <zephyr/kernel.h>
 #include <zephyr/logging/log.h>
 
-#include <ardep/drivers/abstract_lin.h>",,
+#include <ardep/drivers/abstract_lin.h>",A callback that translates an incoming LIN frame to a CAN frame and invokes a registered handler.,"Acts as a LIN-to-CAN gateway callback, translating an incoming LIN frame by using its first data byte's top two bits as an index to find a target CAN ID, constructing a new CAN frame with the translated ID and a payload where those index bits are masked out, and finally invoking a registered handler with the resulting CAN frame."
 89,https://github.com/mercedes-benz/ardep,b971483809c29057020e9b68f05b092937886dbb,drivers/hv_shield/hv_shield/hv_shield.c,c,"static int hv_shield_init(const struct device* dev) {
   const struct hv_shield_config_t* config = dev->config;
   struct hv_shield_data_t* data = dev->data;
@@ -2316,7 +2316,7 @@ DBusProxyManager::instancesAsyncCallback(
 #include <zephyr/kernel.h>
 #include <zephyr/logging/log.h>
 
-#include <ardep/drivers/hv_shield.h>",,
+#include <ardep/drivers/hv_shield.h>",Initializes a high-voltage shield by configuring its registers and enabling its output.,"Initializes a high-voltage shield by configuring its Output Enable (OE) GPIO, writing a zeroed state to its hardware registers, and then setting the OE pin to enable the device's outputs, logging errors at each step."
 90,https://github.com/mercedes-benz/ardep,b971483809c29057020e9b68f05b092937886dbb,drivers/hv_shield/hv_shield/hv_shield.c,c,"static int hvs_set_dac_gain(const struct device* dev,
                             uint8_t dac,
                             enum hv_shield_dac_gains_t gain) {
@@ -2342,7 +2342,7 @@ DBusProxyManager::instancesAsyncCallback(
 #include <zephyr/kernel.h>
 #include <zephyr/logging/log.h>
 
-#include <ardep/drivers/hv_shield.h>",,
+#include <ardep/drivers/hv_shield.h>",Sets the gain for a specified DAC on a high-voltage shield.,"Sets the gain for a specified DAC (0 or 1) on a high-voltage shield by updating its value in a cached data structure and then calling an update function to write the new configuration to the hardware, returning an error for an invalid DAC index."
 91,https://github.com/mercedes-benz/ardep,b971483809c29057020e9b68f05b092937886dbb,drivers/hv_shield/hv_shield/hv_shield.c,c,"static int hvs_set_gpio_output_enable(const struct device* dev,
                                       uint8_t index,
                                       bool enable) {
@@ -2370,7 +2370,7 @@ DBusProxyManager::instancesAsyncCallback(
 #include <zephyr/kernel.h>
 #include <zephyr/logging/log.h>
 
-#include <ardep/drivers/hv_shield.h>",,
+#include <ardep/drivers/hv_shield.h>","Sets a GPIO output enable state, remapping the pin index by swapping the 4-bit nibbles within its byte.","Enables or disables a specific GPIO output on a high-voltage shield by validating the pin index (0-31), remapping it via a nibble-swap, modifying a cached register bit, and then calling a helper function to write the update to the hardware."
 92,https://github.com/mercedes-benz/ardep,b971483809c29057020e9b68f05b092937886dbb,lib/can_router/can_router.c,c,"static void can_router_frame_cb(const struct device *dev,
                                 struct can_frame *frame,
                                 void *user_data) {
@@ -2387,7 +2387,7 @@ DBusProxyManager::instancesAsyncCallback(
 #include <zephyr/kernel.h>
 #include <zephyr/logging/log.h>
 
-#include <ardep/can_router.h>",,
+#include <ardep/can_router.h>",A callback function that forwards a received CAN frame to another device.,"A callback function that forwards a received CAN frame from a source device to a destination device (passed via `user_data`) using a non-blocking send operation, logging a debug message on successful queuing or a warning on failure."
 93,https://github.com/mercedes-benz/ardep,b971483809c29057020e9b68f05b092937886dbb,lib/can_router/can_router.c,c,"int can_router_register(const struct can_router_entry_t *entries,
                         int entry_count) {
   LOG_DBG(""Registering %d can router entries"", entry_count);
@@ -2407,7 +2407,7 @@ DBusProxyManager::instancesAsyncCallback(
 #include <zephyr/kernel.h>
 #include <zephyr/logging/log.h>
 
-#include <ardep/can_router.h>",,
+#include <ardep/can_router.h>",Registers a set of rules to route CAN frames between specified interfaces.,"Configures a CAN message router by iterating through an array of routing entries, adding a receive filter to a source CAN interface for each entry that uses a callback to forward matching frames to a destination interface, and returns an error if any filter registration fails."
 94,https://github.com/mercedes-benz/ardep,b971483809c29057020e9b68f05b092937886dbb,lib/can_router/can_router.c,c,"static int can_router_sysinit() {
   LOG_DBG(""Initializing can router"");
 
@@ -2424,7 +2424,7 @@ DBusProxyManager::instancesAsyncCallback(
 #include <zephyr/kernel.h>
 #include <zephyr/logging/log.h>
 
-#include <ardep/can_router.h>",,
+#include <ardep/can_router.h>",Initializes the CAN router by registering all statically-defined routing tables.,"Initializes the CAN router by iterating through all statically-defined routing tables found in a dedicated linker section and registering their entries, returning an error if any registration fails."
 95,https://github.com/mercedes-benz/ardep,b971483809c29057020e9b68f05b092937886dbb,drivers/hv_shield/gpio/hv_shield_gpio.c,c,"static int hvs_set_masked_raw(const struct device* port,
                               gpio_port_pins_t mask,
                               gpio_port_value_t value) {
@@ -2446,7 +2446,7 @@ DBusProxyManager::instancesAsyncCallback(
 #include <zephyr/drivers/gpio.h>
 #include <zephyr/logging/log.h>
 
-#include <ardep/drivers/hv_shield.h>",,
+#include <ardep/drivers/hv_shield.h>",Sets a masked group of GPIO pins to the states defined in a value bitmask.,"Iterates through a pre-configured list of low-voltage GPIOs, setting the state of each pin enabled by an input mask to the corresponding bit in a value word, logging and returning an error if any underlying GPIO operation fails."
 96,https://github.com/mercedes-benz/ardep,b971483809c29057020e9b68f05b092937886dbb,drivers/lin/abstract_lin/abstract_lin.c,c,"static int al_get_free_cb_slots(const struct device *dev, uint8_t *free_slots) {
   struct abstract_lin_data *data = dev->data;
 
@@ -2461,7 +2461,7 @@ DBusProxyManager::instancesAsyncCallback(
 #include <zephyr/logging/log.h>
 
 #include <ardep/drivers/abstract_lin.h>
-#include <zephyrboards/drivers/lin.h>",,
+#include <zephyrboards/drivers/lin.h>",Gets the number of available LIN callback slots.,"Populates an output parameter with the number of available Abstract LIN callback slots, calculated by subtracting the used count from a configured maximum, returning an error if the parameter is a null pointer."
 97,https://github.com/mercedes-benz/ardep,b971483809c29057020e9b68f05b092937886dbb,drivers/lin/abstract_lin/abstract_lin.c,c,"static int al_register_incoming_cb(const struct device *dev,
                                    abstract_lin_incoming_callback_t callback,
                                    uint8_t frame_id,
@@ -2489,7 +2489,7 @@ DBusProxyManager::instancesAsyncCallback(
 #include <zephyr/logging/log.h>
 
 #include <ardep/drivers/abstract_lin.h>
-#include <zephyrboards/drivers/lin.h>",,
+#include <zephyrboards/drivers/lin.h>",Registers a callback function for a specific incoming LIN frame.,"Registers a user-provided callback function for a specific LIN frame ID by validating the ID (0-0x3F) and data size (1-8 bytes), allocating a free callback slot, and storing the callback details, returning an error on invalid parameters or allocation failure."
 98,https://github.com/mercedes-benz/ardep,b971483809c29057020e9b68f05b092937886dbb,drivers/lin/abstract_lin/abstract_lin.c,c,"static int al_register_outgoing_cb(const struct device *dev,
                                    abstract_lin_outgoing_callback_t callback,
                                    uint8_t frame_id,
@@ -2517,7 +2517,7 @@ DBusProxyManager::instancesAsyncCallback(
 #include <zephyr/logging/log.h>
 
 #include <ardep/drivers/abstract_lin.h>
-#include <zephyrboards/drivers/lin.h>",,
+#include <zephyrboards/drivers/lin.h>",Registers a callback function to provide data for a specific outgoing LIN frame.,"Registers a user-provided callback function for a specific LIN frame ID by validating the ID (0-0x3F) and data size (1-8 bytes), allocating a free callback slot, and storing the callback details, returning an error on invalid parameters or allocation failure."
 99,https://github.com/mercedes-benz/ardep,b971483809c29057020e9b68f05b092937886dbb,drivers/lin/abstract_lin/lin_scheduler.c,c,"int abstract_lin_scheduler_set_active_table(
     abstract_lin_scheduler_handle_t sched, size_t table_index) {
   if (table_index >= sched->table_count) {
@@ -2536,7 +2536,7 @@ DBusProxyManager::instancesAsyncCallback(
   k_sem_give(&sched->active);
 
   return 0;
-}",int abstract_lin_scheduler_set_active_table(,#include <ardep/drivers/lin_scheduler.h>,,
+}",int abstract_lin_scheduler_set_active_table(,#include <ardep/drivers/lin_scheduler.h>,Sets the active schedule table for a LIN scheduler and resets its position to the beginning.,"Sets the active LIN schedule table by index, first validating the index and then using a semaphore to thread-safely update the scheduler's state and reset its entry pointer to the start of the new table."
 100,https://github.com/mercedes-benz/ardep,b971483809c29057020e9b68f05b092937886dbb,drivers/lin/abstract_lin/lin_scheduler.c,c,"void abstract_lin_scheduler_disable(abstract_lin_scheduler_handle_t sched) {
   if (sched->current_table == -1) {
     return;  // already stopped.
@@ -2545,4 +2545,4 @@ DBusProxyManager::instancesAsyncCallback(
   k_sem_take(&sched->active, K_FOREVER);
 
   sched->current_table = -1;
-}",void abstract_lin_scheduler_disable(abstract_lin_scheduler_handle_t sched) {,#include <ardep/drivers/lin_scheduler.h>,,
+}",void abstract_lin_scheduler_disable(abstract_lin_scheduler_handle_t sched) {,#include <ardep/drivers/lin_scheduler.h>,Stops the LIN scheduler from processing its current schedule table.,"Disables a LIN scheduler by first checking if it's already stopped, then taking a semaphore to safely wait for the current operation to complete before setting the active schedule table index to -1."

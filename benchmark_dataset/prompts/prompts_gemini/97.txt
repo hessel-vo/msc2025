@@ -1,0 +1,56 @@
+The target code below is part of the automotive software engineering domain.
+Provide a concise, single-line summary of the target C code below.
+Do not provide any other output.
+
+---
+
+**[Example]**
+**Code:**
+```c
+void send_negative_response(enum UDS_SID request_sid,
+                            enum UDS_NRC response_code) {
+  int ret;
+  uint8_t tx_data[] = {UDS_SID_NEGATIVE_RESPONSE, request_sid, response_code};
+  ret = isotp_send(&send_ctx, can_dev, tx_data, sizeof(tx_data), &tx_addr,
+                   &rx_addr, send_complete_cb, NULL);
+  if (ret != ISOTP_N_OK) {
+    LOG_ERR("Error while sending data to ID %d [%d]\n", tx_addr.std_id, ret);
+  }
+}
+```
+
+**Summary:**
+"Constructs and sends a 3-byte UDS negative response message (containing the original request SID and a negative response code) over a CAN bus using the ISO-TP protocol, logging an error if the transmission fails."
+
+---
+
+**[Target]**
+**Summarize the following C code (do not provide any other output):**
+```c
+static int al_register_incoming_cb(const struct device *dev,
+                                   abstract_lin_incoming_callback_t callback,
+                                   uint8_t frame_id,
+                                   uint8_t frame_size,
+                                   void *user_data) {
+  struct abstract_lin_data *data = dev->data;
+
+  if (callback == NULL || frame_id > 0x3F || frame_size < 1 || frame_size > 8) {
+    return -EINVAL;
+  }
+
+  int free_index = allocate_callback(data, frame_id);
+  if (free_index < 0) {
+    return free_index;
+  }
+
+  data->callbacks[free_index].frame_id = frame_id;
+  data->callbacks[free_index].frame_size = frame_size;
+  data->callbacks[free_index].type = INCOMING;
+  data->callbacks[free_index].incoming_cb = callback;
+  data->callbacks[free_index].user_data = user_data;
+
+  return 0;
+}
+```
+
+**Summary:**
