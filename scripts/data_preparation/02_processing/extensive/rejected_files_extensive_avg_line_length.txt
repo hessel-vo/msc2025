@@ -3,8 +3,8 @@ ramses/tests/unittests/framework/SceneGraph/Scene/ActionTestScene.h
 ramses/src/framework/internal/Core/Utils/LoggingUtils.h
 acme/cmake/doc/html/functions_8cmake_source.html
 acme/cmake/doc/html/_export_tar_8cmake_source.html
-acme/cmake/doc/html/files.html
 acme/cmake/doc/html/_test_coverage_8cmake_source.html
+acme/cmake/doc/html/files.html
 acme/cmake/doc/html/_dependendy_graph_8cmake_source.html
 acme/cmake/doc/html/config_8cmake_source.html
 acme/cmake/doc/html/helpmethods_8cmake_source.html

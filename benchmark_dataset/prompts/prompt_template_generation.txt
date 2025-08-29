@@ -1,5 +1,5 @@
 The target code below is part of the automotive software engineering domain.
-Use the target summary below to generate the related <code lanuage> function.
+Use the target summary below to generate the related <code language> function.
 Do not provide any other output.
 
 ---
@@ -10,7 +10,7 @@ Do not provide any other output.
 ---
 
 **[Target]**
-**Generate a <code language> function based on the summary and function signature below (do not provide any other output)**
+**Based on the summary and function signature below, generate the <code language> function, include the function signature and function body (do not provide any other output)**
 
 **Summary:**
 "<target summary>"

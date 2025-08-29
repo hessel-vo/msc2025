@@ -1,6 +1,6 @@
 **[Example 1]**
 **Code:**
-```c
+```cpp
 bool DBusConnection::sendDBusMessage(const DBusMessage &_message) const {
     if (!_message) {
         COMMONAPI_ERROR(std::string(__FUNCTION__), "message == NULL");
@@ -22,7 +22,7 @@ bool DBusConnection::sendDBusMessage(const DBusMessage &_message) const {
 
 **[Example 2]**
 **Code:**
-```c
+```cpp
 DBusMessage DBusClientId::createMessage(const std::string objectPath, const std::string interfaceName, const std::string signalName) const
 {
     DBusMessage returnMessage = DBusMessage::createSignal(objectPath, interfaceName, signalName);
@@ -37,7 +37,7 @@ DBusMessage DBusClientId::createMessage(const std::string objectPath, const std:
 
 **[Example 3]**
 **Code:**
-```c
+```cpp
 void DBusConnectionStatusEvent::onListenerAdded(const Listener &_listener, const Subscription _subscription) {
     (void)_subscription;
     if (dbusConnection_->isConnected())

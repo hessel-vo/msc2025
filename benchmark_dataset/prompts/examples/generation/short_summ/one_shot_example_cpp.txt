@@ -2,7 +2,7 @@
 "Sends a D-Bus message over the connection and returns a boolean indicating success.”
 
 **Code:**
-```c
+```cpp
 bool DBusConnection::sendDBusMessage(const DBusMessage &_message) const {
     if (!_message) {
         COMMONAPI_ERROR(std::string(__FUNCTION__), "message == NULL");

@@ -83,14 +83,21 @@ def main():
     project_root = Path(project_root_str)
     data_prep_dir = project_root / "scripts" / "data_preparation"
 
-    if len(sys.argv) < 2:
-        logging.error("Usage: python 03b_near_deduplication.py <data_suffix>")
+    if len(sys.argv) > 2:
+        filter_level = sys.argv[1]
+        all_or_repo = sys.argv[2]
+
+        if all_or_repo == "all":
+            deduplication_dir = data_prep_dir / "03_deduplication" / filter_level
+        elif all_or_repo == "repo":
+            deduplication_dir = data_prep_dir / "03_deduplication" / "repository_specific" / filter_level
+    else:
+        logging.error("Usage: python 03a_near_deduplication.py <filter_level> <all|repo>")
         return
     
     filter_level = sys.argv[1]
     logging.info(f"Using data suffix: '{filter_level}'")
 
-    deduplication_dir = data_prep_dir / "03_deduplication" / filter_level
     deduplication_dir.mkdir(parents=True, exist_ok=True)
 
     input_path = deduplication_dir / f"exact_deduplicated_data_{filter_level}.jsonl"

@@ -3,6 +3,7 @@ import pandas as pd
 import torch
 from pathlib import Path
 from dotenv import load_dotenv
+import sys
 
 load_dotenv()
 
@@ -20,27 +21,11 @@ print(f"Project Root: {PROJECT_ROOT}")
 print(f"Hugging Face Cache Directory (HF_HOME) set to: {os.environ['HF_HOME']}")
 print("---------------------------------")
 
-from transformers import AutoProcessor, Gemma3ForConditionalGeneration
-
-# --- 1. Configuration ---
+from transformers import AutoProcessor, AutoModelForCausalLM
 
 MODEL_ID = "google/gemma-3-4b-it"
-INPUT_CSV_PATH = PROJECT_ROOT / "benchmark_dataset" / "dataset.csv"
-PROMPTS_DIR = PROJECT_ROOT / "benchmark_dataset" / "prompts" / "generated_prompts"
-OUTPUT_DIR = PROJECT_ROOT / "results" / "baseline"
-OUTPUT_FILENAME = OUTPUT_DIR / "gemma-3-4b-it_baseline_results.csv"
-
-# 3. Ensure output directory exists/is made
-OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 
-# Check configuration
-print(f"Input CSV: {INPUT_CSV_PATH}")
-print(f"Prompts Directory: {PROMPTS_DIR}")
-print(f"Output Directory: {OUTPUT_DIR}")
-print(f"Output Filename: {OUTPUT_FILENAME}")
-
-# --- 2. Setup Device (GPU or CPU) ---
 if torch.cuda.is_available():
     device = torch.device("cuda")
     print("GPU is available. Using CUDA.")
@@ -51,12 +36,11 @@ else:
     print("GPU not available. Using CPU.")
     print("Current device:", device)
 
-# --- 3. Load Model and Processor ---
 print(f"Loading model: {MODEL_ID}...")
 
 processor = AutoProcessor.from_pretrained(MODEL_ID, token=HF_TOKEN)
 
-model = Gemma3ForConditionalGeneration.from_pretrained(
+model = AutoModelForCausalLM.from_pretrained(
     MODEL_ID,
     torch_dtype=torch.bfloat16,
     device_map="auto",
@@ -64,8 +48,48 @@ model = Gemma3ForConditionalGeneration.from_pretrained(
 ).eval()
 print("Model and processor loaded successfully.")
 
-# --- 4. Main Benchmarking Logic ---
+
 def run_benchmark():
+
+    # Configure input and output paths from arguments
+    if len(sys.argv) != 4:
+        print("Usage: python run_benchmark.py <'generation' or 'summary'> <'one' or 'three'> <'short' or 'long'>")
+        return
+
+    task_type = sys.argv[1]
+    shot_count = sys.argv[2]
+    short_or_long = sys.argv[3]  
+
+    if task_type not in ["generation", "summarization"]:
+        print(f"Error: Invalid task type '{task_type}'. Use 'generation' or 'summarization'.")
+        return
+    if shot_count not in ["one", "three"]:
+        print(f"Error: Invalid shot count '{shot_count}'. Use 'one' or 'three'.")
+        return
+    if short_or_long not in ["short", "long"]:
+        print(f"Error: Invalid summary length '{short_or_long}'. Use 'short' or 'long'.")
+        return
+
+    shot_folder_name = "one_shot" if shot_count == "one" else "three_shot"
+    
+    INPUT_CSV_PATH = PROJECT_ROOT / "benchmark_dataset" / "benchmark_dataset.csv"
+    PROMPTS_DIR = PROJECT_ROOT / "benchmark_dataset" / "prompts" / f"prompts_{task_type}_{short_or_long}" / shot_folder_name
+    OUTPUT_DIR = PROJECT_ROOT / "results" / "baseline" # Swich "baseline" to "evaluation" for final eval
+    OUTPUT_FILENAME = OUTPUT_DIR / f"gemma_{task_type}_{shot_folder_name}_{short_or_long}_results.csv"
+
+
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+
+    # Check configurations
+    print("\n--- Running Benchmark with Configuration ---")
+    print(f"Task Type: {task_type}")
+    print(f"Shot Count: {shot_count}")
+    print(f"Input CSV: {INPUT_CSV_PATH}")
+    print(f"Prompts Directory: {PROMPTS_DIR}")
+    print(f"Output Filename: {OUTPUT_FILENAME}")
+    print("------------------------------------------\n")
+
+
     try:
         dataset_df = pd.read_csv(INPUT_CSV_PATH)
     except FileNotFoundError:
@@ -73,12 +97,17 @@ def run_benchmark():
         return
 
     results = []
-    print(f"\nStarting benchmark on {len(dataset_df)} problems...")
+    print(f"Starting benchmark on {len(dataset_df)} problems...")
+
+
+    summary_type = f'summary_{short_or_long}'
 
     for index, row in dataset_df.iterrows():
+        if row['id'] > 3:
+            break
         problem_id = row['id']
-        original_summary = row['summary']
-        prompt_filepath = os.path.join(PROMPTS_DIR, f"{problem_id}.txt")
+        original_summary = row[summary_type]
+        prompt_filepath = PROMPTS_DIR / f"{problem_id}.txt"
 
         print(f"  Processing problem ID: {problem_id}...")
 
@@ -86,7 +115,7 @@ def run_benchmark():
             with open(prompt_filepath, 'r', encoding='utf-8') as f:
                 prompt_text = f.read()
         except FileNotFoundError:
-            print(f"    - Warning: Prompt file not found for ID '{problem_id}'. Skipping.")
+            print(f"    - Warning: Prompt file not found for ID '{problem_id}' at '{prompt_filepath}'. Skipping.")
             continue
 
         # 1. Format the input using chat template
@@ -113,7 +142,7 @@ def run_benchmark():
                 do_sample=False
             )
         
-        # 4. Decode only the newly generated tokens
+        # 4. Decode new tokens
         generated_ids = outputs[0][input_len:]
         generated_summary = processor.decode(generated_ids, skip_special_tokens=True).strip()
 
@@ -131,12 +160,12 @@ def run_benchmark():
         print("No results were generated. Exiting without saving.")
         return
         
-    os.makedirs(OUTPUT_DIR, exist_ok=True)
     results_df = pd.DataFrame(results)
-    output_path = os.path.join(OUTPUT_DIR, OUTPUT_FILENAME)
-    results_df.to_csv(output_path, index=False)
+    results_df.to_csv(OUTPUT_FILENAME, index=False)
     
-    print(f"Results saved successfully to '{output_path}'")
+    print(f"Results saved successfully to '{OUTPUT_FILENAME}'")
 
 if __name__ == "__main__":
+    # The sys.exit() from the original script is removed to allow the script to run.
+    # If it was for debugging, it's no longer needed here.
     run_benchmark()

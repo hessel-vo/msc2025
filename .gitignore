@@ -1,6 +1,7 @@
 venv/
 hf_cache/
 repositories/all_repos/
+repositories/test_repos/
 __pycache__/
 
 

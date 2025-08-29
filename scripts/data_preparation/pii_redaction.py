@@ -14,6 +14,8 @@ TLD = [
     "org",
     "uk",
     "ibm",
+    "fr",
+    "global"
 ]
 
 # A specific email address that should never be redacted, even if its TLD is in the list.

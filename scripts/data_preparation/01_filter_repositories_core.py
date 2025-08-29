@@ -24,7 +24,6 @@ EXCLUDED_FILENAME_ROOTS = {
 
 EXCLUDED_EXACT_FILENAMES = {".gitignore", ".gitattributes"}
 
-
 # INCLUSION
 INCLUDED_FILES = {
     "CMakeLists.txt", "Makefile", "Kconfig", "west.yml", "pom.xml",
@@ -86,29 +85,18 @@ def main():
         return
         
     project_root = Path(project_root_str)
-    repos_root = project_root / "repositories/all_repos"
+    repos_root = project_root / "repositories" / "test_repos"
     
 
     VERSION = "core"
-    output_dir = project_root / "scripts" / "data_preparation" / "01_filtering"
+    output_dir = project_root / "scripts" / "data_preparation" / "01_filtering" / "repository_specific"
     output_dir.mkdir(parents=True, exist_ok=True)
     output_path = output_dir / f'filtered_file_paths_{VERSION}.txt'
     
-    excluded_repos_file = project_root / "repositories" / "test_repos.txt"
 
     if not repos_root.is_dir():
         logging.error(f"Repository root directory not found: '{repos_root}'")
         return
-
-    excluded_repo_paths = set()
-    if excluded_repos_file.is_file():
-        logging.info(f"Loading excluded repositories from '{excluded_repos_file}'")
-        with open(excluded_repos_file, 'r', encoding='utf-8') as f:
-            excluded_repo_paths = {
-                (repos_root / line.strip()).resolve() 
-                for line in f if line.strip()
-            }
-        logging.info(f"Loaded {len(excluded_repo_paths)} repositories to exclude.")
 
     logging.info(f"Scanning for files in '{repos_root}'...")
     
@@ -119,11 +107,6 @@ def main():
             count = 0
             for root, dirs, files in os.walk(repos_root, topdown=True):
                 current_dir = Path(root)
-                
-                dirs[:] = [
-                    d for d in dirs 
-                    if (current_dir / d).resolve() not in excluded_repo_paths
-                ]
                 
                 for filename in files:
                     file_path = current_dir / filename

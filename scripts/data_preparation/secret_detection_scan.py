@@ -9,7 +9,6 @@ from collections import Counter
 from detect_secrets import SecretsCollection
 from detect_secrets.settings import default_settings
 
-# --- Configuration ---
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 
@@ -25,7 +24,6 @@ def main():
 
     start_time = time.time()
     
-    # --- Path Setup ---
     load_dotenv()
     project_root_str = os.getenv('PROJECT_ROOT')
     if not project_root_str:
@@ -42,7 +40,6 @@ def main():
         logging.error(f"Manifest file not found: '{manifest_path}'")
         return
 
-    # --- Analysis Initialization ---
     secret_type_counts = Counter()
     report_lines = []
     docs_scanned = 0
@@ -75,20 +72,17 @@ def main():
             )
             report_lines.append(report_line)
 
-    # --- File Report Generation ---
     logging.info(f"Writing detailed secrets report to: {report_output_path}")
     with open(report_output_path, 'w', encoding='utf-8') as f:
         if not report_lines:
             f.write("No secrets were detected in the scanned files.\n")
         else:
             f.write("--- Detailed Secrets Report ---\n\n")
-            # Sort the report alphabetically by file path for consistency
             for line in sorted(report_lines):
                 f.write(line + "\n")
     logging.info("Report written successfully.")
 
 
-    # --- Console Logging ---
     logging.info(f"--- Secret Analysis Complete ---")
     logging.info(f"Total documents scanned: {docs_scanned:,}")
     

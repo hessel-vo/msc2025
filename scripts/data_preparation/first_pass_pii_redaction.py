@@ -1,6 +1,6 @@
 import re
 from typing import List, Tuple
-
+from ipaddress import ip_address, AddressValueError
 
 EMAIL = (
     re.compile(r"""(^|[\b\s@,?!;:)(\'".<\[\]])([^\b\s@?!;,:)(’\"<]+@[^\b\s@!?;,/]*[^\b\s@?!;,/:)(’\">.]\.\w{2,})(?=$|[\b\s@,?!;:)(’'".>\[\]])"""),
@@ -25,11 +25,13 @@ SECRET = (
 
 ALL_PATTERNS = [EMAIL, IPV4, IPV6, SECRET]
 
-def redact_pii(text: str, patterns: List[Tuple[re.Pattern, str]]) -> Tuple[str, List[Tuple[str, str]]]:
+def redact_pii(text: str) -> Tuple[str, List[Tuple[str, str]]]:
     """
     Iterates through PII patterns, replaces any matches, and reports which patterns were found
     """
     found_instances: List[Tuple[str, str]] = []
+
+    patterns = ALL_PATTERNS
 
     for pattern, replacement in patterns:
         
@@ -47,6 +49,7 @@ def redact_pii(text: str, patterns: List[Tuple[re.Pattern, str]]) -> Tuple[str, 
                        ip_addr_obj.is_multicast:
                         return match.group(0)
 
+                    print("found real ip")
                     found_instances.append((replacement, potential_ip))
                     return f"{match.group(1)}{replacement}{match.group(3)}"
                 except (ValueError, AddressValueError):

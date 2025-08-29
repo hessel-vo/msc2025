@@ -1,0 +1,1 @@
+ardep/samples/adc/boards/ardep.overlay

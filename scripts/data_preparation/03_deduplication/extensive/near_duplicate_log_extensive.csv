@@ -54,7 +54,7 @@ dlt-daemon/tests/components/logstorage/disable_network/disable_network.cpp,dlt-d
 dlt-daemon/tests/components/logstorage/disable_network/disable_network.cpp,dlt-daemon/tests/components/logstorage/logstorage_fsync/logstorage_fsync.cpp
 dlt-daemon/tests/components/logstorage/disable_network/disable_network.cpp,dlt-daemon/tests/components/logstorage/logstorage_multi_file/logstorage_multi_file.cpp
 dlt-viewer/build_sdk_windows_qt6_MSVC_cmake.bat,dlt-viewer/build_sdk_windows_qt5_MSVC_cmake.bat
-dlt-viewer/parser/examples/example_2/mapp.c,dlt-viewer/parser/examples/example_1/mapp.c
+dlt-viewer/parser/examples/example_1/mapp.c,dlt-viewer/parser/examples/example_2/mapp.c
 eclipse-tractusx_tractusx-edc-merge/charts/tractusx-connector-azure-vault/templates/hpa-controlplane.yaml,eclipse-tractusx_tractusx-edc-merge/charts/tractusx-connector/templates/hpa-controlplane.yaml
 eclipse-tractusx_tractusx-edc-merge/charts/tractusx-connector/templates/service-dataplane.yaml,eclipse-tractusx_tractusx-edc-merge/charts/tractusx-connector-azure-vault/templates/service-dataplane.yaml
 eclipse-tractusx_tractusx-edc-merge/charts/tractusx-connector/values.yaml,eclipse-tractusx_tractusx-edc-merge/charts/tractusx-connector-azure-vault/values.yaml
@@ -201,7 +201,7 @@ valhalla/locales/ru-RU.json,valhalla/locales/bg-BG.json
 valhalla/locales/ru-RU.json,valhalla/locales/el-GR.json
 valhalla/locales/ru-RU.json,valhalla/locales/ja-JP.json
 valhalla/locales/ru-RU.json,valhalla/locales/uk-UA.json
-vehicle_signal_specification/spec/units.yaml,s2dm/examples/spec-history-registry/units.yaml
+vehicle_signal_specification/spec/units.yaml,s2dm/tests/data/test_units.yaml
 vsomeip/config/vsomeip-local-tracing.json,vsomeip/config/vsomeip-local.json
 vsomeip/interface/compat/vsomeip/trace.hpp,vsomeip/interface/vsomeip/trace.hpp
 vsomeip/test/unit_tests/main.cpp,muesli/tests/unit-tests/TestMain.cpp

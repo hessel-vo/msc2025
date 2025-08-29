@@ -2,10 +2,10 @@ import os
 import csv
 import sys
 
-# --- Configuration (static paths that don't change) ---
+# --- Configuration ---
 TEMPLATE_FILE_PATH = "prompt_template_summarization.txt"
 CSV_FILE_PATH = "benchmark_dataset.csv"
-BASE_OUTPUT_DIR = "prompts_summarization" 
+BASE_OUTPUT_DIR = "prompts_summarization"
 BASE_EXAMPLES_DIR = "examples/summarization"
 
 def load_text_file(filepath):
@@ -27,6 +27,12 @@ def create_prompts(sum_length, num_examples):
     # 1. Prompt template
     print(f"Loading prompt template from '{TEMPLATE_FILE_PATH}'...")
     prompt_template = load_text_file(TEMPLATE_FILE_PATH)
+
+    if num_examples == "three":
+        prompt_template = prompt_template.replace("[Example]", "[Examples]")
+
+    if sum_length == "long":
+        prompt_template = prompt_template.replace("Provide a concise", "Provide a detailed")
 
     # 2. Output directory
     os.makedirs(output_dir, exist_ok=True)

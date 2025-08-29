@@ -1,35 +1,39 @@
 import os
 import csv
 import sys
-from dotenv import load_dotenv
-
-load_dotenv()
 
 # --- Configuration ---
-TEMPLATE_FILE_PATH = "prompt_template.txt"
+TEMPLATE_FILE_PATH = "prompt_template_generation.txt"
 CSV_FILE_PATH = "benchmark_dataset.csv"
-OUTPUT_DIR = ""
-EXAMPLES_DIR = "examples/summarization"
+BASE_OUTPUT_DIR = "prompts_generation"
+BASE_EXAMPLES_DIR = "examples/generation"
 
 def load_text_file(filepath):
     try:
         with open(filepath, 'r', encoding='utf-8') as f:
             return f.read()
     except FileNotFoundError:
-        print(f"ERROR: File not found found at '{filepath}'.")
+        print(f"ERROR: File not found at '{filepath}'.")
         sys.exit(1)
     except Exception as e:
         print(f"An error occurred while reading '{filepath}': {e}")
         sys.exit(1)
 
-def create_prompts():
+def create_prompts(sum_length, num_examples):
+
+    output_dir = f"{BASE_OUTPUT_DIR}_{sum_length}/{num_examples}_shot"
+    examples_dir = f"{BASE_EXAMPLES_DIR}/{sum_length}_summ"
+
     # 1. Prompt template
     print(f"Loading prompt template from '{TEMPLATE_FILE_PATH}'...")
     prompt_template = load_text_file(TEMPLATE_FILE_PATH)
 
+    if num_examples == "three":
+        prompt_template = prompt_template.replace("[Example]", "[Examples]")
+
     # 2. Output directory
-    os.makedirs(OUTPUT_DIR, exist_ok=True)
-    print(f"Output will be saved to the '{OUTPUT_DIR}' directory.")
+    os.makedirs(output_dir, exist_ok=True)
+    print(f"Output will be saved to the '{output_dir}' directory.")
 
     # 3. Store examples
     example_cache = {}
@@ -46,36 +50,35 @@ def create_prompts():
                     file_id = row['id']
                     language = row['language']
                     
-                    code_from_csv = row['code']
-                    code = '\n'.join(code_from_csv.splitlines())
+                    summary_column = f"summary_{sum_length}"
+                    target_summary = row[summary_column]
+                    function_signature = row['function_signature']
                     
-                    # For display text (e.g., "Python", "Java")
-                    capitalized_language = language.capitalize()
-                    # For file lookups and code blocks (e.g., "python", "java")
                     lang_key = language.lower()
 
                     # 5. Load the language-specific example (use cache if available)
                     if lang_key not in example_cache:
-                        example_path = os.path.join(EXAMPLES_DIR, f"gemini/example_gemini_{lang_key}.txt")
+                        example_path = os.path.join(examples_dir, f"{num_examples}_shot_example_{lang_key}.txt")
                         if os.path.exists(example_path):
-                            example_cache[lang_key] = load_text_file(example_path)
+                            loaded_text = load_text_file(example_path)
+                            example_cache[lang_key] = loaded_text
                             print(f"Loaded example for '{language}' from '{example_path}'.")
-                            print(example_cache[lang_key])
                         else:
-                            print(f"Example file missing '{language}' at '{example_path}'.")
+                            print(f"Example file missing for '{language}' at '{example_path}'.")
                             sys.exit(1)
 
                     full_example_text = example_cache[lang_key]
 
                     # 6. Fill template with data
-                    filled_prompt = prompt_template.replace("<summary example>", full_example_text)
-                    filled_prompt = filled_prompt.replace("<code language>", capitalized_language) # For display
-                    filled_prompt = filled_prompt.replace("<target language>", lang_key)          # For code block
-                    filled_prompt = filled_prompt.replace("<target code>", code)
+                    filled_prompt = prompt_template.replace("<generation example>", full_example_text)
+                    filled_prompt = filled_prompt.replace("<code language>", lang_key.capitalize())
+                    filled_prompt = filled_prompt.replace("<target language>", lang_key)
+                    filled_prompt = filled_prompt.replace("<target summary>", target_summary)
+                    filled_prompt = filled_prompt.replace("<function signature>", function_signature)
                     
                     # 7. Save the final prompt to a new file using name='id'
                     output_filename = f"{file_id}.txt"
-                    output_filepath = os.path.join(OUTPUT_DIR, output_filename)
+                    output_filepath = os.path.join(output_dir, output_filename)
                     
                     with open(output_filepath, 'w', encoding='utf-8') as out_file:
                         out_file.write(filled_prompt)
@@ -91,5 +94,20 @@ def create_prompts():
 
     print("\nPrompt generation complete.")
 
+def main():
+    
+    if len(sys.argv) < 3:
+        print("ERROR: Incorrect number of arguments provided.")
+        print(f"Usage: python {sys.argv[0]} <summarization_length> <num_examples>")
+        sys.exit(1)
+
+    sum_length = sys.argv[1]
+    num_examples = sys.argv[2]    
+    
+    create_prompts(
+        sum_length=sum_length,
+        num_examples=num_examples
+    )
+
 if __name__ == "__main__":
-    create_prompts()
+    main()

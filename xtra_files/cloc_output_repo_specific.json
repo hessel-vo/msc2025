@@ -1,0 +1,1274 @@
+{"header" : {
+  "cloc_url"           : "github.com/AlDanial/cloc",
+  "cloc_version"       : "1.98",
+  "elapsed_seconds"    : 0.180688858032227,
+  "n_files"            : 252,
+  "n_lines"            : 42642,
+  "files_per_second"   : 1394.66264131823,
+  "lines_per_second"   : 235996.842663064,
+  "report_file"        : "cloc_output.json"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/src/CommonAPI/DBus/DBusConnection.cpp" :{
+  "blank": 297,
+  "comment": 72,
+  "code": 1494,
+  "language": "C++"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/src/CommonAPI/DBus/DBusServiceRegistry.cpp" :{
+  "blank": 245,
+  "comment": 51,
+  "code": 992,
+  "language": "C++"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/include/CommonAPI/DBus/DBusStubAdapterHelper.hpp" :{
+  "blank": 192,
+  "comment": 8,
+  "code": 953,
+  "language": "C/C++ Header"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/binary/c_parser/cparserlib.c" :{
+  "blank": 91,
+  "comment": 25,
+  "code": 647,
+  "language": "C"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/src/CommonAPI/DBus/DBusMainLoop.cpp" :{
+  "blank": 97,
+  "comment": 24,
+  "code": 593,
+  "language": "C++"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/src/CommonAPI/DBus/DBusProxy.cpp" :{
+  "blank": 99,
+  "comment": 26,
+  "code": 537,
+  "language": "C++"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/include/CommonAPI/DBus/DBusProxyHelper.hpp" :{
+  "blank": 55,
+  "comment": 12,
+  "code": 492,
+  "language": "C/C++ Header"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/aosp_device_covesa_emulator/CustomCarProvision/src/com/android/car/provision/DefaultActivity.java" :{
+  "blank": 86,
+  "comment": 36,
+  "code": 474,
+  "language": "Java"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/src/vss_tools/exporters/graphql.py" :{
+  "blank": 128,
+  "comment": 55,
+  "code": 401,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/src/vss_tools/exporters/apigear.py" :{
+  "blank": 94,
+  "comment": 31,
+  "code": 399,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/src/CommonAPI/DBus/DBusAddressTranslator.cpp" :{
+  "blank": 68,
+  "comment": 17,
+  "code": 390,
+  "language": "C++"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/src/CommonAPI/DBus/DBusMainLoopContext.cpp" :{
+  "blank": 75,
+  "comment": 20,
+  "code": 385,
+  "language": "C++"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/src/CommonAPI/DBus/DBusFactory.cpp" :{
+  "blank": 72,
+  "comment": 19,
+  "code": 381,
+  "language": "C++"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/include/CommonAPI/DBus/DBusInputStream.hpp" :{
+  "blank": 102,
+  "comment": 74,
+  "code": 380,
+  "language": "C/C++ Header"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/src/vss_tools/tree.py" :{
+  "blank": 92,
+  "comment": 149,
+  "code": 380,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/src/vss_tools/exporters/samm/helpers/ttl_builder_helper.py" :{
+  "blank": 156,
+  "comment": 157,
+  "code": 357,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/src/vss_tools/exporters/ddsidl.py" :{
+  "blank": 43,
+  "comment": 50,
+  "code": 344,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/include/CommonAPI/DBus/DBusOutputStream.hpp" :{
+  "blank": 87,
+  "comment": 64,
+  "code": 341,
+  "language": "C/C++ Header"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/lib/uds/uds.c" :{
+  "blank": 83,
+  "comment": 19,
+  "code": 319,
+  "language": "C"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/include/CommonAPI/DBus/DBusConnection.hpp" :{
+  "blank": 115,
+  "comment": 7,
+  "code": 319,
+  "language": "C/C++ Header"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/src/CommonAPI/DBus/DBusObjectManager.cpp" :{
+  "blank": 64,
+  "comment": 11,
+  "code": 318,
+  "language": "C++"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/src/vss_tools/model.py" :{
+  "blank": 73,
+  "comment": 64,
+  "code": 310,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/aosp_device_covesa_emulator/CustomCarLauncher/src/com/android/car/carlauncher/AppGridActivity.java" :{
+  "blank": 44,
+  "comment": 50,
+  "code": 301,
+  "language": "Java"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/src/CommonAPI/DBus/DBusObjectManagerStub.cpp" :{
+  "blank": 71,
+  "comment": 7,
+  "code": 289,
+  "language": "C++"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/tests/vspec/test_structs/test_data_type_parsing.py" :{
+  "blank": 32,
+  "comment": 36,
+  "code": 288,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/tests/vspec/test_static_uids/test_static_uids.py" :{
+  "blank": 59,
+  "comment": 14,
+  "code": 274,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/tests/vspec/test_node_removal/test_node_removal.py" :{
+  "blank": 24,
+  "comment": 10,
+  "code": 262,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/include/CommonAPI/DBus/DBusFreedesktopAttribute.hpp" :{
+  "blank": 34,
+  "comment": 5,
+  "code": 260,
+  "language": "C/C++ Header"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/src/vss_tools/exporters/samm/helpers/vss_helper.py" :{
+  "blank": 111,
+  "comment": 134,
+  "code": 252,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/drivers/hv_shield/gpio/hv_shield_gpio.c" :{
+  "blank": 57,
+  "comment": 29,
+  "code": 236,
+  "language": "C"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/src/CommonAPI/DBus/DBusInstanceAvailabilityStatusChangedEvent.cpp" :{
+  "blank": 44,
+  "comment": 4,
+  "code": 234,
+  "language": "C++"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/src/vss_tools/exporters/go.py" :{
+  "blank": 46,
+  "comment": 50,
+  "code": 234,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/aosp_device_covesa_emulator/CustomCarLauncher/src/com/android/car/carlauncher/homescreen/HomeCardFragment.java" :{
+  "blank": 31,
+  "comment": 40,
+  "code": 233,
+  "language": "Java"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/src/CommonAPI/DBus/DBusMessage.cpp" :{
+  "blank": 65,
+  "comment": 4,
+  "code": 233,
+  "language": "C++"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/obsolete/vspec2c.py" :{
+  "blank": 75,
+  "comment": 38,
+  "code": 233,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/drivers/can/lin2can/lin2can.c" :{
+  "blank": 68,
+  "comment": 74,
+  "code": 228,
+  "language": "C"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/drivers/lin/abstract_lin/abstract_lin.c" :{
+  "blank": 67,
+  "comment": 27,
+  "code": 225,
+  "language": "C"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/aosp_device_covesa_emulator/CustomCarLauncher/src/com/android/car/carlauncher/CarLauncher.java" :{
+  "blank": 30,
+  "comment": 50,
+  "code": 224,
+  "language": "Java"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/include/CommonAPI/DBus/DBusServiceRegistry.hpp" :{
+  "blank": 82,
+  "comment": 8,
+  "code": 220,
+  "language": "C/C++ Header"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/aosp_device_covesa_emulator/CustomCarLauncher/src/com/android/car/carlauncher/AppLauncherUtils.java" :{
+  "blank": 35,
+  "comment": 78,
+  "code": 215,
+  "language": "Java"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/src/vss_tools/datatypes.py" :{
+  "blank": 57,
+  "comment": 33,
+  "code": 208,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/src/test/DBusVariantOutputStreamTest.cpp" :{
+  "blank": 78,
+  "comment": 4,
+  "code": 207,
+  "language": "C++"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/aosp_device_covesa_emulator/CustomCarLauncher/src/com/android/car/carlauncher/homescreen/audio/InCallModel.java" :{
+  "blank": 26,
+  "comment": 43,
+  "code": 202,
+  "language": "Java"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/src/murmurhash/MurmurHash3.cpp" :{
+  "blank": 90,
+  "comment": 69,
+  "code": 201,
+  "language": "C++"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/src/vss_tools/main.py" :{
+  "blank": 44,
+  "comment": 25,
+  "code": 184,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/src/vss_tools/exporters/plantuml.py" :{
+  "blank": 31,
+  "comment": 26,
+  "code": 183,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/include/CommonAPI/DBus/DBusProxyAsyncCallbackHandler.hpp" :{
+  "blank": 46,
+  "comment": 11,
+  "code": 182,
+  "language": "C/C++ Header"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/src/test/DBusConnectionTest.cpp" :{
+  "blank": 73,
+  "comment": 52,
+  "code": 181,
+  "language": "C++"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/src/test/DBusStubAdapterTest.cpp" :{
+  "blank": 37,
+  "comment": 4,
+  "code": 179,
+  "language": "C++"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/include/CommonAPI/DBus/DBusTypeOutputStream.hpp" :{
+  "blank": 32,
+  "comment": 4,
+  "code": 174,
+  "language": "C/C++ Header"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/src/vss_tools/exporters/samm/__init__.py" :{
+  "blank": 42,
+  "comment": 67,
+  "code": 171,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/src/vss_tools/exporters/protobuf.py" :{
+  "blank": 29,
+  "comment": 28,
+  "code": 170,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/contrib/vspec2ttl/vspec2ttl.py" :{
+  "blank": 49,
+  "comment": 82,
+  "code": 168,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/tests/vspec/test_units/test_units.py" :{
+  "blank": 47,
+  "comment": 21,
+  "code": 165,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/scripts/tester/uart.py" :{
+  "blank": 35,
+  "comment": 1,
+  "code": 163,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/src/vss_tools/exporters/jsonschema.py" :{
+  "blank": 18,
+  "comment": 13,
+  "code": 163,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/include/CommonAPI/DBus/DBusEvent.hpp" :{
+  "blank": 34,
+  "comment": 4,
+  "code": 162,
+  "language": "C/C++ Header"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/src/vss_tools/exporters/id.py" :{
+  "blank": 26,
+  "comment": 28,
+  "code": 162,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/aosp_device_covesa_emulator/CustomCarLauncher/src/com/android/car/carlauncher/homescreen/audio/MediaViewModel.java" :{
+  "blank": 26,
+  "comment": 40,
+  "code": 157,
+  "language": "Java"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/samples/gpio_expander/src/main.c" :{
+  "blank": 48,
+  "comment": 7,
+  "code": 156,
+  "language": "C"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/obsolete/ocf/vspec2ocf.py" :{
+  "blank": 15,
+  "comment": 15,
+  "code": 154,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/include/CommonAPI/DBus/DBusDaemonProxy.hpp" :{
+  "blank": 42,
+  "comment": 12,
+  "code": 152,
+  "language": "C/C++ Header"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/include/CommonAPI/DBus/DBusFreedesktopStubAdapterHelper.hpp" :{
+  "blank": 29,
+  "comment": 11,
+  "code": 150,
+  "language": "C/C++ Header"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/aosp_device_covesa_emulator/CustomCarLauncher/src/com/android/car/carlauncher/homescreen/assistive/ProjectionModel.java" :{
+  "blank": 22,
+  "comment": 26,
+  "code": 145,
+  "language": "Java"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/scripts/tester/gpio.py" :{
+  "blank": 32,
+  "comment": 1,
+  "code": 145,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/binary/c_parser/testparser.c" :{
+  "blank": 9,
+  "comment": 12,
+  "code": 145,
+  "language": "C"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/scripts/ardep_commands/dfu_util.py" :{
+  "blank": 28,
+  "comment": 4,
+  "code": 141,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/include/CommonAPI/DBus/DBusProxy.hpp" :{
+  "blank": 40,
+  "comment": 4,
+  "code": 139,
+  "language": "C/C++ Header"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/include/CommonAPI/DBus/DBusAttribute.hpp" :{
+  "blank": 22,
+  "comment": 4,
+  "code": 135,
+  "language": "C/C++ Header"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/include/CommonAPI/DBus/DBusProxyConnection.hpp" :{
+  "blank": 37,
+  "comment": 5,
+  "code": 129,
+  "language": "C/C++ Header"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/scripts/tester/lin.py" :{
+  "blank": 32,
+  "comment": 1,
+  "code": 125,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/src/test/DBusVariantTest.cpp" :{
+  "blank": 50,
+  "comment": 4,
+  "code": 123,
+  "language": "C++"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/scripts/ardep_commands/uds_dfu.py" :{
+  "blank": 27,
+  "comment": 4,
+  "code": 122,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/src/CommonAPI/DBus/DBusInputStream.cpp" :{
+  "blank": 32,
+  "comment": 6,
+  "code": 120,
+  "language": "C++"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/obsolete/vspec2c/vehicle_signal_specification.c" :{
+  "blank": 30,
+  "comment": 34,
+  "code": 120,
+  "language": "C"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/scripts/tester/can.py" :{
+  "blank": 32,
+  "comment": 1,
+  "code": 119,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/src/CommonAPI/DBus/DBusDaemonProxy.cpp" :{
+  "blank": 29,
+  "comment": 5,
+  "code": 118,
+  "language": "C++"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/tests/instances/test_instances.py" :{
+  "blank": 35,
+  "comment": 51,
+  "code": 117,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/drivers/hv_shield/dac/hv_shield_dac.c" :{
+  "blank": 25,
+  "comment": 4,
+  "code": 116,
+  "language": "C"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/drivers/hv_shield/hv_shield/hv_shield.c" :{
+  "blank": 32,
+  "comment": 12,
+  "code": 116,
+  "language": "C"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/src/vss_tools/cli_options.py" :{
+  "blank": 25,
+  "comment": 19,
+  "code": 116,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/aosp_device_covesa_emulator/CustomCarLauncher/src/com/android/car/carlauncher/AppGridAdapter.java" :{
+  "blank": 19,
+  "comment": 20,
+  "code": 115,
+  "language": "Java"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/include/CommonAPI/DBus/DBusMainLoop.hpp" :{
+  "blank": 36,
+  "comment": 30,
+  "code": 113,
+  "language": "C/C++ Header"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/samples/hardware_tester/src/uart.c" :{
+  "blank": 14,
+  "comment": 6,
+  "code": 112,
+  "language": "C"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/src/test/DBusDaemonProxyTest.cpp" :{
+  "blank": 38,
+  "comment": 5,
+  "code": 110,
+  "language": "C++"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/aosp_device_covesa_emulator/CustomCarLauncher/src/com/android/car/carlauncher/homescreen/audio/AudioFragment.java" :{
+  "blank": 18,
+  "comment": 20,
+  "code": 108,
+  "language": "Java"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/src/vss_tools/exporters/csv.py" :{
+  "blank": 18,
+  "comment": 11,
+  "code": 108,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/scripts/tester/tester.py" :{
+  "blank": 33,
+  "comment": 13,
+  "code": 104,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/include/CommonAPI/DBus/DBusMainLoopContext.hpp" :{
+  "blank": 46,
+  "comment": 4,
+  "code": 102,
+  "language": "C/C++ Header"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/include/CommonAPI/DBus/DBusErrorEvent.hpp" :{
+  "blank": 28,
+  "comment": 4,
+  "code": 101,
+  "language": "C/C++ Header"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/src/CommonAPI/DBus/DBusFreedesktopPropertiesStub.cpp" :{
+  "blank": 20,
+  "comment": 6,
+  "code": 101,
+  "language": "C++"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/src/vss_tools/vspec.py" :{
+  "blank": 33,
+  "comment": 7,
+  "code": 101,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/src/vss_tools/utils/vss2id_val.py" :{
+  "blank": 23,
+  "comment": 35,
+  "code": 99,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/samples/can/src/main.c" :{
+  "blank": 30,
+  "comment": 6,
+  "code": 97,
+  "language": "C"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/samples/lin/commander_scheduler/src/main.c" :{
+  "blank": 23,
+  "comment": 8,
+  "code": 95,
+  "language": "C"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/include/CommonAPI/DBus/DBusProxyAsyncSignalMemberCallbackHandler.hpp" :{
+  "blank": 29,
+  "comment": 6,
+  "code": 95,
+  "language": "C/C++ Header"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/src/vss_tools/exporters/binary.py" :{
+  "blank": 26,
+  "comment": 35,
+  "code": 93,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/src/CommonAPI/DBus/DBusOutputStream.cpp" :{
+  "blank": 23,
+  "comment": 21,
+  "code": 92,
+  "language": "C++"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/obsolete/vspec2c/example/vss_dump.c" :{
+  "blank": 28,
+  "comment": 18,
+  "code": 92,
+  "language": "C"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/scripts/tester/util.py" :{
+  "blank": 17,
+  "comment": 2,
+  "code": 91,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/src/vss_tools/exporters/samm/helpers/ttl_helper.py" :{
+  "blank": 41,
+  "comment": 44,
+  "code": 91,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/src/CommonAPI/DBus/DBusFunctionalHash.cpp" :{
+  "blank": 29,
+  "comment": 7,
+  "code": 90,
+  "language": "C++"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/src/CommonAPI/DBus/DBusProxyManager.cpp" :{
+  "blank": 14,
+  "comment": 6,
+  "code": 90,
+  "language": "C++"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/include/CommonAPI/DBus/DBusFactory.hpp" :{
+  "blank": 36,
+  "comment": 8,
+  "code": 89,
+  "language": "C/C++ Header"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/tests/vspec/test_units_no_quantity/test_units_no_quantity.py" :{
+  "blank": 10,
+  "comment": 13,
+  "code": 89,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/include/ardep/drivers/abstract_lin.h" :{
+  "blank": 23,
+  "comment": 128,
+  "code": 88,
+  "language": "C/C++ Header"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/src/vss_tools/exporters/samm/helpers/samm_concepts.py" :{
+  "blank": 20,
+  "comment": 8,
+  "code": 86,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/tests/vspec/test_extended/test_extended.py" :{
+  "blank": 21,
+  "comment": 13,
+  "code": 86,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/samples/digital_input_interrupt/src/main.c" :{
+  "blank": 27,
+  "comment": 8,
+  "code": 85,
+  "language": "C"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/obsolete/vspec2aaproperties/vspec2aaprop.py" :{
+  "blank": 31,
+  "comment": 68,
+  "code": 85,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/src/CommonAPI/DBus/DBusAddress.cpp" :{
+  "blank": 22,
+  "comment": 4,
+  "code": 84,
+  "language": "C++"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/samples/hardware_test/src/uart.c" :{
+  "blank": 13,
+  "comment": 7,
+  "code": 83,
+  "language": "C"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/src/CommonAPI/DBus/DBusProxyBase.cpp" :{
+  "blank": 14,
+  "comment": 4,
+  "code": 83,
+  "language": "C++"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/samples/hardware_tester/src/lin.c" :{
+  "blank": 12,
+  "comment": 7,
+  "code": 82,
+  "language": "C"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/samples/lin2can/isotp/src/main.c" :{
+  "blank": 21,
+  "comment": 6,
+  "code": 82,
+  "language": "C"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/include/CommonAPI/DBus/DBusMultiEvent.hpp" :{
+  "blank": 32,
+  "comment": 4,
+  "code": 82,
+  "language": "C/C++ Header"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/src/vss_tools/exporters/franca.py" :{
+  "blank": 14,
+  "comment": 31,
+  "code": 81,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/aosp_device_covesa_emulator/CustomCarLauncher/src/com/android/car/carlauncher/homescreen/ui/DescriptiveTextWithControlsView.java" :{
+  "blank": 21,
+  "comment": 24,
+  "code": 77,
+  "language": "Java"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/src/vss_tools/exporters/yaml.py" :{
+  "blank": 14,
+  "comment": 14,
+  "code": 77,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/samples/hardware_test/src/can.c" :{
+  "blank": 18,
+  "comment": 6,
+  "code": 76,
+  "language": "C"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/include/CommonAPI/DBus/DBusMessage.hpp" :{
+  "blank": 29,
+  "comment": 4,
+  "code": 76,
+  "language": "C/C++ Header"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/src/vss_tools/exporters/json.py" :{
+  "blank": 11,
+  "comment": 11,
+  "code": 73,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/include/CommonAPI/DBus/DBusProxyBase.hpp" :{
+  "blank": 23,
+  "comment": 4,
+  "code": 72,
+  "language": "C/C++ Header"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/include/CommonAPI/DBus/DBusInstanceAvailabilityStatusChangedEvent.hpp" :{
+  "blank": 24,
+  "comment": 5,
+  "code": 71,
+  "language": "C/C++ Header"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/obsolete/vspec2c/vehicle_signal_specification.h" :{
+  "blank": 39,
+  "comment": 118,
+  "code": 71,
+  "language": "C/C++ Header"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/scripts/ardep_commands/create_udev_rule.py" :{
+  "blank": 16,
+  "comment": 4,
+  "code": 70,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/src/vss_tools/exporters/samm/helpers/data_types_and_units.py" :{
+  "blank": 4,
+  "comment": 7,
+  "code": 70,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/samples/lin/commander/src/main.c" :{
+  "blank": 17,
+  "comment": 10,
+  "code": 68,
+  "language": "C"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/src/vss_tools/exporters/tree.py" :{
+  "blank": 9,
+  "comment": 10,
+  "code": 68,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/binary/c_parser/cparserlib.h" :{
+  "blank": 11,
+  "comment": 10,
+  "code": 67,
+  "language": "C/C++ Header"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/samples/hardware_tester/src/can.c" :{
+  "blank": 18,
+  "comment": 6,
+  "code": 66,
+  "language": "C"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/samples/adc/src/main.c" :{
+  "blank": 15,
+  "comment": 22,
+  "code": 65,
+  "language": "C"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/aosp_device_covesa_emulator/CustomCarLauncher/src/com/android/car/carlauncher/AppMetaData.java" :{
+  "blank": 15,
+  "comment": 38,
+  "code": 63,
+  "language": "Java"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/scripts/ardep.py" :{
+  "blank": 12,
+  "comment": 6,
+  "code": 63,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/tests/vspec/test_overlay_struct/test_overlay_struct.py" :{
+  "blank": 12,
+  "comment": 14,
+  "code": 63,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/include/CommonAPI/DBus/DBusFreedesktopVariant.hpp" :{
+  "blank": 14,
+  "comment": 5,
+  "code": 62,
+  "language": "C/C++ Header"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/aosp_device_covesa_emulator/CustomCarLauncher/src/com/android/car/carlauncher/TaskViewManager.java" :{
+  "blank": 13,
+  "comment": 16,
+  "code": 60,
+  "language": "Java"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/aosp_device_covesa_emulator/CustomCarLauncher/src/com/android/car/carlauncher/homescreen/audio/telecom/InCallServiceImpl.java" :{
+  "blank": 16,
+  "comment": 45,
+  "code": 60,
+  "language": "Java"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/tests/vspec/test_type_error/test_type_error.py" :{
+  "blank": 11,
+  "comment": 7,
+  "code": 60,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/samples/led/src/main.c" :{
+  "blank": 19,
+  "comment": 14,
+  "code": 58,
+  "language": "C"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/samples/lin/responder/src/main.c" :{
+  "blank": 14,
+  "comment": 7,
+  "code": 58,
+  "language": "C"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/tests/vspec/test_generic.py" :{
+  "blank": 12,
+  "comment": 13,
+  "code": 58,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/aosp_device_covesa_emulator/CustomCarLauncher/src/com/android/car/carlauncher/homescreen/audio/HomeAudioCardPresenter.java" :{
+  "blank": 12,
+  "comment": 49,
+  "code": 57,
+  "language": "Java"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/scripts/tester/hardware_info.py" :{
+  "blank": 18,
+  "comment": 2,
+  "code": 57,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/src/vss_tools/exporters/samm/helpers/string_helper.py" :{
+  "blank": 44,
+  "comment": 45,
+  "code": 56,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/samples/lin2can/commander/src/main.c" :{
+  "blank": 13,
+  "comment": 6,
+  "code": 55,
+  "language": "C"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/include/CommonAPI/DBus/DBusFunctionalHash.hpp" :{
+  "blank": 23,
+  "comment": 4,
+  "code": 54,
+  "language": "C/C++ Header"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/aosp_device_covesa_emulator/CustomCarLauncher/src/com/android/car/carlauncher/homescreen/assistive/AssistiveCardPresenter.java" :{
+  "blank": 11,
+  "comment": 32,
+  "code": 52,
+  "language": "Java"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/samples/hardware_test/src/gpio.c" :{
+  "blank": 11,
+  "comment": 6,
+  "code": 52,
+  "language": "C"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/src/vss_tools/utils/idgen_utils.py" :{
+  "blank": 15,
+  "comment": 30,
+  "code": 52,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/samples/lin2can/gateway/src/main.c" :{
+  "blank": 11,
+  "comment": 10,
+  "code": 51,
+  "language": "C"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/include/CommonAPI/DBus/DBusProxyManager.hpp" :{
+  "blank": 16,
+  "comment": 4,
+  "code": 51,
+  "language": "C/C++ Header"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/aosp_device_covesa_emulator/CustomCarLauncher/src/com/android/car/carlauncher/AppItemViewHolder.java" :{
+  "blank": 9,
+  "comment": 25,
+  "code": 50,
+  "language": "Java"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/aosp_device_covesa_emulator/CustomCarLauncher/src/com/android/car/carlauncher/homescreen/audio/AudioCard.java" :{
+  "blank": 12,
+  "comment": 18,
+  "code": 50,
+  "language": "Java"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/src/CommonAPI/DBus/DBusClientId.cpp" :{
+  "blank": 16,
+  "comment": 4,
+  "code": 50,
+  "language": "C++"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/tests/vspec/test_overlay/test_overlay.py" :{
+  "blank": 16,
+  "comment": 9,
+  "code": 50,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/include/CommonAPI/DBus/DBusAddressTranslator.hpp" :{
+  "blank": 25,
+  "comment": 8,
+  "code": 49,
+  "language": "C/C++ Header"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/include/CommonAPI/DBus/DBusSelectiveEvent.hpp" :{
+  "blank": 15,
+  "comment": 4,
+  "code": 49,
+  "language": "C/C++ Header"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/tests/test_model.py" :{
+  "blank": 4,
+  "comment": 7,
+  "code": 49,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/samples/hardware_tester/src/gpio.c" :{
+  "blank": 14,
+  "comment": 11,
+  "code": 48,
+  "language": "C"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/aosp_device_covesa_emulator/CustomCarLauncher/src/com/android/car/carlauncher/RecentAppsRowViewHolder.java" :{
+  "blank": 14,
+  "comment": 25,
+  "code": 47,
+  "language": "Java"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/samples/hv_shield/src/main.c" :{
+  "blank": 10,
+  "comment": 1,
+  "code": 47,
+  "language": "C"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/lib/can_router/can_router.c" :{
+  "blank": 14,
+  "comment": 7,
+  "code": 45,
+  "language": "C"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/samples/config_jumpers/src/main.c" :{
+  "blank": 13,
+  "comment": 6,
+  "code": 45,
+  "language": "C"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/samples/dac/src/main.c" :{
+  "blank": 11,
+  "comment": 15,
+  "code": 45,
+  "language": "C"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/scripts/ardep_commands/build_bootloader.py" :{
+  "blank": 10,
+  "comment": 0,
+  "code": 45,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/src/test/DBusClientIdTest.cpp" :{
+  "blank": 16,
+  "comment": 4,
+  "code": 45,
+  "language": "C++"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/tests/vspec/test_datatypes_pattern/test_datatypes_pattern.py" :{
+  "blank": 15,
+  "comment": 25,
+  "code": 44,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/drivers/lin/abstract_lin/lin_scheduler.c" :{
+  "blank": 18,
+  "comment": 8,
+  "code": 43,
+  "language": "C"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/samples/hardware_test/src/lin.c" :{
+  "blank": 12,
+  "comment": 6,
+  "code": 43,
+  "language": "C"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/samples/hardware_test/src/main.c" :{
+  "blank": 6,
+  "comment": 6,
+  "code": 43,
+  "language": "C"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/samples/hardware_tester/src/main.c" :{
+  "blank": 6,
+  "comment": 6,
+  "code": 43,
+  "language": "C"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/samples/lin2can/responder/src/main.c" :{
+  "blank": 12,
+  "comment": 7,
+  "code": 43,
+  "language": "C"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/include/CommonAPI/DBus/DBusObjectManager.hpp" :{
+  "blank": 21,
+  "comment": 6,
+  "code": 43,
+  "language": "C/C++ Header"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/src/vss_tools/cli.py" :{
+  "blank": 8,
+  "comment": 10,
+  "code": 43,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/include/ardep/drivers/lin_scheduler.h" :{
+  "blank": 14,
+  "comment": 39,
+  "code": 42,
+  "language": "C/C++ Header"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/include/CommonAPI/DBus/DBusDeployment.hpp" :{
+  "blank": 14,
+  "comment": 4,
+  "code": 42,
+  "language": "C/C++ Header"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/include/CommonAPI/DBus/DBusObjectManagerStub.hpp" :{
+  "blank": 21,
+  "comment": 62,
+  "code": 42,
+  "language": "C/C++ Header"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/tests/vspec/test_overlay_struct_array/test_overlay_struct_array.py" :{
+  "blank": 7,
+  "comment": 11,
+  "code": 42,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/drivers/can/can_termination_gpio.c" :{
+  "blank": 10,
+  "comment": 6,
+  "code": 41,
+  "language": "C"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/aosp_device_covesa_emulator/CustomCarLauncher/src/com/android/car/carlauncher/homescreen/assistive/AssistiveCard.java" :{
+  "blank": 10,
+  "comment": 19,
+  "code": 40,
+  "language": "Java"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/tests/vspec/test_default_unit/test_default_units.py" :{
+  "blank": 12,
+  "comment": 9,
+  "code": 40,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/include/CommonAPI/DBus/DBusStubAdapter.hpp" :{
+  "blank": 16,
+  "comment": 4,
+  "code": 39,
+  "language": "C/C++ Header"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/include/ardep/drivers/hv_shield.h" :{
+  "blank": 9,
+  "comment": 21,
+  "code": 38,
+  "language": "C/C++ Header"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/src/vss_tools/units_quantities.py" :{
+  "blank": 10,
+  "comment": 7,
+  "code": 38,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/aosp_device_covesa_emulator/CustomCarLauncher/src/com/android/car/carlauncher/homescreen/assistive/FakeWeatherModel.java" :{
+  "blank": 9,
+  "comment": 18,
+  "code": 36,
+  "language": "Java"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/include/CommonAPI/DBus/DBusAddress.hpp" :{
+  "blank": 15,
+  "comment": 4,
+  "code": 36,
+  "language": "C/C++ Header"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/src/CommonAPI/DBus/DBusStubAdapter.cpp" :{
+  "blank": 11,
+  "comment": 4,
+  "code": 36,
+  "language": "C++"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/aosp_device_covesa_emulator/CustomCarProvision/src/com/android/car/provision/DpcInfo.java" :{
+  "blank": 8,
+  "comment": 24,
+  "code": 35,
+  "language": "Java"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/include/CommonAPI/DBus/DBusFreedesktopPropertiesStub.hpp" :{
+  "blank": 15,
+  "comment": 9,
+  "code": 35,
+  "language": "C/C++ Header"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/tests/vspec/test_strict/test_strict.py" :{
+  "blank": 9,
+  "comment": 7,
+  "code": 35,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/aosp_device_covesa_emulator/CustomCarLauncher/src/com/android/car/carlauncher/homescreen/ui/DescriptiveTextView.java" :{
+  "blank": 11,
+  "comment": 24,
+  "code": 34,
+  "language": "Java"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/scripts/ardep_commands/util.py" :{
+  "blank": 5,
+  "comment": 0,
+  "code": 34,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/include/CommonAPI/DBus/DBusHelper.hpp" :{
+  "blank": 17,
+  "comment": 4,
+  "code": 34,
+  "language": "C/C++ Header"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/aosp_device_covesa_emulator/CustomCarLauncher/src/com/android/car/carlauncher/homescreen/HomeCardInterface.java" :{
+  "blank": 27,
+  "comment": 102,
+  "code": 31,
+  "language": "Java"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/tests/vspec/test_description_error/test_description_error.py" :{
+  "blank": 6,
+  "comment": 7,
+  "code": 31,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/scripts/ardep_commands/setup_can_bus.py" :{
+  "blank": 8,
+  "comment": 2,
+  "code": 30,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/obsolete/vspec2aaproperties/read_type_layer.py" :{
+  "blank": 7,
+  "comment": 46,
+  "code": 30,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/src/vss_tools/exporters/utils.py" :{
+  "blank": 12,
+  "comment": 13,
+  "code": 30,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/tests/vspec/test_allowed/test_allowed.py" :{
+  "blank": 8,
+  "comment": 12,
+  "code": 29,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/tests/vspec/test_consistency/test_consistency.py" :{
+  "blank": 4,
+  "comment": 7,
+  "code": 29,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/include/CommonAPI/DBus/DBusClientId.hpp" :{
+  "blank": 14,
+  "comment": 10,
+  "code": 28,
+  "language": "C/C++ Header"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/src/vss_tools/exporters/samm/helpers/file_helper.py" :{
+  "blank": 14,
+  "comment": 17,
+  "code": 27,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/tests/binary/test_binary.py" :{
+  "blank": 8,
+  "comment": 11,
+  "code": 27,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/include/CommonAPI/DBus/DBusError.hpp" :{
+  "blank": 15,
+  "comment": 4,
+  "code": 26,
+  "language": "C/C++ Header"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/tests/vspec/test_no_expand/test_no_expand.py" :{
+  "blank": 8,
+  "comment": 9,
+  "code": 26,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/obsolete/vspec2aaproperties/type_hal_parser.py" :{
+  "blank": 5,
+  "comment": 41,
+  "code": 25,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/tests/vspec/test_datatypes_error/test_datatypes_error.py" :{
+  "blank": 7,
+  "comment": 7,
+  "code": 25,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/include/CommonAPI/DBus/DBusTypes.hpp" :{
+  "blank": 9,
+  "comment": 4,
+  "code": 24,
+  "language": "C/C++ Header"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/src/CommonAPI/DBus/DBusError.cpp" :{
+  "blank": 12,
+  "comment": 4,
+  "code": 24,
+  "language": "C++"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/tests/vspec/test_types_with_uuid/test_uuid.py" :{
+  "blank": 7,
+  "comment": 10,
+  "code": 24,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/aosp_device_covesa_emulator/CustomCarLauncher/src/com/android/car/carlauncher/homescreen/CardPresenter.java" :{
+  "blank": 7,
+  "comment": 18,
+  "code": 23,
+  "language": "Java"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/lib/uds/uds.h" :{
+  "blank": 5,
+  "comment": 6,
+  "code": 23,
+  "language": "C/C++ Header"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/src/vss_tools/lazy_group.py" :{
+  "blank": 6,
+  "comment": 15,
+  "code": 23,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/aosp_device_covesa_emulator/CustomCarLauncher/src/com/android/car/carlauncher/homescreen/ui/TextBlockView.java" :{
+  "blank": 8,
+  "comment": 21,
+  "code": 22,
+  "language": "Java"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/include/ardep/can_router.h" :{
+  "blank": 8,
+  "comment": 7,
+  "code": 22,
+  "language": "C/C++ Header"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/tests/vspec/test_null/test_null.py" :{
+  "blank": 8,
+  "comment": 7,
+  "code": 22,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/scripts/tester/serial_message.py" :{
+  "blank": 7,
+  "comment": 1,
+  "code": 21,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/include/CommonAPI/DBus/DBusUtils.hpp" :{
+  "blank": 9,
+  "comment": 7,
+  "code": 21,
+  "language": "C/C++ Header"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/tests/vspec/test_faulty_vspec_format/test_faulty_vspec_format.py" :{
+  "blank": 5,
+  "comment": 7,
+  "code": 21,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/obsolete/vspec2aaproperties/vspec_helper.py" :{
+  "blank": 4,
+  "comment": 32,
+  "code": 20,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/tests/vspec/test_include/test_include.py" :{
+  "blank": 7,
+  "comment": 7,
+  "code": 20,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/samples/hardware_test/src/hw_info.c" :{
+  "blank": 7,
+  "comment": 6,
+  "code": 19,
+  "language": "C"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/samples/hardware_tester/src/hw_info.c" :{
+  "blank": 7,
+  "comment": 6,
+  "code": 19,
+  "language": "C"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/include/CommonAPI/DBus/DBusSerializableArguments.hpp" :{
+  "blank": 7,
+  "comment": 4,
+  "code": 19,
+  "language": "C/C++ Header"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/src/vss_tools/exporters/samm/helpers/namespaces.py" :{
+  "blank": 12,
+  "comment": 11,
+  "code": 19,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/src/vss_tools/utils/misc.py" :{
+  "blank": 8,
+  "comment": 13,
+  "code": 19,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/lib/uds/uds_session.c" :{
+  "blank": 9,
+  "comment": 6,
+  "code": 18,
+  "language": "C"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/include/CommonAPI/DBus/DBusInterfaceHandler.hpp" :{
+  "blank": 10,
+  "comment": 4,
+  "code": 17,
+  "language": "C/C++ Header"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/noxfile.py" :{
+  "blank": 4,
+  "comment": 0,
+  "code": 17,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/aosp_device_covesa_emulator/CustomCarLauncher/src/com/android/car/carlauncher/homescreen/ui/CardHeader.java" :{
+  "blank": 6,
+  "comment": 25,
+  "code": 16,
+  "language": "Java"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/tests/vspec/test_overlay_on_instance/test_overlay_on_instance.py" :{
+  "blank": 4,
+  "comment": 8,
+  "code": 16,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/tests/vspec/test_structs/test_default.py" :{
+  "blank": 6,
+  "comment": 9,
+  "code": 16,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/doc/conf.py" :{
+  "blank": 8,
+  "comment": 10,
+  "code": 15,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/obsolete/vspec2aaproperties/read_mapping_layer.py" :{
+  "blank": 2,
+  "comment": 22,
+  "code": 15,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/tests/vspec/test_faulty_type/test_faulty_type.py" :{
+  "blank": 4,
+  "comment": 7,
+  "code": 15,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/tests/vspec/test_multiple_type_trees/test_multiple_type_trees.py" :{
+  "blank": 4,
+  "comment": 11,
+  "code": 15,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/samples/lin2can/isotp/src/scheduler.c" :{
+  "blank": 6,
+  "comment": 8,
+  "code": 14,
+  "language": "C"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/tests/vspec/test_isinstance/test_isinstance.py" :{
+  "blank": 5,
+  "comment": 7,
+  "code": 14,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/tests/vspec/test_struct_as_root/test_struct_as_root.py" :{
+  "blank": 4,
+  "comment": 7,
+  "code": 14,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/aosp_device_covesa_emulator/CustomCarLauncher/src/com/android/car/carlauncher/homescreen/HomeCardModule.java" :{
+  "blank": 12,
+  "comment": 38,
+  "code": 13,
+  "language": "Java"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/samples/uart/src/main.c" :{
+  "blank": 8,
+  "comment": 6,
+  "code": 13,
+  "language": "C"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/include/murmurhash/MurmurHash3.h" :{
+  "blank": 15,
+  "comment": 9,
+  "code": 13,
+  "language": "C/C++ Header"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/src/vss_tools/exporters/samm/config/config.py" :{
+  "blank": 6,
+  "comment": 14,
+  "code": 13,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/include/CommonAPI/DBus/CommonAPIDBus.hpp" :{
+  "blank": 5,
+  "comment": 4,
+  "code": 12,
+  "language": "C/C++ Header"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/capicxx-dbus-runtime/include/CommonAPI/DBus/DBusConfig.hpp" :{
+  "blank": 7,
+  "comment": 4,
+  "code": 12,
+  "language": "C/C++ Header"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/tests/backward_compatibility/test_compatibility.py" :{
+  "blank": 8,
+  "comment": 25,
+  "code": 12,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/aosp_device_covesa_emulator/CustomCarLauncher/src/com/android/car/carlauncher/homescreen/ui/CardContent.java" :{
+  "blank": 4,
+  "comment": 27,
+  "code": 9,
+  "language": "Java"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/vss-tools/src/vss_tools/__init__.py" :{
+  "blank": 2,
+  "comment": 7,
+  "code": 9,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/lib/uds/uds_session.h" :{
+  "blank": 3,
+  "comment": 6,
+  "code": 8,
+  "language": "C/C++ Header"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/scripts/ardep_commands/__init__.py" :{
+  "blank": 0,
+  "comment": 0,
+  "code": 6,
+  "language": "Python"},
+"/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos/ardep/samples/uds/src/main.c" :{
+  "blank": 4,
+  "comment": 6,
+  "code": 5,
+  "language": "C"},
+"SUM": {
+  "blank": 7297,
+  "comment": 4915,
+  "code": 30430,
+  "nFiles": 252} }

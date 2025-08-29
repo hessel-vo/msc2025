@@ -1,0 +1,5 @@
+vss-tools/obsolete/vspec2aaproperties/vspec2aaprop_test.sh
+vss-tools/tests/vspec/test_types_with_uuid/expected_no_uuid.json
+vss-tools/tests/vspec/test_types_with_uuid/expected_uuid.json
+vss-tools/tests/vspec/test_allowed/expected.json
+aosp_device_covesa_emulator/CustomCarLauncher/res/values-en-rXC/strings.xml

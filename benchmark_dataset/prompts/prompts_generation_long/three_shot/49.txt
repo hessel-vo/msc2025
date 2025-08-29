@@ -1,0 +1,73 @@
+The target code below is part of the automotive software engineering domain.
+Use the target summary below to generate the related Java function.
+Do not provide any other output.
+
+---
+
+**[Examples]**
+**[Example 1]**
+**Summary:**
+"Lazily initializes and returns a `HomeAudioCardPresenter`, setting its data models with both a `MediaViewModel` and an `InCallModel` if a `ViewModelProvider` is available, otherwise logging a warning and using only the `InCallModel`.”
+
+**Code:**
+```java
+public CardPresenter getCardPresenter() {
+    if (mAudioCardPresenter == null) {
+        mAudioCardPresenter = new HomeAudioCardPresenter();
+        if (mViewModelProvider == null) {
+            Log.w(TAG, "No ViewModelProvider set. Cannot get MediaViewModel");
+            mAudioCardPresenter.setModels(
+                    Collections.unmodifiableList(Collections.singletonList(
+                            new InCallModel(SystemClock.elapsedRealtimeClock()))));
+        } else {
+            mAudioCardPresenter.setModels(Collections.unmodifiableList(Arrays.asList(
+                    mViewModelProvider.get(MediaViewModel.class),
+                    new InCallModel(SystemClock.elapsedRealtimeClock()))));
+        }
+    }
+    return mAudioCardPresenter;
+```
+
+**[Example 2]**
+**Summary:**
+"Lazily initializes and returns an `AudioFragment`, bidirectionally linking it with its presenter upon first creation.”
+
+**Code:**
+```java
+public HomeCardFragment getCardView() {
+    if (mAudioCardView == null) {
+        mAudioCardView = new AudioFragment();
+        getCardPresenter().setView(mAudioCardView);
+        mAudioCardView.setPresenter(getCardPresenter());
+    }
+    return mAudioCardView;
+}
+```
+
+**[Example 3]**
+**Summary:**
+"Inflates the `card_fragment` layout, finds and assigns the card's title and icon views, and returns the resulting root view.”
+
+**Code:**
+```java
+public View onCreateView(LayoutInflater inflater, ViewGroup container,
+        Bundle savedInstanceState) {
+    mRootView = inflater.inflate(R.layout.card_fragment, container, false);
+    mCardTitle = mRootView.findViewById(R.id.card_name);
+    mCardIcon = mRootView.findViewById(R.id.card_icon);
+    return mRootView;
+}
+```
+
+---
+
+**[Target]**
+**Generate a Java function based on the summary and function signature below (do not provide any other output)**
+
+**Summary:**
+"Formats a phone number to create a new `DescriptiveTextWithControlsView` with call details and controls, then notifies the presenter that the model has been updated."
+
+**Code:**
+```java
+void updateModelWithPhoneNumber(String number) {
+```

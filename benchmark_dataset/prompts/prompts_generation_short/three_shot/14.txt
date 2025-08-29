@@ -1,0 +1,74 @@
+The target code below is part of the automotive software engineering domain.
+Use the target summary below to generate the related Python function.
+Do not provide any other output.
+
+---
+
+**[Examples]**
+**[Example 1]**
+**Summary:**
+"Checks if a data type is a subtype of a specified base type.”
+
+**Code:**
+```python
+def is_subtype_of(cls, check: str, base: str) -> bool:
+    check_type = cls.get_type(check)
+    if not check_type:
+        raise DatatypesException(f"Not a valid type: '{check}'")
+    base_type = cls.get_type(base)
+    if not base_type:
+        raise DatatypesException(f"Not a valid type: '{base}'")
+    return check in base_type[2] or check == base
+```
+
+**[Example 2]**
+**Summary:**
+"Validates if a value conforms to a datatype specified by a string.”
+
+**Code:**
+```python
+def is_datatype(cls, value: Any, datatype: str) -> bool:
+    t = cls.get_type(datatype)
+    if t is None:
+        raise DatatypesException(f"Unsupported datatype: {datatype}")
+    return t[1](value)
+```
+
+**[Example 3]**
+**Summary:**
+"Checks if an integer value fits within the range of a specified bit-width and signedness.”
+
+**Code:**
+```python
+def is_xintx(value: Any, signed: bool, bits: int):
+    values = [value]
+    if isinstance(value, list):
+        values = value
+
+    for v in values:
+        if not isinstance(v, int):
+            return False
+        if not signed and v < 0:
+            return False
+        max = 2**bits - 1
+        min = 0
+        if signed:
+            max = 2 ** (bits - 1) - 1
+            min = -(2 ** (bits - 1))
+        if not (v <= max and v >= min):
+            return False
+    return True
+```
+
+---
+
+**[Target]**
+**Generate a Python function based on the summary and function signature below (do not provide any other output)**
+
+**Summary:**
+"Validates that a list of strings are all known datatypes."
+
+**Code:**
+```python
+def check_valid_datatypes(cls, values: list[str]) -> list[str]:
+```

@@ -5,24 +5,28 @@ Do not provide any other output.
 ---
 
 **[Example]**
+**Code:**
 ```java
-int FindMaxSum(int arr[], int n) {
-        int incl = arr[0];
-        int excl = 0;
-        int excl_new;
-        int i;
-
-        for (i = 1; i < n; i++) {
-            excl_new = (incl > excl) ? incl : excl;
-            incl = excl + arr[i];
-            excl = excl_new;
+public CardPresenter getCardPresenter() {
+    if (mAudioCardPresenter == null) {
+        mAudioCardPresenter = new HomeAudioCardPresenter();
+        if (mViewModelProvider == null) {
+            Log.w(TAG, "No ViewModelProvider set. Cannot get MediaViewModel");
+            mAudioCardPresenter.setModels(
+                    Collections.unmodifiableList(Collections.singletonList(
+                            new InCallModel(SystemClock.elapsedRealtimeClock()))));
+        } else {
+            mAudioCardPresenter.setModels(Collections.unmodifiableList(Arrays.asList(
+                    mViewModelProvider.get(MediaViewModel.class),
+                    new InCallModel(SystemClock.elapsedRealtimeClock()))));
         }
-        return ((incl > excl) ? incl : excl);
     }
+    return mAudioCardPresenter;
+}
 ```
 
 **Summary:**
-"Maximum sum such that no two elements are adjacent”
+"Lazily initializes and returns an audio card presenter with data models for media and in-call status.”
 
 ---
 

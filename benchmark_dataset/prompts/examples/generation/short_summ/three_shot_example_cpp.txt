@@ -3,7 +3,7 @@
 "Sends a D-Bus message over the connection and returns a boolean indicating success.”
 
 **Code:**
-```c
+```cpp
 bool DBusConnection::sendDBusMessage(const DBusMessage &_message) const {
     if (!_message) {
         COMMONAPI_ERROR(std::string(__FUNCTION__), "message == NULL");
@@ -25,7 +25,7 @@ bool DBusConnection::sendDBusMessage(const DBusMessage &_message) const {
 "Creates a D-Bus signal message addressed to a specific client.”
 
 **Code:**
-```c
+```cpp
 DBusMessage DBusClientId::createMessage(const std::string objectPath, const std::string interfaceName, const std::string signalName) const
 {
     DBusMessage returnMessage = DBusMessage::createSignal(objectPath, interfaceName, signalName);
@@ -40,7 +40,7 @@ DBusMessage DBusClientId::createMessage(const std::string objectPath, const std:
 "Notifies a newly added listener if the D-Bus connection is already available.”
 
 **Code:**
-```c
+```cpp
 void DBusConnectionStatusEvent::onListenerAdded(const Listener &_listener, const Subscription _subscription) {
     (void)_subscription;
     if (dbusConnection_->isConnected())

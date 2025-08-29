@@ -1,0 +1,78 @@
+The target code below is part of the automotive software engineering domain.
+Provide a concise, single-line summary of the target Cpp code below.
+Do not provide any other output.
+
+---
+
+**[Examples]**
+**[Example 1]**
+**Code:**
+```cpp
+bool DBusConnection::sendDBusMessage(const DBusMessage &_message) const {
+    if (!_message) {
+        COMMONAPI_ERROR(std::string(__FUNCTION__), "message == NULL");
+        return false;
+    }
+    if (!isConnected()) {
+        COMMONAPI_ERROR(std::string(__FUNCTION__), "not connected");
+        return false;
+    }
+
+    dbus_uint32_t dbusSerial;
+    const bool result = (0 != dbus_connection_send(connection_, _message.message_, &dbusSerial));
+    return result;
+}
+```
+
+**Summary:**
+"Sends a D-Bus message over the connection and returns a boolean indicating success.”
+
+**[Example 2]**
+**Code:**
+```cpp
+DBusMessage DBusClientId::createMessage(const std::string objectPath, const std::string interfaceName, const std::string signalName) const
+{
+    DBusMessage returnMessage = DBusMessage::createSignal(objectPath, interfaceName, signalName);
+    returnMessage.setDestination(dbusId_.c_str());
+
+    return (returnMessage);
+}
+```
+
+**Summary:**
+"Creates a D-Bus signal message addressed to a specific client.”
+
+**[Example 3]**
+**Code:**
+```cpp
+void DBusConnectionStatusEvent::onListenerAdded(const Listener &_listener, const Subscription _subscription) {
+    (void)_subscription;
+    if (dbusConnection_->isConnected())
+        _listener(AvailabilityStatus::AVAILABLE);
+}
+```
+
+**Summary:**
+"Notifies a newly added listener if the D-Bus connection is already available.”
+
+---
+
+**[Target]**
+**Summarize the following Cpp code (do not provide any other output):**
+```cpp
+void joinOnExit(std::uintptr_t conn, std::thread & t) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    if (connections_.end() != connections_.find(conn)) {
+        bool found(false);
+        std::vector<std::thread*>::const_iterator it = threads_.begin();
+        while (!found && it != threads_.end()) {
+            found = (&t == *it++);
+        }
+        if (!found) {
+            threads_.push_back(&t);
+        }
+    }
+}
+```
+
+**Summary:**

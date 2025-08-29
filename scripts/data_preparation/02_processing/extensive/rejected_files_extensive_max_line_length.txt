@@ -1,9 +1,9 @@
 ramses/scripts/ci/test/test_compilationdb.py
 acme/cmake/doc/html/jquery.js
 EclipseDataSpaceConnector/extensions/common/iam/oauth2/oauth2-core/src/test/resources/jwks_response.json
+EclipseDataSpaceConnector/extensions/common/iam/identity-trust/identity-trust-core/src/test/resources/single_jwt-vp.json
 EclipseDataSpaceConnector/extensions/common/iam/identity-trust/identity-trust-core/src/test/resources/multiple_vp-token_jwt.json
 EclipseDataSpaceConnector/extensions/common/iam/identity-trust/identity-trust-core/src/test/resources/multiple_vp-token_mixed.json
-EclipseDataSpaceConnector/extensions/common/iam/identity-trust/identity-trust-core/src/test/resources/single_jwt-vp.json
 pybip/doc/Architecture_BIP.xml
 joynr/docs/images/gcd-in-multiple-be_draw.io.xml
 joynr/wiki/images/multiple-backends_draw.io.xml

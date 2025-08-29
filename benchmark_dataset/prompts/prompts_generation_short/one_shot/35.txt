@@ -1,0 +1,41 @@
+The target code below is part of the automotive software engineering domain.
+Use the target summary below to generate the related Java function.
+Do not provide any other output.
+
+---
+
+**[Example]**
+**Summary:**
+"Lazily initializes and returns an audio card presenter with data models for media and in-call status.”
+
+**Code:**
+```java
+public CardPresenter getCardPresenter() {
+    if (mAudioCardPresenter == null) {
+        mAudioCardPresenter = new HomeAudioCardPresenter();
+        if (mViewModelProvider == null) {
+            Log.w(TAG, "No ViewModelProvider set. Cannot get MediaViewModel");
+            mAudioCardPresenter.setModels(
+                    Collections.unmodifiableList(Collections.singletonList(
+                            new InCallModel(SystemClock.elapsedRealtimeClock()))));
+        } else {
+            mAudioCardPresenter.setModels(Collections.unmodifiableList(Arrays.asList(
+                    mViewModelProvider.get(MediaViewModel.class),
+                    new InCallModel(SystemClock.elapsedRealtimeClock()))));
+        }
+    }
+    return mAudioCardPresenter;
+```
+
+---
+
+**[Target]**
+**Generate a Java function based on the summary and function signature below (do not provide any other output)**
+
+**Summary:**
+"Sets the media source and finishes the current activity."
+
+**Code:**
+```java
+private static void selectMediaSourceAndFinish(Context context, ComponentName componentName, CarMediaManager carMediaManager) {
+```

@@ -1,0 +1,57 @@
+The target code below is part of the automotive software engineering domain.
+Provide a detailed, single-line summary of the target C code below.
+Do not provide any other output.
+
+---
+
+**[Example]**
+**Code:**
+```c
+void send_negative_response(enum UDS_SID request_sid,
+                            enum UDS_NRC response_code) {
+  int ret;
+  uint8_t tx_data[] = {UDS_SID_NEGATIVE_RESPONSE, request_sid, response_code};
+  ret = isotp_send(&send_ctx, can_dev, tx_data, sizeof(tx_data), &tx_addr,
+                   &rx_addr, send_complete_cb, NULL);
+  if (ret != ISOTP_N_OK) {
+    LOG_ERR("Error while sending data to ID %d [%d]\n", tx_addr.std_id, ret);
+  }
+}
+```
+
+**Summary:**
+"Constructs and sends a 3-byte UDS negative response message (containing the original request SID and a negative response code) over a CAN bus using the ISO-TP protocol, logging an error if the transmission fails.”
+
+---
+
+**[Target]**
+**Summarize the following C code (do not provide any other output):**
+```c
+static int hv_shield_init(const struct device* dev) {
+  const struct hv_shield_config_t* config = dev->config;
+  struct hv_shield_data_t* data = dev->data;
+
+  int err = gpio_pin_configure_dt(&config->oe_gpio_spec, GPIO_OUTPUT_INACTIVE);
+  if (err) {
+    LOG_ERR("Error setting up Output enable pin (%d)", err);
+    return err;
+  }
+
+  memset(&data->registers, 0, sizeof(data->registers));
+
+  err = _hv_shield_update(dev);
+  if (err) {
+    LOG_ERR("Error writing registers (%d)", err);
+    return err;
+  }
+
+  err = gpio_pin_set_dt(&config->oe_gpio_spec, 1);
+  if (err) {
+    LOG_ERR("Error setting enabling output (%d)", err);
+  }
+
+  return err;
+}
+```
+
+**Summary:**

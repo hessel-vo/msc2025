@@ -203,9 +203,8 @@ def remove_boilerplate(doc: Dict[str, str]) -> Dict[str, str]:
 
 
 def process_document(doc: Dict[str, str]) -> Dict:
-    """
-    Worker function to support parallel processing
-    """
+    # Worker function to support parallel processing
+
     repo_and_path = f"{doc['repo_id']}/{doc['path_in_repo']}"
     
     passes, reason = passes_quality_heuristics(doc)
@@ -248,17 +247,23 @@ def main():
         
     project_root = Path(project_root_str)
     data_prep_dir = project_root / "scripts" / "data_preparation"
-    repos_root = project_root / "repositories" / "all_repos"
 
-    if len(sys.argv) > 1:
+    if len(sys.argv) > 2:
         filter_level = sys.argv[1]
-        manifest_path = data_prep_dir / "01_filtering" / f"filtered_file_paths_{filter_level}.txt"
-        logging.info(f"Using manifest file suffix from command line: '{filter_level}'")
+        
+        all_or_repo = sys.argv[2]
+        if all_or_repo == "all":
+            repos_root = project_root / "repositories" / "all_repos"
+            manifest_path = data_prep_dir / "01_filtering" / f"filtered_file_paths_{filter_level}.txt"
+            processing_dir = data_prep_dir / "02_processing" / filter_level
+        elif all_or_repo == "repo":
+            repos_root = project_root / "repositories" / "test_repos"
+            manifest_path = data_prep_dir / "01_filtering" / "repository_specific" / f"filtered_file_paths_{filter_level}.txt"
+            processing_dir = data_prep_dir / "02_processing" / "repository_specific" / filter_level
     else:
-        logging.info("No command-line suffix provided. Provide a manifest file suffix.")
+        logging.error("Incorrect command-line arguments provided. Provide filter_level and all/repo dataset.")
         return
     
-    processing_dir = data_prep_dir / "02_processing" / filter_level
     processing_dir.mkdir(parents=True, exist_ok=True)
 
     failed_decodes_path = processing_dir / f"failed_file_decodes_{filter_level}.txt"
