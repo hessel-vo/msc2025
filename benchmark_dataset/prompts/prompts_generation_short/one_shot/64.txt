@@ -29,7 +29,7 @@ bool DBusConnection::sendDBusMessage(const DBusMessage &_message) const {
 ---
 
 **[Target]**
-**Generate a Cpp function based on the summary and function signature below (do not provide any other output)**
+**Based on the summary below, generate the full Cpp function, including the function signature and function body (do not provide any other output)**
 
 **Summary:**
 "Dispatches D-Bus signals for interface addition or removal to specific handlers."

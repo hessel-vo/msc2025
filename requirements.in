@@ -14,4 +14,5 @@ python-dotenv
 detect-secrets
 datasketch
 tqdm
-pandas
+sacrebleu
+rouge_score

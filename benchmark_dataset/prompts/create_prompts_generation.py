@@ -4,9 +4,11 @@ import sys
 
 # --- Configuration ---
 TEMPLATE_FILE_PATH = "prompt_template_generation.txt"
-CSV_FILE_PATH = "benchmark_dataset.csv"
+TEMPLATE_SUBSET = "prompt_template_generation_context.txt"
+CSV_FILE_PATH = "benchmark_dataset_subset.csv"
 BASE_OUTPUT_DIR = "prompts_generation"
 BASE_EXAMPLES_DIR = "examples/generation"
+ADDITIONAL_CONTEXT_DIR = "additional_context"
 
 def load_text_file(filepath):
     try:
@@ -19,7 +21,7 @@ def load_text_file(filepath):
         print(f"An error occurred while reading '{filepath}': {e}")
         sys.exit(1)
 
-def create_prompts(sum_length, num_examples):
+def create_prompts(sum_length, num_examples, repo=None):
 
     output_dir = f"{BASE_OUTPUT_DIR}_{sum_length}/{num_examples}_shot"
     examples_dir = f"{BASE_EXAMPLES_DIR}/{sum_length}_summ"
@@ -27,6 +29,9 @@ def create_prompts(sum_length, num_examples):
     # 1. Prompt template
     print(f"Loading prompt template from '{TEMPLATE_FILE_PATH}'...")
     prompt_template = load_text_file(TEMPLATE_FILE_PATH)
+
+    if repo:
+        prompt_template = load_text_file(TEMPLATE_SUBSET)
 
     if num_examples == "three":
         prompt_template = prompt_template.replace("[Example]", "[Examples]")
@@ -75,10 +80,17 @@ def create_prompts(sum_length, num_examples):
                     filled_prompt = filled_prompt.replace("<target language>", lang_key)
                     filled_prompt = filled_prompt.replace("<target summary>", target_summary)
                     filled_prompt = filled_prompt.replace("<function signature>", function_signature)
+
+                    if repo:
+                        additional_context = load_text_file(os.path.join(ADDITIONAL_CONTEXT_DIR, f"{file_id}.txt"))
+                        filled_prompt = filled_prompt.replace("<additional_context>", additional_context)
                     
                     # 7. Save the final prompt to a new file using name='id'
                     output_filename = f"{file_id}.txt"
-                    output_filepath = os.path.join(output_dir, output_filename)
+                    if repo:
+                        output_filepath = os.path.join(output_dir, repo, output_filename)
+                    else:
+                        output_filepath = os.path.join(output_dir, output_filename)
                     
                     with open(output_filepath, 'w', encoding='utf-8') as out_file:
                         out_file.write(filled_prompt)
@@ -96,17 +108,24 @@ def create_prompts(sum_length, num_examples):
 
 def main():
     
-    if len(sys.argv) < 3:
+    if len(sys.argv) < 3 or len(sys.argv) > 4:
         print("ERROR: Incorrect number of arguments provided.")
-        print(f"Usage: python {sys.argv[0]} <summarization_length> <num_examples>")
+        print(f"Usage: python {sys.argv[0]} <num_examples> <summarization_length> <repo (optional)>")
         sys.exit(1)
 
-    sum_length = sys.argv[1]
-    num_examples = sys.argv[2]    
+    num_examples = sys.argv[1]
+    sum_length = sys.argv[2]
+
+    repo = None
     
+    if len(sys.argv) == 4:
+        repo = sys.argv[3]
+        
+
     create_prompts(
         sum_length=sum_length,
-        num_examples=num_examples
+        num_examples=num_examples,
+        repo=repo
     )
 
 if __name__ == "__main__":

@@ -19,6 +19,7 @@ public CardPresenter getCardPresenter() {
         }
     }
     return mAudioCardPresenter;
+}
 ```
 
 **[Example 2]**

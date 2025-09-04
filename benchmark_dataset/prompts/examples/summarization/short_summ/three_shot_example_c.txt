@@ -14,7 +14,7 @@ void send_negative_response(enum UDS_SID request_sid,
 ```
 
 **Summary:**
-"Sends a UDS negative response message containing the failed service ID and a negative response code.”
+"Sends a UDS negative response message containing the failed service ID and a negative response code”
 
 **[Example 2]**
 **Code:**

@@ -19,4 +19,4 @@ public CardPresenter getCardPresenter() {
 ```
 
 **Summary:**
-"Lazily initializes and returns an audio card presenter with data models for media and in-call status.”
+"Lazily initializes and returns an audio card presenter with data models for media and in-call status”

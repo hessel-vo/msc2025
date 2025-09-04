@@ -25,7 +25,7 @@ void send_negative_response(enum UDS_SID request_sid,
 ---
 
 **[Target]**
-**Generate a C function based on the summary and function signature below (do not provide any other output)**
+**Based on the summary below, generate the full C function, including the function signature and function body (do not provide any other output)**
 
 **Summary:**
 "Sets the active schedule table for a LIN scheduler and resets its position to the beginning."

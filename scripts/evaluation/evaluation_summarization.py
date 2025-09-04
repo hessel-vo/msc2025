@@ -1,11 +1,8 @@
-# scripts/evaluation/run_summarization_evaluation.py
-
 import sys
 import os
 import pandas as pd
 from pathlib import Path
 from dotenv import load_dotenv
-from tqdm import tqdm
 
 # --- Configuration ---
 # Load environment variables from .env file
@@ -17,11 +14,10 @@ PROJECT_ROOT = Path(project_root_str)
 HF_CACHE_DIR = PROJECT_ROOT / "hf_cache"
 os.environ['HF_HOME'] = str(HF_CACHE_DIR)
 
-# Import evaluate after setting the cache directory
 import evaluate
 
-# Constants for the model and results folder (adjust as needed)
-MODEL_NAME = "gemma"
+# Constants for the model and results folder
+MODEL_NAME = "gemma-3-4b-it"
 RESULTS_SUBFOLDER = "baseline"
 TASK = "summarization"
 # --- End Configuration ---
@@ -44,34 +40,76 @@ def validate_arguments(args):
 
     return num_shots, summary_length
 
-def compute_summarization_metrics(prediction, reference, metric_objects):
+def calculate_bleu_scores(df):
     """
-    Compute summarization metrics for a single prediction-reference pair.
+    Calculates problem-level and corpus-level BLEU scores by iterating.
     """
-    results = {}
-    default_scores = {'bleu_score': 0.0, 'bleu_1': 0.0, 'bleu_2': 0.0, 'bleu_3': 0.0, 'bleu_4': 0.0}
+    bleu_metric = evaluate.load("sacrebleu")
+    problem_scores = {}
+    all_predictions = []
+    all_references = []
 
-    if not isinstance(prediction, str) or not isinstance(reference, str):
-        return default_scores
+    print("Calculating problem-level BLEU scores...")
+    for _, row in df.iterrows():
+        prediction = str(row["generated_summary"])
+        reference = str(row["summary"])
+        p_id = row["id"]
 
-    bleu_metric = metric_objects.get("bleu")
-    # This check is now secondary, as the main() function will ensure the metric exists.
-    if bleu_metric:
-        bleu_results = bleu_metric.compute(
-            predictions=[prediction],
-            references=[[reference]],
-            max_order=4
-        )
-        results['bleu_score'] = bleu_results['bleu']
-        results['bleu_1'] = bleu_results['precisions'][0]
-        results['bleu_2'] = bleu_results['precisions'][1]
-        results['bleu_3'] = bleu_results['precisions'][2]
-        results['bleu_4'] = bleu_results['precisions'][3]
-    else:
-        print("Warning: BLEU metric object not found. Assigning default scores of 0.0.")
-        return default_scores
+        all_predictions.append(prediction)
+        all_references.append([reference])
 
-    return results
+        bleu_results = bleu_metric.compute(predictions=[prediction], references=[[reference]])
+        
+        problem_scores[p_id] = {
+            'bleu_score': bleu_results['score'],
+            'bleu_1': bleu_results['precisions'][0],
+            'bleu_2': bleu_results['precisions'][1],
+            'bleu_3': bleu_results['precisions'][2],
+            'bleu_4': bleu_results['precisions'][3]
+        }
+
+    print("Calculating corpus-level BLEU score...")
+    corpus_result = bleu_metric.compute(predictions=all_predictions, references=all_references)
+    corpus_scores = {'bleu_score': corpus_result['score']}
+
+    return problem_scores, corpus_scores
+
+def calculate_rouge_scores(df):
+    """
+    Calculates problem-level and corpus-level ROUGE scores in a single batch.
+    """
+    rouge_metric = evaluate.load("rouge")
+    
+    all_predictions = df["generated_summary"].astype(str).tolist()
+    all_references = df["summary"].astype(str).tolist()
+    
+    print("Calculating batch problem-level ROUGE scores...")
+    # use_aggregator=False returns a list of scores for each input pair
+    individual_results = rouge_metric.compute(
+        predictions=all_predictions,
+        references=all_references,
+        use_aggregator=False
+    )
+    
+    problem_scores = {}
+    for i, p_id in enumerate(df["id"]):
+        problem_scores[p_id] = {
+            'rouge1': individual_results['rouge1'][i],
+            'rouge2': individual_results['rouge2'][i],
+            'rougeL': individual_results['rougeL'][i],
+            'rougeLsum': individual_results['rougeLsum'][i],
+        }
+
+    print("Calculating corpus-level ROUGE scores...")
+    # The default behavior (use_aggregator=True) provides the corpus-level score
+    corpus_result = rouge_metric.compute(
+        predictions=all_predictions,
+        references=all_references
+    )
+    # Rename keys for clarity in the final corpus file
+    corpus_scores = {f"corpus_{key}": value for key, value in corpus_result.items()}
+
+    return problem_scores, corpus_scores
 
 def main():
     """Main function to run the evaluation pipeline."""
@@ -80,54 +118,56 @@ def main():
 
     input_filename = f"{MODEL_NAME}_{TASK}_{num_shots}_shot_{summary_length}_results.csv"
     input_filepath = PROJECT_ROOT / "results" / "benchmark" / RESULTS_SUBFOLDER / input_filename
-    
-    prediction_col = "generated_summary"
-    reference_col = "summary"
 
     try:
         df = pd.read_csv(input_filepath)
-        print(f"Successfully loaded results from: {input_filepath}")
+        print(df)
+        print(f"Successfully loaded input from: {input_filepath}")
     except FileNotFoundError:
         print(f"Error: Input file not found at {input_filepath}")
         sys.exit(1)
 
-    # --- Robust Metric Loading ---
-    metric_objects = {}
-    print("Attempting to load BLEU metric from Hugging Face Hub...")
-    try:
-        bleu_metric = evaluate.load("bleu")
-        if bleu_metric is None:
-            # This handles cases where load returns None without an exception
-            raise ConnectionError("evaluate.load() returned None.")
-        metric_objects["bleu"] = bleu_metric
-        print("BLEU metric loaded successfully.")
-        print(f"Metric details: {bleu_metric}")
-    except Exception as e:
-        print(f"\nFATAL ERROR: Failed to load the BLEU metric.")
-        print("This is likely due to a network issue (no internet, firewall, or proxy).")
-        print(f"Please check your internet connection and try again. Details: {e}")
-        sys.exit(1)
-    # --- End Robust Metric Loading ---
+    # --- Metric Calculation ---
+    problem_bleu_scores, corpus_bleu_scores = calculate_bleu_scores(df)
+    problem_rouge_scores, corpus_rouge_scores = calculate_rouge_scores(df)
+
+    # --- Save Problem-Level Results ---
+    # Convert dictionaries to DataFrames
+    bleu_metrics_df = pd.DataFrame.from_dict(problem_bleu_scores, orient='index')
+    print(bleu_metrics_df)
+    bleu_metrics_df.reset_index(inplace=True)
+    print(bleu_metrics_df)
+    bleu_metrics_df.rename(columns={'index': 'id'}, inplace=True)
+    print(bleu_metrics_df)
+
+    rouge_metrics_df = pd.DataFrame.from_dict(problem_rouge_scores, orient='index')
+    rouge_metrics_df.reset_index(inplace=True)
+    rouge_metrics_df.rename(columns={'index': 'id'}, inplace=True)
+
+    # Merge all metrics with the original DataFrame
+    output_df = pd.merge(df, bleu_metrics_df, on='id')
+    output_df = pd.merge(output_df, rouge_metrics_df, on='id')
     
-    all_row_metrics = []
-    print("Calculating scores for each row...")
-    for _, row in tqdm(df.iterrows(), total=df.shape[0], desc="Processing rows"):
-        prediction = row[prediction_col]
-        reference = row[reference_col]
-        row_metrics = compute_summarization_metrics(prediction, reference, metric_objects)
-        all_row_metrics.append(row_metrics)
-
-    if not all_row_metrics:
-        print("No metrics were computed. Exiting.")
-        return
-
-    metrics_df = pd.DataFrame(all_row_metrics)
-    output_df = pd.concat([df, metrics_df], axis=1)
     output_filename = f"evaluation_results_{MODEL_NAME}_{TASK}_{num_shots}_shot_{summary_length}.csv"
     output_filepath = PROJECT_ROOT / "results" / "evaluation" / output_filename
     output_filepath.parent.mkdir(parents=True, exist_ok=True)
     output_df.to_csv(output_filepath, index=False)
-    print(f"\nEvaluation complete. Results saved to: {output_filepath}")
+    print(f"\nDetailed problem-level results saved to: {output_filepath}")
+
+    # --- Save Corpus-Level Results ---
+    # Combine all corpus scores into a single dictionary
+    all_corpus_scores = {**corpus_bleu_scores, **corpus_rouge_scores}
+    corpus_df = pd.DataFrame([all_corpus_scores])
+    corpus_df.insert(0, 'model_name', MODEL_NAME)
+    
+    corpus_output_filename = f"corpus_score_{MODEL_NAME}_{TASK}_{num_shots}_shot_{summary_length}.csv"
+    corpus_output_filepath = PROJECT_ROOT / "results" / "evaluation" / corpus_output_filename
+    corpus_df.to_csv(corpus_output_filepath, index=False)
+    print(f"Overall corpus score saved to: {corpus_output_filepath}")
+    print("\n--- Corpus Scores Summary ---")
+    for key, value in all_corpus_scores.items():
+        print(f"{key.replace('_', ' ').title()}: {value:.4f}")
+
 
 if __name__ == "__main__":
     main()

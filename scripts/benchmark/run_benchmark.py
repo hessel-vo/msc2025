@@ -9,12 +9,14 @@ load_dotenv()
 
 project_root_str = os.getenv("PROJECT_ROOT")
 PROJECT_ROOT = Path(project_root_str)
+HF_TOKEN = os.getenv('HUGGING_FACE_HUB_TOKEN')
+MODEL_ID = "google/gemma-3-4b-it"
+MODEL_NAME = MODEL_ID.split("/")[-1]
 
 HF_CACHE_DIR = PROJECT_ROOT / "hf_cache"
 
 # Set the HF_HOME environment variable before importing transformers
 os.environ['HF_HOME'] = str(HF_CACHE_DIR)
-HF_TOKEN = os.getenv('HUGGING_FACE_HUB_TOKEN')
 
 print("--- Project Setup Confirmation ---")
 print(f"Project Root: {PROJECT_ROOT}")
@@ -23,7 +25,6 @@ print("---------------------------------")
 
 from transformers import AutoProcessor, AutoModelForCausalLM
 
-MODEL_ID = "google/gemma-3-4b-it"
 
 
 if torch.cuda.is_available():
@@ -53,7 +54,7 @@ def run_benchmark():
 
     # Configure input and output paths from arguments
     if len(sys.argv) != 4:
-        print("Usage: python run_benchmark.py <'generation' or 'summary'> <'one' or 'three'> <'short' or 'long'>")
+        print("Usage: python run_benchmark.py <'generation' or 'summarization'> <'one' or 'three'> <'short' or 'long'>")
         return
 
     task_type = sys.argv[1]
@@ -74,8 +75,8 @@ def run_benchmark():
     
     INPUT_CSV_PATH = PROJECT_ROOT / "benchmark_dataset" / "benchmark_dataset.csv"
     PROMPTS_DIR = PROJECT_ROOT / "benchmark_dataset" / "prompts" / f"prompts_{task_type}_{short_or_long}" / shot_folder_name
-    OUTPUT_DIR = PROJECT_ROOT / "results" / "baseline" # Swich "baseline" to "evaluation" for final eval
-    OUTPUT_FILENAME = OUTPUT_DIR / f"gemma_{task_type}_{shot_folder_name}_{short_or_long}_results.csv"
+    OUTPUT_DIR = PROJECT_ROOT / "results" / "benchmark" / "baseline" # Swich "baseline" to "adapted" for final eval
+    OUTPUT_FILENAME = OUTPUT_DIR / f"{MODEL_NAME}_{task_type}_{shot_folder_name}_{short_or_long}_results.csv"
 
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)

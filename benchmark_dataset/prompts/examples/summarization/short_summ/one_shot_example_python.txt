@@ -11,4 +11,4 @@ def is_subtype_of(cls, check: str, base: str) -> bool:
 ```
 
 **Summary:**
-"Checks if a data type is a subtype of a specified base type.”
+"Checks if a data type is a subtype of a specified base type”

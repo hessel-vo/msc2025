@@ -17,4 +17,4 @@ bool DBusConnection::sendDBusMessage(const DBusMessage &_message) const {
 ```
 
 **Summary:**
-"Sends a D-Bus message over the connection and returns a boolean indicating success.”
+"Sends a D-Bus message over the connection and returns a boolean indicating success”

@@ -1,6 +1,6 @@
 **[Example 1]**
 **Summary:**
-"Checks if a data type is a subtype of a specified base type.”
+"Checks if a data type is a subtype of a specified base type”
 
 **Code:**
 ```python

@@ -23,7 +23,7 @@ def is_subtype_of(cls, check: str, base: str) -> bool:
 ---
 
 **[Target]**
-**Generate a Python function based on the summary and function signature below (do not provide any other output)**
+**Based on the summary below, generate the full Python function, including the function signature and function body (do not provide any other output)**
 
 **Summary:**
 "Initializes and attempts to resolve a VSS raw model, returning the unresolved model on failure."

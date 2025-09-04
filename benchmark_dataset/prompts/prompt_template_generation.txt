@@ -10,7 +10,7 @@ Do not provide any other output.
 ---
 
 **[Target]**
-**Based on the summary and function signature below, generate the <code language> function, include the function signature and function body (do not provide any other output)**
+**Based on the summary below, generate the full <code language> function, including the function signature and function body (do not provide any other output)**
 
 **Summary:**
 "<target summary>"

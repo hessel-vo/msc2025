@@ -65,6 +65,7 @@ def compute_metrics_for_row(prediction, reference, task, metric_objects):
                 references=[[reference]], # Expects a list of lists
                 max_order=4
             )
+            print("WE GOT BLEU!!")
             # Store individual n-gram precisions
             results['bleu_score'] = bleu_results['bleu']
             results['bleu_1'] = bleu_results['precisions'][0]

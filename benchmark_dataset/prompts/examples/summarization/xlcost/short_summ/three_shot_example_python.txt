@@ -1,0 +1,26 @@
+**[Example 1]**
+**Code:**
+```python
+
+```
+
+**Summary:**
+"Checks if a data type is a subtype of a specified base type.”
+
+**[Example 2]**
+**Code:**
+```python
+
+```
+
+**Summary:**
+"Validates if a value conforms to a datatype specified by a string.”
+
+**[Example 3]**
+**Code:**
+```python
+
+```
+
+**Summary:**
+"Checks if an integer value fits within the range of a specified bit-width and signedness.”
