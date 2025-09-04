@@ -13,7 +13,7 @@ from collections import defaultdict
 BASE_PATH = "/home/hessel/workspace/RUG/MSc2025/project/code/repositories/all_repos"
 
 # The cloc JSON report file generated with the --by-file flag.
-CLOC_JSON_FILE = "cloc_output.json"
+CLOC_JSON_FILE = "cloc_output_all.json"
 
 # MODIFICATION: Define the specific languages you want to analyze.
 # cloc language names are case-sensitive (e.g., "C++", not "c++").
