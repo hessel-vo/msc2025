@@ -53,43 +53,50 @@ print("Model and processor loaded successfully.")
 def run_benchmark():
 
     # Configure input and output paths from arguments
-    if len(sys.argv) != 4:
-        print("Usage: python run_benchmark.py <'generation' or 'summarization'> <'one' or 'three'> <'short' or 'long'>")
+    if len(sys.argv) < 5:
+        print("Usage: python run_benchmark.py <generation|summarization> <xl|auto> <short|long> <zero|one|three> [subset]")
         return
 
     task_type = sys.argv[1]
-    shot_count = sys.argv[2]
-    short_or_long = sys.argv[3]  
+    source = sys.argv[2]
+    short_or_long = sys.argv[3]
+    shot_count = sys.argv[4]
+    subset = sys.argv[5] if len(sys.argv) == 6 else None
 
     if task_type not in ["generation", "summarization"]:
         print(f"Error: Invalid task type '{task_type}'. Use 'generation' or 'summarization'.")
         return
-    if shot_count not in ["one", "three"]:
-        print(f"Error: Invalid shot count '{shot_count}'. Use 'one' or 'three'.")
+    if source not in ["xl", "auto"]:
+        print(f"Error: Invalid task type '{source}'. Use 'xl' or 'auto'.")
         return
     if short_or_long not in ["short", "long"]:
         print(f"Error: Invalid summary length '{short_or_long}'. Use 'short' or 'long'.")
         return
+    if shot_count not in ["zero", "one", "three"]:
+        print(f"Error: Invalid shot count '{shot_count}'. Use 'zero', 'one', or 'three'.")
+        return
 
-    shot_folder_name = "one_shot" if shot_count == "one" else "three_shot"
-    
+    source_folder = 'xlcost' if source == 'xl' else 'automotive'
+
     INPUT_CSV_PATH = PROJECT_ROOT / "benchmark_dataset" / "benchmark_dataset.csv"
-    PROMPTS_DIR = PROJECT_ROOT / "benchmark_dataset" / "prompts" / f"prompts_{task_type}_{short_or_long}" / shot_folder_name
+
+    if shot_count != "zero":
+        PROMPTS_DIR = PROJECT_ROOT / "benchmark_dataset" / "prompts" / "created_prompts" / task_type / f"{shot_count}_shot" / short_or_long / source_folder
+    else:
+        PROMPTS_DIR = PROJECT_ROOT / "benchmark_dataset" / "prompts" / "created_prompts" / task_type / "zero_shot" / short_or_long
+    
     OUTPUT_DIR = PROJECT_ROOT / "results" / "benchmark" / "baseline" # Swich "baseline" to "adapted" for final eval
-    OUTPUT_FILENAME = OUTPUT_DIR / f"{MODEL_NAME}_{task_type}_{shot_folder_name}_{short_or_long}_results.csv"
+    OUTPUT_FILENAME = OUTPUT_DIR / f"{MODEL_NAME}_{task_type}_{source}_{shot_count}_shot_{short_or_long}_results.csv"
+
+    if subset == "subset":
+        INPUT_CSV_PATH = PROJECT_ROOT / "benchmark_dataset" / "benchmark_dataset_subset.csv"
+        PROMPTS_DIR = PROJECT_ROOT / "benchmark_dataset" / "prompts" / "created_prompts" / task_type / "subset"
+        OUTPUT_DIR = OUTPUT_DIR / "subset"
+        OUTPUT_FILENAME = OUTPUT_DIR / f"{MODEL_NAME}_{task_type}_results.csv"
+    
 
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-
-    # Check configurations
-    print("\n--- Running Benchmark with Configuration ---")
-    print(f"Task Type: {task_type}")
-    print(f"Shot Count: {shot_count}")
-    print(f"Input CSV: {INPUT_CSV_PATH}")
-    print(f"Prompts Directory: {PROMPTS_DIR}")
-    print(f"Output Filename: {OUTPUT_FILENAME}")
-    print("------------------------------------------\n")
-
 
     try:
         dataset_df = pd.read_csv(INPUT_CSV_PATH)
@@ -104,10 +111,13 @@ def run_benchmark():
     summary_type = f'summary_{short_or_long}'
 
     for index, row in dataset_df.iterrows():
-        if row['id'] > 3:
+        if index > 2:
             break
         problem_id = row['id']
-        original_summary = row[summary_type]
+        if task_type == "generation":
+            reference = row['code']
+        else:
+            reference = row[summary_type]
         prompt_filepath = PROMPTS_DIR / f"{problem_id}.txt"
 
         print(f"  Processing problem ID: {problem_id}...")
@@ -145,18 +155,18 @@ def run_benchmark():
         
         # 4. Decode new tokens
         generated_ids = outputs[0][input_len:]
-        generated_summary = processor.decode(generated_ids, skip_special_tokens=True).strip()
+        generated_output = processor.decode(generated_ids, skip_special_tokens=True).strip()
 
-        print(f"    - Generated Summary: {generated_summary}...")
+        print(f"    - Generated: {generated_output}...")
         results.append({
             "id": problem_id,
-            "summary": original_summary,
-            "generated_summary": generated_summary
+            "reference": reference,
+            "generated": generated_output
         })
 
     print("Benchmark run complete.")
 
-    # --- 5. Save Results ---
+    # 5. Save Results
     if not results:
         print("No results were generated. Exiting without saving.")
         return
@@ -167,6 +177,4 @@ def run_benchmark():
     print(f"Results saved successfully to '{OUTPUT_FILENAME}'")
 
 if __name__ == "__main__":
-    # The sys.exit() from the original script is removed to allow the script to run.
-    # If it was for debugging, it's no longer needed here.
     run_benchmark()

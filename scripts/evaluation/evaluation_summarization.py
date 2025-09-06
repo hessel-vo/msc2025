@@ -24,21 +24,25 @@ TASK = "summarization"
 
 def validate_arguments(args):
     """Validate the command-line arguments for num_shots and summary_length."""
-    if len(args) != 3:
-        print("Usage: python run_summarization_evaluation.py <num_shots> <summary_length>")
+    if len(args) < 4:
+        print("Usage: python run_summarization_evaluation.py <xl|auto> <summary_length> <num_shots>")
         print("Example: python run_summarization_evaluation.py one short")
         sys.exit(1)
 
-    num_shots, summary_length = args[1], args[2]
+    source, summary_length, num_shots = args[1], args[2], args[3]
 
-    if num_shots not in ["one", "three"]:
-        print(f"Error: Invalid num_shots '{num_shots}'. Must be 'one' or 'three'.")
+    if source not in ["xl", "auto"]:
+        print(f"Error: Invalid summary_length '{summary_length}'. Must be 'xl' or 'auto'.")
         sys.exit(1)
     if summary_length not in ["short", "long"]:
         print(f"Error: Invalid summary_length '{summary_length}'. Must be 'short' or 'long'.")
         sys.exit(1)
+    if num_shots not in ["zero", "one", "three"]:
+        print(f"Error: Invalid num_shots '{num_shots}'. Must be 'zero', 'one', or 'three'.")
+        sys.exit(1)
 
-    return num_shots, summary_length
+
+    return source, summary_length, num_shots
 
 def calculate_bleu_scores(df):
     """
@@ -51,8 +55,8 @@ def calculate_bleu_scores(df):
 
     print("Calculating problem-level BLEU scores...")
     for _, row in df.iterrows():
-        prediction = str(row["generated_summary"])
-        reference = str(row["summary"])
+        prediction = str(row["generated"])
+        reference = str(row["reference"])
         p_id = row["id"]
 
         all_predictions.append(prediction)
@@ -80,8 +84,8 @@ def calculate_rouge_scores(df):
     """
     rouge_metric = evaluate.load("rouge")
     
-    all_predictions = df["generated_summary"].astype(str).tolist()
-    all_references = df["summary"].astype(str).tolist()
+    all_predictions = df["generated"].astype(str).tolist()
+    all_references = df["reference"].astype(str).tolist()
     
     print("Calculating batch problem-level ROUGE scores...")
     # use_aggregator=False returns a list of scores for each input pair
@@ -113,10 +117,10 @@ def calculate_rouge_scores(df):
 
 def main():
     """Main function to run the evaluation pipeline."""
-    num_shots, summary_length = validate_arguments(sys.argv)
+    source, summary_length, num_shots = validate_arguments(sys.argv)
     print(f"Starting summarization evaluation for: [Shots: {num_shots}, Summary: {summary_length}]")
 
-    input_filename = f"{MODEL_NAME}_{TASK}_{num_shots}_shot_{summary_length}_results.csv"
+    input_filename = f"{MODEL_NAME}_{TASK}_{source}_{num_shots}_shot_{summary_length}_results.csv"
     input_filepath = PROJECT_ROOT / "results" / "benchmark" / RESULTS_SUBFOLDER / input_filename
 
     try:
@@ -126,6 +130,9 @@ def main():
     except FileNotFoundError:
         print(f"Error: Input file not found at {input_filepath}")
         sys.exit(1)
+
+    df['generated'] = df['generated'].str.strip('"')
+    df['reference'] = df['reference'].str.strip('"')
 
     # --- Metric Calculation ---
     problem_bleu_scores, corpus_bleu_scores = calculate_bleu_scores(df)
@@ -148,7 +155,7 @@ def main():
     output_df = pd.merge(df, bleu_metrics_df, on='id')
     output_df = pd.merge(output_df, rouge_metrics_df, on='id')
     
-    output_filename = f"evaluation_results_{MODEL_NAME}_{TASK}_{num_shots}_shot_{summary_length}.csv"
+    output_filename = f"evaluation_results_{MODEL_NAME}_{TASK}_{source}_{num_shots}_shot_{summary_length}.csv"
     output_filepath = PROJECT_ROOT / "results" / "evaluation" / output_filename
     output_filepath.parent.mkdir(parents=True, exist_ok=True)
     output_df.to_csv(output_filepath, index=False)
@@ -160,7 +167,7 @@ def main():
     corpus_df = pd.DataFrame([all_corpus_scores])
     corpus_df.insert(0, 'model_name', MODEL_NAME)
     
-    corpus_output_filename = f"corpus_score_{MODEL_NAME}_{TASK}_{num_shots}_shot_{summary_length}.csv"
+    corpus_output_filename = f"corpus_score_{MODEL_NAME}_{TASK}_{source}_{num_shots}_shot_{summary_length}.csv"
     corpus_output_filepath = PROJECT_ROOT / "results" / "evaluation" / corpus_output_filename
     corpus_df.to_csv(corpus_output_filepath, index=False)
     print(f"Overall corpus score saved to: {corpus_output_filepath}")

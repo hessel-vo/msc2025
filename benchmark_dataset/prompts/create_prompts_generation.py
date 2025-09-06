@@ -22,7 +22,7 @@ def load_text_file(filepath):
         print(f"An error occurred while reading '{filepath}': {e}")
         sys.exit(1)
 
-def create_prompts(source, num_examples, sum_length, repo=None):
+def create_prompts(source, num_examples, sum_length, subset=None):
     """Generates prompt files based on a template and a CSV dataset."""
 
     source_folder = 'xlcost' if source == 'xl' else 'automotive'
@@ -37,14 +37,14 @@ def create_prompts(source, num_examples, sum_length, repo=None):
         output_dir = os.path.join(BASE_OUTPUT_DIR, f"{num_examples}_shot", sum_length, source_folder)
     # --- END MODIFIED SECTION ---
 
-    if repo:
-        output_dir = os.path.join(BASE_OUTPUT_DIR, repo)
+    if subset:
+        output_dir = os.path.join(BASE_OUTPUT_DIR, subset)
 
     # Construct the path for few-shot examples (this remains unchanged)
     examples_dir = os.path.join(BASE_EXAMPLES_DIR, source_folder, f"{sum_length}_summ")
 
     # Prompt template
-    template_path = TEMPLATE_SUBSET if repo else TEMPLATE_FILE_PATH
+    template_path = TEMPLATE_SUBSET if subset else TEMPLATE_FILE_PATH
     print(f"Loading prompt template from '{template_path}'...")
     prompt_template = load_text_file(template_path)
 
@@ -106,7 +106,7 @@ def create_prompts(source, num_examples, sum_length, repo=None):
                     filled_prompt = filled_prompt.replace("<target summary>", target_summary)
                     filled_prompt = filled_prompt.replace("<function signature>", function_signature)
 
-                    if repo:
+                    if subset:
                         additional_context = load_text_file(os.path.join(ADDITIONAL_CONTEXT_DIR, f"{file_id}.txt"))
                         filled_prompt = filled_prompt.replace("<additional_context>", additional_context)
                     
@@ -133,13 +133,13 @@ def main():
     
     if len(sys.argv) < 4 or len(sys.argv) > 5:
         print("ERROR: Incorrect number of arguments provided.")
-        print(f"Usage: python {sys.argv[0]} <xl|auto> <zero|one|three> <short|long> [repo]")
+        print(f"Usage: python {sys.argv[0]} <xl|auto> <zero|one|three> <short|long> [subset]")
         sys.exit(1)
 
     source = sys.argv[1]
     sum_length = sys.argv[2]
     num_examples = sys.argv[3]
-    repo = sys.argv[4] if len(sys.argv) == 5 else None
+    subset = sys.argv[4] if len(sys.argv) == 5 else None
 
     # Validate arguments
     if source not in ['xl', 'auto']:
@@ -157,7 +157,7 @@ def main():
         source=source,
         num_examples=num_examples,
         sum_length=sum_length,
-        repo=repo
+        subset=subset
     )
 
 if __name__ == "__main__":

@@ -1,0 +1,34 @@
+The target code below is part of the automotive software engineering domain.
+Use the target summary below to generate the related Python function.
+Do not provide any other output.
+
+---
+
+**[Example]**
+**Summary:**
+"Checks if a data type is a subtype of a specified base type.”
+
+**Code:**
+```python
+def is_subtype_of(cls, check: str, base: str) -> bool:
+    check_type = cls.get_type(check)
+    if not check_type:
+        raise DatatypesException(f"Not a valid type: '{check}'")
+    base_type = cls.get_type(base)
+    if not base_type:
+        raise DatatypesException(f"Not a valid type: '{base}'")
+    return check in base_type[2] or check == base
+```
+
+---
+
+**[Target]**
+**Based on the summary below, generate the full Python function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Checks if a VSS node is a branch that is not an instance."
+
+**Code:**
+```python
+def is_VSS_branch(node: VSSNode) -> bool:
+```

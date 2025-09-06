@@ -1,0 +1,26 @@
+**[Example 1]**
+**Code:**
+```python
+
+```
+
+**Summary:**
+"Maximum sum such that no two elements are adjacent”
+
+**[Example 2]**
+**Code:**
+```python
+
+```
+
+**Summary:**
+"Check for Majority Element in a sorted array”
+
+**[Example 3]**
+**Code:**
+```python
+
+```
+
+**Summary:**
+"Find a pair with the given difference”

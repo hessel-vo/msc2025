@@ -1,4 +1,0 @@
-id,summary,generated_summary,bleu_score,bleu_1,bleu_2,bleu_3,bleu_4,rouge1,rouge2,rougeL,rougeLsum
-3,Checks if a data type is a subtype of a specified base type.,Determines if a given data type is a subtype of a base type.,57.3122448409426,85.71428571428571,69.23076923076923,50.0,36.36363636363637,0.8461538461538461,0.6666666666666666,0.8461538461538461,0.8461538461538461
-2,Validates if a value conforms to a datatype specified by a string.,Checks if a value is of a specific datatype.,13.76074141597786,60.0,22.22222222222222,12.5,7.142857142857143,0.4761904761904762,0.2105263157894737,0.4761904761904762,0.4761904761904762
-5,Checks if an integer value fits within the range of a specified bit-width and signedness.,Checks if a value is a valid xintx integer within specified signedness and bit constraints.,7.3140318268287645,62.5,6.666666666666667,3.5714285714285716,1.9230769230769231,0.6451612903225806,0.0689655172413793,0.38709677419354843,0.38709677419354843

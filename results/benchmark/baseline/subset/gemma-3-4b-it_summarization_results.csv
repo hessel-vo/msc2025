@@ -1,0 +1,5 @@
+id,summary,generated_summary
+2,Validates if a value conforms to a datatype specified by a string.,"""Checks if a given value is of a specified datatype by calling a type-specific validation function associated with that datatype."""
+3,Checks if an integer value fits within the range of a specified bit-width and signedness.,"Checks if a value (or a list of values) is a valid signed or unsigned integer within a specified number of bits, returning True if all values meet the criteria and False otherwise."
+5,Finds all datatypes within the current namespace and any parent namespaces of a given FQN.,"Filters a given fully qualified name (FQN) against a list of dynamic datatypes, returning a dictionary mapping the last component of matching datatypes to their full definition, excluding those that share a common prefix."
+28,Inflates a card fragment's layout and initializes its view components.,"""Inflates the `card_fragment` layout, retrieves references to the `card_name` and `card_icon` views, and returns the inflated root view."""

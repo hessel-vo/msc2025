@@ -1,2 +1,0 @@
-model_name,bleu_score,corpus_rouge1,corpus_rouge2,corpus_rougeL,corpus_rougeLsum
-gemma-3-4b-it,25.853935408930898,0.655835204222301,0.3153861665658399,0.5698136988459569,0.5698136988459569

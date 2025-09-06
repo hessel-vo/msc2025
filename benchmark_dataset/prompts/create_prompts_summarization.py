@@ -5,8 +5,9 @@ import sys
 # --- Configuration ---
 # Adjusted base directories to match the project structure
 TEMPLATE_FILE_PATH = "prompt_template_summarization.txt"
-CSV_FILE_PATH = "benchmark_dataset.csv"
-BASE_OUTPUT_DIR = "created_prompts/summarization" # Adjusted to new base output folder
+TEMPLATE_SUBSET = "prompt_template_summarization.txt"
+CSV_FILE_PATH = "benchmark_dataset_subset.csv" # Set to "benchmark_dataset_subset.csv" for benchmark subset
+BASE_OUTPUT_DIR = "created_prompts/summarization"
 BASE_EXAMPLES_DIR = "examples/summarization"
 
 def load_text_file(filepath):
@@ -21,7 +22,7 @@ def load_text_file(filepath):
         print(f"An error occurred while reading '{filepath}': {e}")
         sys.exit(1)
 
-def create_prompts(source, sum_length, num_examples):
+def create_prompts(source, sum_length, num_examples, subset=None):
     """Generates prompt files based on a template and a CSV dataset."""
 
     source_folder = 'xlcost' if source == 'xl' else 'automotive'
@@ -36,6 +37,9 @@ def create_prompts(source, sum_length, num_examples):
         # For one/three-shot, the new structure is: one_shot/long/xlcost/
         output_dir = os.path.join(BASE_OUTPUT_DIR, f"{num_examples}_shot", sum_length, source_folder)
     # --- END MODIFIED SECTION ---
+
+    if subset:
+        output_dir = os.path.join(BASE_OUTPUT_DIR, subset)
 
     # Construct the path to few-shot examples (this remains unchanged as it's the source)
     examples_dir = os.path.join(BASE_EXAMPLES_DIR, source_folder, f"{sum_length}_summ")
@@ -123,14 +127,16 @@ def create_prompts(source, sum_length, num_examples):
 def main():
     """Main function to parse arguments and run the prompt creation."""
     
-    if len(sys.argv) != 4:
+    if len(sys.argv) < 4:
         print("ERROR: Incorrect number of arguments provided.")
-        print(f"Usage: python {sys.argv[0]} <xl|auto> <short|long> <zero|one|three>")
+        print(f"Usage: python {sys.argv[0]} <xl|auto> <short|long> <zero|one|three> [subset]")
         sys.exit(1)
 
     source = sys.argv[1]
     sum_length = sys.argv[2]
     num_examples = sys.argv[3]
+    subset = sys.argv[4] if len(sys.argv) == 5 else None
+
 
     # Validate arguments
     if source not in ['xl', 'auto']:
@@ -146,7 +152,8 @@ def main():
     create_prompts(
         source=source,
         sum_length=sum_length,
-        num_examples=num_examples
+        num_examples=num_examples,
+        subset=subset
     )
 
 if __name__ == "__main__":

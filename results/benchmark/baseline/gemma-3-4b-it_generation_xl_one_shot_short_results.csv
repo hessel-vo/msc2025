@@ -1,0 +1,64 @@
+id,reference,generated
+1,"def is_subtype_of(cls, check: str, base: str) -> bool:
+    check_type = cls.get_type(check)
+    if not check_type:
+        raise DatatypesException(f""Not a valid type: '{check}'"")
+    base_type = cls.get_type(base)
+    if not base_type:
+        raise DatatypesException(f""Not a valid type: '{base}'"")
+    return check in base_type[2] or check == base","```python
+def is_subtype_of(cls, check: str, base: str) -> bool:
+    """"""Checks if a data type is a subtype of a specified base type.""""""
+    if check == base:
+        return True
+    if not hasattr(cls, '__origin__'):
+        return False
+    origin = cls.__origin__
+    if origin is str and base is int:
+        return False
+    if origin is int and base is str"
+2,"def is_datatype(cls, value: Any, datatype: str) -> bool:
+    t = cls.get_type(datatype)
+    if t is None:
+        raise DatatypesException(f""Unsupported datatype: {datatype}"")
+    return t[1](value)","```python
+from typing import Any
+
+def is_datatype(cls, value: Any, datatype: str) -> bool:
+    """"""Validates if a value conforms to a datatype specified by a string.""""""
+    try:
+        if datatype == ""int"":
+            return isinstance(value, int)
+        elif datatype == ""float"":
+            return isinstance(value, float)
+        elif datatype == ""str"":
+            return isinstance(value, str)"
+3,"def is_xintx(value: Any, signed: bool, bits: int):
+    values = [value]
+    if isinstance(value, list):
+        values = value
+
+    for v in values:
+        if not isinstance(v, int):
+            return False
+        if not signed and v < 0:
+            return False
+        max = 2**bits - 1
+        min = 0
+        if signed:
+            max = 2 ** (bits - 1) - 1
+            min = -(2 ** (bits - 1))
+        if not (v <= max and v >= min):
+            return False
+    return True","```python
+from typing import Any
+
+def is_xintx(value: Any, signed: bool, bits: int):
+    if not isinstance(value, int):
+        return False
+    if signed:
+        min_val = -(2**(bits - 1))
+        max_val = (2**(bits - 1)) - 1
+    else:
+        min_val = 0
+        max_val = (2**bits)"

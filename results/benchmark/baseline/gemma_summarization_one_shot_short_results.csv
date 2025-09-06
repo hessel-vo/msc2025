@@ -1,4 +1,0 @@
-id,summary,generated_summary
-1,Checks if a data type is a subtype of a specified base type.,Determines if a given data type is a subtype of a base type.
-2,Validates if a value conforms to a datatype specified by a string.,Checks if a value is of a specific datatype.
-3,Checks if an integer value fits within the range of a specified bit-width and signedness.,Checks if a value is a valid xintx integer within specified signedness and bit constraints.
