@@ -1,0 +1,12 @@
+Your task is to create a C function based on a summary.
+
+**[Target]**
+**Based on the summary below, generate the full C function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Acts as a LIN-to-CAN gateway callback, translating an incoming LIN frame by using its first data byte's top two bits as an index to find a target CAN ID, constructing a new CAN frame with the translated ID and a payload where those index bits are masked out, and finally invoking a registered handler with the resulting CAN frame."
+
+**Code:**
+```c
+static void lin_incoming_cb(const struct lin_frame *frame, void *user_data) {
+```

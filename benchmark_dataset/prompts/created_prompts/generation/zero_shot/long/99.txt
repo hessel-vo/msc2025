@@ -1,0 +1,12 @@
+Your task is to create a C function based on a summary.
+
+**[Target]**
+**Based on the summary below, generate the full C function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Sets the active LIN schedule table by index, first validating the index and then using a semaphore to thread-safely update the scheduler's state and reset its entry pointer to the start of the new table."
+
+**Code:**
+```c
+int abstract_lin_scheduler_set_active_table(
+```

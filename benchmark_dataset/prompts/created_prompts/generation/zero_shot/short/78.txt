@@ -1,0 +1,12 @@
+Your task is to create a C function based on a summary.
+
+**[Target]**
+**Based on the summary below, generate the full C function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Sends a positive UDS response for the ECU Reset service."
+
+**Code:**
+```c
+void send_positive_reset_response(uint8_t reset_type) {
+```

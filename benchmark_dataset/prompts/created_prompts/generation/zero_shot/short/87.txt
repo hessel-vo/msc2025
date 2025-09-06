@@ -1,0 +1,12 @@
+Your task is to create a C function based on a summary.
+
+**[Target]**
+**Based on the summary below, generate the full C function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"A LIN callback that dequeues a frame for transmission and executes its completion callback."
+
+**Code:**
+```c
+static bool lin_outgoing_cb(struct lin_frame *frame, void *user_data) {
+```

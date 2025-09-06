@@ -1,0 +1,12 @@
+Your task is to create a Python function based on a summary.
+
+**[Target]**
+**Based on the summary below, generate the full Python function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Recursively parses a given specification file and any files it includes, returning a single, flattened list of all resulting VSpec objects."
+
+**Code:**
+```python
+def get_vspecs(includes: list[Path], spec: Path, prefix: str | None = None) -> list[VSpec]:
+```

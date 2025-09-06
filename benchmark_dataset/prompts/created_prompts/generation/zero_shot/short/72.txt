@@ -1,0 +1,12 @@
+Your task is to create a Cpp function based on a summary.
+
+**[Target]**
+**Based on the summary below, generate the full Cpp function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Callback to translate available D-Bus service instance addresses to strings and forward the result."
+
+**Code:**
+```cpp
+void DBusProxyManager::instancesAsyncCallback(std::shared_ptr<Proxy> _proxy, const CommonAPI::CallStatus &_status, const std::vector<DBusAddress> &_availableServiceInstances, GetAvailableInstancesCallback &_call) {
+```

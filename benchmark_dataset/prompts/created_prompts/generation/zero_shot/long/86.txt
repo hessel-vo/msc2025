@@ -1,0 +1,12 @@
+Your task is to create a C function based on a summary.
+
+**[Target]**
+**Based on the summary below, generate the full C function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Disables a specific LIN-to-CAN receive filter by clearing its callback pointer, or disables all filters if a special ID is passed, while ignoring out-of-bounds IDs."
+
+**Code:**
+```c
+static void lin2can_remove_rx_filter(const struct device *dev, int filter_id) {
+```

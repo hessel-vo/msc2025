@@ -1,0 +1,12 @@
+Your task is to create a Python function based on a summary.
+
+**[Target]**
+**Based on the summary below, generate the full Python function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Recursively updates a dictionary with values from another, merging nested dictionaries."
+
+**Code:**
+```python
+def deep_update(base: dict[str, Any], update: dict[str, Any]) -> None:
+```

@@ -1,0 +1,12 @@
+Your task is to create a C function based on a summary.
+
+**[Target]**
+**Based on the summary below, generate the full C function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Converts a raw integer gain value to a corresponding DAC gain enumeration, returning an error if unsupported."
+
+**Code:**
+```c
+static int hvs_dac_convert_gain(int raw_gain, enum hv_shield_dac_gains_t* gain) {
+```

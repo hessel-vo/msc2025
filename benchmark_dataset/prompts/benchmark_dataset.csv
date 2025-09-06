@@ -63,7 +63,28 @@ from vss_tools import log
 
 if TYPE_CHECKING:
     from vss_tools.model import VSSUnit",Looks up a type definition tuple by its string name from a list of types.,"Returns the type definition tuple from a class-level list of types that matches the provided 'datatype' name, or returns None if no match is found."
-5,https://github.com/COVESA/vss-tools,8a8e64de6b1ecdb831e880e105f0644e81af782f,vss-tools/src/vss_tools/exporters/samm/helpers/vss_helper.py,python,"def populate_unique_node_names(node_names_dict: dict[str, Any], vss_node: VSSNode) -> None:
+5,https://github.com/COVESA/vss-tools,8a8e64de6b1ecdb831e880e105f0644e81af782f,vss-tools/src/vss_tools/datatypes.py,python,"def get_fqn_namespaced_datatypes(fqn: str | None = None) -> dict[str, str]:
+    if not fqn:
+        return {}
+    fqn_namespaced_datatypes = {}
+    for t in dynamic_datatypes:
+        if fqn.startswith(t):
+            continue
+
+        if fqn.startswith(""."".join(t.split(""."")[:-1])):
+            fqn_namespaced_datatypes[(t.split(""."")[-1])] = t
+
+    if fqn_namespaced_datatypes:
+        log.debug(f""Namespaced datatypes, {fqn=}, {fqn_namespaced_datatypes=}"")
+    return fqn_namespaced_datatypes","def get_fqn_namespaced_datatypes(fqn: str | None = None) -> dict[str, str]:","from __future__ import annotations
+
+from typing import TYPE_CHECKING, Any, Callable, Set
+
+from vss_tools import log
+
+if TYPE_CHECKING:
+    from vss_tools.model import VSSUnit",Finds all datatypes within the current namespace and any parent namespaces of a given FQN.,Returns a dictionary mapping the short name to the full FQN for all dynamic datatypes that exist in the same namespace as the provided FQN.
+6,https://github.com/COVESA/vss-tools,8a8e64de6b1ecdb831e880e105f0644e81af782f,vss-tools/src/vss_tools/exporters/samm/helpers/vss_helper.py,python,"def populate_unique_node_names(node_names_dict: dict[str, Any], vss_node: VSSNode) -> None:
     if not node_names_dict.get(vss_node.name):
         node_names_dict.__setitem__(vss_node.name, {""counter"": 1, ""vss_paths"": [vss_node.get_fqn()]})
     else:
@@ -86,33 +107,6 @@ from ..config import config as cfg
 from .data_types_and_units import DataTypes, DataUnits
 from .samm_concepts import SammCConcepts, SammConcepts
 from .string_helper import str_to_lc_first_camel_case, str_to_uc_first_camel_case",Traverses a VSS tree to count the occurrences and collect the fully qualified paths of each node name.,Recursively traverses a VSS node tree to populate a dictionary with the occurrence count and a list of fully qualified paths for each unique node name.
-6,https://github.com/COVESA/vss-tools,8a8e64de6b1ecdb831e880e105f0644e81af782f,vss-tools/src/vss_tools/exporters/samm/helpers/vss_helper.py,python,"def get_fqn_namespaced_datatypes(fqn: str | None = None) -> dict[str, str]:
-    if not fqn:
-        return {}
-    fqn_namespaced_datatypes = {}
-    for t in dynamic_datatypes:
-        if fqn.startswith(t):
-            continue
-
-        if fqn.startswith(""."".join(t.split(""."")[:-1])):
-            fqn_namespaced_datatypes[(t.split(""."")[-1])] = t
-
-    if fqn_namespaced_datatypes:
-        log.debug(f""Namespaced datatypes, {fqn=}, {fqn_namespaced_datatypes=}"")
-    return fqn_namespaced_datatypes","def get_fqn_namespaced_datatypes(fqn: str | None = None) -> dict[str, str]:","import re
-from ast import literal_eval
-from typing import Any
-
-from rdflib import URIRef
-from vss_tools import log
-from vss_tools.datatypes import Datatypes
-from vss_tools.model import NodeType, VSSDataBranch, VSSDataDatatype
-from vss_tools.tree import VSSNode
-
-from ..config import config as cfg
-from .data_types_and_units import DataTypes, DataUnits
-from .samm_concepts import SammCConcepts, SammConcepts
-from .string_helper import str_to_lc_first_camel_case, str_to_uc_first_camel_case",Finds all datatypes within the current namespace and any parent namespaces of a given FQN.,Returns a dictionary mapping the short name to the full FQN for all dynamic datatypes that exist in the same namespace as the provided FQN.
 7,https://github.com/COVESA/vss-tools,8a8e64de6b1ecdb831e880e105f0644e81af782f,vss-tools/src/vss_tools/exporters/apigear.py,python,"def get_apigear_datatype(t: str) -> typing.Optional[ApiGearType]:
     is_array = False
     apigear_type = None

@@ -1,0 +1,12 @@
+Your task is to create a C function based on a summary.
+
+**[Target]**
+**Based on the summary below, generate the full C function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Sets the gain for a specified DAC on a high-voltage shield."
+
+**Code:**
+```c
+static int hvs_set_dac_gain(const struct device* dev, uint8_t dac, enum hv_shield_dac_gains_t gain) {
+```

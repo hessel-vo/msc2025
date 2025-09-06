@@ -1,0 +1,12 @@
+Your task is to create a Python function based on a summary.
+
+**[Target]**
+**Based on the summary below, generate the full Python function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Returns `True` if the given `VSSNode`'s data is a `VSSDataBranch` and its `is_instance` attribute is `False`."
+
+**Code:**
+```python
+def is_VSS_branch(node: VSSNode) -> bool:
+```

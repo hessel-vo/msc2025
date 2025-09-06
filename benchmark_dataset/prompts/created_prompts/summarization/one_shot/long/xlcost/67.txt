@@ -1,0 +1,60 @@
+The target code below is part of the automotive software engineering domain.
+Provide a detailed, single-line summary of the target Cpp code below.
+Do not provide any other output.
+
+---
+
+**[Example]**
+**Code:**
+```cpp
+int FindMaxSum(vector<int> arr, int n) {
+    int incl = arr[0];
+    int excl = 0;
+    int excl_new;
+    int i;
+
+    for (i = 1; i < n; i++) {
+        excl_new = (incl > excl) ? incl : excl;
+        incl = excl + arr[i];
+        excl = excl_new;
+    }
+
+    return ((incl > excl) ? incl : excl);
+}
+```
+
+**Summary:**
+"Finds the maximum sum of a subsequence of non-adjacent elements by iteratively tracking the maximum sum including and excluding the current element”
+
+---
+
+**[Target]**
+**Summarize the following Cpp code (do not provide any other output):**
+```cpp
+void DBusInstanceAvailabilityStatusChangedEvent::onInterfacesRemovedSignal(const DBusMessage &_message) {
+    DBusInputStream dbusInputStream(_message);
+    std::string dbusObjectPath;
+    std::vector<std::string> dbusInterfaceNames;
+
+    dbusInputStream >> dbusObjectPath;
+    if (dbusInputStream.hasError()) {
+        COMMONAPI_ERROR(std::string(__FUNCTION__) + " failed to read object path");
+    }
+
+    dbusInputStream >> dbusInterfaceNames;
+    if (dbusInputStream.hasError()) {
+        COMMONAPI_ERROR(std::string(__FUNCTION__) + " failed to read interface names");
+    }
+
+    for (const auto& dbusInterfaceName : dbusInterfaceNames) {
+        if(auto itsProxy = proxyWeakPtr_.lock() &&
+                dbusInterfaceName == observedDbusInterfaceName_ &&
+                removeInterface(dbusObjectPath, dbusInterfaceName)) {
+            (void)itsProxy;
+            notifyInterfaceStatusChanged(dbusObjectPath, dbusInterfaceName, AvailabilityStatus::NOT_AVAILABLE);
+        }
+    }
+}
+```
+
+**Summary:**

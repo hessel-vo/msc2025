@@ -1,0 +1,12 @@
+Your task is to create a Cpp function based on a summary.
+
+**[Target]**
+**Based on the summary below, generate the full Cpp function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Sends a D-Bus message over the connection and returns a boolean indicating success."
+
+**Code:**
+```cpp
+bool DBusConnection::sendDBusMessage(const DBusMessage &_message) const {
+```

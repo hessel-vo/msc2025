@@ -1,0 +1,12 @@
+Your task is to create a Java function based on a summary.
+
+**[Target]**
+**Based on the summary below, generate the full Java function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Blurs and scales an image to set as a card's visible background."
+
+**Code:**
+```java
+private void updateBackgroundImage(Drawable image) {
+```

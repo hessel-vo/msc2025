@@ -1,0 +1,26 @@
+**[Example 1]**
+**Summary:**
+"<summary1>”
+
+**Code:**
+```<language>
+<code1>
+```
+
+**[Example 2]**
+**Summary:**
+"<summary2>”
+
+**Code:**
+```<language>
+<code2>
+```
+
+**[Example 3]**
+**Summary:**
+"<summary3>”
+
+**Code:**
+```<language>
+<code3>
+```

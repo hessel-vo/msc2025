@@ -1,0 +1,75 @@
+The target code below is part of the automotive software engineering domain.
+Provide a concise, single-line summary of the target Python code below.
+Do not provide any other output.
+
+---
+
+**[Examples]**
+**[Example 1]**
+**Code:**
+```python
+def is_subtype_of(cls, check: str, base: str) -> bool:
+    check_type = cls.get_type(check)
+    if not check_type:
+        raise DatatypesException(f"Not a valid type: '{check}'")
+    base_type = cls.get_type(base)
+    if not base_type:
+        raise DatatypesException(f"Not a valid type: '{base}'")
+    return check in base_type[2] or check == base
+```
+
+**Summary:**
+"Checks if a data type is a subtype of a specified base type”
+
+**[Example 2]**
+**Code:**
+```python
+def populate_unique_node_names(node_names_dict: dict[str, Any], vss_node: VSSNode) -> None:
+    if not node_names_dict.get(vss_node.name):
+        node_names_dict.__setitem__(vss_node.name, {"counter": 1, "vss_paths": [vss_node.get_fqn()]})
+    else:
+        node_names_dict[vss_node.name]["counter"] += 1  # type: ignore
+        node_names_dict[vss_node.name]["vss_paths"].append(vss_node.get_fqn())  # type: ignore
+
+    if vss_node.children and len(vss_node.children) > 0:
+        for vss_child_node in vss_node.children:
+            populate_unique_node_names(node_names_dict, vss_child_node)
+```
+
+**Summary:**
+"Traverses a VSS tree to count the occurrences and collect the fully qualified paths of each node name”
+
+**[Example 3]**
+**Code:**
+```python
+def get_vspecs(includes: list[Path], spec: Path, prefix: str | None = None) -> list[VSpec]:
+    vspecs: list[VSpec] = []
+    vspec = VSpec(spec, prefix)
+    vspecs.append(vspec)
+
+    for include in vspec.includes:
+        include_spec = include.resolve_path(includes + [vspec.source.parent])
+        vspecs.extend(get_vspecs(includes, include_spec, include.prefix))
+
+    return vspecs
+```
+
+**Summary:**
+"Recursively resolves and flattens a specification file and all its include dependencies”
+
+---
+
+**[Target]**
+**Summarize the following Python code (do not provide any other output):**
+```python
+def get_vss_raw(data: dict[str, Any], fqn: str | None) -> VSSRaw:
+    model = VSSRaw(fqn=fqn, **data)
+    try:
+        model = resolve_vss_raw(model)
+    except (ValidationError, ModelException):
+        log.debug(f"'{fqn}', incomplete, initialized as '{model.__class__.__name__}'")
+        return model
+    return model
+```
+
+**Summary:**

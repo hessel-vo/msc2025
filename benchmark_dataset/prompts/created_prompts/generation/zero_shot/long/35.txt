@@ -1,0 +1,12 @@
+Your task is to create a Java function based on a summary.
+
+**[Target]**
+**Based on the summary below, generate the full Java function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Sets the car's media source to a given component in browse mode and finishes the context if it's an Activity, catching and logging a `CarNotConnectedException` if the car service is unavailable."
+
+**Code:**
+```java
+private static void selectMediaSourceAndFinish(Context context, ComponentName componentName, CarMediaManager carMediaManager) {
+```

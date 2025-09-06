@@ -1,0 +1,12 @@
+Your task is to create a C function based on a summary.
+
+**[Target]**
+**Based on the summary below, generate the full C function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"A callback that translates an incoming LIN frame to a CAN frame and invokes a registered handler."
+
+**Code:**
+```c
+static void lin_incoming_cb(const struct lin_frame *frame, void *user_data) {
+```

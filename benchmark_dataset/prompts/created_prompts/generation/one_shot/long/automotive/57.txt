@@ -1,0 +1,39 @@
+Your task is to create a Cpp function based on a summary.
+Below is an example of generating a Cpp function from a summary.
+
+---
+
+**[Example]**
+**Summary:**
+"Sends a given `DBusMessage` over an established D-Bus connection, returning `true` on success and `false` if the message is invalid, the connection is down, or the underlying send operation fails”
+
+**Code:**
+```cpp
+bool DBusConnection::sendDBusMessage(const DBusMessage &_message) const {
+    if (!_message) {
+        COMMONAPI_ERROR(std::string(__FUNCTION__), "message == NULL");
+        return false;
+    }
+    if (!isConnected()) {
+        COMMONAPI_ERROR(std::string(__FUNCTION__), "not connected");
+        return false;
+    }
+
+    dbus_uint32_t dbusSerial;
+    const bool result = (0 != dbus_connection_send(connection_, _message.message_, &dbusSerial));
+    return result;
+}
+```
+
+---
+
+**[Target]**
+**Based on the summary below, generate the full Cpp function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Handles the toggling of a D-Bus watch by creating a C++ wrapper object for it on first use, and then starting or stopping its monitoring based on its readiness status."
+
+**Code:**
+```cpp
+void DBusConnection::onToggleWatch(::DBusWatch* libdbusWatch, void* data) {
+```

@@ -1,0 +1,75 @@
+Your task is to create a Java function based on a summary.
+Below is an example of generating a Java function from a summary.
+
+---
+
+**[Examples]**
+**[Example 1]**
+**Summary:**
+"Lazily initializes and returns a `HomeAudioCardPresenter`, setting its data models with both a `MediaViewModel` and an `InCallModel` if a `ViewModelProvider` is available, otherwise logging a warning and using only the `InCallModel`”
+
+**Code:**
+```java
+public CardPresenter getCardPresenter() {
+    if (mAudioCardPresenter == null) {
+        mAudioCardPresenter = new HomeAudioCardPresenter();
+        if (mViewModelProvider == null) {
+            Log.w(TAG, "No ViewModelProvider set. Cannot get MediaViewModel");
+            mAudioCardPresenter.setModels(
+                    Collections.unmodifiableList(Collections.singletonList(
+                            new InCallModel(SystemClock.elapsedRealtimeClock()))));
+        } else {
+            mAudioCardPresenter.setModels(Collections.unmodifiableList(Arrays.asList(
+                    mViewModelProvider.get(MediaViewModel.class),
+                    new InCallModel(SystemClock.elapsedRealtimeClock()))));
+        }
+    }
+    return mAudioCardPresenter;
+}
+```
+
+**[Example 2]**
+**Summary:**
+"Lazily initializes and returns an `AudioFragment`, bidirectionally linking it with its presenter upon first creation”
+
+**Code:**
+```java
+public HomeCardFragment getCardView() {
+    if (mAudioCardView == null) {
+        mAudioCardView = new AudioFragment();
+        getCardPresenter().setView(mAudioCardView);
+        mAudioCardView.setPresenter(getCardPresenter());
+    }
+    return mAudioCardView;
+}
+```
+
+**[Example 3]**
+**Summary:**
+"Initializes a `TaskViewManager` to asynchronously create a `TaskView`, which upon creation is configured with a listener, added to the parent `ViewGroup`, and stored as a member variable”
+
+**Code:**
+```java
+private void setUpTaskView(ViewGroup parent) {
+    mTaskViewManager = new TaskViewManager(this,
+            new HandlerExecutor(getMainThreadHandler()));
+    mTaskViewManager.createTaskView(taskView -> {
+        taskView.setListener(getMainExecutor(), mTaskViewListener);
+        parent.addView(taskView);
+        mTaskView = taskView;
+    });
+}
+```
+
+---
+
+**[Target]**
+**Based on the summary below, generate the full Java function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Inflates the `card_fragment` layout, finds and assigns the card's title and icon views, and returns the resulting root view."
+
+**Code:**
+```java
+public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+```

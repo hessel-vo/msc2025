@@ -1,0 +1,12 @@
+Your task is to create a Python function based on a summary.
+
+**[Target]**
+**Based on the summary below, generate the full Python function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Raises an exception if the specified 'datatype' is unsupported, otherwise retrieves that type's validation function and returns the boolean result of calling it with the provided 'value'."
+
+**Code:**
+```python
+def is_datatype(cls, value: Any, datatype: str) -> bool:
+```

@@ -1,0 +1,12 @@
+Your task is to create a Java function based on a summary.
+
+**[Target]**
+**Based on the summary below, generate the full Java function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Formats a phone number to create a new `DescriptiveTextWithControlsView` with call details and controls, then notifies the presenter that the model has been updated."
+
+**Code:**
+```java
+void updateModelWithPhoneNumber(String number) {
+```

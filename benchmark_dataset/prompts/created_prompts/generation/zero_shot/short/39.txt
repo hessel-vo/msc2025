@@ -1,0 +1,12 @@
+Your task is to create a Java function based on a summary.
+
+**[Target]**
+**Based on the summary below, generate the full Java function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Dynamically instantiates and displays home card modules defined in a configuration resource."
+
+**Code:**
+```java
+private void initializeCards() {
+```

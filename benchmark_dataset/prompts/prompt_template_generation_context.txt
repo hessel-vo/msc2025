@@ -1,6 +1,6 @@
-The target code below is part of the automotive software engineering domain.
-Use the target summary below to generate the related <code language> function.
-Do not provide any other output.
+Your task is to create a <code language> function based on a summary and additional context.
+Below is an example of generating a <code language> function from a summary.
+You are also provided with additional context of relevant imported files and surrounding file contents to support the task of generating the target code.
 
 ---
 

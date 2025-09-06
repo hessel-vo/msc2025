@@ -1,0 +1,84 @@
+Your task is to create a Java function based on a summary.
+Below is an example of generating a Java function from a summary.
+
+---
+
+**[Examples]**
+**[Example 1]**
+**Summary:**
+"Finds the maximum sum of a subsequence of non-adjacent elements by iteratively tracking the maximum sum including and excluding the current element”
+
+**Code:**
+```java
+int FindMaxSum(int arr[], int n) {
+    int incl = arr[0];
+    int excl = 0;
+    int excl_new;
+    int i;
+
+    for (i = 1; i < n; i++) {
+        excl_new = (incl > excl) ? incl : excl;
+        incl = excl + arr[i];
+        excl = excl_new;
+    }
+    return ((incl > excl) ? incl : excl);
+}
+```
+
+**[Example 2]**
+**Summary:**
+"Determines if a given element `x` is the majority in a sorted array by checking if `x` occupies both an index `i` and the index `n/2` positions ahead of it”
+
+**Code:**
+```java
+static boolean isMajority(int arr[], int n, int x) {
+    int i, last_index = 0;
+    last_index = (n % 2 == 0) ? n / 2 : n / 2 + 1;
+
+    for (i = 0; i < last_index; i++) {
+        if (arr[i] == x && arr[i + n / 2] == x) {
+            return true;
+        }
+    }
+    return false;
+}
+```
+
+**[Example 3]**
+**Summary:**
+"Finds if a pair of elements with a given difference `n` exists in a sorted array by using a two-pointer approach.”
+
+**Code:**
+```java
+static boolean findPair(int arr[], int n) {
+    int size = arr.length;
+    int i = 0, j = 1;
+
+    while (i < size && j < size) {
+        if (i != j && arr[j] - arr[i] == n) {
+            System.out.print("Pair Found: (" + arr[i] + ", " + arr[j] + ")");
+            return true;
+        } else if (arr[j] - arr[i] < n) {
+            j++;
+        } else {
+            i++;
+        }
+    }
+
+    System.out.print("No such pair");
+    return false;
+}
+```
+
+---
+
+**[Target]**
+**Based on the summary below, generate the full Java function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Determines if a component should be added to a launchable list, returning `false` if its package is explicitly hidden or if it's a custom media component and launchable apps are also being shown, otherwise returning `true` for valid launchable or media service types."
+
+**Code:**
+```java
+@NonNull String packageName) {
+```

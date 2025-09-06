@@ -1,0 +1,33 @@
+Your task is to create a Python function based on a summary.
+Below is an example of generating a Python function from a summary.
+
+---
+
+**[Example]**
+**Summary:**
+"Maximum sum such that no two elements are adjacent”
+
+**Code:**
+```python
+def find_max_sum(arr):
+    incl = 0
+    excl = 0
+    for i in arr:
+        new_excl = excl if excl > incl else incl
+        incl = excl + i
+        excl = new_excl
+    return excl if excl > incl else incl
+```
+
+---
+
+**[Target]**
+**Based on the summary below, generate the full Python function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Initializes and attempts to resolve a VSS raw model, returning the unresolved model on failure."
+
+**Code:**
+```python
+def get_vss_raw(data: dict[str, Any], fqn: str | None) -> VSSRaw:
+```

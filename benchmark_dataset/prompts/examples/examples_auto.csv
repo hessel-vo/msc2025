@@ -1,0 +1,145 @@
+language,code,summary_short,summary_long
+c,"void send_negative_response(enum UDS_SID request_sid,
+                            enum UDS_NRC response_code) {
+  int ret;
+  uint8_t tx_data[] = {UDS_SID_NEGATIVE_RESPONSE, request_sid, response_code};
+  ret = isotp_send(&send_ctx, can_dev, tx_data, sizeof(tx_data), &tx_addr,
+                   &rx_addr, send_complete_cb, NULL);
+  if (ret != ISOTP_N_OK) {
+    LOG_ERR(""Error while sending data to ID %d [%d]\n"", tx_addr.std_id, ret);
+  }
+}",Sends a UDS negative response message containing the failed service ID and a negative response code,"Constructs and sends a 3-byte UDS negative response message (containing the original request SID and a negative response code) over a CAN bus using the ISO-TP protocol, logging an error if the transmission fails"
+c,"static void send_session_control_response(enum UdsSessionState session_type,
+                                          uint16_t p2_timeout_ms,
+                                          uint16_t p2_star_timeout_ms) {
+  int ret;
+  uint8_t positive_sid = UDS_SID_DIAGNOSTIC_SESSION_CONTROL + 0x40;
+
+  uint8_t tx_data[] = {
+    positive_sid,
+    session_type,
+    (p2_timeout_ms >> 8) & 0xFF,
+    p2_timeout_ms & 0xFF,
+    ((p2_star_timeout_ms / 10) >> 8) & 0xFF,
+    (p2_star_timeout_ms / 10) & 0xFF,
+  };
+
+  ret = isotp_send(&send_ctx, can_dev, tx_data, sizeof(tx_data), &tx_addr,
+                   &rx_addr, send_complete_cb, NULL);
+  if (ret != ISOTP_N_OK) {
+    LOG_ERR(""Error while sending data to ID %d [%d]\n"", tx_addr.std_id, ret);
+  }
+}",Sends a UDS positive response for the Diagnostic Session Control service,"Constructs and sends a 6-byte UDS positive response for a Diagnostic Session Control request—containing the session type, P2, and P2* server timeout values—over a CAN bus via the ISO-TP protocol, logging an error if the transmission fails"
+c,"static int hvs_dac_convert_gain(int raw_gain,
+                                enum hv_shield_dac_gains_t* gain) {
+  switch (raw_gain) {
+    case 1:
+      *gain = HV_SHIELD_DAC_GAIN_1;
+      return 0;
+    case 2:
+      *gain = HV_SHIELD_DAC_GAIN_2;
+      return 0;
+    case 4:
+      *gain = HV_SHIELD_DAC_GAIN_4;
+      return 0;
+    case 8:
+      *gain = HV_SHIELD_DAC_GAIN_8;
+      return 0;
+    case 16:
+      *gain = HV_SHIELD_DAC_GAIN_16;
+      return 0;
+    default:
+      return -ENOTSUP;
+  }
+}","Converts a raw integer gain value to a corresponding DAC gain enumeration, returning an error if unsupported","Maps a raw integer gain value (1, 2, 4, 8, or 16) to its corresponding `hv_shield_dac_gains_t` enum representation, returning 0 on success or an `-ENOTSUP` error code for any unsupported input"
+cpp,"bool DBusConnection::sendDBusMessage(const DBusMessage &_message) const {
+    if (!_message) {
+        COMMONAPI_ERROR(std::string(__FUNCTION__), ""message == NULL"");
+        return false;
+    }
+    if (!isConnected()) {
+        COMMONAPI_ERROR(std::string(__FUNCTION__), ""not connected"");
+        return false;
+    }
+
+    dbus_uint32_t dbusSerial;
+    const bool result = (0 != dbus_connection_send(connection_, _message.message_, &dbusSerial));
+    return result;
+}",Sends a D-Bus message over the connection and returns a boolean indicating success,"Sends a given `DBusMessage` over an established D-Bus connection, returning `true` on success and `false` if the message is invalid, the connection is down, or the underlying send operation fails"
+cpp,"DBusMessage DBusClientId::createMessage(const std::string objectPath, const std::string interfaceName, const std::string signalName) const
+{
+    DBusMessage returnMessage = DBusMessage::createSignal(objectPath, interfaceName, signalName);
+    returnMessage.setDestination(dbusId_.c_str());
+
+    return (returnMessage);
+}",Creates a D-Bus signal message addressed to a specific client,"Creates and returns a D-Bus signal message, constructed from the provided object path, interface, and signal name, with its destination set to the current client's D-Bus ID"
+cpp,"void DBusConnection::onWakeupMainContext(void* data) {
+    std::weak_ptr<MainLoopContext>* mainloop = static_cast<std::weak_ptr<MainLoopContext>*>(data);
+
+    if (!mainloop) {
+        COMMONAPI_ERROR(std::string(__FUNCTION__), ""mainloop == nullptr"");
+    } else if(auto lockedContext = mainloop->lock()) {
+        lockedContext->wakeup();
+    }
+}",A callback that wakes up a main loop context if it has not been destroyed,Wakes up a `MainLoopContext` by locking a `weak_ptr` (passed via a `void*` pointer) to ensure the context object still exists before calling its `wakeup()` method
+java,"public CardPresenter getCardPresenter() {
+    if (mAudioCardPresenter == null) {
+        mAudioCardPresenter = new HomeAudioCardPresenter();
+        if (mViewModelProvider == null) {
+            Log.w(TAG, ""No ViewModelProvider set. Cannot get MediaViewModel"");
+            mAudioCardPresenter.setModels(
+                    Collections.unmodifiableList(Collections.singletonList(
+                            new InCallModel(SystemClock.elapsedRealtimeClock()))));
+        } else {
+            mAudioCardPresenter.setModels(Collections.unmodifiableList(Arrays.asList(
+                    mViewModelProvider.get(MediaViewModel.class),
+                    new InCallModel(SystemClock.elapsedRealtimeClock()))));
+        }
+    }
+    return mAudioCardPresenter;
+}",Lazily initializes and returns an audio card presenter with data models for media and in-call status,"Lazily initializes and returns a `HomeAudioCardPresenter`, setting its data models with both a `MediaViewModel` and an `InCallModel` if a `ViewModelProvider` is available, otherwise logging a warning and using only the `InCallModel`"
+java,"public HomeCardFragment getCardView() {
+    if (mAudioCardView == null) {
+        mAudioCardView = new AudioFragment();
+        getCardPresenter().setView(mAudioCardView);
+        mAudioCardView.setPresenter(getCardPresenter());
+    }
+    return mAudioCardView;
+}",Lazily initializes and returns the audio card view fragment,"Lazily initializes and returns an `AudioFragment`, bidirectionally linking it with its presenter upon first creation"
+java,"private void setUpTaskView(ViewGroup parent) {
+    mTaskViewManager = new TaskViewManager(this,
+            new HandlerExecutor(getMainThreadHandler()));
+    mTaskViewManager.createTaskView(taskView -> {
+        taskView.setListener(getMainExecutor(), mTaskViewListener);
+        parent.addView(taskView);
+        mTaskView = taskView;
+    });
+}","Asynchronously creates, configures, and adds a task view to a parent view group","Initializes a `TaskViewManager` to asynchronously create a `TaskView`, which upon creation is configured with a listener, added to the parent `ViewGroup`, and stored as a member variable"
+python,"def is_subtype_of(cls, check: str, base: str) -> bool:
+    check_type = cls.get_type(check)
+    if not check_type:
+        raise DatatypesException(f""Not a valid type: '{check}'"")
+    base_type = cls.get_type(base)
+    if not base_type:
+        raise DatatypesException(f""Not a valid type: '{base}'"")
+    return check in base_type[2] or check == base",Checks if a data type is a subtype of a specified base type,"Validates that 'check' and 'base' are known types, then returns true if the 'check' type is identical to the 'base' type or if its name is found within the 'base' type's predefined list of subtypes"
+python,"def populate_unique_node_names(node_names_dict: dict[str, Any], vss_node: VSSNode) -> None:
+    if not node_names_dict.get(vss_node.name):
+        node_names_dict.__setitem__(vss_node.name, {""counter"": 1, ""vss_paths"": [vss_node.get_fqn()]})
+    else:
+        node_names_dict[vss_node.name][""counter""] += 1  # type: ignore
+        node_names_dict[vss_node.name][""vss_paths""].append(vss_node.get_fqn())  # type: ignore
+
+    if vss_node.children and len(vss_node.children) > 0:
+        for vss_child_node in vss_node.children:
+            populate_unique_node_names(node_names_dict, vss_child_node)",Traverses a VSS tree to count the occurrences and collect the fully qualified paths of each node name,Recursively traverses a VSS node tree to populate a dictionary with the occurrence count and a list of fully qualified paths for each unique node name
+python,"def get_vspecs(includes: list[Path], spec: Path, prefix: str | None = None) -> list[VSpec]:
+    vspecs: list[VSpec] = []
+    vspec = VSpec(spec, prefix)
+    vspecs.append(vspec)
+
+    for include in vspec.includes:
+        include_spec = include.resolve_path(includes + [vspec.source.parent])
+        vspecs.extend(get_vspecs(includes, include_spec, include.prefix))
+
+    return vspecs",Recursively resolves and flattens a specification file and all its include dependencies,"Recursively parses a given specification file and any files it includes, returning a single, flattened list of all resulting VSpec objects"

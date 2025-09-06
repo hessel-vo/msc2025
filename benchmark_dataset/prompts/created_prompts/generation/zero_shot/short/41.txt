@@ -1,0 +1,12 @@
+Your task is to create a Java function based on a summary.
+
+**[Target]**
+**Based on the summary below, generate the full Java function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Updates the mode from the intent and sets the UI title accordingly."
+
+**Code:**
+```java
+private void updateMode() {
+```

@@ -1,0 +1,12 @@
+Your task is to create a Java function based on a summary.
+
+**[Target]**
+**Based on the summary below, generate the full Java function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Lazily inflates a `ViewStub` to create and return the text block layout view, while also finding and caching references to its child text views on the first call."
+
+**Code:**
+```java
+private View getTextBlockLayoutView() {
+```

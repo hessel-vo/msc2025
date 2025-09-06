@@ -1,0 +1,33 @@
+Your task is to create a Python function based on a summary.
+Below is an example of generating a Python function from a summary.
+
+---
+
+**[Example]**
+**Summary:**
+"Validates that 'check' and 'base' are known types, then returns true if the 'check' type is identical to the 'base' type or if its name is found within the 'base' type's predefined list of subtypes”
+
+**Code:**
+```python
+def is_subtype_of(cls, check: str, base: str) -> bool:
+    check_type = cls.get_type(check)
+    if not check_type:
+        raise DatatypesException(f"Not a valid type: '{check}'")
+    base_type = cls.get_type(base)
+    if not base_type:
+        raise DatatypesException(f"Not a valid type: '{base}'")
+    return check in base_type[2] or check == base
+```
+
+---
+
+**[Target]**
+**Based on the summary below, generate the full Python function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Returns `True` if the given `VSSNode`'s data is a `VSSDataBranch` and its `is_instance` attribute is `False`."
+
+**Code:**
+```python
+def is_VSS_branch(node: VSSNode) -> bool:
+```

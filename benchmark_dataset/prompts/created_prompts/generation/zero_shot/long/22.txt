@@ -1,0 +1,12 @@
+Your task is to create a Python function based on a summary.
+
+**[Target]**
+**Based on the summary below, generate the full Python function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Checks if a given VSSNode is a leaf by verifying its 'data' attribute is an instance of VSSDataDatatype."
+
+**Code:**
+```python
+def is_VSS_leaf(node: VSSNode) -> bool:
+```

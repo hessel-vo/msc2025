@@ -1,0 +1,12 @@
+Your task is to create a Python function based on a summary.
+
+**[Target]**
+**Based on the summary below, generate the full Python function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Returns the type definition tuple from a class-level list of types that matches the provided 'datatype' name, or returns None if no match is found."
+
+**Code:**
+```python
+def get_type(cls, datatype: str) -> tuple[str, Callable, list[str]] | None:
+```

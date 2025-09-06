@@ -1,0 +1,12 @@
+Your task is to create a Java function based on a summary.
+
+**[Target]**
+**Based on the summary below, generate the full Java function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Determines if a component should be added to a launchable list, returning `false` if its package is explicitly hidden or if it's a custom media component and launchable apps are also being shown, otherwise returning `true` for valid launchable or media service types."
+
+**Code:**
+```java
+@NonNull String packageName) {
+```

@@ -1,0 +1,12 @@
+Your task is to create a C function based on a summary.
+
+**[Target]**
+**Based on the summary below, generate the full C function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Initializes a high-voltage shield by configuring its registers and enabling its output."
+
+**Code:**
+```c
+static int hv_shield_init(const struct device* dev) {
+```

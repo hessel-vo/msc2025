@@ -1,0 +1,12 @@
+Your task is to create a Java function based on a summary.
+
+**[Target]**
+**Based on the summary below, generate the full Java function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Registers a member callback to the provided `Call` object after verifying it is not null."
+
+**Code:**
+```java
+public void onCallAdded(Call call) {
+```

@@ -1,0 +1,12 @@
+Your task is to create a Java function based on a summary.
+
+**[Target]**
+**Based on the summary below, generate the full Java function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"If the content's start time is positive, this method makes a chronometer and a separator visible, sets the chronometer's base time, and starts it; otherwise, it hides both views."
+
+**Code:**
+```java
+private void updateAudioDuration(DescriptiveTextWithControlsView content) {
+```
