@@ -10,7 +10,7 @@ from typing import TYPE_CHECKING, Any, Callable, Set
 from vss_tools import log
 
 if TYPE_CHECKING:
-    from vss_tools.model import VSSUnit",Validates if a value conforms to a datatype specified by a string.,"Raises an exception if the specified 'datatype' is unsupported, otherwise retrieves that type's validation function and returns the boolean result of calling it with the provided 'value'."
+    from vss_tools.model import VSSUnit",Validates if a value conforms to a datatype specified by a string,"Raises an exception if the specified 'datatype' is unsupported, otherwise retrieves that type's validation function and returns the boolean result of calling it with the provided 'value'"
 3,https://github.com/COVESA/vss-tools,8a8e64de6b1ecdb831e880e105f0644e81af782f,vss-tools/src/vss_tools/datatypes.py,python,"def is_xintx(value: Any, signed: bool, bits: int):
     values = [value]
     if isinstance(value, list):
@@ -35,7 +35,7 @@ from typing import TYPE_CHECKING, Any, Callable, Set
 from vss_tools import log
 
 if TYPE_CHECKING:
-    from vss_tools.model import VSSUnit",Checks if an integer value fits within the range of a specified bit-width and signedness.,"Validates that a given value, or each value in a list, is an integer that fits within the numerical range defined by a specified bit-width and signedness."
+    from vss_tools.model import VSSUnit",Checks if an integer value fits within the range of a specified bit-width and signedness,"Validates that a given value, or each value in a list, is an integer that fits within the numerical range defined by a specified bit-width and signedness"
 5,https://github.com/COVESA/vss-tools,8a8e64de6b1ecdb831e880e105f0644e81af782f,vss-tools/src/vss_tools/datatypes.py,python,"def get_fqn_namespaced_datatypes(fqn: str | None = None) -> dict[str, str]:
     if not fqn:
         return {}
@@ -56,7 +56,7 @@ from typing import TYPE_CHECKING, Any, Callable, Set
 from vss_tools import log
 
 if TYPE_CHECKING:
-    from vss_tools.model import VSSUnit",Finds all datatypes within the current namespace and any parent namespaces of a given FQN.,Returns a dictionary mapping the short name to the full FQN for all dynamic datatypes that exist in the same namespace as the provided FQN.
+    from vss_tools.model import VSSUnit",Finds all datatypes within the current namespace and any parent namespaces of a given FQN,Returns a dictionary mapping the short name to the full FQN for all dynamic datatypes that exist in the same namespace as the provided FQN
 28,https://github.com/COVESA/aosp_device_covesa_emulator,063f1782fab8dcb427cf7de31d6c00bcb9b6cb4e,aosp_device_covesa_emulator/CustomCarLauncher/src/com/android/car/carlauncher/homescreen/HomeCardFragment.java,java,"public View onCreateView(LayoutInflater inflater, ViewGroup container,
         Bundle savedInstanceState) {
     mRootView = inflater.inflate(R.layout.card_fragment, container, false);
@@ -83,7 +83,7 @@ import com.android.car.carlauncher.homescreen.ui.CardContent;
 import com.android.car.carlauncher.homescreen.ui.CardHeader;
 import com.android.car.carlauncher.homescreen.ui.DescriptiveTextView;
 import com.android.car.carlauncher.homescreen.ui.DescriptiveTextWithControlsView;
-import com.android.car.carlauncher.homescreen.ui.TextBlockView;",Inflates a card fragment's layout and initializes its view components.,"Inflates the `card_fragment` layout, finds and assigns the card's title and icon views, and returns the resulting root view."
+import com.android.car.carlauncher.homescreen.ui.TextBlockView;",Inflates a card fragment's layout and initializes its view components,"Inflates the `card_fragment` layout, finds and assigns the card's title and icon views, and returns the resulting root view"
 29,https://github.com/COVESA/aosp_device_covesa_emulator,063f1782fab8dcb427cf7de31d6c00bcb9b6cb4e,aosp_device_covesa_emulator/CustomCarLauncher/src/com/android/car/carlauncher/homescreen/HomeCardFragment.java,java,"private void updateControlBarButton(DescriptiveTextWithControlsView.Control buttonContent,
         ImageButton buttonView) {
     if (buttonContent != null) {
@@ -112,7 +112,7 @@ import com.android.car.carlauncher.homescreen.ui.CardContent;
 import com.android.car.carlauncher.homescreen.ui.CardHeader;
 import com.android.car.carlauncher.homescreen.ui.DescriptiveTextView;
 import com.android.car.carlauncher.homescreen.ui.DescriptiveTextWithControlsView;
-import com.android.car.carlauncher.homescreen.ui.TextBlockView;","Sets a button's icon and click listener to make it visible, or hides it if no content is provided.","Updates an `ImageButton`'s icon and click listener from a content object and makes it visible, or hides the button if the content is null."
+import com.android.car.carlauncher.homescreen.ui.TextBlockView;","Sets a button's icon and click listener to make it visible, or hides it if no content is provided","Updates an `ImageButton`'s icon and click listener from a content object and makes it visible, or hides the button if the content is null"
 31,https://github.com/COVESA/aosp_device_covesa_emulator,063f1782fab8dcb427cf7de31d6c00bcb9b6cb4e,aosp_device_covesa_emulator/CustomCarLauncher/src/com/android/car/carlauncher/homescreen/HomeCardFragment.java,java,"public void updateHeaderView(CardHeader header) {
     requireActivity().runOnUiThread(() -> {
         mRootView.setVisibility(View.VISIBLE);
@@ -138,7 +138,7 @@ import com.android.car.carlauncher.homescreen.ui.CardContent;
 import com.android.car.carlauncher.homescreen.ui.CardHeader;
 import com.android.car.carlauncher.homescreen.ui.DescriptiveTextView;
 import com.android.car.carlauncher.homescreen.ui.DescriptiveTextWithControlsView;
-import com.android.car.carlauncher.homescreen.ui.TextBlockView;",Updates and displays a card header view with a new title and icon.,Updates the header view on the main UI thread by making its root view visible and setting the card's title and icon from the provided `CardHeader` object.
+import com.android.car.carlauncher.homescreen.ui.TextBlockView;",Updates and displays a card header view with a new title and icon,Updates the header view on the main UI thread by making its root view visible and setting the card's title and icon from the provided `CardHeader` object
 53,https://github.com/COVESA/capicxx-dbus-runtime,eacbbde07cb0f944cabdfcb5bd50ac637ea94e1a,src/CommonAPI/DBus/DBusConnection.cpp,cpp,"void DBusConnectionStatusEvent::onListenerAdded(const Listener &_listener, const Subscription _subscription) {
     (void)_subscription;
     if (dbusConnection_->isConnected())
@@ -154,7 +154,7 @@ import com.android.car.carlauncher.homescreen.ui.TextBlockView;",Updates and dis
 #include <CommonAPI/DBus/DBusInputStream.hpp>
 #include <CommonAPI/DBus/DBusMainLoop.hpp>
 #include <CommonAPI/DBus/DBusProxy.hpp>
-#include <CommonAPI/DBus/DBusAddressTranslator.hpp>",Notifies a newly added listener if the D-Bus connection is already available.,"When a new listener is added, this callback immediately notifies it with an `AVAILABLE` status if the D-Bus connection is already active."
+#include <CommonAPI/DBus/DBusAddressTranslator.hpp>",Notifies a newly added listener if the D-Bus connection is already available,"When a new listener is added, this callback immediately notifies it with an `AVAILABLE` status if the D-Bus connection is already active"
 54,https://github.com/COVESA/capicxx-dbus-runtime,eacbbde07cb0f944cabdfcb5bd50ac637ea94e1a,src/CommonAPI/DBus/DBusConnection.cpp,cpp,"void joinOnExit(std::uintptr_t conn, std::thread & t) {
     std::lock_guard<std::mutex> lock(mutex_);
     if (connections_.end() != connections_.find(conn)) {
@@ -178,7 +178,7 @@ import com.android.car.carlauncher.homescreen.ui.TextBlockView;",Updates and dis
 #include <CommonAPI/DBus/DBusInputStream.hpp>
 #include <CommonAPI/DBus/DBusMainLoop.hpp>
 #include <CommonAPI/DBus/DBusProxy.hpp>
-#include <CommonAPI/DBus/DBusAddressTranslator.hpp>","For an active connection, adds a thread to a list to be joined on exit, avoiding duplicates.","Atomically registers a given thread to be joined later by adding it to a list, but only if its associated connection is active and the thread is not already present in the list."
+#include <CommonAPI/DBus/DBusAddressTranslator.hpp>","For an active connection, adds a thread to a list to be joined on exit, avoiding duplicates","Atomically registers a given thread to be joined later by adding it to a list, but only if its associated connection is active and the thread is not already present in the list"
 58,https://github.com/COVESA/capicxx-dbus-runtime,eacbbde07cb0f944cabdfcb5bd50ac637ea94e1a,src/CommonAPI/DBus/DBusConnection.cpp,cpp,"const std::shared_ptr<DBusObjectManager> DBusConnection::getDBusObjectManager() {
     if (!dbusObjectManager_) {
         std::lock_guard<std::mutex> itsLock(objectManagerGuard_);
@@ -198,7 +198,7 @@ import com.android.car.carlauncher.homescreen.ui.TextBlockView;",Updates and dis
 #include <CommonAPI/DBus/DBusInputStream.hpp>
 #include <CommonAPI/DBus/DBusMainLoop.hpp>
 #include <CommonAPI/DBus/DBusProxy.hpp>
-#include <CommonAPI/DBus/DBusAddressTranslator.hpp>",Thread-safely gets or creates a singleton DBusObjectManager instance using double-checked locking.,"Lazily initializes and returns a thread-safe, singleton `DBusObjectManager` instance using a double-checked locking pattern."
+#include <CommonAPI/DBus/DBusAddressTranslator.hpp>",Thread-safely gets or creates a singleton DBusObjectManager instance using double-checked locking,"Lazily initializes and returns a thread-safe, singleton `DBusObjectManager` instance using a double-checked locking pattern"
 78,https://github.com/mercedes-benz/ardep,b971483809c29057020e9b68f05b092937886dbb,lib/uds/uds.c,c,"void send_positive_reset_response(uint8_t reset_type) {
   int ret;
   uint8_t positive_sid = UDS_SID_ECU_RESET + 0x40;
@@ -220,7 +220,7 @@ import com.android.car.carlauncher.homescreen.ui.TextBlockView;",Updates and dis
 #include <zephyr/dfu/flash_img.h>
 #include <zephyr/dfu/mcuboot.h>
 #include <zephyr/storage/flash_map.h>
-#include <zephyr/sys/reboot.h>",Sends a positive UDS response for the ECU Reset service.,"Constructs and sends a 2-byte UDS positive response to an ECU Reset request, containing the positive response SID and the echoed reset type, over a CAN bus using the ISO-TP protocol, logging an error if the transmission fails."
+#include <zephyr/sys/reboot.h>",Sends a positive UDS response for the ECU Reset service,"Constructs and sends a 2-byte UDS positive response to an ECU Reset request, containing the positive response SID and the echoed reset type, over a CAN bus using the ISO-TP protocol, logging an error if the transmission fails"
 79,https://github.com/mercedes-benz/ardep,b971483809c29057020e9b68f05b092937886dbb,lib/uds/uds.c,c,"void handle_ecu_reset(uint8_t *data, size_t len) {
   if (len != 2) {
     send_negative_response(UDS_SID_ECU_RESET,
@@ -251,7 +251,7 @@ import com.android.car.carlauncher.homescreen.ui.TextBlockView;",Updates and dis
 #include <zephyr/dfu/flash_img.h>
 #include <zephyr/dfu/mcuboot.h>
 #include <zephyr/storage/flash_map.h>
-#include <zephyr/sys/reboot.h>","Handles a UDS ECU Reset request, supporting only the hard reset sub-function which reboots the system.","Processes a UDS ECU Reset request, validating the 2-byte message length, sending a positive response before triggering a system reboot for a 'hard reset', and sending a negative response for either an incorrect length or an unsupported reset sub-function."
+#include <zephyr/sys/reboot.h>","Handles a UDS ECU Reset request, supporting only the hard reset sub-function which reboots the system","Processes a UDS ECU Reset request, validating the 2-byte message length, sending a positive response before triggering a system reboot for a 'hard reset', and sending a negative response for either an incorrect length or an unsupported reset sub-function"
 80,https://github.com/mercedes-benz/ardep,b971483809c29057020e9b68f05b092937886dbb,lib/uds/uds.c,c,"void send_request_download_response() {
   int ret;
   uint8_t positive_sid = UDS_SID_REQUEST_DOWNLOAD + 0x40;
@@ -279,4 +279,4 @@ import com.android.car.carlauncher.homescreen.ui.TextBlockView;",Updates and dis
 #include <zephyr/dfu/flash_img.h>
 #include <zephyr/dfu/mcuboot.h>
 #include <zephyr/storage/flash_map.h>
-#include <zephyr/sys/reboot.h>","Sends a positive UDS response to a Request Download, specifying the maximum block length.","Constructs and sends a 4-byte UDS positive response for a ""Request Download"" service, specifying a maximum block length of 0x00D2, over a CAN bus using the ISO-TP protocol and logging an error on failure."
+#include <zephyr/sys/reboot.h>","Sends a positive UDS response to a Request Download, specifying the maximum block length","Constructs and sends a 4-byte UDS positive response for a ""Request Download"" service, specifying a maximum block length of 0x00D2, over a CAN bus using the ISO-TP protocol and logging an error on failure"
