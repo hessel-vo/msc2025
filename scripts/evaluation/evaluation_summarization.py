@@ -29,7 +29,7 @@ def validate_arguments(args):
         print("Example: python run_summarization_evaluation.py one short")
         sys.exit(1)
 
-    source, summary_length, num_shots = args[1], args[2], args[3]
+    source, summary_length, num_shots, subset = args[1], args[2], args[3], args[4] if len(args) == 5 else None
 
     if source not in ["xl", "auto"]:
         print(f"Error: Invalid summary_length '{summary_length}'. Must be 'xl' or 'auto'.")
@@ -42,7 +42,7 @@ def validate_arguments(args):
         sys.exit(1)
 
 
-    return source, summary_length, num_shots
+    return source, summary_length, num_shots, subset
 
 def calculate_bleu_scores(df):
     """
@@ -117,11 +117,14 @@ def calculate_rouge_scores(df):
 
 def main():
     """Main function to run the evaluation pipeline."""
-    source, summary_length, num_shots = validate_arguments(sys.argv)
+    source, summary_length, num_shots, subset = validate_arguments(sys.argv)
     print(f"Starting summarization evaluation for: [Shots: {num_shots}, Summary: {summary_length}]")
 
     input_filename = f"{MODEL_NAME}_{TASK}_{source}_{num_shots}_shot_{summary_length}_results.csv"
     input_filepath = PROJECT_ROOT / "results" / "benchmark" / RESULTS_SUBFOLDER / input_filename
+    
+    if subset:
+        input_filepath = PROJECT_ROOT / "results" / "benchmark" / RESULTS_SUBFOLDER / "subset" / f"{MODEL_NAME}_{TASK}_results.csv"
 
     try:
         df = pd.read_csv(input_filepath)
@@ -155,8 +158,10 @@ def main():
     output_df = pd.merge(df, bleu_metrics_df, on='id')
     output_df = pd.merge(output_df, rouge_metrics_df, on='id')
     
+
+    OUTPUT_ROOT = PROJECT_ROOT / "results" / "evaluation" / RESULTS_SUBFOLDER
     output_filename = f"evaluation_results_{MODEL_NAME}_{TASK}_{source}_{num_shots}_shot_{summary_length}.csv"
-    output_filepath = PROJECT_ROOT / "results" / "evaluation" / output_filename
+    output_filepath = OUTPUT_ROOT / output_filename
     output_filepath.parent.mkdir(parents=True, exist_ok=True)
     output_df.to_csv(output_filepath, index=False)
     print(f"\nDetailed problem-level results saved to: {output_filepath}")
@@ -168,7 +173,7 @@ def main():
     corpus_df.insert(0, 'model_name', MODEL_NAME)
     
     corpus_output_filename = f"corpus_score_{MODEL_NAME}_{TASK}_{source}_{num_shots}_shot_{summary_length}.csv"
-    corpus_output_filepath = PROJECT_ROOT / "results" / "evaluation" / corpus_output_filename
+    corpus_output_filepath = OUTPUT_ROOT/ corpus_output_filename
     corpus_df.to_csv(corpus_output_filepath, index=False)
     print(f"Overall corpus score saved to: {corpus_output_filepath}")
     print("\n--- Corpus Scores Summary ---")

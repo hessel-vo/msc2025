@@ -10,7 +10,7 @@ load_dotenv()
 project_root_str = os.getenv("PROJECT_ROOT")
 PROJECT_ROOT = Path(project_root_str)
 HF_TOKEN = os.getenv('HUGGING_FACE_HUB_TOKEN')
-MODEL_ID = "google/gemma-3-4b-it"
+MODEL_ID = "google/gemma-3-1b-it"
 MODEL_NAME = MODEL_ID.split("/")[-1]
 
 HF_CACHE_DIR = PROJECT_ROOT / "hf_cache"
@@ -24,30 +24,6 @@ print(f"Hugging Face Cache Directory (HF_HOME) set to: {os.environ['HF_HOME']}")
 print("---------------------------------")
 
 from transformers import AutoProcessor, AutoModelForCausalLM
-
-
-
-if torch.cuda.is_available():
-    device = torch.device("cuda")
-    print("GPU is available. Using CUDA.")
-    print("Current device:", device)
-    print("Device name:", torch.cuda.get_device_name(device))
-else:
-    device = torch.device("cpu")
-    print("GPU not available. Using CPU.")
-    print("Current device:", device)
-
-print(f"Loading model: {MODEL_ID}...")
-
-processor = AutoProcessor.from_pretrained(MODEL_ID, token=HF_TOKEN)
-
-model = AutoModelForCausalLM.from_pretrained(
-    MODEL_ID,
-    torch_dtype=torch.bfloat16,
-    device_map="auto",
-    token=HF_TOKEN
-).eval()
-print("Model and processor loaded successfully.")
 
 
 def run_benchmark():
@@ -95,9 +71,9 @@ def run_benchmark():
         OUTPUT_FILENAME = OUTPUT_DIR / f"{MODEL_NAME}_{task_type}_results.csv"
     
 
-
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
+    # Load dataset
     try:
         dataset_df = pd.read_csv(INPUT_CSV_PATH)
     except FileNotFoundError:
@@ -109,6 +85,30 @@ def run_benchmark():
 
 
     summary_type = f'summary_{short_or_long}'
+
+
+    # Load and prepare model
+    if torch.cuda.is_available():
+        device = torch.device("cuda")
+        print("GPU is available. Using CUDA.")
+        print("Current device:", device)
+        print("Device name:", torch.cuda.get_device_name(device))
+    else:
+        device = torch.device("cpu")
+        print("GPU not available. Using CPU.")
+        print("Current device:", device)
+
+    print(f"Loading model: {MODEL_ID}...")
+
+    processor = AutoProcessor.from_pretrained(MODEL_ID, token=HF_TOKEN)
+
+    model = AutoModelForCausalLM.from_pretrained(
+        MODEL_ID,
+        torch_dtype=torch.bfloat16,
+        device_map="auto",
+        token=HF_TOKEN
+    ).eval()
+    print("Model and processor loaded successfully.")
 
     for index, row in dataset_df.iterrows():
         if index > 2:
