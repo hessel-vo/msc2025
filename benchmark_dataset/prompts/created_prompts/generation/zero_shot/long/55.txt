@@ -1,0 +1,12 @@
+Your task is to create a Cpp function based on a summary.
+
+**[Target]**
+**Based on the summary below, generate the full Cpp function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Wakes up a `MainLoopContext` by locking a `weak_ptr` (passed via a `void*` pointer) to ensure the context object still exists before calling its `wakeup()` method"
+
+**Code:**
+```cpp
+void DBusConnection::onWakeupMainContext(void* data) {
+```

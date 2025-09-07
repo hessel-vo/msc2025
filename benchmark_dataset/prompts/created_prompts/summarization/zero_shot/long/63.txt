@@ -1,0 +1,18 @@
+The target code below is part of the automotive software engineering domain.
+Provide a detailed, single-line summary of the target Cpp code below.
+Do not provide any other output.
+
+**[Target]**
+**Summarize the following Cpp code (do not provide any other output):**
+```cpp
+void Factory::releaseConnection(const ConnectionId_t& _connectionId) {
+    std::lock_guard<std::recursive_mutex> itsConnectionGuard(connectionsMutex_);
+    auto itsConnection = connections_.find(_connectionId);
+
+    if (itsConnection != connections_.end()) {
+        connections_.erase(_connectionId);
+    }
+}
+```
+
+**Summary:**

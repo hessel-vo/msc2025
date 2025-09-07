@@ -1,0 +1,12 @@
+Your task is to create a Cpp function based on a summary.
+
+**[Target]**
+**Based on the summary below, generate the full Cpp function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Steals the reply from a `DBusPendingCall` handle and wraps it in a new `DBusMessage` object that takes ownership, returning an empty message if the input handle is null"
+
+**Code:**
+```cpp
+DBusMessage DBusConnection::convertToDBusMessage(::DBusPendingCall* _libdbusPendingCall) {
+```

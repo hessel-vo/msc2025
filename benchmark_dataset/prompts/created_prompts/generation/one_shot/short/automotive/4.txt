@@ -1,0 +1,33 @@
+Your task is to create a Python function based on a summary.
+Below is an example of generating a Python function from a summary.
+
+---
+
+**[Example]**
+**Summary:**
+"Checks if a data type is a subtype of a specified base type”
+
+**Code:**
+```python
+def is_subtype_of(cls, check: str, base: str) -> bool:
+    check_type = cls.get_type(check)
+    if not check_type:
+        raise DatatypesException(f"Not a valid type: '{check}'")
+    base_type = cls.get_type(base)
+    if not base_type:
+        raise DatatypesException(f"Not a valid type: '{base}'")
+    return check in base_type[2] or check == base
+```
+
+---
+
+**[Target]**
+**Based on the summary below, generate the full Python function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Looks up a type definition tuple by its string name from a list of types"
+
+**Code:**
+```python
+def get_type(cls, datatype: str) -> tuple[str, Callable, list[str]] | None:
+```

@@ -1,0 +1,12 @@
+Your task is to create a C function based on a summary.
+
+**[Target]**
+**Based on the summary below, generate the full C function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Populates an output parameter with the number of available Abstract LIN callback slots, calculated by subtracting the used count from a configured maximum, returning an error if the parameter is a null pointer"
+
+**Code:**
+```c
+static int al_get_free_cb_slots(const struct device *dev, uint8_t *free_slots) {
+```

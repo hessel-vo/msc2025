@@ -1,0 +1,12 @@
+Your task is to create a C function based on a summary.
+
+**[Target]**
+**Based on the summary below, generate the full C function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Disables a LIN scheduler by first checking if it's already stopped, then taking a semaphore to safely wait for the current operation to complete before setting the active schedule table index to -1"
+
+**Code:**
+```c
+void abstract_lin_scheduler_disable(abstract_lin_scheduler_handle_t sched) {
+```

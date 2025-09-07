@@ -1,0 +1,12 @@
+Your task is to create a C function based on a summary.
+
+**[Target]**
+**Based on the summary below, generate the full C function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"A callback function that forwards a received CAN frame from a source device to a destination device (passed via `user_data`) using a non-blocking send operation, logging a debug message on successful queuing or a warning on failure"
+
+**Code:**
+```c
+static void can_router_frame_cb(const struct device *dev, struct can_frame *frame, void *user_data) {
+```

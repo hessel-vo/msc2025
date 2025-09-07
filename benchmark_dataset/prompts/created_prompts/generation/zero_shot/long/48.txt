@@ -1,0 +1,12 @@
+Your task is to create a Java function based on a summary.
+
+**[Target]**
+**Based on the summary below, generate the full Java function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Handles the removal of a call by clearing the current call and card content, notifying the presenter of the model update, and unregistering its callback from the call object for cleanup"
+
+**Code:**
+```java
+public void onCallRemoved(Call call) {
+```

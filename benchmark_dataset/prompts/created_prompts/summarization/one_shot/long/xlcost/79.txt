@@ -1,0 +1,57 @@
+The target code below is part of the automotive software engineering domain.
+Provide a detailed, single-line summary of the target C code below.
+Do not provide any other output.
+
+---
+
+**[Example]**
+**Code:**
+```c
+int FindMaxSum(int arr[], int n) {
+    int incl = arr[0];
+    int excl = 0;
+    int excl_new;
+    int i;
+
+    for (i = 1; i < n; i++) {
+        excl_new = (incl > excl) ? incl : excl;
+        incl = excl + arr[i];
+        excl = excl_new;
+    }
+
+    return ((incl > excl) ? incl : excl);
+}
+```
+
+**Summary:**
+"Finds the maximum sum of a subsequence of non-adjacent elements by iteratively tracking the maximum sum including and excluding the current element”
+
+---
+
+**[Target]**
+**Summarize the following C code (do not provide any other output):**
+```c
+void handle_ecu_reset(uint8_t *data, size_t len) {
+  if (len != 2) {
+    send_negative_response(UDS_SID_ECU_RESET,
+                           UDS_NRC_INCORRECT_MESSAGE_LENGTH_OR_INVALID_FORMAT);
+    return;
+  }
+
+  uint8_t reset_type = data[1];
+
+  if (reset_type == UDS_RESET_TYPE_HARD) {
+    send_positive_reset_response(UDS_RESET_TYPE_HARD);
+
+    k_sleep(K_MSEC(100));
+
+    LOG_DBG("Hard reset\n");
+    sys_reboot(SYS_REBOOT_COLD);
+  } else {
+    send_negative_response(UDS_SID_ECU_RESET,
+                           UDS_NRC_SUBFUNCTION_NOT_SUPPORTED);
+  }
+}
+```
+
+**Summary:**

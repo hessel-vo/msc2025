@@ -1,0 +1,25 @@
+The target code below is part of the automotive software engineering domain.
+Provide a detailed, single-line summary of the target Java code below.
+Do not provide any other output.
+
+**[Target]**
+**Summarize the following Java code (do not provide any other output):**
+```java
+protected final View getDescriptiveTextOnlyLayoutView() {
+    if (mDescriptiveTextOnlyLayoutView == null) {
+        ViewStub stub = mRootView.findViewById(R.id.descriptive_text_layout);
+        mDescriptiveTextOnlyLayoutView = stub.inflate();
+        mDescriptiveTextOnlyTitle = mDescriptiveTextOnlyLayoutView.findViewById(
+                R.id.primary_text);
+        mDescriptiveTextOnlySubtitle = mDescriptiveTextOnlyLayoutView.findViewById(
+                R.id.secondary_text);
+        mDescriptiveTextOnlyOptionalImage = mDescriptiveTextOnlyLayoutView.findViewById(
+                R.id.optional_image);
+        mDescriptiveTextOnlyTapForMore = mDescriptiveTextOnlyLayoutView.findViewById(
+                R.id.tap_for_more_text);
+    }
+    return mDescriptiveTextOnlyLayoutView;
+}
+```
+
+**Summary:**

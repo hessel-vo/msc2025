@@ -1,0 +1,120 @@
+The target code below is part of the automotive software engineering domain.
+Provide a detailed, single-line summary of the target C code below.
+Do not provide any other output.
+
+---
+
+**[Examples]**
+**[Example 1]**
+**Code:**
+```c
+void send_negative_response(enum UDS_SID request_sid,
+                            enum UDS_NRC response_code) {
+  int ret;
+  uint8_t tx_data[] = {UDS_SID_NEGATIVE_RESPONSE, request_sid, response_code};
+  ret = isotp_send(&send_ctx, can_dev, tx_data, sizeof(tx_data), &tx_addr,
+                   &rx_addr, send_complete_cb, NULL);
+  if (ret != ISOTP_N_OK) {
+    LOG_ERR("Error while sending data to ID %d [%d]\n", tx_addr.std_id, ret);
+  }
+}
+```
+
+**Summary:**
+"Constructs and sends a 3-byte UDS negative response message (containing the original request SID and a negative response code) over a CAN bus using the ISO-TP protocol, logging an error if the transmission fails”
+
+**[Example 2]**
+**Code:**
+```c
+static void send_session_control_response(enum UdsSessionState session_type,
+                                          uint16_t p2_timeout_ms,
+                                          uint16_t p2_star_timeout_ms) {
+  int ret;
+  uint8_t positive_sid = UDS_SID_DIAGNOSTIC_SESSION_CONTROL + 0x40;
+
+  uint8_t tx_data[] = {
+    positive_sid,
+    session_type,
+    (p2_timeout_ms >> 8) & 0xFF,
+    p2_timeout_ms & 0xFF,
+    ((p2_star_timeout_ms / 10) >> 8) & 0xFF,
+    (p2_star_timeout_ms / 10) & 0xFF,
+  };
+
+  ret = isotp_send(&send_ctx, can_dev, tx_data, sizeof(tx_data), &tx_addr,
+                   &rx_addr, send_complete_cb, NULL);
+  if (ret != ISOTP_N_OK) {
+    LOG_ERR("Error while sending data to ID %d [%d]\n", tx_addr.std_id, ret);
+  }
+}
+```
+
+**Summary:**
+"Constructs and sends a 6-byte UDS positive response for a Diagnostic Session Control request—containing the session type, P2, and P2* server timeout values—over a CAN bus via the ISO-TP protocol, logging an error if the transmission fails”
+
+**[Example 3]**
+**Code:**
+```c
+static int hvs_dac_convert_gain(int raw_gain,
+                                enum hv_shield_dac_gains_t* gain) {
+  switch (raw_gain) {
+    case 1:
+      *gain = HV_SHIELD_DAC_GAIN_1;
+      return 0;
+    case 2:
+      *gain = HV_SHIELD_DAC_GAIN_2;
+      return 0;
+    case 4:
+      *gain = HV_SHIELD_DAC_GAIN_4;
+      return 0;
+    case 8:
+      *gain = HV_SHIELD_DAC_GAIN_8;
+      return 0;
+    case 16:
+      *gain = HV_SHIELD_DAC_GAIN_16;
+      return 0;
+    default:
+      return -ENOTSUP;
+  }
+}
+```
+
+**Summary:**
+"Maps a raw integer gain value (1, 2, 4, 8, or 16) to its corresponding `hv_shield_dac_gains_t` enum representation, returning 0 on success or an `-ENOTSUP` error code for any unsupported input”
+
+---
+
+**[Target]**
+**Summarize the following C code (do not provide any other output):**
+```c
+static void lin_incoming_cb(const struct lin_frame *frame, void *user_data) {
+  const struct device *dev = (const struct device *)user_data;
+  const struct lin2can_data *data = dev->data;
+
+ uint8_t mapped_id = frame->data[0] >> 6;
+
+  __ASSERT(mapped_id < TRANSLATABLE_ADDRESSES_LEN, "Unexpected LIN-ID: %x",
+           mapped_id);
+
+  LOG_DBG("Incoming can frame with can id %x", id_mapping[mapped_id]);
+
+ if (!data->incoming_callbacks[mapped_id].callback) {
+    return;
+  }
+
+  struct can_frame translated = {
+    .id = id_mapping[mapped_id],
+    .dlc = 8,
+  };
+  memcpy(translated.data, frame->data, frame->len);
+
+  translated.data[0] = frame->data[0] & 0x3f;
+
+  LOG_DBG("Calling according can callback");
+
+  data->incoming_callbacks[mapped_id].callback(
+      dev, &translated, data->incoming_callbacks[mapped_id].user_data);
+}
+```
+
+**Summary:**

@@ -1,0 +1,12 @@
+Your task is to create a C function based on a summary.
+
+**[Target]**
+**Based on the summary below, generate the full C function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Stops the LIN scheduler from processing its current schedule table"
+
+**Code:**
+```c
+void abstract_lin_scheduler_disable(abstract_lin_scheduler_handle_t sched) {
+```

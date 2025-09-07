@@ -1,0 +1,12 @@
+Your task is to create a Cpp function based on a summary.
+
+**[Target]**
+**Based on the summary below, generate the full Cpp function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Gets the availability status of a service instance by translating its identifier to a D-Bus address and querying a registry, setting the result and a success status in output parameters"
+
+**Code:**
+```cpp
+void DBusInstanceAvailabilityStatusChangedEvent::getServiceInstanceAvailabilityStatus(const std::string &_instance, CallStatus &_callStatus, AvailabilityStatus &_availabilityStatus) {
+```

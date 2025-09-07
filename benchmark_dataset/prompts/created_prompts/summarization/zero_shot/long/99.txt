@@ -1,0 +1,29 @@
+The target code below is part of the automotive software engineering domain.
+Provide a detailed, single-line summary of the target C code below.
+Do not provide any other output.
+
+**[Target]**
+**Summarize the following C code (do not provide any other output):**
+```c
+int abstract_lin_scheduler_set_active_table(
+    abstract_lin_scheduler_handle_t sched, size_t table_index) {
+  if (table_index >= sched->table_count) {
+    return -ENOENT;
+  }
+
+  bool active_before = sched->current_table != -1;
+
+  if (active_before) {
+    k_sem_take(&sched->active, K_FOREVER);
+  }
+
+  sched->current_table = table_index;
+  sched->current_table_entry = 0;  // start from the beginning again.
+
+  k_sem_give(&sched->active);
+
+  return 0;
+}
+```
+
+**Summary:**

@@ -1,0 +1,22 @@
+The target code below is part of the automotive software engineering domain.
+Provide a detailed, single-line summary of the target Java code below.
+Do not provide any other output.
+
+**[Target]**
+**Summarize the following Java code (do not provide any other output):**
+```java
+private void updateBackgroundImage(Drawable image) {
+    if (image != null && getCardSize() != null) {
+        int maxDimen = Math.max(getCardSize().getWidth(), getCardSize().getHeight());
+        Size scaledSize = new Size(maxDimen, maxDimen);
+        Bitmap imageBitmap = BitmapUtils.fromDrawable(image, scaledSize);
+        Bitmap blurredBackground = ImageUtils.blur(getContext(), imageBitmap, scaledSize,
+                mBlurRadius);
+
+        getCardBackgroundImage().setImageBitmap(blurredBackground, /* showAnimation= */ true);
+        getCardBackground().setVisibility(View.VISIBLE);
+    }
+}
+```
+
+**Summary:**

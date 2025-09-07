@@ -1,0 +1,35 @@
+Your task is to create a C function based on a summary.
+Below is an example of generating a C function from a summary.
+
+---
+
+**[Example]**
+**Summary:**
+"Constructs and sends a 3-byte UDS negative response message (containing the original request SID and a negative response code) over a CAN bus using the ISO-TP protocol, logging an error if the transmission fails”
+
+**Code:**
+```c
+void send_negative_response(enum UDS_SID request_sid,
+                            enum UDS_NRC response_code) {
+  int ret;
+  uint8_t tx_data[] = {UDS_SID_NEGATIVE_RESPONSE, request_sid, response_code};
+  ret = isotp_send(&send_ctx, can_dev, tx_data, sizeof(tx_data), &tx_addr,
+                   &rx_addr, send_complete_cb, NULL);
+  if (ret != ISOTP_N_OK) {
+    LOG_ERR("Error while sending data to ID %d [%d]\n", tx_addr.std_id, ret);
+  }
+}
+```
+
+---
+
+**[Target]**
+**Based on the summary below, generate the full C function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Registers a user-provided callback function for a specific LIN frame ID by validating the ID (0-0x3F) and data size (1-8 bytes), allocating a free callback slot, and storing the callback details, returning an error on invalid parameters or allocation failure"
+
+**Code:**
+```c
+static int al_register_outgoing_cb(const struct device *dev, abstract_lin_outgoing_callback_t callback, uint8_t frame_id, uint8_t frame_size, void *user_data) {
+```

@@ -1,0 +1,12 @@
+Your task is to create a Python function based on a summary.
+
+**[Target]**
+**Based on the summary below, generate the full Python function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Initializes and attempts to resolve a VSS raw model, returning the unresolved model on failure"
+
+**Code:**
+```python
+def get_vss_raw(data: dict[str, Any], fqn: str | None) -> VSSRaw:
+```

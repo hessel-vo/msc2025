@@ -1,0 +1,12 @@
+Your task is to create a Python function based on a summary.
+
+**[Target]**
+**Based on the summary below, generate the full Python function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Traverses a VSSNode tree to generate a formatted string, displaying each node's name followed by the values of any specified attributes found on it"
+
+**Code:**
+```python
+def get_rendered_tree(tree: VSSNode, attributes: tuple[str]) -> str:
+```

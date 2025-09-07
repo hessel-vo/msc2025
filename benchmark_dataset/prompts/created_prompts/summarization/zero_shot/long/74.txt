@@ -1,0 +1,30 @@
+The target code below is part of the automotive software engineering domain.
+Provide a detailed, single-line summary of the target Cpp code below.
+Do not provide any other output.
+
+**[Target]**
+**Summarize the following Cpp code (do not provide any other output):**
+```cpp
+bool DBusObjectManager::addDBusInterfaceHandler(const DBusInterfaceHandlerPath& dbusInterfaceHandlerPath,
+                                                std::shared_ptr<DBusInterfaceHandler> dbusInterfaceHandler) {
+    const auto& dbusRegisteredObjectsTableIter = dbusRegisteredObjectsTable_.find(dbusInterfaceHandlerPath);
+    const bool isDBusInterfaceHandlerAlreadyAdded = (dbusRegisteredObjectsTableIter != dbusRegisteredObjectsTable_.end());
+
+    if (isDBusInterfaceHandlerAlreadyAdded) {
+
+        auto handler = find(dbusRegisteredObjectsTableIter->second.begin(), dbusRegisteredObjectsTableIter->second.end(), dbusInterfaceHandler);
+        if (handler != dbusRegisteredObjectsTableIter->second.end()) {
+            if (dbusInterfaceHandlerPath.second == "org.freedesktop.DBus.ObjectManager" ||
+                    dbusInterfaceHandlerPath.second == "org.freedesktop.DBus.Properties") {
+                return true;
+            }
+            return false;
+        }
+    }
+
+    auto insertSuccess = addToRegisteredObjectsTable(dbusInterfaceHandlerPath, dbusInterfaceHandler);
+    return insertSuccess;
+}
+```
+
+**Summary:**

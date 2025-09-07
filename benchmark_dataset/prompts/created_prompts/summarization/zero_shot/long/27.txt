@@ -1,0 +1,18 @@
+The target code below is part of the automotive software engineering domain.
+Provide a detailed, single-line summary of the target Java code below.
+Do not provide any other output.
+
+**[Target]**
+**Summarize the following Java code (do not provide any other output):**
+```java
+public HomeCardFragment getCardView() {
+    if (mAudioCardView == null) {
+        mAudioCardView = new AudioFragment();
+        getCardPresenter().setView(mAudioCardView);
+        mAudioCardView.setPresenter(getCardPresenter());
+    }
+    return mAudioCardView;
+}
+```
+
+**Summary:**

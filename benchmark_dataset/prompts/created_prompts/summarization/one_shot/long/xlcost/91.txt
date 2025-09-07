@@ -1,0 +1,57 @@
+The target code below is part of the automotive software engineering domain.
+Provide a detailed, single-line summary of the target C code below.
+Do not provide any other output.
+
+---
+
+**[Example]**
+**Code:**
+```c
+int FindMaxSum(int arr[], int n) {
+    int incl = arr[0];
+    int excl = 0;
+    int excl_new;
+    int i;
+
+    for (i = 1; i < n; i++) {
+        excl_new = (incl > excl) ? incl : excl;
+        incl = excl + arr[i];
+        excl = excl_new;
+    }
+
+    return ((incl > excl) ? incl : excl);
+}
+```
+
+**Summary:**
+"Finds the maximum sum of a subsequence of non-adjacent elements by iteratively tracking the maximum sum including and excluding the current element”
+
+---
+
+**[Target]**
+**Summarize the following C code (do not provide any other output):**
+```c
+static int hvs_set_gpio_output_enable(const struct device* dev,
+                                      uint8_t index,
+                                      bool enable) {
+  if (index > 31) return -EINVAL;
+
+  struct hv_shield_data_t* data = dev->data;
+
+  if (index % 8 < 4) {
+    index += 4;
+  } else {
+    index -= 4;
+  }
+
+  if (enable) {
+    data->registers.gpio_output |= 1 << index;
+  } else {
+    data->registers.gpio_output &= ~(1 << index);
+  }
+
+  return _hv_shield_update(dev);
+}
+```
+
+**Summary:**

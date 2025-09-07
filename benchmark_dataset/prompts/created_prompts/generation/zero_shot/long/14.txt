@@ -1,0 +1,12 @@
+Your task is to create a Python function based on a summary.
+
+**[Target]**
+**Based on the summary below, generate the full Python function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Asserts that each string in the input list is a valid datatype by checking against a master list, returning the original list if all values are valid"
+
+**Code:**
+```python
+def check_valid_datatypes(cls, values: list[str]) -> list[str]:
+```

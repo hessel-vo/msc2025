@@ -1,0 +1,12 @@
+Your task is to create a Cpp function based on a summary.
+
+**[Target]**
+**Based on the summary below, generate the full Cpp function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Lazily initializes and returns a thread-safe, singleton `DBusObjectManager` instance using a double-checked locking pattern"
+
+**Code:**
+```cpp
+const std::shared_ptr<DBusObjectManager> DBusConnection::getDBusObjectManager() {
+```

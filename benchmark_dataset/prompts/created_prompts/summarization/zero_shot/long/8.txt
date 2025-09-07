@@ -1,0 +1,22 @@
+The target code below is part of the automotive software engineering domain.
+Provide a detailed, single-line summary of the target Python code below.
+Do not provide any other output.
+
+**[Target]**
+**Summarize the following Python code (do not provide any other output):**
+```python
+def generate_property(node: VSSNode, datatype: str) -> ApiGearProperty | None:
+    apigear_type = get_apigear_datatype(datatype)
+    data = node.get_vss_data()
+
+    if apigear_type is None:
+        log.warning(f"Datatype {datatype} of node {node.name} currently not supported")
+        return None
+
+    property = ApiGearProperty(apigear_type)
+    if data.description != "":
+        property.description = data.description
+    return property
+```
+
+**Summary:**

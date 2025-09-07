@@ -1,0 +1,58 @@
+The target code below is part of the automotive software engineering domain.
+Provide a concise, single-line summary of the target C code below.
+Do not provide any other output.
+
+---
+
+**[Example]**
+**Code:**
+```c
+int FindMaxSum(int arr[], int n) {
+    int incl = arr[0];
+    int excl = 0;
+    int excl_new;
+    int i;
+
+    for (i = 1; i < n; i++) {
+        excl_new = (incl > excl) ? incl : excl;
+        incl = excl + arr[i];
+        excl = excl_new;
+    }
+
+    return ((incl > excl) ? incl : excl);
+}
+```
+
+**Summary:**
+"Maximum sum such that no two elements are adjacent”
+
+---
+
+**[Target]**
+**Summarize the following C code (do not provide any other output):**
+```c
+static int hvs_dac_convert_gain(int raw_gain,
+                                enum hv_shield_dac_gains_t* gain) {
+  switch (raw_gain) {
+    case 1:
+      *gain = HV_SHIELD_DAC_GAIN_1;
+      return 0;
+    case 2:
+      *gain = HV_SHIELD_DAC_GAIN_2;
+      return 0;
+    case 4:
+      *gain = HV_SHIELD_DAC_GAIN_4;
+      return 0;
+    case 8:
+      *gain = HV_SHIELD_DAC_GAIN_8;
+      return 0;
+    case 16:
+      *gain = HV_SHIELD_DAC_GAIN_16;
+      return 0;
+    default:
+      return -ENOTSUP;
+  }
+}
+```
+
+**Summary:**

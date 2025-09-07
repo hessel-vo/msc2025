@@ -1,0 +1,12 @@
+Your task is to create a Java function based on a summary.
+
+**[Target]**
+**Based on the summary below, generate the full Java function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Lazily initializes a set of `HomeCardModule`s by reflectively instantiating class names from a configuration array, and then uses a `FragmentTransaction` to add each module's card view to the UI layout"
+
+**Code:**
+```java
+private void initializeCards() {
+```

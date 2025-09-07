@@ -1,0 +1,45 @@
+The target code below is part of the automotive software engineering domain.
+Provide a concise, single-line summary of the target C code below.
+Do not provide any other output.
+
+---
+
+**[Example]**
+**Code:**
+```c
+void send_negative_response(enum UDS_SID request_sid,
+                            enum UDS_NRC response_code) {
+  int ret;
+  uint8_t tx_data[] = {UDS_SID_NEGATIVE_RESPONSE, request_sid, response_code};
+  ret = isotp_send(&send_ctx, can_dev, tx_data, sizeof(tx_data), &tx_addr,
+                   &rx_addr, send_complete_cb, NULL);
+  if (ret != ISOTP_N_OK) {
+    LOG_ERR("Error while sending data to ID %d [%d]\n", tx_addr.std_id, ret);
+  }
+}
+```
+
+**Summary:**
+"Sends a UDS negative response message containing the failed service ID and a negative response code”
+
+---
+
+**[Target]**
+**Summarize the following C code (do not provide any other output):**
+```c
+static int can_router_sysinit() {
+  LOG_DBG("Initializing can router");
+
+  STRUCT_SECTION_FOREACH (can_router_table_t, table) {
+    int err = can_router_register(table->entries, table->entry_count);
+    if (err) {
+      LOG_ERR("could not register can router");
+      return err;
+    }
+  }
+
+  return 0;
+}
+```
+
+**Summary:**
