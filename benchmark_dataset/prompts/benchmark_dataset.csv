@@ -50,7 +50,7 @@ from typing import TYPE_CHECKING, Any, Callable, Set
 from vss_tools import log
 
 if TYPE_CHECKING:
-    from vss_tools.model import VSSUnit",Checks if an integer value fits within the range of a specified bit-width and signedness,"Validates that a given value, or each value in a list, is an integer that fits within the numerical range defined by a specified bit-width and signedness"
+    from vss_tools.model import VSSUnit",Checks if a value or list of values is a valid integer for a specified bit-width and signedness.,"Validates that a given value, or each value in a list, is an integer that fits within the numerical range defined by a specified bit-width and signedness"
 4,https://github.com/COVESA/vss-tools,8a8e64de6b1ecdb831e880e105f0644e81af782f,vss-tools/src/vss_tools/datatypes.py,python,"def get_type(cls, datatype: str) -> tuple[str, Callable, list[str]] | None:
         for t in cls.types:
             if datatype == t[0]:

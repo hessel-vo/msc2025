@@ -23,7 +23,7 @@ print(f"Project Root: {PROJECT_ROOT}")
 print(f"Hugging Face Cache Directory (HF_HOME) set to: {os.environ['HF_HOME']}")
 print("---------------------------------")
 
-from transformers import AutoProcessor, AutoModelForCausalLM
+from transformers import AutoModelForCausalLM, AutoTokenizer
 
 
 def run_benchmark():
@@ -73,20 +73,8 @@ def run_benchmark():
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
-    # Load dataset
-    try:
-        dataset_df = pd.read_csv(INPUT_CSV_PATH)
-    except FileNotFoundError:
-        print(f"Error: Input CSV not found at '{INPUT_CSV_PATH}'. Make sure the file exists.")
-        return
 
-    results = []
-    print(f"Starting benchmark on {len(dataset_df)} problems...")
-
-
-    summary_type = f'summary_{short_or_long}'
-
-
+    print("Loading model and tokenizer...")
     # Load and prepare model
     if torch.cuda.is_available():
         device = torch.device("cuda")
@@ -100,7 +88,7 @@ def run_benchmark():
 
     print(f"Loading model: {MODEL_ID}...")
 
-    processor = AutoProcessor.from_pretrained(MODEL_ID, token=HF_TOKEN)
+    tokenizer = AutoTokenizer.from_pretrained(MODEL_ID, token=HF_TOKEN)
 
     model = AutoModelForCausalLM.from_pretrained(
         MODEL_ID,
@@ -108,7 +96,21 @@ def run_benchmark():
         device_map="auto",
         token=HF_TOKEN
     ).eval()
-    print("Model and processor loaded successfully.")
+    print("Model and tokenizer loaded successfully.")
+
+
+    # Load dataset
+    try:
+        dataset_df = pd.read_csv(INPUT_CSV_PATH)
+    except FileNotFoundError:
+        print(f"Error: Input CSV not found at '{INPUT_CSV_PATH}'. Make sure the file exists.")
+        return
+
+
+    results = []
+    print(f"Starting benchmark on {len(dataset_df)} problems...")
+
+    summary_type = f'summary_{short_or_long}'
 
     for index, row in dataset_df.iterrows():
         if index > 2:
@@ -135,7 +137,7 @@ def run_benchmark():
         ]
         
         # 2. Apply the template and tokenize the input
-        inputs = processor.apply_chat_template(
+        inputs = tokenizer.apply_chat_template(
             messages,
             add_generation_prompt=True,
             tokenize=True,
@@ -155,7 +157,8 @@ def run_benchmark():
         
         # 4. Decode new tokens
         generated_ids = outputs[0][input_len:]
-        generated_output = processor.decode(generated_ids, skip_special_tokens=True).strip()
+        generated_output = tokenizer.decode(generated_ids, skip_special_tokens=True).strip()
+
 
         print(f"    - Generated: {generated_output}...")
         results.append({

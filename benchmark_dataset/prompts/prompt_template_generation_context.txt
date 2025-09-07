@@ -1,6 +1,6 @@
 Your task is to create a <code language> function based on a summary and additional context.
 Below is an example of generating a <code language> function from a summary.
-You are also provided with additional context of relevant imported files and surrounding file contents to support the task of generating the target code.
+You are also provided with additional context of relevant imported files and the file contents surrounding the target function to support the task of generating the target code.
 
 ---
 
