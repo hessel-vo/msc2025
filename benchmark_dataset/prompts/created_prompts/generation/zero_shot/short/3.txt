@@ -1,0 +1,12 @@
+Your task is to create a Python function based on a summary.
+
+**[Target]**
+**Based on the summary below, generate the full Python function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Checks if a value or list of values is a valid integer for a specified bit-width and signedness."
+
+**Code:**
+```python
+def is_xintx(value: Any, signed: bool, bits: int):
+```

@@ -1,0 +1,12 @@
+Your task is to create a Python function based on a summary.
+
+**[Target]**
+**Based on the summary below, generate the full Python function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Traverses a VSS tree to count the occurrences and collect the fully qualified paths of each node name"
+
+**Code:**
+```python
+def populate_unique_node_names(node_names_dict: dict[str, Any], vss_node: VSSNode) -> None:
+```

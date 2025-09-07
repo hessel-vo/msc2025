@@ -1,0 +1,80 @@
+The target code below is part of the automotive software engineering domain.
+Provide a concise, single-line summary of the target Python code below.
+Do not provide any other output.
+
+---
+
+**[Examples]**
+**[Example 1]**
+**Code:**
+```python
+def find_max_sum(arr):
+    incl = 0
+    excl = 0
+    for i in arr:
+        new_excl = excl if excl > incl else incl
+        incl = excl + i
+        excl = new_excl
+    return excl if excl > incl else incl
+```
+
+**Summary:**
+"Maximum sum such that no two elements are adjacent”
+
+**[Example 2]**
+**Code:**
+```python
+def isMajority(arr, n, x):
+    last_index = (n // 2 + 1) if n % 2 == 1 else (n // 2)
+    for i in range(last_index):
+        if arr[i] == x and arr[i + n // 2] == x:
+            return 1
+    return 0
+```
+
+**Summary:**
+"Check for Majority Element in a sorted array”
+
+**[Example 3]**
+**Code:**
+```python
+def findPair(arr, n):
+    size = len(arr)
+    i, j = 0, 1
+
+    while i < size and j < size:
+        if i != j and arr[j] - arr[i] == n:
+            print(f"Pair found ({arr[i]}, {arr[j]})")
+            return True
+        elif arr[j] - arr[i] < n:
+            j += 1
+        else:
+            i += 1
+
+    print("No pair found")
+    return False
+```
+
+**Summary:**
+"Find a pair with the given difference”
+
+---
+
+**[Target]**
+**Summarize the following Python code (do not provide any other output):**
+```python
+def generate_property(node: VSSNode, datatype: str) -> ApiGearProperty | None:
+    apigear_type = get_apigear_datatype(datatype)
+    data = node.get_vss_data()
+
+    if apigear_type is None:
+        log.warning(f"Datatype {datatype} of node {node.name} currently not supported")
+        return None
+
+    property = ApiGearProperty(apigear_type)
+    if data.description != "":
+        property.description = data.description
+    return property
+```
+
+**Summary:**

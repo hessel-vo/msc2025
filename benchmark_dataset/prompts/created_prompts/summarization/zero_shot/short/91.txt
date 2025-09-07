@@ -1,0 +1,31 @@
+The target code below is part of the automotive software engineering domain.
+Provide a concise, single-line summary of the target C code below.
+Do not provide any other output.
+
+**[Target]**
+**Summarize the following C code (do not provide any other output):**
+```c
+static int hvs_set_gpio_output_enable(const struct device* dev,
+                                      uint8_t index,
+                                      bool enable) {
+  if (index > 31) return -EINVAL;
+
+  struct hv_shield_data_t* data = dev->data;
+
+  if (index % 8 < 4) {
+    index += 4;
+  } else {
+    index -= 4;
+  }
+
+  if (enable) {
+    data->registers.gpio_output |= 1 << index;
+  } else {
+    data->registers.gpio_output &= ~(1 << index);
+  }
+
+  return _hv_shield_update(dev);
+}
+```
+
+**Summary:**

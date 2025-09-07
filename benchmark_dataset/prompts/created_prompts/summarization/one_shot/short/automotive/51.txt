@@ -1,0 +1,50 @@
+The target code below is part of the automotive software engineering domain.
+Provide a concise, single-line summary of the target Cpp code below.
+Do not provide any other output.
+
+---
+
+**[Example]**
+**Code:**
+```cpp
+bool DBusConnection::sendDBusMessage(const DBusMessage &_message) const {
+    if (!_message) {
+        COMMONAPI_ERROR(std::string(__FUNCTION__), "message == NULL");
+        return false;
+    }
+    if (!isConnected()) {
+        COMMONAPI_ERROR(std::string(__FUNCTION__), "not connected");
+        return false;
+    }
+
+    dbus_uint32_t dbusSerial;
+    const bool result = (0 != dbus_connection_send(connection_, _message.message_, &dbusSerial));
+    return result;
+}
+```
+
+**Summary:**
+"Sends a D-Bus message over the connection and returns a boolean indicating success”
+
+---
+
+**[Target]**
+**Summarize the following Cpp code (do not provide any other output):**
+```cpp
+bool DBusConnection::sendDBusMessage(const DBusMessage &_message) const {
+    if (!_message) {
+        COMMONAPI_ERROR(std::string(__FUNCTION__), "message == NULL");
+        return false;
+    }
+    if (!isConnected()) {
+        COMMONAPI_ERROR(std::string(__FUNCTION__), "not connected");
+        return false;
+    }
+
+    dbus_uint32_t dbusSerial;
+    const bool result = (0 != dbus_connection_send(connection_, _message.message_, &dbusSerial));
+    return result;
+}
+```
+
+**Summary:**

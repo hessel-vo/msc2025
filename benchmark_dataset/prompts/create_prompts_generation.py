@@ -5,7 +5,7 @@ import sys
 # --- Configuration ---
 TEMPLATE_FILE_PATH = "prompt_template_generation.txt"
 TEMPLATE_SUBSET = "prompt_template_generation.txt" # Set to "prompt_template_generation_context.txt" for benchmark subset
-CSV_FILE_PATH = "benchmark_dataset.csv" # Set to "benchmark_dataset_subset.csv" for benchmark subset
+CSV_FILE_PATH = "benchmark_dataset_subset.csv" # Set to "benchmark_dataset_subset.csv" for benchmark subset
 BASE_OUTPUT_DIR = "created_prompts/generation"
 BASE_EXAMPLES_DIR = "examples/generation"
 ADDITIONAL_CONTEXT_DIR = "additional_context"
@@ -106,7 +106,7 @@ def create_prompts(source, num_examples, sum_length, subset=None):
                     filled_prompt = filled_prompt.replace("<target summary>", target_summary)
                     filled_prompt = filled_prompt.replace("<function signature>", function_signature)
 
-                    if subset:
+                    if not subset:
                         additional_context = load_text_file(os.path.join(ADDITIONAL_CONTEXT_DIR, f"{file_id}.txt"))
                         filled_prompt = filled_prompt.replace("<additional_context>", additional_context)
                     

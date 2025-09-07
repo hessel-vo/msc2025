@@ -1,0 +1,12 @@
+Your task is to create a Python function based on a summary.
+
+**[Target]**
+**Based on the summary below, generate the full Python function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Returns a dictionary mapping the short name to the full FQN for all dynamic datatypes that exist in the same namespace as the provided FQN"
+
+**Code:**
+```python
+def get_fqn_namespaced_datatypes(fqn: str | None = None) -> dict[str, str]:
+```

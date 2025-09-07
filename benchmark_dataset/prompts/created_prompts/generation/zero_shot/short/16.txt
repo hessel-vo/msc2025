@@ -1,0 +1,12 @@
+Your task is to create a Python function based on a summary.
+
+**[Target]**
+**Based on the summary below, generate the full Python function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Finds the root of a VSS instance by recursively traversing up the parent hierarchy"
+
+**Code:**
+```python
+def get_instance_root(self, depth: int = 0) -> tuple[VSSNode, int]:
+```

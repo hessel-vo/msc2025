@@ -1,0 +1,12 @@
+Your task is to create a Python function based on a summary.
+
+**[Target]**
+**Based on the summary below, generate the full Python function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Counts the depth of a chain of instance branches"
+
+**Code:**
+```python
+def count_instance_children_depth(self) -> int:
+```

@@ -1,0 +1,12 @@
+Your task is to create a Python function based on a summary.
+
+**[Target]**
+**Based on the summary below, generate the full Python function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Generates an ApiGear property from a VSS (Vehicle Signal Specification) node"
+
+**Code:**
+```python
+def generate_property(node: VSSNode, datatype: str) -> ApiGearProperty | None:
+```

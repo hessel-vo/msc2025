@@ -1,0 +1,23 @@
+The target code below is part of the automotive software engineering domain.
+Provide a concise, single-line summary of the target Cpp code below.
+Do not provide any other output.
+
+**[Target]**
+**Summarize the following Cpp code (do not provide any other output):**
+```cpp
+void DBusConnection::onRemoveWatch(::DBusWatch* libdbusWatch, void* data) {
+    if (NULL == static_cast<WatchContext*>(data)) {
+        COMMONAPI_ERROR(std::string(__FUNCTION__), "data (WatchContext) == NULL");
+    }
+
+    DBusWatch* dbusWatch = static_cast<DBusWatch*>(dbus_watch_get_data(libdbusWatch));
+    if (dbusWatch != NULL) {
+        if(dbusWatch->isReadyToBeWatched()) {
+            dbusWatch->stopWatching();
+        }
+        dbus_watch_set_data(libdbusWatch, NULL, NULL);
+    }
+}
+```
+
+**Summary:**

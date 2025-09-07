@@ -1,0 +1,12 @@
+Your task is to create a C function based on a summary.
+
+**[Target]**
+**Based on the summary below, generate the full C function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Constructs and sends a 5-byte UDS positive response for the Routine Control service (containing the routine control type, routine ID, and a result code) over a CAN bus via ISO-TP, logging an error if the transmission fails"
+
+**Code:**
+```c
+static void send_routine_control_result(uint16_t routine_id, uint8_t result) {
+```

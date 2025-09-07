@@ -1,0 +1,23 @@
+The target code below is part of the automotive software engineering domain.
+Provide a detailed, single-line summary of the target Java code below.
+Do not provide any other output.
+
+**[Target]**
+**Summarize the following Java code (do not provide any other output):**
+```java
+private void initializeAudioControls() {
+    mMuteButton = new DescriptiveTextWithControlsView.Control(
+            mContext.getDrawable(R.drawable.ic_mic_off),
+            v -> {
+                mInCallService.setMuted(mMuteCallToggle);
+                mMuteCallToggle = !mMuteCallToggle;
+            });
+    mEndCallButton = new DescriptiveTextWithControlsView.Control(
+            mContext.getDrawable(R.drawable.ic_call_end_button),
+            v -> mCurrentCall.disconnect());
+    mDialpadButton = new DescriptiveTextWithControlsView.Control(
+            mContext.getDrawable(R.drawable.ic_dialpad), this::onClick);
+}
+```
+
+**Summary:**

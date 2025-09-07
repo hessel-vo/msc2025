@@ -1,0 +1,12 @@
+Your task is to create a Cpp function based on a summary.
+
+**[Target]**
+**Based on the summary below, generate the full Cpp function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Thread-safely schedules a task on the main event loop to notify a newly added listener, passing along its specific subscription details"
+
+**Code:**
+```cpp
+void DBusProxyStatusEvent::onListenerAdded(const Listener &_listener, const Subscription _subscription) {
+```

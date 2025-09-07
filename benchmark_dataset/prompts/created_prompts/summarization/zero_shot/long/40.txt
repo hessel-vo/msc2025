@@ -1,0 +1,20 @@
+The target code below is part of the automotive software engineering domain.
+Provide a detailed, single-line summary of the target Java code below.
+Do not provide any other output.
+
+**[Target]**
+**Summarize the following Java code (do not provide any other output):**
+```java
+private static void cleanUpExistingTaskViewTasks(List<TaskAppearedInfo> taskAppearedInfos) {
+    ActivityTaskManager atm = ActivityTaskManager.getInstance();
+    for (TaskAppearedInfo taskAppearedInfo : taskAppearedInfos) {
+        TaskInfo taskInfo = taskAppearedInfo.getTaskInfo();
+        if (taskInfo.getWindowingMode() == WINDOWING_MODE_MULTI_WINDOW) {
+            if (DBG) Slog.d(TAG, "Found the dangling task, removing: " + taskInfo.taskId);
+            atm.removeTask(taskInfo.taskId);
+        }
+    }
+}
+```
+
+**Summary:**

@@ -1,0 +1,12 @@
+Your task is to create a Java function based on a summary.
+
+**[Target]**
+**Based on the summary below, generate the full Java function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Queries the `PackageManager` for a `MediaBrowserService` within a given package and returns a `ComponentName` for the first one found, or `null` if none exist"
+
+**Code:**
+```java
+static ComponentName getMediaSource(@NonNull PackageManager packageManager, @NonNull String packageName) {
+```

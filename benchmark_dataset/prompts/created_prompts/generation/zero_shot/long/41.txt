@@ -1,0 +1,12 @@
+Your task is to create a Java function based on a summary.
+
+**[Target]**
+**Based on the summary below, generate the full Java function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Parses the mode from the current Intent and sets the title for both the Activity and the CarUi toolbar using the string resource ID defined in that mode"
+
+**Code:**
+```java
+private void updateMode() {
+```

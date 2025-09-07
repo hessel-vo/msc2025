@@ -1,0 +1,19 @@
+The target code below is part of the automotive software engineering domain.
+Provide a concise, single-line summary of the target C code below.
+Do not provide any other output.
+
+**[Target]**
+**Summarize the following C code (do not provide any other output):**
+```c
+static inline uint8_t map_from_can_id(uint32_t can_id) {
+  for (int i = 0; i < TRANSLATABLE_ADDRESSES_LEN; i++) {
+    if (id_mapping[i] == can_id) {
+      return i;
+    }
+  }
+
+  return 0xff;
+}
+```
+
+**Summary:**

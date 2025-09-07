@@ -1,0 +1,29 @@
+The target code below is part of the automotive software engineering domain.
+Provide a concise, single-line summary of the target C code below.
+Do not provide any other output.
+
+**[Target]**
+**Summarize the following C code (do not provide any other output):**
+```c
+static int hvs_set_dac_gain(const struct device* dev,
+                            uint8_t dac,
+                            enum hv_shield_dac_gains_t gain) {
+  if (dac > 1) return -EINVAL;
+
+  struct hv_shield_data_t* data = dev->data;
+  switch (dac) {
+    case 0:
+      data->registers.dac0 = gain;
+      break;
+    case 1:
+      data->registers.dac1 = gain;
+      break;
+    default:
+      return -EINVAL;
+  }
+
+  return _hv_shield_update(dev);
+}
+```
+
+**Summary:**

@@ -1,0 +1,12 @@
+Your task is to create a Cpp function based on a summary.
+
+**[Target]**
+**Based on the summary below, generate the full Cpp function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Handles a D-Bus "InterfacesRemoved" signal by parsing the object path and interface names, and for any interface matching the one being observed, notifies listeners that its status has changed to "NOT_AVAILABLE""
+
+**Code:**
+```cpp
+void DBusInstanceAvailabilityStatusChangedEvent::onInterfacesRemovedSignal(const DBusMessage &_message) {
+```

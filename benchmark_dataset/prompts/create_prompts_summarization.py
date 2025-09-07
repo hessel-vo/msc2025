@@ -6,7 +6,7 @@ import sys
 # Adjusted base directories to match the project structure
 TEMPLATE_FILE_PATH = "prompt_template_summarization.txt"
 TEMPLATE_SUBSET = "prompt_template_summarization.txt"
-CSV_FILE_PATH = "benchmark_dataset_subset.csv" # Set to "benchmark_dataset_subset.csv" for benchmark subset
+CSV_FILE_PATH = "benchmark_dataset.csv" # Set to "benchmark_dataset_subset.csv" for benchmark subset
 BASE_OUTPUT_DIR = "created_prompts/summarization"
 BASE_EXAMPLES_DIR = "examples/summarization"
 

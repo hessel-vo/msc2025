@@ -1,0 +1,39 @@
+Your task is to create a C function based on a summary.
+Below is an example of generating a C function from a summary.
+
+---
+
+**[Example]**
+**Summary:**
+"Finds the maximum sum of a subsequence of non-adjacent elements by iteratively tracking the maximum sum including and excluding the current element”
+
+**Code:**
+```c
+int FindMaxSum(int arr[], int n) {
+    int incl = arr[0];
+    int excl = 0;
+    int excl_new;
+    int i;
+
+    for (i = 1; i < n; i++) {
+        excl_new = (incl > excl) ? incl : excl;
+        incl = excl + arr[i];
+        excl = excl_new;
+    }
+
+    return ((incl > excl) ? incl : excl);
+}
+```
+
+---
+
+**[Target]**
+**Based on the summary below, generate the full C function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Constructs and sends a 4-byte UDS positive response for a "Request Download" service, specifying a maximum block length of 0x00D2, over a CAN bus using the ISO-TP protocol and logging an error on failure"
+
+**Code:**
+```c
+void send_request_download_response() {
+```

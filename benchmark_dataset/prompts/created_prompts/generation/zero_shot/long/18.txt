@@ -1,0 +1,12 @@
+Your task is to create a Python function based on a summary.
+
+**[Target]**
+**Based on the summary below, generate the full Python function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Returns a list of node IDs from an input list whose expected parent's name matches the provided `name`"
+
+**Code:**
+```python
+def find_children_ids(node_ids: list[str], name: str) -> list[str]:
+```

@@ -1,0 +1,39 @@
+Your task is to create a Cpp function based on a summary.
+Below is an example of generating a Cpp function from a summary.
+
+---
+
+**[Example]**
+**Summary:**
+"Finds the maximum sum of a subsequence of non-adjacent elements by iteratively tracking the maximum sum including and excluding the current element”
+
+**Code:**
+```cpp
+int FindMaxSum(vector<int> arr, int n) {
+    int incl = arr[0];
+    int excl = 0;
+    int excl_new;
+    int i;
+
+    for (i = 1; i < n; i++) {
+        excl_new = (incl > excl) ? incl : excl;
+        incl = excl + arr[i];
+        excl = excl_new;
+    }
+
+    return ((incl > excl) ? incl : excl);
+}
+```
+
+---
+
+**[Target]**
+**Based on the summary below, generate the full Cpp function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Registers a D-Bus interface handler for a specific path, returning `false` if the exact handler is already registered, but allowing idempotent registration for standard `ObjectManager` and `Properties` interfaces"
+
+**Code:**
+```cpp
+bool DBusObjectManager::addDBusInterfaceHandler(const DBusInterfaceHandlerPath& dbusInterfaceHandlerPath, std::shared_ptr<DBusInterfaceHandler> dbusInterfaceHandler) {
+```

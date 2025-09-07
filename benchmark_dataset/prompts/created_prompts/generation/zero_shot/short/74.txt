@@ -1,0 +1,12 @@
+Your task is to create a Cpp function based on a summary.
+
+**[Target]**
+**Based on the summary below, generate the full Cpp function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Adds a D-Bus interface handler to a path, preventing duplicate registration except for standard interfaces"
+
+**Code:**
+```cpp
+bool DBusObjectManager::addDBusInterfaceHandler(const DBusInterfaceHandlerPath& dbusInterfaceHandlerPath, std::shared_ptr<DBusInterfaceHandler> dbusInterfaceHandler) {
+```

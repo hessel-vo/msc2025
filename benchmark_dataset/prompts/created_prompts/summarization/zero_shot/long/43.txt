@@ -1,0 +1,22 @@
+The target code below is part of the automotive software engineering domain.
+Provide a detailed, single-line summary of the target Java code below.
+Do not provide any other output.
+
+**[Target]**
+**Summarize the following Java code (do not provide any other output):**
+```java
+private View getMediaLayoutView() {
+    if (mMediaLayoutView == null) {
+        ViewStub stub = getRootView().findViewById(R.id.media_layout);
+        mMediaLayoutView = stub.inflate();
+        mMediaTitle = mMediaLayoutView.findViewById(R.id.primary_text);
+        mMediaSubtitle = mMediaLayoutView.findViewById(R.id.secondary_text);
+        View mediaControlBarView = mMediaLayoutView.findViewById(
+                R.id.media_playback_controls_bar);
+        mPresenter.initializeControlsActionBar(mediaControlBarView);
+    }
+    return mMediaLayoutView;
+}
+```
+
+**Summary:**

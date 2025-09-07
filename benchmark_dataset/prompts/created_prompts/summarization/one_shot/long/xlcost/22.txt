@@ -1,0 +1,34 @@
+The target code below is part of the automotive software engineering domain.
+Provide a detailed, single-line summary of the target Python code below.
+Do not provide any other output.
+
+---
+
+**[Example]**
+**Code:**
+```python
+def find_max_sum(arr):
+    incl = 0
+    excl = 0
+    for i in arr:
+        new_excl = excl if excl > incl else incl
+        incl = excl + i
+        excl = new_excl
+    return excl if excl > incl else incl
+```
+
+**Summary:**
+"Finds the maximum sum of a subsequence of non-adjacent elements by iteratively tracking the maximum sum including and excluding the current element”
+
+---
+
+**[Target]**
+**Summarize the following Python code (do not provide any other output):**
+```python
+def is_VSS_leaf(node: VSSNode) -> bool:
+   if isinstance(node.data, VSSDataDatatype):
+        return True
+    return False
+```
+
+**Summary:**

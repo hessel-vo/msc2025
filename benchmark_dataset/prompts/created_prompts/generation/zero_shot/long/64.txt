@@ -1,0 +1,12 @@
+Your task is to create a Cpp function based on a summary.
+
+**[Target]**
+**Based on the summary below, generate the full Cpp function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Handles an incoming D-Bus signal by dispatching it to the appropriate handler for either "InterfacesAdded" or "InterfacesRemoved" events based on the message's member name"
+
+**Code:**
+```cpp
+void DBusInstanceAvailabilityStatusChangedEvent::SignalHandler::onSignalDBusMessage(const DBusMessage& dbusMessage) {
+```

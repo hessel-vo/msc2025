@@ -1,0 +1,12 @@
+Your task is to create a Python function based on a summary.
+
+**[Target]**
+**Based on the summary below, generate the full Python function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Loads and parses multiple VSpec files from specified paths, using a list of include directories, then merges them into a single composite VSpec object and returns it, raising an exception if no files are successfully loaded"
+
+**Code:**
+```python
+def load_vspec(include_dirs: list[Path], specs: list[Path], identifier: str | None = None) -> VSpec:
+```

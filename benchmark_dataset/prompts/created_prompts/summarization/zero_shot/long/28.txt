@@ -1,0 +1,17 @@
+The target code below is part of the automotive software engineering domain.
+Provide a detailed, single-line summary of the target Java code below.
+Do not provide any other output.
+
+**[Target]**
+**Summarize the following Java code (do not provide any other output):**
+```java
+public View onCreateView(LayoutInflater inflater, ViewGroup container,
+        Bundle savedInstanceState) {
+    mRootView = inflater.inflate(R.layout.card_fragment, container, false);
+    mCardTitle = mRootView.findViewById(R.id.card_name);
+    mCardIcon = mRootView.findViewById(R.id.card_icon);
+    return mRootView;
+}
+```
+
+**Summary:**

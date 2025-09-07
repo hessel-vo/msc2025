@@ -1,0 +1,72 @@
+Your task is to create a Cpp function based on a summary.
+Below is an example of generating a Cpp function from a summary.
+
+---
+
+**[Examples]**
+**[Example 1]**
+**Summary:**
+"Sends a D-Bus message over the connection and returns a boolean indicating success”
+
+**Code:**
+```cpp
+bool DBusConnection::sendDBusMessage(const DBusMessage &_message) const {
+    if (!_message) {
+        COMMONAPI_ERROR(std::string(__FUNCTION__), "message == NULL");
+        return false;
+    }
+    if (!isConnected()) {
+        COMMONAPI_ERROR(std::string(__FUNCTION__), "not connected");
+        return false;
+    }
+
+    dbus_uint32_t dbusSerial;
+    const bool result = (0 != dbus_connection_send(connection_, _message.message_, &dbusSerial));
+    return result;
+}
+```
+
+**[Example 2]**
+**Summary:**
+"Creates a D-Bus signal message addressed to a specific client”
+
+**Code:**
+```cpp
+DBusMessage DBusClientId::createMessage(const std::string objectPath, const std::string interfaceName, const std::string signalName) const
+{
+    DBusMessage returnMessage = DBusMessage::createSignal(objectPath, interfaceName, signalName);
+    returnMessage.setDestination(dbusId_.c_str());
+
+    return (returnMessage);
+}
+```
+
+**[Example 3]**
+**Summary:**
+"A callback that wakes up a main loop context if it has not been destroyed”
+
+**Code:**
+```cpp
+void DBusConnection::onWakeupMainContext(void* data) {
+    std::weak_ptr<MainLoopContext>* mainloop = static_cast<std::weak_ptr<MainLoopContext>*>(data);
+
+    if (!mainloop) {
+        COMMONAPI_ERROR(std::string(__FUNCTION__), "mainloop == nullptr");
+    } else if(auto lockedContext = mainloop->lock()) {
+        lockedContext->wakeup();
+    }
+}
+```
+
+---
+
+**[Target]**
+**Based on the summary below, generate the full Cpp function, including the function signature and function body (do not provide any other output)**
+
+**Summary:**
+"Retrieves the addresses of available service instances from a D-Bus registry"
+
+**Code:**
+```cpp
+void DBusInstanceAvailabilityStatusChangedEvent::getAvailableServiceInstances(CommonAPI::CallStatus &_status, std::vector<DBusAddress> &_availableServiceInstances) {
+```

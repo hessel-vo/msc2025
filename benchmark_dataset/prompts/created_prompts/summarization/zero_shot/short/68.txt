@@ -1,0 +1,23 @@
+The target code below is part of the automotive software engineering domain.
+Provide a concise, single-line summary of the target Cpp code below.
+Do not provide any other output.
+
+**[Target]**
+**Summarize the following Cpp code (do not provide any other output):**
+```cpp
+void DBusInstanceAvailabilityStatusChangedEvent::notifyInterfaceStatusChanged(
+        const std::string &_objectPath,
+        const std::string &_interfaceName,
+        const AvailabilityStatus &_availability) {
+    CommonAPI::Address itsAddress;
+    DBusAddress itsDBusAddress(proxy_.getDBusAddress().getService(),
+                               _objectPath,
+                               _interfaceName);
+
+    DBusAddressTranslator::get()->translate(itsDBusAddress, itsAddress);
+
+    notifyListeners(itsAddress.getAddress(), _availability);
+}
+```
+
+**Summary:**
