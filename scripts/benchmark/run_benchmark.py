@@ -12,6 +12,7 @@ PROJECT_ROOT = Path(project_root_str)
 HF_TOKEN = os.getenv('HUGGING_FACE_HUB_TOKEN')
 MODEL_ID = "google/gemma-3-1b-it"
 MODEL_NAME = MODEL_ID.split("/")[-1]
+RESULT_TYPE = "baseline" # Swich "baseline" to "adapted" for final eval
 
 HF_CACHE_DIR = PROJECT_ROOT / "hf_cache"
 
@@ -53,6 +54,8 @@ def run_benchmark():
         return
 
     source_folder = 'xlcost' if source == 'xl' else 'automotive'
+    summary_type = f'summary_{short_or_long}'
+
 
     INPUT_CSV_PATH = PROJECT_ROOT / "benchmark_dataset" / "benchmark_dataset.csv"
 
@@ -61,10 +64,11 @@ def run_benchmark():
     else:
         PROMPTS_DIR = PROJECT_ROOT / "benchmark_dataset" / "prompts" / "created_prompts" / task_type / "zero_shot" / short_or_long
     
-    OUTPUT_DIR = PROJECT_ROOT / "results" / "benchmark" / "baseline" # Swich "baseline" to "adapted" for final eval
+    OUTPUT_DIR = PROJECT_ROOT / "results" / "benchmark" / RESULT_TYPE
     OUTPUT_FILENAME = OUTPUT_DIR / f"{MODEL_NAME}_{task_type}_{source}_{shot_count}_shot_{short_or_long}_results.csv"
 
     if subset == "subset":
+        summary_type = "summary_long"
         INPUT_CSV_PATH = PROJECT_ROOT / "benchmark_dataset" / "benchmark_dataset_subset.csv"
         PROMPTS_DIR = PROJECT_ROOT / "benchmark_dataset" / "prompts" / "created_prompts" / task_type / "subset"
         OUTPUT_DIR = OUTPUT_DIR / "subset"
@@ -110,8 +114,6 @@ def run_benchmark():
     results = []
     print(f"Starting benchmark on {len(dataset_df)} problems...")
 
-    summary_type = f'summary_{short_or_long}'
-
     for index, row in dataset_df.iterrows():
         if index > 2:
             break
@@ -151,7 +153,7 @@ def run_benchmark():
         with torch.inference_mode():
             outputs = model.generate(
                 input_ids=inputs,
-                max_new_tokens=100,
+                max_new_tokens=800,
                 do_sample=False
             )
         

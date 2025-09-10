@@ -20,6 +20,8 @@ aiosignal==1.4.0
     # via aiohttp
 attrs==25.3.0
     # via aiohttp
+bert-score==0.3.13
+    # via -r requirements.in
 bitsandbytes==0.46.1
     # via -r requirements.in
 certifi==2025.7.14
@@ -30,6 +32,10 @@ click==8.2.1
     # via nltk
 colorama==0.4.6
     # via sacrebleu
+contourpy==1.3.3
+    # via matplotlib
+cycler==0.12.1
+    # via matplotlib
 datasets==4.0.0
     # via evaluate
 datasketch==1.6.5
@@ -49,6 +55,8 @@ filelock==3.18.0
     #   huggingface-hub
     #   torch
     #   transformers
+fonttools==4.59.2
+    # via matplotlib
 frozenlist==1.7.0
     # via
     #   aiohttp
@@ -78,10 +86,14 @@ jinja2==3.1.6
     # via torch
 joblib==1.5.1
     # via nltk
+kiwisolver==1.4.9
+    # via matplotlib
 lxml==6.0.1
     # via sacrebleu
 markupsafe==3.0.2
     # via jinja2
+matplotlib==3.10.6
+    # via bert-score
 mpmath==1.3.0
     # via sympy
 multidict==6.6.3
@@ -101,10 +113,13 @@ nltk==3.9.1
 numpy==2.3.1
     # via
     #   accelerate
+    #   bert-score
     #   bitsandbytes
+    #   contourpy
     #   datasets
     #   datasketch
     #   evaluate
+    #   matplotlib
     #   pandas
     #   peft
     #   rouge-score
@@ -152,19 +167,24 @@ nvidia-nvtx-cu12==12.6.77
 packaging==25.0
     # via
     #   accelerate
+    #   bert-score
     #   datasets
     #   evaluate
     #   huggingface-hub
+    #   matplotlib
     #   peft
     #   transformers
 pandas==2.3.1
     # via
+    #   bert-score
     #   datasets
     #   evaluate
 peft==0.16.0
     # via -r requirements.in
 pillow==11.3.0
-    # via torchvision
+    # via
+    #   matplotlib
+    #   torchvision
 portalocker==3.2.0
     # via sacrebleu
 propcache==0.3.2
@@ -177,8 +197,12 @@ psutil==7.0.0
     #   peft
 pyarrow==21.0.0
     # via datasets
+pyparsing==3.2.3
+    # via matplotlib
 python-dateutil==2.9.0.post0
-    # via pandas
+    # via
+    #   matplotlib
+    #   pandas
 python-dotenv==1.1.1
     # via -r requirements.in
 pytz==2025.2
@@ -198,6 +222,7 @@ regex==2024.11.6
     #   transformers
 requests==2.32.4
     # via
+    #   bert-score
     #   datasets
     #   detect-secrets
     #   evaluate
@@ -228,6 +253,7 @@ torch==2.7.1
     # via
     #   -r requirements.in
     #   accelerate
+    #   bert-score
     #   bitsandbytes
     #   peft
     #   torchvision
@@ -236,6 +262,7 @@ torchvision==0.22.1+cu128
 tqdm==4.67.1
     # via
     #   -r requirements.in
+    #   bert-score
     #   datasets
     #   evaluate
     #   huggingface-hub
@@ -245,6 +272,7 @@ tqdm==4.67.1
 transformers==4.53.3
     # via
     #   -r requirements.in
+    #   bert-score
     #   peft
 triton==3.3.1
     # via torch

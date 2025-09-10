@@ -1,0 +1,4 @@
+id,reference,generated,bleu_score,bleu_1,bleu_2,bleu_3,bleu_4,rouge1,rouge2,rougeL,rougeLsum
+1,Checks if a data type is a subtype of a specified base type,Checks if a given type is a subtype of another type.,40.17682558797496,75.0,54.54545454545455,40.0,22.22222222222222,0.7500000000000001,0.5454545454545454,0.7500000000000001,0.7500000000000001
+2,Validates if a value conforms to a datatype specified by a string,Checks if a value is of a specific datatype.,14.530346490115708,50.0,22.22222222222222,12.5,7.142857142857143,0.4761904761904762,0.2105263157894737,0.4761904761904762,0.4761904761904762
+3,Checks if an integer value fits within the range of a specified bit-width and signedness,Checks if a value (or list of values) is a valid signed or unsigned integer within a specified number of bits.,5.291907393644996,33.333333333333336,8.695652173913043,2.272727272727273,1.1904761904761905,0.4324324324324324,0.1142857142857143,0.3243243243243243,0.3243243243243243

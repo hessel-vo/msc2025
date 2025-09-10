@@ -113,41 +113,10 @@ def calculate_rouge_scores(df):
     # Rename keys for clarity in the final corpus file
     corpus_scores = {f"corpus_{key}": value for key, value in corpus_result.items()}
 
-    return problem_scores, corpus_scores
-
-def calculate_bertscore(df):
-    """
-    Calculates problem-level and corpus-level BERTScore in a single batch.
-    """
-    bertscore_metric = evaluate.load("bertscore")
-    
-    all_predictions = df["generated"].astype(str).tolist()
-    all_references = df["reference"].astype(str).tolist()
-
-    print("Calculating batch problem-level BERTScore (this may take a while)...")
-    # BERTScore compute returns a dict of lists (precision, recall, f1)
-    individual_results = bertscore_metric.compute(
-        predictions=all_predictions,
-        references=all_references,
-        lang="en",
-        model_type="microsoft/deberta-xlarge-mnli"
-    )
-
-    problem_scores = {}
-    for i, p_id in enumerate(df["id"]):
-        problem_scores[p_id] = {
-            'bertscore_precision': individual_results['precision'][i],
-            'bertscore_recall': individual_results['recall'][i],
-            'bertscore_f1': individual_results['f1'][i]
-        }
-    
-    print("Calculating corpus-level BERTScore...")
-    # Corpus-level BERTScore is the average of the individual scores
-    corpus_scores = {
-        "corpus_bertscore_precision": sum(individual_results['precision']) / len(individual_results['precision']),
-        "corpus_bertscore_recall": sum(individual_results['recall']) / len(individual_results['recall']),
-        "corpus_bertscore_f1": sum(individual_results['f1']) / len(individual_results['f1']),
-    }
+    print("Rogue individual")
+    print(individual_results)
+    print("Rogue corpus")
+    print(corpus_result)
 
     return problem_scores, corpus_scores
 
@@ -175,7 +144,6 @@ def main():
     # --- Metric Calculation ---
     problem_bleu_scores, corpus_bleu_scores = calculate_bleu_scores(df)
     problem_rouge_scores, corpus_rouge_scores = calculate_rouge_scores(df)
-    problem_bert_scores, corpus_bert_scores = calculate_bertscore(df)
 
     # --- Save Problem-Level Results ---
     # Convert dictionaries to DataFrames
@@ -187,14 +155,9 @@ def main():
     rouge_metrics_df.reset_index(inplace=True)
     rouge_metrics_df.rename(columns={'index': 'id'}, inplace=True)
 
-    bert_metrics_df = pd.DataFrame.from_dict(problem_bert_scores, orient='index')
-    bert_metrics_df.reset_index(inplace=True)
-    bert_metrics_df.rename(columns={'index': 'id'}, inplace=True)
-
     # Merge all metrics with the original DataFrame
     output_df = pd.merge(df, bleu_metrics_df, on='id')
     output_df = pd.merge(output_df, rouge_metrics_df, on='id')
-    output_df = pd.merge(output_df, bert_metrics_df, on='id')
     
 
     OUTPUT_ROOT = PROJECT_ROOT / "results" / "evaluation" / RESULTS_SUBFOLDER
@@ -208,7 +171,7 @@ def main():
 
     # --- Save Corpus-Level Results ---
     # Combine all corpus scores into a single dictionary
-    all_corpus_scores = {**corpus_bleu_scores, **corpus_rouge_scores, **corpus_bert_scores}
+    all_corpus_scores = {**corpus_bleu_scores, **corpus_rouge_scores}
     corpus_df = pd.DataFrame([all_corpus_scores])
     corpus_df.insert(0, 'model_name', MODEL_NAME)
     

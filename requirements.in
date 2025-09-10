@@ -16,3 +16,4 @@ datasketch
 tqdm
 sacrebleu
 rouge_score
+bert-score
