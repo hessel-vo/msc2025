@@ -4,7 +4,6 @@ import pandas as pd
 from pathlib import Path
 from dotenv import load_dotenv
 
-# --- Configuration ---
 # Load environment variables from .env file
 load_dotenv()
 project_root_str = os.getenv("PROJECT_ROOT")
@@ -20,10 +19,8 @@ import evaluate
 MODEL_NAME = "gemma-3-1b-it"
 RESULTS_SUBFOLDER = "baseline"
 TASK = "summarization"
-# --- End Configuration ---
 
 def validate_arguments(args):
-    """Validate the command-line arguments for shot_count and summary_length."""
     if len(args) < 4:
         print("Usage: python run_summarization_evaluation.py <xl|auto> <summary_length> <shot_count>")
         print("Example: python run_summarization_evaluation.py one short")
@@ -45,9 +42,6 @@ def validate_arguments(args):
     return source, summary_length, shot_count, subset
 
 def calculate_bleu_scores(df):
-    """
-    Calculates problem-level and corpus-level BLEU scores by iterating.
-    """
     bleu_metric = evaluate.load("sacrebleu")
     problem_scores = {}
     all_predictions = []
@@ -79,16 +73,12 @@ def calculate_bleu_scores(df):
     return problem_scores, corpus_scores
 
 def calculate_rouge_scores(df):
-    """
-    Calculates problem-level and corpus-level ROUGE scores in a single batch.
-    """
     rouge_metric = evaluate.load("rouge", seed=42)
     
     all_predictions = df["generated"].astype(str).tolist()
     all_references = df["reference"].astype(str).tolist()
     
-    print("Calculating batch problem-level ROUGE scores...")
-    # use_aggregator=False returns a list of scores for each input pair
+    print("Calculating problem-level ROUGE scores...")
     individual_results = rouge_metric.compute(
         predictions=all_predictions,
         references=all_references,
@@ -105,27 +95,22 @@ def calculate_rouge_scores(df):
         }
 
     print("Calculating corpus-level ROUGE scores...")
-    # The default behavior (use_aggregator=True) provides the corpus-level score
     corpus_result = rouge_metric.compute(
         predictions=all_predictions,
         references=all_references
     )
-    # Rename keys for clarity in the final corpus file
     corpus_scores = {f"corpus_{key}": value for key, value in corpus_result.items()}
 
     return problem_scores, corpus_scores
 
 def calculate_bertscore(df):
-    """
-    Calculates problem-level and corpus-level BERTScore in a single batch.
-    """
+
     bertscore_metric = evaluate.load("bertscore")
     
     all_predictions = df["generated"].astype(str).tolist()
     all_references = df["reference"].astype(str).tolist()
 
-    print("Calculating batch problem-level BERTScore (this may take a while)...")
-    # BERTScore compute returns a dict of lists (precision, recall, f1)
+    print("Calculating batch problem-level BERTScore...")
     individual_results = bertscore_metric.compute(
         predictions=all_predictions,
         references=all_references,
@@ -142,7 +127,7 @@ def calculate_bertscore(df):
         }
     
     print("Calculating corpus-level BERTScore...")
-    # Corpus-level BERTScore is the average of the individual scores
+    # Average score for overall corpus score
     corpus_scores = {
         "corpus_bertscore_precision": sum(individual_results['precision']) / len(individual_results['precision']),
         "corpus_bertscore_recall": sum(individual_results['recall']) / len(individual_results['recall']),
@@ -152,7 +137,6 @@ def calculate_bertscore(df):
     return problem_scores, corpus_scores
 
 def main():
-    """Main function to run the evaluation pipeline."""
     source, summary_length, shot_count, subset = validate_arguments(sys.argv)
     print(f"Starting summarization evaluation for: [Shots: {shot_count}, Summary: {summary_length}]")
 
@@ -172,13 +156,11 @@ def main():
     df['generated'] = df['generated'].str.strip('"')
     df['reference'] = df['reference'].str.strip('"')
 
-    # --- Metric Calculation ---
     problem_bleu_scores, corpus_bleu_scores = calculate_bleu_scores(df)
     problem_rouge_scores, corpus_rouge_scores = calculate_rouge_scores(df)
     problem_bert_scores, corpus_bert_scores = calculate_bertscore(df)
 
-    # --- Save Problem-Level Results ---
-    # Convert dictionaries to DataFrames
+    # Save per-problem results
     bleu_metrics_df = pd.DataFrame.from_dict(problem_bleu_scores, orient='index')
     bleu_metrics_df.reset_index(inplace=True)
     bleu_metrics_df.rename(columns={'index': 'id'}, inplace=True)
@@ -191,7 +173,6 @@ def main():
     bert_metrics_df.reset_index(inplace=True)
     bert_metrics_df.rename(columns={'index': 'id'}, inplace=True)
 
-    # Merge all metrics with the original DataFrame
     output_df = pd.merge(df, bleu_metrics_df, on='id')
     output_df = pd.merge(output_df, rouge_metrics_df, on='id')
     output_df = pd.merge(output_df, bert_metrics_df, on='id')
@@ -206,8 +187,7 @@ def main():
     output_df.to_csv(output_filepath, index=False)
     print(f"\nDetailed problem-level results saved to: {output_filepath}")
 
-    # --- Save Corpus-Level Results ---
-    # Combine all corpus scores into a single dictionary
+    # Save corpus-level results
     all_corpus_scores = {**corpus_bleu_scores, **corpus_rouge_scores, **corpus_bert_scores}
     corpus_df = pd.DataFrame([all_corpus_scores])
     corpus_df.insert(0, 'model_name', MODEL_NAME)

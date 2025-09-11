@@ -14,10 +14,9 @@ from datasketch import MinHash
 from datasketch.lsh import MinHashLSH
 from tqdm import tqdm
 
-# --- Configuration ---
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-# --- Deduplication Constants ---
+# Deduplication Constants
 DEDUPE_CONFIG = {
     "threshold": 0.9,
     "num_perm": 256,
@@ -25,11 +24,6 @@ DEDUPE_CONFIG = {
 }
 NON_ALPHA = re.compile(r'[^a-zA-Z0-9]')
 SEED = 42
-
-"""
-This script performs near-deduplication using datasketch library (MinHash and LSH).
-Based on BigCode Project data processing pipeline.
-"""
 
 class UnionFind:
     def __init__(self, n):
@@ -68,12 +62,10 @@ def _create_token_ngram_minhash(doc_tuple):
     return index, minhash
 
 def main():
-    """
-    Main execution function for token-based near-deduplication.
-    """
+
     start_time = time.time()
 
-    # --- Path and Argument Setup ---
+    # Path and Argument Setup
     load_dotenv()
     project_root_str = os.getenv('PROJECT_ROOT')
     if not project_root_str:
@@ -109,7 +101,7 @@ def main():
         logging.error("Please run '03a_exact_deduplication.py' first.")
         return
 
-    # --- 1. Load Data ---
+    # Load Data
     logging.info(f"Loading data from '{input_path}'...")
     with open(input_path, 'r', encoding='utf-8') as f:
         docs_to_process = [json.loads(line) for line in tqdm(f, desc="Loading documents")]
@@ -120,7 +112,7 @@ def main():
         logging.warning("Input file is empty. Nothing to process.")
         sys.exit(1)
 
-    # --- 2. Deterministic Sorting ---
+    # Deterministic Sorting
     logging.info("Sorting documents to ensure replicable near-deduplication...")
     def get_sort_key(doc):
         metrics = doc.get('metrics', {})
@@ -131,7 +123,7 @@ def main():
     docs_to_process.sort(key=get_sort_key)
     logging.info("Sorting complete.")
 
-    # --- 3. Create Token N-gram MinHash ---
+    # Create Token N-gram MinHash
     logging.info("Creating TOKEN n-gram MinHash fingerprints in parallel...")
     minhashes = [None] * total_docs_loaded
     with ProcessPoolExecutor() as executor:
@@ -141,14 +133,14 @@ def main():
             index, minhash = future.result()
             minhashes[index] = minhash
 
-    # --- 4. Index MinHashes in LSH ---
+    # Index MinHashes in LSH
     logging.info("Indexing fingerprints in LSH...")
     lsh = MinHashLSH(threshold=DEDUPE_CONFIG['threshold'], num_perm=DEDUPE_CONFIG['num_perm'])
     for i, minhash in enumerate(tqdm(minhashes, desc="Indexing")):
         if minhash:
             lsh.insert(i, minhash)
 
-    # --- 5. Identify and Merge Overlapping Clusters (with Union-Find) ---
+    # Identify and Merge Overlapping Clusters (with Union-Find)
     logging.info("Querying LSH and merging overlapping clusters using Union-Find...")
     uf = UnionFind(total_docs_loaded)
     for i, minhash in enumerate(tqdm(minhashes, desc="Clustering")):
@@ -158,7 +150,7 @@ def main():
         for member_idx in cluster_indices:
             uf.union(i, member_idx)
 
-    # --- 6. Finalize Clusters, Filter, and Log ---
+    # Finalize Clusters, Filter, and Log
     logging.info("Finalizing clusters and preparing logs...")
     indices_to_keep = set()
     duplicate_log = []
@@ -179,7 +171,7 @@ def main():
                     dup_file_path = f"{dup_doc['repo_id']}/{dup_doc['path_in_repo']}"
                     duplicate_log.append((kept_file_path, dup_file_path))
 
-    # --- 7. Save Final Dataset and Logs ---
+    # Save Final Dataset and Logs
     logging.info(f"Saving {len(indices_to_keep):,} unique documents to '{output_path}'...")
     final_docs = [docs_to_process[i] for i in sorted(list(indices_to_keep))]
 
@@ -194,7 +186,7 @@ def main():
         for kept_file, duplicate_file in sorted(duplicate_log):
             writer.writerow([kept_file, duplicate_file])
 
-    # --- 8. Final Summary ---
+    # Final Summary
     num_final_docs = len(indices_to_keep)
     num_duplicates = total_docs_loaded - num_final_docs
     logging.info("--- Near-Deduplication Summary ---")

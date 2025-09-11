@@ -5,7 +5,6 @@ from pathlib import Path
 from dotenv import load_dotenv
 from tqdm import tqdm
 
-# --- Configuration ---
 # Load environment variables from .env file
 load_dotenv()
 project_root_str = os.getenv("PROJECT_ROOT")
@@ -15,17 +14,14 @@ PROJECT_ROOT = Path(project_root_str)
 HF_CACHE_DIR = PROJECT_ROOT / "hf_cache"
 os.environ['HF_HOME'] = str(HF_CACHE_DIR)
 
-# Import the specific function from the codebleu PyPI package
-from codebleu import calc_codebleu, AVAILABLE_LANGS
+from codebleu import calc_codebleu
 
 # Constants for the model and results folder
 MODEL_NAME = "gemma-3-4b-it"
 RESULTS_SUBFOLDER = "baseline"
 TASK = "generation"
-# --- End Configuration ---
 
 def validate_arguments(args):
-    """Validate the command-line arguments for source, summary_length, and shot_count."""
     if len(args) < 4:
         print("Usage: python run_generation_evaluation.py <source> <summary_length> <shot_count> [subset]")
         print("Example: python run_generation_evaluation.py xl short zero")
@@ -46,13 +42,6 @@ def validate_arguments(args):
     return source, summary_length, shot_count, subset
 
 def calculate_codebleu_scores(df):
-    """
-    Calculates problem-level and corpus-level CodeBLEU scores.
-    Corpus scores are grouped and calculated for each language present in the DataFrame.
-    """
-    if "language" not in df.columns:
-        raise ValueError("Input DataFrame is missing the required 'language' column for CodeBLEU.")
-
     problem_scores = {}
     weights = (0.25, 0.25, 0.25, 0.25)
 
@@ -60,11 +49,8 @@ def calculate_codebleu_scores(df):
     for _, row in tqdm(df.iterrows(), total=df.shape[0], desc="Problem-Level Scores"):
         prediction = str(row["generated"])
         reference = str(row["reference"])
-        lang = row["language"] # Get language for the specific problem
+        lang = row["language"]
         p_id = row["id"]
-
-        print(lang)
-        print(AVAILABLE_LANGS)
 
         codebleu_results = calc_codebleu(
             references=[[reference]], 
@@ -81,7 +67,7 @@ def calculate_codebleu_scores(df):
             'dataflow_match_score': codebleu_results['dataflow_match_score'],
         }
 
-    # --- Corpus-Level Calculation by Language ---
+    # Corpus-Level Calculation by Language
     corpus_scores_by_lang = {}
     languages = df['language'].unique()
     print(f"\nFound languages for corpus evaluation: {list(languages)}")
@@ -100,13 +86,11 @@ def calculate_codebleu_scores(df):
             weights=weights
         )
         
-        # Prefix keys with 'corpus_' for clarity
         corpus_scores_by_lang[lang] = {f"corpus_{key}": value for key, value in corpus_result.items()}
 
     return problem_scores, corpus_scores_by_lang
 
 def main():
-    """Main function to run the evaluation pipeline."""
     source, summary_length, shot_count, subset = validate_arguments(sys.argv)
     print(f"Starting code generation evaluation for: [Source: {source}, Summary: {summary_length}, Shots: {shot_count}]")
 
@@ -126,10 +110,9 @@ def main():
     df['generated'] = df['generated'].str.strip('"')
     df['reference'] = df['reference'].str.strip('"')
 
-    # --- Metric Calculation ---
     problem_codebleu_scores, corpus_codebleu_scores_by_lang = calculate_codebleu_scores(df)
 
-    # --- Save Problem-Level Results ---
+    # Save per-problem results
     metrics_df = pd.DataFrame.from_dict(problem_codebleu_scores, orient='index')
     metrics_df.reset_index(inplace=True)
     metrics_df.rename(columns={'index': 'id'}, inplace=True)
@@ -144,7 +127,7 @@ def main():
     output_df.to_csv(output_filepath, index=False)
     print(f"\nDetailed problem-level results saved to: {output_filepath}")
 
-    # --- Save Corpus-Level Results ---
+    # Save corpus-level results
     corpus_rows = []
     for lang, scores in corpus_codebleu_scores_by_lang.items():
         row_data = {'model_name': MODEL_NAME, 'language': lang}

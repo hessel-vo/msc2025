@@ -26,9 +26,7 @@ SECRET = (
 ALL_PATTERNS = [EMAIL, IPV4, IPV6, SECRET]
 
 def redact_pii(text: str) -> Tuple[str, List[Tuple[str, str]]]:
-    """
-    Iterates through PII patterns, replaces any matches, and reports which patterns were found
-    """
+
     found_instances: List[Tuple[str, str]] = []
 
     patterns = ALL_PATTERNS

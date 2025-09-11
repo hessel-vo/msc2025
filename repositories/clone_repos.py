@@ -114,6 +114,6 @@ def clone_and_process_repositories():
 
 
 if __name__ == "__main__":
-    # On Windows, you might need to enable long paths support if you encounter path length issues:
+    # On Windows enable long paths support:
     # git config --global core.longpaths true
     clone_and_process_repositories()

@@ -9,16 +9,14 @@ import csv
 import hashlib
 from tqdm import tqdm
 
-# --- Configuration ---
+# Configuration
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 def main():
-    """
-    Hash-based exact deduplication 
-    """
+
     start_time = time.time()
 
-    # --- Path & Argument Setup ---
+    # Path & Argument Setup
     load_dotenv()
     project_root_str = os.getenv('PROJECT_ROOT')
     if not project_root_str:
@@ -54,7 +52,7 @@ def main():
         logging.error(f"Input file not found: '{input_path}'")
         return
 
-    # --- 1. Load Data ---
+    # Load Data
     logging.info(f"Loading processed data from '{input_path}'...")
     with open(input_path, 'r', encoding='utf-8') as f:
         all_docs = [json.loads(line) for line in tqdm(f, desc="Loading documents")]
@@ -65,7 +63,7 @@ def main():
         logging.warning("Input file is empty. Nothing to process.")
         return
 
-    # --- 2. Deterministic Sorting ---
+    # Deterministic Sorting
     logging.info("Sorting documents to ensure replicable selection of 'kept' files...")
 
     def get_sort_key(doc):
@@ -78,7 +76,7 @@ def main():
     all_docs.sort(key=get_sort_key)
     logging.info("Sorting complete.")
 
-    # --- 3. Exact Deduplication using Hashing ---
+    # Exact Deduplication using Hashing
     logging.info("Finding exact duplicates via SHA-256 hashing...")
     seen_hashes = set()
     docs_to_keep = []
@@ -99,7 +97,7 @@ def main():
             duplicate_file = f"{doc['repo_id']}/{doc['path_in_repo']}"
             duplicate_log.append((kept_file, duplicate_file))
 
-    # --- 4. Save Dataset and Log ---
+    # Save Dataset and Log
     logging.info(f"Saving {len(docs_to_keep):,} unique documents to '{output_path}'...")
     with open(output_path, 'w', encoding='utf-8') as f_out:
         for doc in docs_to_keep:
@@ -112,7 +110,7 @@ def main():
         for kept_file, duplicate_file in sorted(duplicate_log):
             writer.writerow([kept_file, duplicate_file])
 
-    # --- 5. Final Summary ---
+    # Final Summary
     num_final_docs = len(docs_to_keep)
     num_duplicates = total_docs_loaded - num_final_docs
     logging.info("--- Exact Deduplication Summary ---")

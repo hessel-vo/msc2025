@@ -11,7 +11,6 @@ BASE_EXAMPLES_DIR = "examples/generation"
 ADDITIONAL_CONTEXT_DIR = "additional_context"
 
 def load_text_file(filepath):
-    """Loads a text file and handles potential errors."""
     try:
         with open(filepath, 'r', encoding='utf-8') as f:
             return f.read()
@@ -23,24 +22,16 @@ def load_text_file(filepath):
         sys.exit(1)
 
 def create_prompts(source, num_examples, sum_length, subset=None):
-    """Generates prompt files based on a template and a CSV dataset."""
-
     source_folder = 'xlcost' if source == 'xl' else 'automotive'
 
-    # --- MODIFIED SECTION: New Directory Structure ---
-    # Construct the output directory path with the new structure.
     if num_examples == "zero":
-        # For zero-shot, source is not relevant: zero_shot/long/
         output_dir = os.path.join(BASE_OUTPUT_DIR, f"{num_examples}_shot", sum_length)
     else:
-        # For one/three-shot, the structure is: one_shot/long/xlcost/
         output_dir = os.path.join(BASE_OUTPUT_DIR, f"{num_examples}_shot", sum_length, source_folder)
-    # --- END MODIFIED SECTION ---
 
     if subset:
         output_dir = os.path.join(BASE_OUTPUT_DIR, subset)
 
-    # Construct the path for few-shot examples (this remains unchanged)
     examples_dir = os.path.join(BASE_EXAMPLES_DIR, source_folder, f"{sum_length}_summ")
 
     # Prompt template
@@ -68,7 +59,7 @@ def create_prompts(source, num_examples, sum_length, subset=None):
     # Store examples to avoid reloading
     example_cache = {}
 
-    # Process input CSV file.
+    # Process input CSV file
     print(f"Reading data from '{CSV_FILE_PATH}'...")
     try:
         with open(CSV_FILE_PATH, mode='r', encoding='utf-8', newline='') as csv_file:
@@ -127,9 +118,7 @@ def create_prompts(source, num_examples, sum_length, subset=None):
 
     print(f"\nPrompt generation complete. Prompts are located in '{output_dir}'.")
 
-def main():
-    """Main function to parse arguments and run the prompt creation."""
-    
+def main():    
     if len(sys.argv) < 4 or len(sys.argv) > 5:
         print("ERROR: Incorrect number of arguments provided.")
         print(f"Usage: python {sys.argv[0]} <xl|auto> <short|long> <zero|one|three> [subset]")

@@ -11,7 +11,6 @@ BASE_OUTPUT_DIR = "created_prompts/summarization"
 BASE_EXAMPLES_DIR = "examples/summarization"
 
 def load_text_file(filepath):
-    """Loads a text file and handles potential errors."""
     try:
         with open(filepath, 'r', encoding='utf-8') as f:
             return f.read()
@@ -23,25 +22,17 @@ def load_text_file(filepath):
         sys.exit(1)
 
 def create_prompts(source, sum_length, num_examples, subset=None):
-    """Generates prompt files based on a template and a CSV dataset."""
-
     source_folder = 'xlcost' if source == 'xl' else 'automotive'
 
-    # --- MODIFIED SECTION: New Directory Structure ---
-    # Construct the output directory path with the new structure.
-    # The number of shots is now the base directory.
     if num_examples == "zero":
-        # For zero-shot, source is not relevant, so the path is: zero_shot/long/
         output_dir = os.path.join(BASE_OUTPUT_DIR, f"{num_examples}_shot", sum_length)
     else:
-        # For one/three-shot, the new structure is: one_shot/long/xlcost/
         output_dir = os.path.join(BASE_OUTPUT_DIR, f"{num_examples}_shot", sum_length, source_folder)
-    # --- END MODIFIED SECTION ---
 
     if subset:
         output_dir = os.path.join(BASE_OUTPUT_DIR, subset)
 
-    # Construct the path to few-shot examples (this remains unchanged as it's the source)
+    # Construct the path to few-shot examples
     examples_dir = os.path.join(BASE_EXAMPLES_DIR, source_folder, f"{sum_length}_summ")
 
     # Prompt template
@@ -69,7 +60,7 @@ def create_prompts(source, sum_length, num_examples, subset=None):
     # Store examples to avoid reloading
     example_cache = {}
 
-    # Process input CSV file.
+    # Process input CSV file
     print(f"Reading data from '{CSV_FILE_PATH}'...")
     try:
         with open(CSV_FILE_PATH, mode='r', encoding='utf-8', newline='') as csv_file:
@@ -125,7 +116,6 @@ def create_prompts(source, sum_length, num_examples, subset=None):
     print(f"\nPrompt generation complete. Prompts are located in '{output_dir}'.")
 
 def main():
-    """Main function to parse arguments and run the prompt creation."""
     
     if len(sys.argv) < 4:
         print("ERROR: Incorrect number of arguments provided.")

@@ -8,31 +8,16 @@ import json
 import os
 from collections import defaultdict
 
-# --- Configuration ---
 
 BASE_PATH = "/home/hessel/workspace/RUG/MSc2025/project/code/repositories/all_repos"
 
-# The cloc JSON report file generated with the --by-file flag.
+# The cloc JSON report file
 CLOC_JSON_FILE = "cloc_output_all.json"
 
-# MODIFICATION: Define the specific languages you want to analyze.
-# cloc language names are case-sensitive (e.g., "C++", not "c++").
 LANGUAGES_TO_ANALYZE = {"Python", "Java", "C", "C++"}
 
 
 def analyze_cloc_data(cloc_file, base_path, languages_to_include):
-    """
-    Parses a cloc JSON report and aggregates code lines by language and repository.
-
-    Args:
-        cloc_file (str): The path to the cloc JSON output file.
-        base_path (str): The base directory where all repositories are stored.
-        languages_to_include (set): A set of language names to include in the analysis.
-
-    Returns:
-        dict: A nested dictionary structured as {language: {repo_name: total_lines}}.
-              Returns None if the file cannot be processed.
-    """
     if not os.path.exists(cloc_file):
         print(f"Error: cloc report not found at '{cloc_file}'")
         print("Please run 'cloc --list-file=... --by-file --json --out=cloc_output.json' first.")
@@ -98,9 +83,6 @@ def analyze_cloc_data(cloc_file, base_path, languages_to_include):
 
 
 def print_summary(language_stats):
-    """
-    Prints a formatted summary of the aggregated cloc data for all repositories.
-    """
     if not language_stats:
         print("\n--> No data to display. Check if the specified languages exist in the cloc report.")
         return
@@ -121,7 +103,6 @@ def print_summary(language_stats):
 
         sorted_repos = sorted(repos.items(), key=lambda item: item[1], reverse=True)
 
-        # MODIFICATION: Loop through all repositories, not just the top N.
         for i, (repo_name, lines) in enumerate(sorted_repos):
             percentage = (lines / total_lines_for_lang) * 100
             print(f"  {i+1}. {repo_name:<40} {lines:>12,} lines ({percentage:.1f}%)")
