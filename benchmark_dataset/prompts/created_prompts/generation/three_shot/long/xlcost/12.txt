@@ -1,4 +1,4 @@
-Your task is to create a Python function based on a summary.
+Your task is to implement a Python function based on a summary.
 Below is an example of generating a Python function from a summary.
 
 ---
@@ -9,7 +9,6 @@ Below is an example of generating a Python function from a summary.
 "Finds the maximum sum of a subsequence of non-adjacent elements by iteratively tracking the maximum sum including and excluding the current element”
 
 **Code:**
-```python
 def find_max_sum(arr):
     incl = 0
     excl = 0
@@ -18,28 +17,24 @@ def find_max_sum(arr):
         incl = excl + i
         excl = new_excl
     return excl if excl > incl else incl
-```
 
 **[Example 2]**
 **Summary:**
 "Determines if a given element `x` is the majority in a sorted array by checking if `x` occupies both an index `i` and the index `n/2` positions ahead of it”
 
 **Code:**
-```python
 def isMajority(arr, n, x):
     last_index = (n // 2 + 1) if n % 2 == 1 else (n // 2)
     for i in range(last_index):
         if arr[i] == x and arr[i + n // 2] == x:
             return 1
     return 0
-```
 
 **[Example 3]**
 **Summary:**
 "Finds if a pair of elements with a given difference `n` exists in a sorted array by using a two-pointer approach.”
 
 **Code:**
-```python
 def findPair(arr, n):
     size = len(arr)
     i, j = 0, 1
@@ -55,17 +50,17 @@ def findPair(arr, n):
 
     print("No pair found")
     return False
-```
+
 
 ---
 
 **[Target]**
-**Based on the summary below, generate the full Python function, including the function signature and function body (do not provide any other output)**
+**Use the summary below to generate the related Python function**
+Return the full function code, including function signature and function implementation
+Do NOT add comments to the code and provide only the code as output
 
 **Summary:**
 "Asserts that the input value, if not None, is a valid 'constUID' formatted as an 8-digit hexadecimal string prefixed with '0x', returning the value if the check passes"
 
 **Code:**
-```python
 def check_const_uid_format(cls, v: str | None) -> str | None:
-```

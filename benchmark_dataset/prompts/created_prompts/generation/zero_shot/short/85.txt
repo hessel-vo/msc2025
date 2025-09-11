@@ -1,12 +1,12 @@
-Your task is to create a C function based on a summary.
+Your task is to implement a C function based on a summary.
 
 **[Target]**
-**Based on the summary below, generate the full C function, including the function signature and function body (do not provide any other output)**
+**Use the summary below to generate the related C function**
+Return the full function code, including function signature and function implementation
+Do NOT add comments to the code and provide only the code as output
 
 **Summary:**
 "Finds the index of a given CAN ID in a mapping table"
 
 **Code:**
-```c
 static inline uint8_t map_from_can_id(uint32_t can_id) {
-```

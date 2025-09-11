@@ -1,4 +1,4 @@
-Your task is to create a C function based on a summary and additional context.
+Your task is to implement a C function based on a summary and additional context.
 Below is an example of generating a C function from a summary.
 You are also provided with additional context of relevant imported files and the file contents surrounding the target function to support the task of generating the target code.
 
@@ -9,7 +9,6 @@ You are also provided with additional context of relevant imported files and the
 "Constructs and sends a 3-byte UDS negative response message (containing the original request SID and a negative response code) over a CAN bus using the ISO-TP protocol, logging an error if the transmission fails”
 
 **Code:**
-```c
 void send_negative_response(enum UDS_SID request_sid,
                             enum UDS_NRC response_code) {
   int ret;
@@ -20,7 +19,7 @@ void send_negative_response(enum UDS_SID request_sid,
     LOG_ERR("Error while sending data to ID %d [%d]\n", tx_addr.std_id, ret);
   }
 }
-```
+
 
 ---
 
@@ -459,12 +458,14 @@ K_THREAD_DEFINE(
 
 
 **[Target]**
-**Based on the summary below, generate the full C function, including the function signature and function body (do not provide any other output)**
+**Use the summary below to generate the related C function**
+Return the full function code, including function signature and function implementation
+Do NOT add comments to the code and provide only the code as output
 
 **Summary:**
 "Constructs and sends a 4-byte UDS positive response for a "Request Download" service, specifying a maximum block length of 0x00D2, over a CAN bus using the ISO-TP protocol and logging an error on failure"
 
 **Code:**
-```c
+```<target language>
 void send_request_download_response() {
 ```

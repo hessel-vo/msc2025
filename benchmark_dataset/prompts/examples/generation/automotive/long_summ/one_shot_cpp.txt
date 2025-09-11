@@ -2,7 +2,6 @@
 "Sends a given `DBusMessage` over an established D-Bus connection, returning `true` on success and `false` if the message is invalid, the connection is down, or the underlying send operation fails”
 
 **Code:**
-```cpp
 bool DBusConnection::sendDBusMessage(const DBusMessage &_message) const {
     if (!_message) {
         COMMONAPI_ERROR(std::string(__FUNCTION__), "message == NULL");
@@ -17,4 +16,3 @@ bool DBusConnection::sendDBusMessage(const DBusMessage &_message) const {
     const bool result = (0 != dbus_connection_send(connection_, _message.message_, &dbusSerial));
     return result;
 }
-```

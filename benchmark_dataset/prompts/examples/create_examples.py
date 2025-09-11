@@ -55,9 +55,8 @@ def create_one_shot_example(template, language_data, summary_len):
     summary_key = f'summary_{summary_len}'
     summary = example_data[summary_key]
     code = example_data['code']
-    language = example_data['language']
 
-    return template.replace('<summary>', summary).replace('<code>', code).replace('<language>', language)
+    return template.replace('<summary>', summary).replace('<code>', code)
 
 def create_three_shot_example(template, language_data, summary_len):
     filled_template = template
@@ -66,12 +65,10 @@ def create_three_shot_example(template, language_data, summary_len):
         example_data = language_data[i]
         summary = example_data[summary_key]
         code = example_data['code']
-        language = example_data['language']
 
         filled_template = filled_template.replace(f'<summary{i+1}>', summary)
         filled_template = filled_template.replace(f'<code{i+1}>', code)
-        if i == 0:
-            filled_template = filled_template.replace('<language>', language)
+
 
     return filled_template
 

@@ -1,4 +1,4 @@
-Your task is to create a Java function based on a summary.
+Your task is to implement a Java function based on a summary.
 Below is an example of generating a Java function from a summary.
 
 ---
@@ -9,7 +9,6 @@ Below is an example of generating a Java function from a summary.
 "Lazily initializes and returns an audio card presenter with data models for media and in-call status”
 
 **Code:**
-```java
 public CardPresenter getCardPresenter() {
     if (mAudioCardPresenter == null) {
         mAudioCardPresenter = new HomeAudioCardPresenter();
@@ -26,14 +25,12 @@ public CardPresenter getCardPresenter() {
     }
     return mAudioCardPresenter;
 }
-```
 
 **[Example 2]**
 **Summary:**
 "Lazily initializes and returns the audio card view fragment”
 
 **Code:**
-```java
 public HomeCardFragment getCardView() {
     if (mAudioCardView == null) {
         mAudioCardView = new AudioFragment();
@@ -42,14 +39,12 @@ public HomeCardFragment getCardView() {
     }
     return mAudioCardView;
 }
-```
 
 **[Example 3]**
 **Summary:**
 "Asynchronously creates, configures, and adds a task view to a parent view group”
 
 **Code:**
-```java
 private void setUpTaskView(ViewGroup parent) {
     mTaskViewManager = new TaskViewManager(this,
             new HandlerExecutor(getMainThreadHandler()));
@@ -59,17 +54,17 @@ private void setUpTaskView(ViewGroup parent) {
         mTaskView = taskView;
     });
 }
-```
+
 
 ---
 
 **[Target]**
-**Based on the summary below, generate the full Java function, including the function signature and function body (do not provide any other output)**
+**Use the summary below to generate the related Java function**
+Return the full function code, including function signature and function implementation
+Do NOT add comments to the code and provide only the code as output
 
 **Summary:**
 "Sets the media source and finishes the current activity"
 
 **Code:**
-```java
 private static void selectMediaSourceAndFinish(Context context, ComponentName componentName, CarMediaManager carMediaManager) {
-```

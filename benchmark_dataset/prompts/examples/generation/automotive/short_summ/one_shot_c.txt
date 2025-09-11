@@ -2,7 +2,6 @@
 "Sends a UDS negative response message containing the failed service ID and a negative response code”
 
 **Code:**
-```c
 void send_negative_response(enum UDS_SID request_sid,
                             enum UDS_NRC response_code) {
   int ret;
@@ -13,4 +12,3 @@ void send_negative_response(enum UDS_SID request_sid,
     LOG_ERR("Error while sending data to ID %d [%d]\n", tx_addr.std_id, ret);
   }
 }
-```

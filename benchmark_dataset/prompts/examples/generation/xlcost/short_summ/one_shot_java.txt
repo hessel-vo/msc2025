@@ -2,7 +2,6 @@
 "Maximum sum such that no two elements are adjacent”
 
 **Code:**
-```java
 int FindMaxSum(int arr[], int n) {
     int incl = arr[0];
     int excl = 0;
@@ -16,4 +15,3 @@ int FindMaxSum(int arr[], int n) {
     }
     return ((incl > excl) ? incl : excl);
 }
-```

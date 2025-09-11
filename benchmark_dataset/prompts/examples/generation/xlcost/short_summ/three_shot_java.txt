@@ -3,7 +3,6 @@
 "Maximum sum such that no two elements are adjacent”
 
 **Code:**
-```java
 int FindMaxSum(int arr[], int n) {
     int incl = arr[0];
     int excl = 0;
@@ -17,14 +16,12 @@ int FindMaxSum(int arr[], int n) {
     }
     return ((incl > excl) ? incl : excl);
 }
-```
 
 **[Example 2]**
 **Summary:**
 "Check for Majority Element in a sorted array”
 
 **Code:**
-```java
 static boolean isMajority(int arr[], int n, int x) {
     int i, last_index = 0;
     last_index = (n % 2 == 0) ? n / 2 : n / 2 + 1;
@@ -36,14 +33,12 @@ static boolean isMajority(int arr[], int n, int x) {
     }
     return false;
 }
-```
 
 **[Example 3]**
 **Summary:**
 "Find a pair with the given difference”
 
 **Code:**
-```java
 static boolean findPair(int arr[], int n) {
     int size = arr.length;
     int i = 0, j = 1;
@@ -62,4 +57,3 @@ static boolean findPair(int arr[], int n) {
     System.out.print("No such pair");
     return false;
 }
-```

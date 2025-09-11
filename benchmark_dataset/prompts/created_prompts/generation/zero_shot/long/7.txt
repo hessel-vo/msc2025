@@ -1,12 +1,12 @@
-Your task is to create a Python function based on a summary.
+Your task is to implement a Python function based on a summary.
 
 **[Target]**
-**Based on the summary below, generate the full Python function, including the function signature and function body (do not provide any other output)**
+**Use the summary below to generate the related Python function**
+Return the full function code, including function signature and function implementation
+Do NOT add comments to the code and provide only the code as output
 
 **Summary:**
 "Parses a type string to create an `ApiGearType` object, mapping common primitive types to their ApiGear equivalents, sanitizing custom type names by replacing dots with underscores, and setting an array flag based on a "[]" suffix"
 
 **Code:**
-```python
 def get_apigear_datatype(t: str) -> typing.Optional[ApiGearType]:
-```

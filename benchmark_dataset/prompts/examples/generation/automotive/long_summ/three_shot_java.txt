@@ -3,7 +3,6 @@
 "Lazily initializes and returns a `HomeAudioCardPresenter`, setting its data models with both a `MediaViewModel` and an `InCallModel` if a `ViewModelProvider` is available, otherwise logging a warning and using only the `InCallModel`”
 
 **Code:**
-```java
 public CardPresenter getCardPresenter() {
     if (mAudioCardPresenter == null) {
         mAudioCardPresenter = new HomeAudioCardPresenter();
@@ -20,14 +19,12 @@ public CardPresenter getCardPresenter() {
     }
     return mAudioCardPresenter;
 }
-```
 
 **[Example 2]**
 **Summary:**
 "Lazily initializes and returns an `AudioFragment`, bidirectionally linking it with its presenter upon first creation”
 
 **Code:**
-```java
 public HomeCardFragment getCardView() {
     if (mAudioCardView == null) {
         mAudioCardView = new AudioFragment();
@@ -36,14 +33,12 @@ public HomeCardFragment getCardView() {
     }
     return mAudioCardView;
 }
-```
 
 **[Example 3]**
 **Summary:**
 "Initializes a `TaskViewManager` to asynchronously create a `TaskView`, which upon creation is configured with a listener, added to the parent `ViewGroup`, and stored as a member variable”
 
 **Code:**
-```java
 private void setUpTaskView(ViewGroup parent) {
     mTaskViewManager = new TaskViewManager(this,
             new HandlerExecutor(getMainThreadHandler()));
@@ -53,4 +48,3 @@ private void setUpTaskView(ViewGroup parent) {
         mTaskView = taskView;
     });
 }
-```

@@ -1,4 +1,4 @@
-Your task is to create a Cpp function based on a summary.
+Your task is to implement a Cpp function based on a summary.
 Below is an example of generating a Cpp function from a summary.
 
 ---
@@ -9,7 +9,6 @@ Below is an example of generating a Cpp function from a summary.
 "Maximum sum such that no two elements are adjacent”
 
 **Code:**
-```cpp
 int FindMaxSum(vector<int> arr, int n) {
     int incl = arr[0];
     int excl = 0;
@@ -24,14 +23,12 @@ int FindMaxSum(vector<int> arr, int n) {
 
     return ((incl > excl) ? incl : excl);
 }
-```
 
 **[Example 2]**
 **Summary:**
 "Check for Majority Element in a sorted array”
 
 **Code:**
-```cpp
 bool isMajority(int arr[], int n, int x) {
     int i;
     int last_index = n % 2 ? (n / 2 + 1) : (n / 2);
@@ -43,14 +40,12 @@ bool isMajority(int arr[], int n, int x) {
     }
     return false;
 }
-```
 
 **[Example 3]**
 **Summary:**
 "Find a pair with the given difference”
 
 **Code:**
-```cpp
 bool findPair(int arr[], int size, int n) {
     int i = 0;
     int j = 1;
@@ -69,17 +64,17 @@ bool findPair(int arr[], int size, int n) {
     cout << "No such pair" << endl;
     return false;
 }
-```
+
 
 ---
 
 **[Target]**
-**Based on the summary below, generate the full Cpp function, including the function signature and function body (do not provide any other output)**
+**Use the summary below to generate the related Cpp function**
+Return the full function code, including function signature and function implementation
+Do NOT add comments to the code and provide only the code as output
 
 **Summary:**
 "For an active connection, adds a thread to a list to be joined on exit, avoiding duplicates"
 
 **Code:**
-```cpp
 void joinOnExit(std::uintptr_t conn, std::thread & t) {
-```

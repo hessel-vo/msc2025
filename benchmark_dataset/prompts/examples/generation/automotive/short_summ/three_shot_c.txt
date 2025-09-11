@@ -3,7 +3,6 @@
 "Sends a UDS negative response message containing the failed service ID and a negative response code”
 
 **Code:**
-```c
 void send_negative_response(enum UDS_SID request_sid,
                             enum UDS_NRC response_code) {
   int ret;
@@ -14,14 +13,12 @@ void send_negative_response(enum UDS_SID request_sid,
     LOG_ERR("Error while sending data to ID %d [%d]\n", tx_addr.std_id, ret);
   }
 }
-```
 
 **[Example 2]**
 **Summary:**
 "Sends a UDS positive response for the Diagnostic Session Control service”
 
 **Code:**
-```c
 static void send_session_control_response(enum UdsSessionState session_type,
                                           uint16_t p2_timeout_ms,
                                           uint16_t p2_star_timeout_ms) {
@@ -43,14 +40,12 @@ static void send_session_control_response(enum UdsSessionState session_type,
     LOG_ERR("Error while sending data to ID %d [%d]\n", tx_addr.std_id, ret);
   }
 }
-```
 
 **[Example 3]**
 **Summary:**
 "Converts a raw integer gain value to a corresponding DAC gain enumeration, returning an error if unsupported”
 
 **Code:**
-```c
 static int hvs_dac_convert_gain(int raw_gain,
                                 enum hv_shield_dac_gains_t* gain) {
   switch (raw_gain) {
@@ -73,4 +68,3 @@ static int hvs_dac_convert_gain(int raw_gain,
       return -ENOTSUP;
   }
 }
-```

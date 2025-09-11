@@ -1,12 +1,12 @@
-Your task is to create a Java function based on a summary.
+Your task is to implement a Java function based on a summary.
 
 **[Target]**
-**Based on the summary below, generate the full Java function, including the function signature and function body (do not provide any other output)**
+**Use the summary below to generate the related Java function**
+Return the full function code, including function signature and function implementation
+Do NOT add comments to the code and provide only the code as output
 
 **Summary:**
 "Resets state and unregisters the callback when a call is removed"
 
 **Code:**
-```java
 public void onCallRemoved(Call call) {
-```

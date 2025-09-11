@@ -4,13 +4,14 @@ import torch
 from pathlib import Path
 from dotenv import load_dotenv
 import sys
+import re
 
 load_dotenv()
 
 project_root_str = os.getenv("PROJECT_ROOT")
 PROJECT_ROOT = Path(project_root_str)
 HF_TOKEN = os.getenv('HUGGING_FACE_HUB_TOKEN')
-MODEL_ID = "google/gemma-3-1b-it"
+MODEL_ID = "google/gemma-3-4b-it"
 MODEL_NAME = MODEL_ID.split("/")[-1]
 RESULT_TYPE = "baseline" # Swich "baseline" to "adapted" for final eval
 
@@ -26,6 +27,13 @@ print("---------------------------------")
 
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
+
+def remove_markdown_wrapping(code_string):
+    pattern = r"^\s*```(?:\w+)?\n(.*?)\n```\s*$"
+    match = re.search(pattern, code_string, re.DOTALL)
+    if match:
+        return match.group(1)
+    return code_string
 
 def run_benchmark():
 
@@ -71,14 +79,13 @@ def run_benchmark():
         summary_type = "summary_long"
         INPUT_CSV_PATH = PROJECT_ROOT / "benchmark_dataset" / "benchmark_dataset_subset.csv"
         PROMPTS_DIR = PROJECT_ROOT / "benchmark_dataset" / "prompts" / "created_prompts" / task_type / "subset"
-        OUTPUT_DIR = OUTPUT_DIR / "subset"
-        OUTPUT_FILENAME = OUTPUT_DIR / f"{MODEL_NAME}_{task_type}_results.csv"
+        OUTPUT_FILENAME = OUTPUT_DIR / f"{MODEL_NAME}_{task_type}_subset_results.csv"
     
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 
-    print("Loading model and tokenizer...")
+    print("Loading model and tokenizer")
     # Load and prepare model
     if torch.cuda.is_available():
         device = torch.device("cuda")
@@ -90,7 +97,7 @@ def run_benchmark():
         print("GPU not available. Using CPU.")
         print("Current device:", device)
 
-    print(f"Loading model: {MODEL_ID}...")
+    print(f"Loading model: {MODEL_ID}")
 
     tokenizer = AutoTokenizer.from_pretrained(MODEL_ID, token=HF_TOKEN)
 
@@ -114,21 +121,33 @@ def run_benchmark():
     results = []
     print(f"Starting benchmark on {len(dataset_df)} problems...")
 
+    count = 0
     for index, row in dataset_df.iterrows():
-        if index > 2:
-            break
+        
         problem_id = row['id']
+        language = row['language']
+
+        # TESTING/DEBUGGING, REMOVE FOR FULL RUN
+        if language != "java":
+            continue
+        else:
+            count += 1
+
+        if count > 3:
+            break
+
         if task_type == "generation":
             reference = row['code']
         else:
             reference = row[summary_type]
         prompt_filepath = PROMPTS_DIR / f"{problem_id}.txt"
 
-        print(f"  Processing problem ID: {problem_id}...")
+        print(f"  Processing problem ID: {problem_id}")
 
         try:
             with open(prompt_filepath, 'r', encoding='utf-8') as f:
                 prompt_text = f.read()
+                # print(prompt_text)
         except FileNotFoundError:
             print(f"    - Warning: Prompt file not found for ID '{problem_id}' at '{prompt_filepath}'. Skipping.")
             continue
@@ -162,11 +181,14 @@ def run_benchmark():
         generated_output = tokenizer.decode(generated_ids, skip_special_tokens=True).strip()
 
 
-        print(f"    - Generated: {generated_output}...")
+        print(f"    - Generated: {generated_output}")
+        
+        # 2. Add the language to the results dictionary
         results.append({
             "id": problem_id,
+            "language": language,
             "reference": reference,
-            "generated": generated_output
+            "generated": remove_markdown_wrapping(generated_output)
         })
 
     print("Benchmark run complete.")

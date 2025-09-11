@@ -102,11 +102,10 @@ def create_prompts(source, num_examples, sum_length, subset=None):
 
                     # Fill template with data
                     filled_prompt = filled_prompt.replace("<code language>", lang_key.capitalize())
-                    filled_prompt = filled_prompt.replace("<target language>", lang_key)
                     filled_prompt = filled_prompt.replace("<target summary>", target_summary)
                     filled_prompt = filled_prompt.replace("<function signature>", function_signature)
 
-                    if not subset:
+                    if subset:
                         additional_context = load_text_file(os.path.join(ADDITIONAL_CONTEXT_DIR, f"{file_id}.txt"))
                         filled_prompt = filled_prompt.replace("<additional_context>", additional_context)
                     
@@ -133,7 +132,7 @@ def main():
     
     if len(sys.argv) < 4 or len(sys.argv) > 5:
         print("ERROR: Incorrect number of arguments provided.")
-        print(f"Usage: python {sys.argv[0]} <xl|auto> <zero|one|three> <short|long> [subset]")
+        print(f"Usage: python {sys.argv[0]} <xl|auto> <short|long> <zero|one|three> [subset]")
         sys.exit(1)
 
     source = sys.argv[1]

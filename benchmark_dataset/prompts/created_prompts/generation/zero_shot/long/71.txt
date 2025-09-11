@@ -1,12 +1,12 @@
-Your task is to create a Cpp function based on a summary.
+Your task is to implement a Cpp function based on a summary.
 
 **[Target]**
-**Based on the summary below, generate the full Cpp function, including the function signature and function body (do not provide any other output)**
+**Use the summary below to generate the related Cpp function**
+Return the full function code, including function signature and function implementation
+Do NOT add comments to the code and provide only the code as output
 
 **Summary:**
 "Delegates the registration of a signal state handler for a specific subscription to the underlying connection object"
 
 **Code:**
-```cpp
 void DBusProxyBase::addSignalStateHandler(std::shared_ptr<DBusProxyConnection::DBusSignalHandler> _handler, const uint32_t _subscription) {
-```

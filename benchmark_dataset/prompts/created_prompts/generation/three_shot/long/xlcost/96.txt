@@ -1,4 +1,4 @@
-Your task is to create a C function based on a summary.
+Your task is to implement a C function based on a summary.
 Below is an example of generating a C function from a summary.
 
 ---
@@ -9,7 +9,6 @@ Below is an example of generating a C function from a summary.
 "Finds the maximum sum of a subsequence of non-adjacent elements by iteratively tracking the maximum sum including and excluding the current element”
 
 **Code:**
-```c
 int FindMaxSum(int arr[], int n) {
     int incl = arr[0];
     int excl = 0;
@@ -24,14 +23,12 @@ int FindMaxSum(int arr[], int n) {
 
     return ((incl > excl) ? incl : excl);
 }
-```
 
 **[Example 2]**
 **Summary:**
 "Determines if a given element `x` is the majority in a sorted array by checking if `x` occupies both an index `i` and the index `n/2` positions ahead of it”
 
 **Code:**
-```c
 bool isMajority(int arr[], int n, int x) {
     int i;
     int last_index = (n % 2) ? (n / 2 + 1) : (n / 2);
@@ -43,14 +40,12 @@ bool isMajority(int arr[], int n, int x) {
     }
     return false;
 }
-```
 
 **[Example 3]**
 **Summary:**
 "Finds if a pair of elements with a given difference `n` exists in a sorted array by using a two-pointer approach.”
 
 **Code:**
-```c
 bool findPair(int arr[], int size, int n) {
     int i = 0;
     int j = 1;
@@ -69,17 +64,17 @@ bool findPair(int arr[], int size, int n) {
     printf("No such pair\n");
     return false;
 }
-```
+
 
 ---
 
 **[Target]**
-**Based on the summary below, generate the full C function, including the function signature and function body (do not provide any other output)**
+**Use the summary below to generate the related C function**
+Return the full function code, including function signature and function implementation
+Do NOT add comments to the code and provide only the code as output
 
 **Summary:**
 "Populates an output parameter with the number of available Abstract LIN callback slots, calculated by subtracting the used count from a configured maximum, returning an error if the parameter is a null pointer"
 
 **Code:**
-```c
 static int al_get_free_cb_slots(const struct device *dev, uint8_t *free_slots) {
-```

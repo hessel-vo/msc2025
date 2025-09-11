@@ -1,0 +1,2 @@
+model_name,language,corpus_codebleu,corpus_ngram_match_score,corpus_weighted_ngram_match_score,corpus_syntax_match_score,corpus_dataflow_match_score
+gemma-3-1b-it,java,0.35474720544206,0.06895302580994689,0.17831862424112147,0.1717171717171717,0.0

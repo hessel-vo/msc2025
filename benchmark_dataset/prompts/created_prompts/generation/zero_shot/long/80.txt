@@ -1,12 +1,12 @@
-Your task is to create a C function based on a summary.
+Your task is to implement a C function based on a summary.
 
 **[Target]**
-**Based on the summary below, generate the full C function, including the function signature and function body (do not provide any other output)**
+**Use the summary below to generate the related C function**
+Return the full function code, including function signature and function implementation
+Do NOT add comments to the code and provide only the code as output
 
 **Summary:**
 "Constructs and sends a 4-byte UDS positive response for a "Request Download" service, specifying a maximum block length of 0x00D2, over a CAN bus using the ISO-TP protocol and logging an error on failure"
 
 **Code:**
-```c
 void send_request_download_response() {
-```

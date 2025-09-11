@@ -2,7 +2,6 @@
 "Lazily initializes and returns an audio card presenter with data models for media and in-call status”
 
 **Code:**
-```java
 public CardPresenter getCardPresenter() {
     if (mAudioCardPresenter == null) {
         mAudioCardPresenter = new HomeAudioCardPresenter();
@@ -19,4 +18,3 @@ public CardPresenter getCardPresenter() {
     }
     return mAudioCardPresenter;
 }
-```

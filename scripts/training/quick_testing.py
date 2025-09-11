@@ -25,7 +25,7 @@ from transformers import AutoProcessor, AutoModelForCausalLM, AutoTokenizer
 
 # --- 1. Configuration ---
 
-MODEL_ID = "google/gemma-3-4b-it"
+MODEL_ID = "google/gemma-3-1b-it"
 
 
 # --- 2. Setup Device (GPU or CPU) ---
@@ -50,7 +50,7 @@ model = AutoModelForCausalLM.from_pretrained(
 ).eval()
 print("Model and processor loaded successfully.")
 
-
+print(model)
 # Access the config object attached to the model
 # config = model.config
 

@@ -2,7 +2,6 @@
 "Maximum sum such that no two elements are adjacent”
 
 **Code:**
-```python
 def find_max_sum(arr):
     incl = 0
     excl = 0
@@ -11,4 +10,3 @@ def find_max_sum(arr):
         incl = excl + i
         excl = new_excl
     return excl if excl > incl else incl
-```

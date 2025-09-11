@@ -1,12 +1,12 @@
-Your task is to create a Python function based on a summary.
+Your task is to implement a Python function based on a summary.
 
 **[Target]**
-**Based on the summary below, generate the full Python function, including the function signature and function body (do not provide any other output)**
+**Use the summary below to generate the related Python function**
+Return the full function code, including function signature and function implementation
+Do NOT add comments to the code and provide only the code as output
 
 **Summary:**
 "Finds all datatypes within the current namespace and any parent namespaces of a given FQN"
 
 **Code:**
-```python
 def get_fqn_namespaced_datatypes(fqn: str | None = None) -> dict[str, str]:
-```

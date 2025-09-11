@@ -1,4 +1,4 @@
-Your task is to create a Python function based on a summary.
+Your task is to implement a Python function based on a summary.
 Below is an example of generating a Python function from a summary.
 
 ---
@@ -9,7 +9,6 @@ Below is an example of generating a Python function from a summary.
 "Validates that 'check' and 'base' are known types, then returns true if the 'check' type is identical to the 'base' type or if its name is found within the 'base' type's predefined list of subtypes”
 
 **Code:**
-```python
 def is_subtype_of(cls, check: str, base: str) -> bool:
     check_type = cls.get_type(check)
     if not check_type:
@@ -18,14 +17,12 @@ def is_subtype_of(cls, check: str, base: str) -> bool:
     if not base_type:
         raise DatatypesException(f"Not a valid type: '{base}'")
     return check in base_type[2] or check == base
-```
 
 **[Example 2]**
 **Summary:**
 "Recursively traverses a VSS node tree to populate a dictionary with the occurrence count and a list of fully qualified paths for each unique node name”
 
 **Code:**
-```python
 def populate_unique_node_names(node_names_dict: dict[str, Any], vss_node: VSSNode) -> None:
     if not node_names_dict.get(vss_node.name):
         node_names_dict.__setitem__(vss_node.name, {"counter": 1, "vss_paths": [vss_node.get_fqn()]})
@@ -36,14 +33,12 @@ def populate_unique_node_names(node_names_dict: dict[str, Any], vss_node: VSSNod
     if vss_node.children and len(vss_node.children) > 0:
         for vss_child_node in vss_node.children:
             populate_unique_node_names(node_names_dict, vss_child_node)
-```
 
 **[Example 3]**
 **Summary:**
 "Recursively parses a given specification file and any files it includes, returning a single, flattened list of all resulting VSpec objects”
 
 **Code:**
-```python
 def get_vspecs(includes: list[Path], spec: Path, prefix: str | None = None) -> list[VSpec]:
     vspecs: list[VSpec] = []
     vspec = VSpec(spec, prefix)
@@ -54,17 +49,17 @@ def get_vspecs(includes: list[Path], spec: Path, prefix: str | None = None) -> l
         vspecs.extend(get_vspecs(includes, include_spec, include.prefix))
 
     return vspecs
-```
+
 
 ---
 
 **[Target]**
-**Based on the summary below, generate the full Python function, including the function signature and function body (do not provide any other output)**
+**Use the summary below to generate the related Python function**
+Return the full function code, including function signature and function implementation
+Do NOT add comments to the code and provide only the code as output
 
 **Summary:**
 "Creates an `ApiGearProperty` by converting the VSS node's datatype to a supported ApiGear type and copying its description, returning `None` and logging a warning if the datatype is not supported"
 
 **Code:**
-```python
 def generate_property(node: VSSNode, datatype: str) -> ApiGearProperty | None:
-```

@@ -30,6 +30,8 @@ charset-normalizer==3.4.2
     # via requests
 click==8.2.1
     # via nltk
+codebleu==0.7.0
+    # via -r requirements.in
 colorama==0.4.6
     # via sacrebleu
 contourpy==1.3.3
@@ -94,6 +96,8 @@ markupsafe==3.0.2
     # via jinja2
 matplotlib==3.10.6
     # via bert-score
+mdextractor==2025.4.231259
+    # via -r requirements.in
 mpmath==1.3.0
     # via sympy
 multidict==6.6.3
@@ -274,6 +278,16 @@ transformers==4.53.3
     #   -r requirements.in
     #   bert-score
     #   peft
+tree-sitter==0.22.3
+    # via codebleu
+tree-sitter-c==0.21.0
+    # via -r requirements.in
+tree-sitter-cpp==0.21.0
+    # via -r requirements.in
+tree-sitter-java==0.21.0
+    # via -r requirements.in
+tree-sitter-python==0.21.0
+    # via -r requirements.in
 triton==3.3.1
     # via torch
 typing-extensions==4.14.1

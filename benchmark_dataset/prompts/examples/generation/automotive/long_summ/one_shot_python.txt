@@ -2,7 +2,6 @@
 "Validates that 'check' and 'base' are known types, then returns true if the 'check' type is identical to the 'base' type or if its name is found within the 'base' type's predefined list of subtypes”
 
 **Code:**
-```python
 def is_subtype_of(cls, check: str, base: str) -> bool:
     check_type = cls.get_type(check)
     if not check_type:
@@ -11,4 +10,3 @@ def is_subtype_of(cls, check: str, base: str) -> bool:
     if not base_type:
         raise DatatypesException(f"Not a valid type: '{base}'")
     return check in base_type[2] or check == base
-```

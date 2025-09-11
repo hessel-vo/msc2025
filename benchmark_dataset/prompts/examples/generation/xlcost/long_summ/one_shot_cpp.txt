@@ -2,7 +2,6 @@
 "Finds the maximum sum of a subsequence of non-adjacent elements by iteratively tracking the maximum sum including and excluding the current element”
 
 **Code:**
-```cpp
 int FindMaxSum(vector<int> arr, int n) {
     int incl = arr[0];
     int excl = 0;
@@ -17,4 +16,3 @@ int FindMaxSum(vector<int> arr, int n) {
 
     return ((incl > excl) ? incl : excl);
 }
-```

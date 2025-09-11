@@ -2,7 +2,6 @@
 "Finds the maximum sum of a subsequence of non-adjacent elements by iteratively tracking the maximum sum including and excluding the current element”
 
 **Code:**
-```python
 def find_max_sum(arr):
     incl = 0
     excl = 0
@@ -11,4 +10,3 @@ def find_max_sum(arr):
         incl = excl + i
         excl = new_excl
     return excl if excl > incl else incl
-```

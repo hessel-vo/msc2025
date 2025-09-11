@@ -1,4 +1,4 @@
-Your task is to create a Java function based on a summary.
+Your task is to implement a Java function based on a summary.
 Below is an example of generating a Java function from a summary.
 
 ---
@@ -9,7 +9,6 @@ Below is an example of generating a Java function from a summary.
 "Finds the maximum sum of a subsequence of non-adjacent elements by iteratively tracking the maximum sum including and excluding the current element”
 
 **Code:**
-```java
 int FindMaxSum(int arr[], int n) {
     int incl = arr[0];
     int excl = 0;
@@ -23,14 +22,12 @@ int FindMaxSum(int arr[], int n) {
     }
     return ((incl > excl) ? incl : excl);
 }
-```
 
 **[Example 2]**
 **Summary:**
 "Determines if a given element `x` is the majority in a sorted array by checking if `x` occupies both an index `i` and the index `n/2` positions ahead of it”
 
 **Code:**
-```java
 static boolean isMajority(int arr[], int n, int x) {
     int i, last_index = 0;
     last_index = (n % 2 == 0) ? n / 2 : n / 2 + 1;
@@ -42,14 +39,12 @@ static boolean isMajority(int arr[], int n, int x) {
     }
     return false;
 }
-```
 
 **[Example 3]**
 **Summary:**
 "Finds if a pair of elements with a given difference `n` exists in a sorted array by using a two-pointer approach.”
 
 **Code:**
-```java
 static boolean findPair(int arr[], int n) {
     int size = arr.length;
     int i = 0, j = 1;
@@ -68,17 +63,17 @@ static boolean findPair(int arr[], int n) {
     System.out.print("No such pair");
     return false;
 }
-```
+
 
 ---
 
 **[Target]**
-**Based on the summary below, generate the full Java function, including the function signature and function body (do not provide any other output)**
+**Use the summary below to generate the related Java function**
+Return the full function code, including function signature and function implementation
+Do NOT add comments to the code and provide only the code as output
 
 **Summary:**
 "Updates the header view on the main UI thread by making its root view visible and setting the card's title and icon from the provided `CardHeader` object"
 
 **Code:**
-```java
 public void updateHeaderView(CardHeader header) {
-```

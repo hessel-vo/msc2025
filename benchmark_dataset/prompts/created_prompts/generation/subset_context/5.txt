@@ -1,4 +1,4 @@
-Your task is to create a Python function based on a summary and additional context.
+Your task is to implement a Python function based on a summary and additional context.
 Below is an example of generating a Python function from a summary.
 You are also provided with additional context of relevant imported files and the file contents surrounding the target function to support the task of generating the target code.
 
@@ -9,7 +9,6 @@ You are also provided with additional context of relevant imported files and the
 "Validates that 'check' and 'base' are known types, then returns true if the 'check' type is identical to the 'base' type or if its name is found within the 'base' type's predefined list of subtypes”
 
 **Code:**
-```python
 def is_subtype_of(cls, check: str, base: str) -> bool:
     check_type = cls.get_type(check)
     if not check_type:
@@ -18,7 +17,7 @@ def is_subtype_of(cls, check: str, base: str) -> bool:
     if not base_type:
         raise DatatypesException(f"Not a valid type: '{base}'")
     return check in base_type[2] or check == base
-```
+
 
 ---
 
@@ -294,12 +293,14 @@ def is_array(datatype: str) -> bool:
 
 
 **[Target]**
-**Based on the summary below, generate the full Python function, including the function signature and function body (do not provide any other output)**
+**Use the summary below to generate the related Python function**
+Return the full function code, including function signature and function implementation
+Do NOT add comments to the code and provide only the code as output
 
 **Summary:**
 "Returns a dictionary mapping the short name to the full FQN for all dynamic datatypes that exist in the same namespace as the provided FQN"
 
 **Code:**
-```python
+```<target language>
 def get_fqn_namespaced_datatypes(fqn: str | None = None) -> dict[str, str]:
 ```

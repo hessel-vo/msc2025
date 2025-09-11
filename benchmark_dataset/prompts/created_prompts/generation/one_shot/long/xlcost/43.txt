@@ -1,4 +1,4 @@
-Your task is to create a Java function based on a summary.
+Your task is to implement a Java function based on a summary.
 Below is an example of generating a Java function from a summary.
 
 ---
@@ -8,7 +8,6 @@ Below is an example of generating a Java function from a summary.
 "Finds the maximum sum of a subsequence of non-adjacent elements by iteratively tracking the maximum sum including and excluding the current element”
 
 **Code:**
-```java
 int FindMaxSum(int arr[], int n) {
     int incl = arr[0];
     int excl = 0;
@@ -22,17 +21,17 @@ int FindMaxSum(int arr[], int n) {
     }
     return ((incl > excl) ? incl : excl);
 }
-```
+
 
 ---
 
 **[Target]**
-**Based on the summary below, generate the full Java function, including the function signature and function body (do not provide any other output)**
+**Use the summary below to generate the related Java function**
+Return the full function code, including function signature and function implementation
+Do NOT add comments to the code and provide only the code as output
 
 **Summary:**
 "Lazily inflates a media layout from a `ViewStub`, finds and caches its title and subtitle views, initializes its media playback controls bar via a presenter, and returns the inflated view"
 
 **Code:**
-```java
 private View getMediaLayoutView() {
-```

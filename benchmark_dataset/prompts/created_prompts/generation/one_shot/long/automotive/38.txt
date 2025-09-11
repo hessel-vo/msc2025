@@ -1,4 +1,4 @@
-Your task is to create a Java function based on a summary.
+Your task is to implement a Java function based on a summary.
 Below is an example of generating a Java function from a summary.
 
 ---
@@ -8,7 +8,6 @@ Below is an example of generating a Java function from a summary.
 "Lazily initializes and returns a `HomeAudioCardPresenter`, setting its data models with both a `MediaViewModel` and an `InCallModel` if a `ViewModelProvider` is available, otherwise logging a warning and using only the `InCallModel`”
 
 **Code:**
-```java
 public CardPresenter getCardPresenter() {
     if (mAudioCardPresenter == null) {
         mAudioCardPresenter = new HomeAudioCardPresenter();
@@ -25,17 +24,17 @@ public CardPresenter getCardPresenter() {
     }
     return mAudioCardPresenter;
 }
-```
+
 
 ---
 
 **[Target]**
-**Based on the summary below, generate the full Java function, including the function signature and function body (do not provide any other output)**
+**Use the summary below to generate the related Java function**
+Return the full function code, including function signature and function implementation
+Do NOT add comments to the code and provide only the code as output
 
 **Summary:**
 "Retrieves a specific, resolvable map `Intent` from a configured list if it matches the system's default map app, otherwise falls back to a generic `Intent` for any map application"
 
 **Code:**
-```java
 private Intent getMapsIntent() {
-```

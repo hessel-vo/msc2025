@@ -1,12 +1,12 @@
-Your task is to create a C function based on a summary.
+Your task is to implement a C function based on a summary.
 
 **[Target]**
-**Based on the summary below, generate the full C function, including the function signature and function body (do not provide any other output)**
+**Use the summary below to generate the related C function**
+Return the full function code, including function signature and function implementation
+Do NOT add comments to the code and provide only the code as output
 
 **Summary:**
 "Processes a UDS ECU Reset request, validating the 2-byte message length, sending a positive response before triggering a system reboot for a 'hard reset', and sending a negative response for either an incorrect length or an unsupported reset sub-function"
 
 **Code:**
-```c
 void handle_ecu_reset(uint8_t *data, size_t len) {
-```

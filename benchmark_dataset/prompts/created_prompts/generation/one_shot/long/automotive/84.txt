@@ -1,4 +1,4 @@
-Your task is to create a C function based on a summary.
+Your task is to implement a C function based on a summary.
 Below is an example of generating a C function from a summary.
 
 ---
@@ -8,7 +8,6 @@ Below is an example of generating a C function from a summary.
 "Constructs and sends a 3-byte UDS negative response message (containing the original request SID and a negative response code) over a CAN bus using the ISO-TP protocol, logging an error if the transmission fails”
 
 **Code:**
-```c
 void send_negative_response(enum UDS_SID request_sid,
                             enum UDS_NRC response_code) {
   int ret;
@@ -19,17 +18,17 @@ void send_negative_response(enum UDS_SID request_sid,
     LOG_ERR("Error while sending data to ID %d [%d]\n", tx_addr.std_id, ret);
   }
 }
-```
+
 
 ---
 
 **[Target]**
-**Based on the summary below, generate the full C function, including the function signature and function body (do not provide any other output)**
+**Use the summary below to generate the related C function**
+Return the full function code, including function signature and function implementation
+Do NOT add comments to the code and provide only the code as output
 
 **Summary:**
 "Maps a raw integer gain value (1, 2, 4, 8, or 16) to its corresponding `hv_shield_dac_gains_t` enum representation, returning 0 on success or an `-ENOTSUP` error code for any unsupported input"
 
 **Code:**
-```c
 static int hvs_dac_convert_gain(int raw_gain, enum hv_shield_dac_gains_t* gain) {
-```

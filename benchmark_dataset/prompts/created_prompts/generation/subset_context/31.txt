@@ -1,4 +1,4 @@
-Your task is to create a Java function based on a summary and additional context.
+Your task is to implement a Java function based on a summary and additional context.
 Below is an example of generating a Java function from a summary.
 You are also provided with additional context of relevant imported files and the file contents surrounding the target function to support the task of generating the target code.
 
@@ -9,7 +9,6 @@ You are also provided with additional context of relevant imported files and the
 "Lazily initializes and returns a `HomeAudioCardPresenter`, setting its data models with both a `MediaViewModel` and an `InCallModel` if a `ViewModelProvider` is available, otherwise logging a warning and using only the `InCallModel`”
 
 **Code:**
-```java
 public CardPresenter getCardPresenter() {
     if (mAudioCardPresenter == null) {
         mAudioCardPresenter = new HomeAudioCardPresenter();
@@ -26,7 +25,7 @@ public CardPresenter getCardPresenter() {
     }
     return mAudioCardPresenter;
 }
-```
+
 
 ---
 
@@ -316,12 +315,14 @@ public class HomeCardFragment extends Fragment implements HomeCardInterface.View
 
 
 **[Target]**
-**Based on the summary below, generate the full Java function, including the function signature and function body (do not provide any other output)**
+**Use the summary below to generate the related Java function**
+Return the full function code, including function signature and function implementation
+Do NOT add comments to the code and provide only the code as output
 
 **Summary:**
 "Updates the header view on the main UI thread by making its root view visible and setting the card's title and icon from the provided `CardHeader` object"
 
 **Code:**
-```java
+```<target language>
 public void updateHeaderView(CardHeader header) {
 ```

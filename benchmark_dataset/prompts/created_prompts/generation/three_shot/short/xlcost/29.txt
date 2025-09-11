@@ -1,4 +1,4 @@
-Your task is to create a Java function based on a summary.
+Your task is to implement a Java function based on a summary.
 Below is an example of generating a Java function from a summary.
 
 ---
@@ -9,7 +9,6 @@ Below is an example of generating a Java function from a summary.
 "Maximum sum such that no two elements are adjacent”
 
 **Code:**
-```java
 int FindMaxSum(int arr[], int n) {
     int incl = arr[0];
     int excl = 0;
@@ -23,14 +22,12 @@ int FindMaxSum(int arr[], int n) {
     }
     return ((incl > excl) ? incl : excl);
 }
-```
 
 **[Example 2]**
 **Summary:**
 "Check for Majority Element in a sorted array”
 
 **Code:**
-```java
 static boolean isMajority(int arr[], int n, int x) {
     int i, last_index = 0;
     last_index = (n % 2 == 0) ? n / 2 : n / 2 + 1;
@@ -42,14 +39,12 @@ static boolean isMajority(int arr[], int n, int x) {
     }
     return false;
 }
-```
 
 **[Example 3]**
 **Summary:**
 "Find a pair with the given difference”
 
 **Code:**
-```java
 static boolean findPair(int arr[], int n) {
     int size = arr.length;
     int i = 0, j = 1;
@@ -68,17 +63,17 @@ static boolean findPair(int arr[], int n) {
     System.out.print("No such pair");
     return false;
 }
-```
+
 
 ---
 
 **[Target]**
-**Based on the summary below, generate the full Java function, including the function signature and function body (do not provide any other output)**
+**Use the summary below to generate the related Java function**
+Return the full function code, including function signature and function implementation
+Do NOT add comments to the code and provide only the code as output
 
 **Summary:**
 "Sets a button's icon and click listener to make it visible, or hides it if no content is provided"
 
 **Code:**
-```java
 private void updateControlBarButton(DescriptiveTextWithControlsView.Control buttonContent, ImageButton buttonView) {
-```

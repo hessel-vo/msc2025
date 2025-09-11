@@ -32,7 +32,7 @@ def validate_arguments(args):
     source, summary_length, shot_count, subset = args[1], args[2], args[3], args[4] if len(args) == 5 else None
 
     if source not in ["xl", "auto"]:
-        print(f"Error: Invalid summary_length '{summary_length}'. Must be 'xl' or 'auto'.")
+        print(f"Error: Invalid source '{source}'. Must be 'xl' or 'auto'.")
         sys.exit(1)
     if summary_length not in ["short", "long"]:
         print(f"Error: Invalid summary_length '{summary_length}'. Must be 'short' or 'long'.")
@@ -160,7 +160,7 @@ def main():
     input_filepath = PROJECT_ROOT / "results" / "benchmark" / RESULTS_SUBFOLDER / input_filename
     
     if subset:
-        input_filepath = PROJECT_ROOT / "results" / "benchmark" / RESULTS_SUBFOLDER / "subset" / f"{MODEL_NAME}_{TASK}_results.csv"
+        input_filepath = PROJECT_ROOT / "results" / "benchmark" / RESULTS_SUBFOLDER / f"{MODEL_NAME}_{TASK}_subset_results.csv"
 
     try:
         df = pd.read_csv(input_filepath)

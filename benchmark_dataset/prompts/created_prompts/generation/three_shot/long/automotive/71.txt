@@ -1,4 +1,4 @@
-Your task is to create a Cpp function based on a summary.
+Your task is to implement a Cpp function based on a summary.
 Below is an example of generating a Cpp function from a summary.
 
 ---
@@ -9,7 +9,6 @@ Below is an example of generating a Cpp function from a summary.
 "Sends a given `DBusMessage` over an established D-Bus connection, returning `true` on success and `false` if the message is invalid, the connection is down, or the underlying send operation fails”
 
 **Code:**
-```cpp
 bool DBusConnection::sendDBusMessage(const DBusMessage &_message) const {
     if (!_message) {
         COMMONAPI_ERROR(std::string(__FUNCTION__), "message == NULL");
@@ -24,14 +23,12 @@ bool DBusConnection::sendDBusMessage(const DBusMessage &_message) const {
     const bool result = (0 != dbus_connection_send(connection_, _message.message_, &dbusSerial));
     return result;
 }
-```
 
 **[Example 2]**
 **Summary:**
 "Creates and returns a D-Bus signal message, constructed from the provided object path, interface, and signal name, with its destination set to the current client's D-Bus ID”
 
 **Code:**
-```cpp
 DBusMessage DBusClientId::createMessage(const std::string objectPath, const std::string interfaceName, const std::string signalName) const
 {
     DBusMessage returnMessage = DBusMessage::createSignal(objectPath, interfaceName, signalName);
@@ -39,14 +36,12 @@ DBusMessage DBusClientId::createMessage(const std::string objectPath, const std:
 
     return (returnMessage);
 }
-```
 
 **[Example 3]**
 **Summary:**
 "Wakes up a `MainLoopContext` by locking a `weak_ptr` (passed via a `void*` pointer) to ensure the context object still exists before calling its `wakeup()` method”
 
 **Code:**
-```cpp
 void DBusConnection::onWakeupMainContext(void* data) {
     std::weak_ptr<MainLoopContext>* mainloop = static_cast<std::weak_ptr<MainLoopContext>*>(data);
 
@@ -56,17 +51,17 @@ void DBusConnection::onWakeupMainContext(void* data) {
         lockedContext->wakeup();
     }
 }
-```
+
 
 ---
 
 **[Target]**
-**Based on the summary below, generate the full Cpp function, including the function signature and function body (do not provide any other output)**
+**Use the summary below to generate the related Cpp function**
+Return the full function code, including function signature and function implementation
+Do NOT add comments to the code and provide only the code as output
 
 **Summary:**
 "Delegates the registration of a signal state handler for a specific subscription to the underlying connection object"
 
 **Code:**
-```cpp
 void DBusProxyBase::addSignalStateHandler(std::shared_ptr<DBusProxyConnection::DBusSignalHandler> _handler, const uint32_t _subscription) {
-```
