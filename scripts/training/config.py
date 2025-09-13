@@ -24,14 +24,13 @@ DATASET_TYPE = "extensive"
 # The path to the input JSONL file containing the processed source code.
 DATASET_PATH = PROJECT_ROOT / "scripts/training/datasets" / f"final_dataset_{DATASET_TYPE}.jsonl"
 
-# A dictionary mapping target languages to a list of their representative
-# repository IDs to be held out for validation.
-VALIDATION_SET_MAPPING = {
-    'python': ['pybip'],
-    'java':   ['paho.mqtt.java'],
-    'c':      ['roadC'],
-    'cpp':    ['dlt-viewer']
-}
+# A list of repository IDs to use for the validation set.
+VALIDATION_REPO_IDS = [
+    'pybip',
+    'paho.mqtt.java',
+    'roadC',
+    'dlt-viewer'
+]
 
 # The maximum number of files to sample from any single repository per epoch.
 # This helps prevent dominant repositories from biasing the training.

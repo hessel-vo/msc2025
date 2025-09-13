@@ -78,7 +78,7 @@ def run_benchmark():
         PROMPTS_DIR = PROJECT_ROOT / "benchmark_dataset" / "prompts" / "created_prompts" / task_type / "zero_shot" / short_or_long
     
     OUTPUT_DIR = PROJECT_ROOT / "results" / "benchmark" / RESULT_TYPE
-    OUTPUT_FILENAME = OUTPUT_DIR / f"{MODEL_NAME}_{task_type}_{source}_{shot_count}_shot_{short_or_long}_results.csv"
+    OUTPUT_FILENAME = OUTPUT_DIR / f"{MODEL_NAME}_{task_type}_{source}_{short_or_long}_{shot_count}_results.csv"
 
     if subset == "subset":
         summary_type = "summary_long"

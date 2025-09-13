@@ -17,7 +17,7 @@ os.environ['HF_HOME'] = str(HF_CACHE_DIR)
 from codebleu import calc_codebleu
 
 # Constants for the model and results folder
-MODEL_NAME = "gemma-3-4b-it"
+MODEL_NAME = "gemma-3-12b-it"
 RESULTS_SUBFOLDER = "baseline"
 TASK = "generation"
 

@@ -1,76 +1,125 @@
 import datasets
 import config
-import logging
+import random
 
-# Configure basic logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-
-def load_and_split_data(cfg):
+def load_and_split_data(config):
     """
-    Loads the dataset from the JSONL file and splits it into raw training
-    and evaluation sets based on predefined repository IDs.
+    Loads the dataset from the specified JSONL file and splits it into
+    training and evaluation sets based on repository IDs.
 
     Args:
-        cfg: The configuration module containing all settings.
+        config: A configuration object containing DATASET_PATH and
+                VALIDATION_REPO_IDS.
 
     Returns:
-        A tuple containing two datasets.hf_hub_download
-        (raw_train_dataset, raw_eval_dataset)
+        A tuple containing two datasets: (raw_train_dataset, raw_eval_dataset).
     """
-    logging.info(f"Loading dataset from: {cfg.DATASET_PATH}")
-    
-    # Load the entire dataset from the specified JSONL file.
-    # The `Dataset` object is memory-mapped, making it efficient for large files.
-    full_dataset = datasets.load_dataset('json', data_files=str(cfg.DATASET_PATH), split='train')
-    logging.info(f"Successfully loaded {len(full_dataset)} total files.")
-
-    # Flatten the list of validation repository IDs from the mapping.
-    # The mapping is structured by language, so we collect all IDs into a single set.
-    validation_repo_ids = set()
-    for lang_repos in cfg.VALIDATION_SET_MAPPING.values():
-        validation_repo_ids.update(lang_repos)
-    
-    logging.info(f"Using these repository IDs for validation: {sorted(list(validation_repo_ids))}")
-
-    # Use the `.filter()` method to split the data.
-    # The filter function checks if a file's 'repo_id' is in our validation set.
-    
-    # The evaluation set contains only the files from the validation repositories.
-    raw_eval_dataset = full_dataset.filter(
-        lambda example: example['repo_id'] in validation_repo_ids
+    print("--- Loading and splitting data ---")
+    full_dataset = datasets.load_dataset(
+        'json',
+        data_files=str(config.DATASET_PATH),
+        split='train'
     )
+    print(f"Total examples loaded: {len(full_dataset)}")
 
-    # The training set contains all files *not* in the validation repositories.
     raw_train_dataset = full_dataset.filter(
-        lambda example: example['repo_id'] not in validation_repo_ids
+        lambda example: example['repo_id'] not in config.VALIDATION_REPO_IDS
     )
-    
-    logging.info(f"Split dataset: {len(raw_train_dataset)} training files, {len(raw_eval_dataset)} evaluation files.")
+    raw_eval_dataset = full_dataset.filter(
+        lambda example: example['repo_id'] in config.VALIDATION_REPO_IDS
+    )
+
+    print(f"Raw training set size: {len(raw_train_dataset)} examples")
+    print(f"Raw evaluation set size: {len(raw_eval_dataset)} examples")
+    print("--- Data loading and splitting complete ---")
 
     return raw_train_dataset, raw_eval_dataset
 
-# This block allows us to run and test this script directly.
+
+def apply_dynamic_sampling(raw_train_dataset, config):
+    """
+    Applies dynamic sampling to the raw training dataset for one epoch.
+
+    It groups the dataset by repository ID and samples up to a maximum
+    number of files from each repository. This creates a balanced dataset
+    for a single training epoch.
+
+    Args:
+        raw_train_dataset: The full, unsampled training dataset.
+        config: A configuration object containing MAX_FILES_PER_REPO.
+
+    Returns:
+        A new, sampled datasets.Dataset object for the current epoch.
+    """
+    print(f"\n--- Applying dynamic sampling (max {config.MAX_FILES_PER_REPO} files per repo) ---")
+    
+    # Group the dataset by the 'repo_id' column.
+    # This allows us to process each repository's files as a distinct group.
+    grouped_by_repo = raw_train_dataset.group_by('repo_id')
+
+    def sample_repo_files(repo_group):
+        """
+        A function to be mapped over each group (repository). It samples
+        files if the group is larger than the configured maximum.
+        """
+        num_files = len(repo_group['content'])
+        
+        # If the number of files is within the limit, return them all.
+        if num_files <= config.MAX_FILES_PER_REPO:
+            return repo_group
+
+        # If the repository is too large, randomly sample indices.
+        # This is more memory-efficient than shuffling the entire group data.
+        indices = list(range(num_files))
+        random.shuffle(indices)
+        sampled_indices = indices[:config.MAX_FILES_PER_REPO]
+        
+        # Create a new dictionary containing only the sampled data.
+        sampled_batch = {key: [values[i] for i in sampled_indices] for key, values in repo_group.items()}
+        return sampled_batch
+
+    # Use the .map() function to apply our sampling logic to each group.
+    # The `batched=True` and `batch_size=-1` arguments ensure that our
+    # `sample_repo_files` function receives each entire repository group as a single batch.
+    sampled_dataset = grouped_by_repo.map(
+        sample_repo_files,
+        batched=True,
+        batch_size=-1, # Process one full group at a time
+        desc="Sampling files per repository"
+    )
+
+    print(f"Total files before sampling: {len(raw_train_dataset)}")
+    print(f"Total files after sampling for this epoch: {len(sampled_dataset)}")
+    print("--- Dynamic sampling complete ---")
+    
+    return sampled_dataset
+
+
+# --- Testing Block ---
 if __name__ == "__main__":
-    logging.info("--- Running Data Processing Script in Standalone Mode for Testing ---")
-    
-    # Call the function to perform the loading and splitting.
-    raw_train_data, raw_eval_data = load_and_split_data(config)
+    print("Running data_processing.py in standalone mode for testing.")
+    raw_train_dataset, raw_eval_dataset = load_and_split_data(config)
 
-    # Print a summary to verify the results.
-    print("\n--- Verification ---")
-    print(f"Total training files loaded: {len(raw_train_data)}")
-    print(f"Total evaluation files loaded: {len(raw_eval_data)}")
+    # --- Test Step 2: Dynamic Sampling ---
+    sampled_epoch_dataset = apply_dynamic_sampling(raw_train_dataset, config)
 
-    print(raw_train_data)
-    print(raw_eval_data)
+    # Verification: Group the *sampled* data and check group sizes.
+    print("\nVerifying sampled dataset integrity...")
+    sampled_groups = sampled_epoch_dataset.group_by('repo_id')
     
-    # Optionally, inspect a single example from each set to ensure correctness.
-    if len(raw_train_data) > 0:
-        print("\nExample training file:")
-        print(f"  Repo ID: {raw_train_data[0]['repo_id']}")
-    
-    if len(raw_eval_data) > 0:
-        print("\nExample evaluation file:")
-        print(f"  Repo ID: {raw_eval_data[0]['repo_id']}")
+    max_files_found = 0
+    all_repos_within_limit = True
 
-    print("\n--- Initial data loading and splitting test complete. ---")
+    for repo_id in sampled_groups.keys():
+        group_size = len(sampled_groups[repo_id])
+        if group_size > max_files_found:
+            max_files_found = group_size
+        
+        if group_size > config.MAX_FILES_PER_REPO:
+            all_repos_within_limit = False
+            print(f"Error: Repo '{repo_id}' has {group_size} files, which exceeds the limit of {config.MAX_FILES_PER_REPO}.")
+
+    assert all_repos_within_limit, "Verification failed: One or more repos exceed the max file limit after sampling."
+    
+    print(f"Verification successful: All repositories in the sampled dataset have <= {config.MAX_FILES_PER_REPO} files.")
+    print(f"The largest repository in the sampled set has {max_files_found} files.")
