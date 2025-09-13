@@ -6,6 +6,8 @@ from dotenv import load_dotenv
 import sys
 import re
 
+torch._dynamo.config.cache_size_limit = 256
+
 load_dotenv()
 
 project_root_str = os.getenv("PROJECT_ROOT")
@@ -60,6 +62,8 @@ def run_benchmark():
     if shot_count not in ["zero", "one", "three"]:
         print(f"Error: Invalid shot count '{shot_count}'. Use 'zero', 'one', or 'three'.")
         return
+
+    print(f"Running-- task: {task_type}, Source: {source}, Summary Length: {short_or_long}, Shots: {shot_count}, Subset: {subset}")
 
     source_folder = 'xlcost' if source == 'xl' else 'automotive'
     summary_type = f'summary_{short_or_long}'
