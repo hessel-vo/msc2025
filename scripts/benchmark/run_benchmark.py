@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 import sys
 import re
 
+print(torch._dynamo.config.cache_size_limit)
 torch._dynamo.config.cache_size_limit = 256
 
 load_dotenv()
