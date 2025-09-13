@@ -11,7 +11,7 @@ load_dotenv()
 project_root_str = os.getenv("PROJECT_ROOT")
 PROJECT_ROOT = Path(project_root_str)
 HF_TOKEN = os.getenv('HUGGING_FACE_HUB_TOKEN')
-MODEL_ID = "google/gemma-3-4b-it"
+MODEL_ID = "google/gemma-3-12b-it"
 MODEL_NAME = MODEL_ID.split("/")[-1]
 RESULT_TYPE = "baseline" # Swich "baseline" to "adapted" for final eval
 
@@ -128,13 +128,13 @@ def run_benchmark():
         language = row['language']
 
         # TESTING/DEBUGGING, REMOVE FOR FULL RUN
-        if language != "java":
-            continue
-        else:
-            count += 1
+        # if language != "java":
+        #     continue
+        # else:
+        #     count += 1
 
-        if count > 3:
-            break
+        # if count > 3:
+        #     break
 
         if task_type == "generation":
             reference = row['code']
