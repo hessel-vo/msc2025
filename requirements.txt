@@ -96,8 +96,6 @@ markupsafe==3.0.2
     # via jinja2
 matplotlib==3.10.6
     # via bert-score
-mdextractor==2025.4.231259
-    # via -r requirements.in
 mpmath==1.3.0
     # via sympy
 multidict==6.6.3

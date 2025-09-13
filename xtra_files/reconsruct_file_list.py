@@ -1,11 +1,11 @@
 import json
 import os
 
-BASE_PATH = "/home/hessel/workspace/RUG/MSc2025/project/code/repositories/test_repos"
+BASE_PATH = "/home/hessel/workspace/RUG/MSc2025/project/code/repositories/all_repos"
 
-JSONL_FILE = "../scripts/data_preparation/03_deduplication/repository_specific/target_only/final_dataset_target_only.jsonl"
+JSONL_FILE = "../scripts/data_preparation/03_deduplication/target_only/final_dataset_target_only.jsonl"
 
-OUTPUT_FILE = "file_list_repo_specific.txt"
+OUTPUT_FILE = "file_list_target_only.txt"
 
 
 def generate_full_paths(base_path, jsonl_file):

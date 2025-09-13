@@ -22,4 +22,3 @@ tree-sitter-python==0.21
 tree-sitter-java==0.21
 tree-sitter-c==0.21
 tree-sitter-cpp==0.21
-mdextractor

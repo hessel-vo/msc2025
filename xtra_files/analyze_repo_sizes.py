@@ -1,7 +1,7 @@
 import os
 from collections import defaultdict
 
-FILEPATHS_FILE = "./file_list.txt"
+FILEPATHS_FILE = "./file_list_target_only.txt"
 
 
 PARENT_DIR_SEGMENT = "all_repos"
