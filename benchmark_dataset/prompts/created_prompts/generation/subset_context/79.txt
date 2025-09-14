@@ -29,7 +29,6 @@ Existing code in the file can be used to generate the correct function.
 
 **Imported files:**
 `uds.h`:
-```c
 #ifndef UDS_H
 #define UDS_H
 
@@ -57,10 +56,8 @@ enum UDS_RESET_TYPE {
 };
 
 #endif  // UDS_H
-```
 
 **File context:**
-```c
 #include <zephyr/canbus/isotp.h>
 #include <zephyr/kernel.h>
 #include <zephyr/logging/log.h>
@@ -453,18 +450,15 @@ static void thread_entry(void *arg1, void *arg2, void *arg3) {
 
 K_THREAD_DEFINE(
     thread_id, STACKSIZE, thread_entry, NULL, NULL, NULL, PRIORITY, 0, 0);
-```
 
 
 **[Target]**
 **Use the summary below to generate the related C function**
-Return the full function code, including function signature and function implementation
+Return the full target function code, including function signature and function implementation
 Do NOT add comments to the code and provide only the code as output
 
 **Summary:**
 "Processes a UDS ECU Reset request, validating the 2-byte message length, sending a positive response before triggering a system reboot for a 'hard reset', and sending a negative response for either an incorrect length or an unsupported reset sub-function"
 
 **Code:**
-```<target language>
 void handle_ecu_reset(uint8_t *data, size_t len) {
-```

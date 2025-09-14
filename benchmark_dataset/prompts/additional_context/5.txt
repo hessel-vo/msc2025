@@ -1,5 +1,4 @@
 **File context:**
-```python
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, Callable, Set
@@ -262,4 +261,3 @@ def resolve_datatype(datatype: str, fqn: str | None) -> str:
 
 def is_array(datatype: str) -> bool:
     return datatype.endswith("[]")
-```

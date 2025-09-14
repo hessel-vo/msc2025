@@ -29,7 +29,6 @@ Existing code in the file can be used to generate the correct function.
 
 **Imported files:**
 `uds.h`:
-```c
 #ifndef UDS_H
 #define UDS_H
 
@@ -57,10 +56,8 @@ enum UDS_RESET_TYPE {
 };
 
 #endif  // UDS_H
-```
 
 **File context:**
-```c
 #include <zephyr/canbus/isotp.h>
 #include <zephyr/kernel.h>
 #include <zephyr/logging/log.h>
@@ -462,18 +459,15 @@ static void thread_entry(void *arg1, void *arg2, void *arg3) {
 
 K_THREAD_DEFINE(
     thread_id, STACKSIZE, thread_entry, NULL, NULL, NULL, PRIORITY, 0, 0);
-```
 
 
 **[Target]**
 **Use the summary below to generate the related C function**
-Return the full function code, including function signature and function implementation
+Return the full target function code, including function signature and function implementation
 Do NOT add comments to the code and provide only the code as output
 
 **Summary:**
 "Constructs and sends a 2-byte UDS positive response to an ECU Reset request, containing the positive response SID and the echoed reset type, over a CAN bus using the ISO-TP protocol, logging an error if the transmission fails"
 
 **Code:**
-```<target language>
 void send_positive_reset_response(uint8_t reset_type) {
-```

@@ -32,7 +32,6 @@ The target function below is part of the following file.
 Existing code in the file can be used to generate the correct function.
 
 **File context:**
-```cpp
 #include <algorithm>
 #include <chrono>
 #include <future>
@@ -1880,18 +1879,15 @@ void DBusConnection::handleSignalStates() {
 
 } // namespace DBus
 } // namespace CommonAPI
-```
 
 
 **[Target]**
 **Use the summary below to generate the related Cpp function**
-Return the full function code, including function signature and function implementation
+Return the full target function code, including function signature and function implementation
 Do NOT add comments to the code and provide only the code as output
 
 **Summary:**
 "Lazily initializes and returns a thread-safe, singleton `DBusObjectManager` instance using a double-checked locking pattern"
 
 **Code:**
-```<target language>
 const std::shared_ptr<DBusObjectManager> DBusConnection::getDBusObjectManager() {
-```

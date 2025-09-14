@@ -269,7 +269,7 @@ def load_vspec(include_dirs: list[Path], specs: list[Path], identifier: str | No
                 vspec.data.update(spec_data)
         except FileNotFoundError:
             print(f""Warning: File not found: {spec_path}"")
-    return vspec",0.306624651215366,0.1795185508902815,0.20511958885490328,0.4,0.4418604651162791
+    return vspec",0.30081069772699387,0.1795185508902815,0.20511958885490328,0.4,0.4186046511627907
 11,python,"def deep_update(base: dict[str, Any], update: dict[str, Any]) -> None:
     for key, value in update.items():
         if isinstance(value, dict):
@@ -475,7 +475,7 @@ def load_vspec(include_dirs: list[Path], specs: list[Path], identifier: str | No
         if branch_name not in instances_meta:
             instances_meta[branch_name] = []
         instances_meta[branch_name].append(node.name)
-    return instances_meta",0.27291153048891104,0.12167211618074669,0.17217902571390759,0.47126436781609193,0.32653061224489793
+    return instances_meta",0.2780135713052376,0.12167211618074669,0.17217902571390759,0.47126436781609193,0.3469387755102041
 22,python,"def is_VSS_leaf(node: VSSNode) -> bool:
    if isinstance(node.data, VSSDataDatatype):
         return True
@@ -598,7 +598,7 @@ def load_vspec(include_dirs: list[Path], specs: list[Path], identifier: str | No
             view = mDescriptiveTextOnlyLayoutView;
         }
         return view;
-    }",0.15410240083509083,0.15312892961228738,0.1798582138350278,0.13636363636363635,0.14705882352941177
+    }",0.13939651848214965,0.15312892961228738,0.1798582138350278,0.13636363636363635,0.08823529411764706
 31,java,"public void updateHeaderView(CardHeader header) {
     requireActivity().runOnUiThread(() -> {
         mRootView.setVisibility(View.VISIBLE);
@@ -786,7 +786,7 @@ private void displayHeader(CardHeader header) {
         }
 
         return null;
-    }",0.15926310368468516,0.07263380254965987,0.10770865547912403,0.24242424242424243,0.21428571428571427
+    }",0.14735834177992324,0.07263380254965987,0.10770865547912403,0.24242424242424243,0.16666666666666666
 39,java,"private void initializeCards() {
     if (mHomeCardModules == null) {
         mHomeCardModules = new ArraySet<>();
@@ -853,7 +853,7 @@ private void displayHeader(CardHeader header) {
     } catch (Exception e) {
         System.err.println(""Error initializing cards: "" + e.getMessage());
     }
-}",0.22691651716731254,0.060730226649812945,0.08429847938207459,0.3626373626373626,0.4
+}",0.23191651716731254,0.060730226649812945,0.08429847938207459,0.3626373626373626,0.42
 40,java,"private static void cleanUpExistingTaskViewTasks(List<TaskAppearedInfo> taskAppearedInfos) {
     ActivityTaskManager atm = ActivityTaskManager.getInstance();
     for (TaskAppearedInfo taskAppearedInfo : taskAppearedInfos) {
@@ -926,7 +926,7 @@ private void displayHeader(CardHeader header) {
         imageView.setImageBitmap(scaledBitmap);
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         return imageView;
-    }",0.2307942305716426,0.047912155681418565,0.09900173533009175,0.5348837209302325,0.2413793103448276
+    }",0.21355285126129778,0.047912155681418565,0.09900173533009175,0.5348837209302325,0.1724137931034483
 44,java,"private void updateBackgroundImage(Drawable image) {
     if (image != null && getCardSize() != null) {
         int maxDimen = Math.max(getCardSize().getWidth(), getCardSize().getHeight());
@@ -1050,7 +1050,7 @@ private void displayHeader(CardHeader header) {
                 showDialpad();
             }
         });
-    }",0.22593778885931914,0.057399950473749316,0.09367740817208346,0.3409090909090909,0.4117647058823529
+    }",0.2479966123887309,0.057399950473749316,0.09367740817208346,0.3409090909090909,0.5
 51,cpp,"bool DBusConnection::sendDBusMessage(const DBusMessage &_message) const {
     if (!_message) {
         COMMONAPI_ERROR(std::string(__FUNCTION__), ""message == NULL"");
@@ -1797,7 +1797,7 @@ DBusProxyManager::instancesAsyncCallback(
     iso_tp_msg.message_data = (uint8_t *)uds_message_get_data(&msg);
 
     iso_tp_send_message(&iso_tp_msg);
-}",0.19997917270177962,0.10165168943580866,0.11749577060207901,0.23076923076923078,0.35
+}",0.21247917270177963,0.10165168943580866,0.11749577060207901,0.23076923076923078,0.4
 83,c,"static void send_transer_exit_positive_response() {
   int ret;
   uint8_t positive_sid = UDS_SID_REQUEST_TRANSFER_EXIT + 0x40;

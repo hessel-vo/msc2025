@@ -12,6 +12,7 @@ HF_CACHE_DIR.mkdir(exist_ok=True)
 
 os.environ['HF_HOME'] = str(HF_CACHE_DIR)
 
+SEED=42
 
 # --- Model Parameters ---
 MODEL_ID = "google/gemma-3-4b-it"
@@ -80,5 +81,7 @@ LORA_DROPOUT = 0.1
 # You might need to inspect the model architecture to find the correct module names.
 LORA_TARGET_MODULES = [
     "q_proj",
-    "v_proj"
+    "v_proj",
+    "k_proj",
+    "o_proj"
 ]

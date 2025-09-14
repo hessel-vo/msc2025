@@ -1,6 +1,5 @@
 **Imported files:**
 `uds.h`:
-```c
 #ifndef UDS_H
 #define UDS_H
 
@@ -28,10 +27,8 @@ enum UDS_RESET_TYPE {
 };
 
 #endif  // UDS_H
-```
 
 **File context:**
-```c
 #include <zephyr/canbus/isotp.h>
 #include <zephyr/kernel.h>
 #include <zephyr/logging/log.h>
@@ -424,4 +421,3 @@ static void thread_entry(void *arg1, void *arg2, void *arg3) {
 
 K_THREAD_DEFINE(
     thread_id, STACKSIZE, thread_entry, NULL, NULL, NULL, PRIORITY, 0, 0);
-```

@@ -25,7 +25,7 @@ from transformers import AutoProcessor, AutoModelForCausalLM, AutoTokenizer
 
 # --- 1. Configuration ---
 
-MODEL_ID = "google/gemma-3-1b-it"
+MODEL_ID = "google/gemma-3-4b-it"
 
 
 # --- 2. Setup Device (GPU or CPU) ---

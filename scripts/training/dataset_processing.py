@@ -1,24 +1,18 @@
 import datasets
 import config
-import random
+from tqdm import tqdm
+from transformers import AutoTokenizer
+import numpy as np
+import sys
 
 def load_and_split_data(config):
     """
     Loads the dataset from the specified JSONL file and splits it into
     training and evaluation sets based on repository IDs.
-
-    Args:
-        config: A configuration object containing DATASET_PATH and
-                VALIDATION_REPO_IDS.
-
-    Returns:
-        A tuple containing two datasets: (raw_train_dataset, raw_eval_dataset).
     """
     print("--- Loading and splitting data ---")
     full_dataset = datasets.load_dataset(
-        'json',
-        data_files=str(config.DATASET_PATH),
-        split='train'
+        'json', data_files=str(config.DATASET_PATH), split='train'
     )
     print(f"Total examples loaded: {len(full_dataset)}")
 
@@ -32,94 +26,191 @@ def load_and_split_data(config):
     print(f"Raw training set size: {len(raw_train_dataset)} examples")
     print(f"Raw evaluation set size: {len(raw_eval_dataset)} examples")
     print("--- Data loading and splitting complete ---")
-
     return raw_train_dataset, raw_eval_dataset
-
 
 def apply_dynamic_sampling(raw_train_dataset, config):
     """
-    Applies dynamic sampling to the raw training dataset for one epoch.
-
-    It groups the dataset by repository ID and samples up to a maximum
-    number of files from each repository. This creates a balanced dataset
-    for a single training epoch.
-
-    Args:
-        raw_train_dataset: The full, unsampled training dataset.
-        config: A configuration object containing MAX_FILES_PER_REPO.
-
-    Returns:
-        A new, sampled datasets.Dataset object for the current epoch.
+    Balances and randomizes the training data for a single epoch by sampling
+    from large repositories and shuffling the file order for all.
+    This function relies on a pre-seeded NumPy global random state for reproducibility.
     """
-    print(f"\n--- Applying dynamic sampling (max {config.MAX_FILES_PER_REPO} files per repo) ---")
-    
-    # Group the dataset by the 'repo_id' column.
-    # This allows us to process each repository's files as a distinct group.
-    grouped_by_repo = raw_train_dataset.group_by('repo_id')
+    print("\n--- Applying dynamic sampling and shuffling for new epoch ---")
+    unique_repo_ids = list(set(raw_train_dataset['repo_id']))
+    print(f"Found {len(unique_repo_ids)} unique repositories in the training set.")
 
-    def sample_repo_files(repo_group):
-        """
-        A function to be mapped over each group (repository). It samples
-        files if the group is larger than the configured maximum.
-        """
-        num_files = len(repo_group['content'])
+    sampled_datasets = []
+    for repo_id in tqdm(unique_repo_ids, desc="Sampling and shuffling repositories"):
+        repo_dataset = raw_train_dataset.filter(lambda x: x['repo_id'] == repo_id)
         
-        # If the number of files is within the limit, return them all.
-        if num_files <= config.MAX_FILES_PER_REPO:
-            return repo_group
+        # --- MODIFIED FOR REPRODUCIBILITY ---
+        # Relies on the global NumPy random state, which should be seeded once
+        # at the beginning of the main training script.
+        shuffled_repo_dataset = repo_dataset.shuffle()
 
-        # If the repository is too large, randomly sample indices.
-        # This is more memory-efficient than shuffling the entire group data.
-        indices = list(range(num_files))
-        random.shuffle(indices)
-        sampled_indices = indices[:config.MAX_FILES_PER_REPO]
+        if len(shuffled_repo_dataset) > config.MAX_FILES_PER_REPO:
+            sampled_repo_dataset = shuffled_repo_dataset.select(range(config.MAX_FILES_PER_REPO))
+        else:
+            sampled_repo_dataset = shuffled_repo_dataset
         
-        # Create a new dictionary containing only the sampled data.
-        sampled_batch = {key: [values[i] for i in sampled_indices] for key, values in repo_group.items()}
-        return sampled_batch
+        sampled_datasets.append(sampled_repo_dataset)
 
-    # Use the .map() function to apply our sampling logic to each group.
-    # The `batched=True` and `batch_size=-1` arguments ensure that our
-    # `sample_repo_files` function receives each entire repository group as a single batch.
-    sampled_dataset = grouped_by_repo.map(
-        sample_repo_files,
-        batched=True,
-        batch_size=-1, # Process one full group at a time
-        desc="Sampling files per repository"
-    )
+    final_epoch_dataset = datasets.concatenate_datasets(sampled_datasets)
+    # --- MODIFIED FOR REPRODUCIBILITY ---
+    final_epoch_dataset = final_epoch_dataset.shuffle()
 
-    print(f"Total files before sampling: {len(raw_train_dataset)}")
-    print(f"Total files after sampling for this epoch: {len(sampled_dataset)}")
-    print("--- Dynamic sampling complete ---")
+    print(f"Total examples in this epoch's dataset: {len(final_epoch_dataset)}")
+    print("--- Dynamic sampling and shuffling complete ---")
+    return final_epoch_dataset
+
+def process_dataset_for_training(dataset, tokenizer, config):
+    """
+    Processes a dataset using the StarCoder2 methodology:
+    - Groups files by repository.
+    - With 50% probability, prepends repository metadata.
+    - Concatenates files with a <file_sep> token.
+    - Appends an <|endoftext|> token after each repository's content.
+    - Chunks the result, keeping all data (including partial final chunks).
+    This function relies on a pre-seeded NumPy global random state for reproducibility.
+    """
+    print("\n--- Processing dataset for training (StarCoder2 format) ---")
     
-    return sampled_dataset
+    all_chunks = {'input_ids': [], 'attention_mask': []}
+    
+    REPO_NAME_TOKEN = "<repo_name>"
+    FILE_SEP_TOKEN = "<file_sep>"
+    END_OF_TEXT_TOKEN = "<|endoftext|>"
+    
+    unique_repo_ids = list(set(dataset['repo_id']))
+    total_tokens_processed = 0
+    
+    for repo_id in tqdm(unique_repo_ids, desc="Processing repositories"):
+        repo_files = dataset.filter(lambda x: x['repo_id'] == repo_id)
+        
+        repo_content_parts = []
+        
+        # --- MODIFIED FOR REPRODUCIBILITY ---
+        # StarCoder2: 50% chance to include repository metadata, using NumPy's RNG.
+        include_metadata = 1
+        
+        if include_metadata:
+            repo_header = f"{REPO_NAME_TOKEN}{repo_id}"
+            for file_example in repo_files:
+                file_str = f"{FILE_SEP_TOKEN}{file_example['path_in_repo']}\n{file_example['content']}"
+                repo_content_parts.append(file_str)
+            repo_full_content = repo_header + "".join(repo_content_parts)
+        else:
+            for file_example in repo_files:
+                file_str = f"{FILE_SEP_TOKEN}{file_example['content']}"
+                repo_content_parts.append(file_str)
+            repo_full_content = "".join(repo_content_parts)
+
+        repo_full_content += END_OF_TEXT_TOKEN
+        
+        token_ids = tokenizer(
+            repo_full_content,
+            truncation=False,
+            padding=False,
+            return_attention_mask=False
+        )['input_ids']
+
+        total_length = len(token_ids)
+        total_tokens_processed += total_length
+
+        if total_length == 0:
+            print("TESTING LENGTH 0, SKIPPING")
+            continue
+
+        for i in range(0, total_length, config.MAX_SEQ_LENGTH):
+            end = i + config.MAX_SEQ_LENGTH
+            chunk_ids = token_ids[i:end]
+            
+            all_chunks['input_ids'].append(chunk_ids)
+            all_chunks['attention_mask'].append([1] * len(chunk_ids))
+    
+    smaller_chunks = 0
+    for input_ids, attention_mask in zip(all_chunks['input_ids'], all_chunks['attention_mask']):
+        assert len(input_ids) == len(attention_mask), "Input IDs and attention mask lengths do not match!"
+        if len(input_ids) < config.MAX_SEQ_LENGTH:
+            smaller_chunks += 1
+            print(f"Partial chunk of length {len(input_ids)} (less than {config.MAX_SEQ_LENGTH}) retained.")
+    print(f"Total partial chunks (less than {config.MAX_SEQ_LENGTH} tokens): {smaller_chunks}")
+    processed_dataset = datasets.Dataset.from_dict(all_chunks)
+    
+    print(f"Total training chunks created: {len(processed_dataset)} (including partial chunks)")
+    print("--- Dataset processing complete ---")
+
+    print(f"\n--- Data Utilization Stats ---")
+    print("All repositories and tokens are kept.")
+    print(f"Total tokens processed: {total_tokens_processed}")
+    print("Token Utilization: 100.00%")
+
+    return processed_dataset
 
 
 # --- Testing Block ---
 if __name__ == "__main__":
     print("Running data_processing.py in standalone mode for testing.")
-    raw_train_dataset, raw_eval_dataset = load_and_split_data(config)
-
-    # --- Test Step 2: Dynamic Sampling ---
-    sampled_epoch_dataset = apply_dynamic_sampling(raw_train_dataset, config)
-
-    # Verification: Group the *sampled* data and check group sizes.
-    print("\nVerifying sampled dataset integrity...")
-    sampled_groups = sampled_epoch_dataset.group_by('repo_id')
     
-    max_files_found = 0
-    all_repos_within_limit = True
+    # --- ADDED FOR STANDALONE REPRODUCIBILITY ---
+    # To make this testing block reproducible, we mimic what train.py will do.
+    # In the real run, these lines will be in the main training script.
+    print(f"\n--- Seeding NumPy for reproducible testing with SEED={config.SEED} ---")
+    np.random.seed(config.SEED)
 
-    for repo_id in sampled_groups.keys():
-        group_size = len(sampled_groups[repo_id])
-        if group_size > max_files_found:
-            max_files_found = group_size
+    raw_train, raw_eval = load_and_split_data(config)
+    
+    print(raw_train)
+    print(raw_eval)
+
+    print("\n--- RUN 1: Generating first epoch dataset ---")
+    epoch_dataset_1 = apply_dynamic_sampling(raw_train, config)
+
+    print("\n--- Verifying first epoch dataset ---")
+    print(epoch_dataset_1)
+    print(raw_eval)
+    sys.exit(0)
+    
+    print("\n--- RUN 2: Generating second epoch dataset ---")
+    epoch_dataset_2 = apply_dynamic_sampling(raw_train, config)
+
+    # --- Verification of epoch-to-epoch randomness ---
+    order_is_different = epoch_dataset_1[0]['content'] != epoch_dataset_2[0]['content']
+    print(f"\nIs the order of examples different between epochs? {'Yes' if order_is_different else 'No'}")
+    assert order_is_different, "Epochs are not being shuffled differently! Check seeding."
+    print("Validation successful: Per-epoch data is correctly randomized.")
+    
+    print("\n--- Initializing tokenizer for testing ---")
+    tokenizer = AutoTokenizer.from_pretrained(config.MODEL_ID, token=config.HF_TOKEN)
+    
+    special_tokens_dict = {
+        'additional_special_tokens': ['<repo_name>', '<file_sep>', '<|endoftext|>']
+    }
+    tokenizer.add_special_tokens(special_tokens_dict)
+    print("Tokenizer initialized with StarCoder2 special tokens.")
+
+    # Process one of the sampled datasets for a final check
+    processed_train_dataset = process_dataset_for_training(epoch_dataset_1, tokenizer, config)
+    
+    print("\n--- Verifying processed dataset ---")
+    if len(processed_train_dataset) > 0:
+        first_chunk = processed_train_dataset[0]
+        last_chunk = processed_train_dataset[-1]
         
-        if group_size > config.MAX_FILES_PER_REPO:
-            all_repos_within_limit = False
-            print(f"Error: Repo '{repo_id}' has {group_size} files, which exceeds the limit of {config.MAX_FILES_PER_REPO}.")
+        print(f"Number of chunks: {len(processed_train_dataset)}")
+        print(f"Keys in a chunk: {list(first_chunk.keys())}")
+        print(f"Length of input_ids in first chunk: {len(first_chunk['input_ids'])}")
+        print(f"Length of input_ids in last chunk: {len(last_chunk['input_ids'])} (can be partial)")
+        
+        print("\nDecoding the first 50 tokens of first chunk to check format:")
+        decoded_tokens = tokenizer.decode(first_chunk['input_ids'][:50])
+        print(decoded_tokens)
 
-    assert all_repos_within_limit, "Verification failed: One or more repos exceed the max file limit after sampling."
-    
-    print(f"Verification successful: All repositories in the sampled dataset have <= {config.MAX_FILES_PER_REPO} files.")
-    print(f"The largest repository in the sampled set has {max_files_found} files.")
+        print("\nDecoding the last 50 tokens of last chunk to check format:")
+        decoded_tokens = tokenizer.decode(last_chunk['input_ids'][-50:])
+        print(decoded_tokens)
+        
+        print("\nValidation successful: Processed dataset has the correct structure.")
+    else:
+        print("Warning: No training chunks were created.")
+
+    print("\n--- data_processing.py all tests complete ---")

@@ -1,4 +1,0 @@
-id,reference,generated
-1,Checks if a data type is a subtype of a specified base type,Checks if a given type is a subtype of another type.
-2,Validates if a value conforms to a datatype specified by a string,Checks if a value is of a specific datatype.
-3,Checks if an integer value fits within the range of a specified bit-width and signedness,Checks if a value (or list of values) is a valid signed or unsigned integer within a specified number of bits.

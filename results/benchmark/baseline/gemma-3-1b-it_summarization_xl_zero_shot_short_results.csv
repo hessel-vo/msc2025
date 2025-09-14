@@ -1,4 +1,0 @@
-id,language,reference,generated
-1,python,Checks if a data type is a subtype of a specified base type,Checks if a class's type is a subtype of a base class's type.
-2,python,Validates if a value conforms to a datatype specified by a string,"Checks the type of a value against a specified datatype, raising an exception if the type is unsupported."
-3,python,Checks if a value or list of values is a valid integer for a specified bit-width and signedness.,Checks if a value is a valid signed integer within a specified number of bits.

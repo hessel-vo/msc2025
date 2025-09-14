@@ -80,7 +80,7 @@ static int hvs_dac_convert_gain(int raw_gain,
 
 **[Target]**
 **Use the summary below to generate the related C function**
-Return the full function code, including function signature and function implementation
+Return the full target function code, including function signature and function implementation
 Do NOT add comments to the code and provide only the code as output
 
 **Summary:**

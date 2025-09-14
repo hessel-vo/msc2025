@@ -34,7 +34,6 @@ The target function below is part of the following file.
 Existing code in the file can be used to generate the correct function.
 
 **File context:**
-```java
 package com.android.car.carlauncher.homescreen;
 
 import android.graphics.drawable.Drawable;
@@ -311,18 +310,15 @@ public class HomeCardFragment extends Fragment implements HomeCardInterface.View
         return mTextBlockLayoutView;
     }
 }
-```
 
 
 **[Target]**
 **Use the summary below to generate the related Java function**
-Return the full function code, including function signature and function implementation
+Return the full target function code, including function signature and function implementation
 Do NOT add comments to the code and provide only the code as output
 
 **Summary:**
 "Updates the header view on the main UI thread by making its root view visible and setting the card's title and icon from the provided `CardHeader` object"
 
 **Code:**
-```<target language>
 public void updateHeaderView(CardHeader header) {
-```

@@ -1,5 +1,4 @@
 **File context:**
-```cpp
 #include <algorithm>
 #include <chrono>
 #include <future>
@@ -1845,4 +1844,3 @@ void DBusConnection::handleSignalStates() {
 
 } // namespace DBus
 } // namespace CommonAPI
-```

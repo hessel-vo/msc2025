@@ -94,7 +94,7 @@ def main():
     source, summary_length, shot_count, subset = validate_arguments(sys.argv)
     print(f"Starting code generation evaluation for: [Source: {source}, Summary: {summary_length}, Shots: {shot_count}]")
 
-    input_filename = f"{MODEL_NAME}_{TASK}_{source}_{shot_count}_shot_{summary_length}_results.csv"
+    input_filename = f"{MODEL_NAME}_{TASK}_{source}_{summary_length}_{shot_count}_results.csv"
     input_filepath = PROJECT_ROOT / "results" / "benchmark" / RESULTS_SUBFOLDER / input_filename
     
     if subset:
@@ -119,10 +119,10 @@ def main():
     output_df = pd.merge(df, metrics_df, on='id')
     
     OUTPUT_ROOT = PROJECT_ROOT / "results" / "evaluation" / RESULTS_SUBFOLDER
-    output_filename = f"evaluation_results_{MODEL_NAME}_{TASK}_{source}_{shot_count}_{summary_length}_shot.csv"
+    output_filename = f"evaluation_results_{MODEL_NAME}_{TASK}_{source}_{summary_length}_{shot_count}.csv"
     output_filepath = OUTPUT_ROOT / output_filename
     if subset:
-        output_filepath = OUTPUT_ROOT / "subset" / f"evaluation_results_{MODEL_NAME}_{TASK}_results.csv"
+        output_filepath = OUTPUT_ROOT / "subset" / f"evaluation_results_{MODEL_NAME}_{TASK}_subset.csv"
     output_filepath.parent.mkdir(parents=True, exist_ok=True)
     output_df.to_csv(output_filepath, index=False)
     print(f"\nDetailed problem-level results saved to: {output_filepath}")
@@ -136,10 +136,10 @@ def main():
 
     corpus_df = pd.DataFrame(corpus_rows)
     
-    corpus_output_filename = f"corpus_score_{MODEL_NAME}_{TASK}_{source}_{shot_count}_{summary_length}_shot.csv"
+    corpus_output_filename = f"corpus_score_{MODEL_NAME}_{TASK}_{source}_{summary_length}_{shot_count}.csv"
     corpus_output_filepath = OUTPUT_ROOT / corpus_output_filename
     if subset:
-        corpus_output_filepath = OUTPUT_ROOT / "subset" / f"corpus_score_{MODEL_NAME}_{TASK}_results.csv"
+        corpus_output_filepath = OUTPUT_ROOT / "subset" / f"corpus_score_{MODEL_NAME}_{TASK}_subset.csv"
     corpus_df.to_csv(corpus_output_filepath, index=False)
     print(f"Overall corpus scores by language saved to: {corpus_output_filepath}")
     

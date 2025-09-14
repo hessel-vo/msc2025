@@ -26,7 +26,6 @@ The target function below is part of the following file.
 Existing code in the file can be used to generate the correct function.
 
 **File context:**
-```python
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, Callable, Set
@@ -298,18 +297,15 @@ def resolve_datatype(datatype: str, fqn: str | None) -> str:
 
 def is_array(datatype: str) -> bool:
     return datatype.endswith("[]")
-```
 
 
 **[Target]**
 **Use the summary below to generate the related Python function**
-Return the full function code, including function signature and function implementation
+Return the full target function code, including function signature and function implementation
 Do NOT add comments to the code and provide only the code as output
 
 **Summary:**
 "Validates that a given value, or each value in a list, is an integer that fits within the numerical range defined by a specified bit-width and signedness"
 
 **Code:**
-```<target language>
 def is_xintx(value: Any, signed: bool, bits: int):
-```

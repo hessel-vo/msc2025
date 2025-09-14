@@ -26,7 +26,6 @@ The target function below is part of the following file.
 Existing code in the file can be used to generate the correct function.
 
 **File context:**
-```python
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, Callable, Set
@@ -289,18 +288,15 @@ def resolve_datatype(datatype: str, fqn: str | None) -> str:
 
 def is_array(datatype: str) -> bool:
     return datatype.endswith("[]")
-```
 
 
 **[Target]**
 **Use the summary below to generate the related Python function**
-Return the full function code, including function signature and function implementation
+Return the full target function code, including function signature and function implementation
 Do NOT add comments to the code and provide only the code as output
 
 **Summary:**
 "Returns a dictionary mapping the short name to the full FQN for all dynamic datatypes that exist in the same namespace as the provided FQN"
 
 **Code:**
-```<target language>
 def get_fqn_namespaced_datatypes(fqn: str | None = None) -> dict[str, str]:
-```

@@ -1,5 +1,4 @@
 **File context:**
-```java
 package com.android.car.carlauncher.homescreen;
 
 import android.graphics.drawable.Drawable;
@@ -279,4 +278,3 @@ public class HomeCardFragment extends Fragment implements HomeCardInterface.View
         return mTextBlockLayoutView;
     }
 }
-```
