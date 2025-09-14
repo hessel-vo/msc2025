@@ -83,7 +83,7 @@ def run_benchmark():
     if subset == "subset":
         summary_type = "summary_long"
         INPUT_CSV_PATH = PROJECT_ROOT / "benchmark_dataset" / "benchmark_dataset_subset.csv"
-        PROMPTS_DIR = PROJECT_ROOT / "benchmark_dataset" / "prompts" / "created_prompts" / task_type / "subset_context"
+        PROMPTS_DIR = PROJECT_ROOT / "benchmark_dataset" / "prompts" / "created_prompts" / task_type / "subset"
         OUTPUT_FILENAME = OUTPUT_DIR / f"{MODEL_NAME}_{task_type}_subset_results.csv"
     
 
