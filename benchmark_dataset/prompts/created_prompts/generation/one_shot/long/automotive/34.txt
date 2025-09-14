@@ -37,4 +37,8 @@ Do NOT add comments to the code and provide only the code as output
 "Determines if a component should be added to a launchable list, returning `false` if its package is explicitly hidden or if it's a custom media component and launchable apps are also being shown, otherwise returning `true` for valid launchable or media service types"
 
 **Code:**
-@NonNull String packageName) {
+private static boolean shouldAddToLaunchables(@NonNull ComponentName componentName,
+        @NonNull Set<String> appsToHide,
+        @NonNull Set<String> customMediaComponents,
+        @AppTypes int appTypesToShow,
+        @AppTypes int componentAppType) {

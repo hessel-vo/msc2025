@@ -9,4 +9,8 @@ Do NOT add comments to the code and provide only the code as output
 "Determines if an app component should be launchable by filtering against a hide list and de-duplicating media services"
 
 **Code:**
-@NonNull String packageName) {
+private static boolean shouldAddToLaunchables(@NonNull ComponentName componentName,
+        @NonNull Set<String> appsToHide,
+        @NonNull Set<String> customMediaComponents,
+        @AppTypes int appTypesToShow,
+        @AppTypes int componentAppType) {
