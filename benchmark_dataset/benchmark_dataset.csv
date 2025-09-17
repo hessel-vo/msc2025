@@ -787,7 +787,11 @@ import java.util.Set;",Gets the media browser service component from a given pac
             Log.e(TAG, ""Invalid componentAppType : "" + componentAppType);
             return false;
     }
-}",@NonNull String packageName) {,"import static java.lang.annotation.RetentionPolicy.SOURCE;
+}","private static boolean shouldAddToLaunchables(@NonNull ComponentName componentName,
+        @NonNull Set<String> appsToHide,
+        @NonNull Set<String> customMediaComponents,
+        @AppTypes int appTypesToShow,
+        @AppTypes int componentAppType) {","import static java.lang.annotation.RetentionPolicy.SOURCE;
 
 import android.annotation.Nullable;
 import android.app.Activity;

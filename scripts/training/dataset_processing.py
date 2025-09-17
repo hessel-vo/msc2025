@@ -35,7 +35,7 @@ def apply_dynamic_sampling(raw_train_dataset, config):
     This function relies on a pre-seeded NumPy global random state for reproducibility.
     """
     print("\n--- Applying dynamic sampling and shuffling for new epoch ---")
-    unique_repo_ids = list(set(raw_train_dataset['repo_id']))
+    unique_repo_ids = sorted(list(set(raw_train_dataset['repo_id'])))
     print(f"Found {len(unique_repo_ids)} unique repositories in the training set.")
 
     sampled_datasets = []
@@ -74,13 +74,14 @@ def process_dataset_for_training(dataset, tokenizer, config):
     """
     print("\n--- Processing dataset for training (StarCoder2 format) ---")
     
-    all_chunks = {'input_ids': [], 'attention_mask': []}
+    all_chunks = {'input_ids': []}
     
     REPO_NAME_TOKEN = "<repo_name>"
     FILE_SEP_TOKEN = "<file_sep>"
     END_OF_TEXT_TOKEN = "<|endoftext|>"
     
-    unique_repo_ids = list(set(dataset['repo_id']))
+    unique_repo_ids = sorted(list(set(dataset['repo_id'])))
+    print(unique_repo_ids)
     total_tokens_processed = 0
     
     for repo_id in tqdm(unique_repo_ids, desc="Processing repositories"):
@@ -117,7 +118,6 @@ def process_dataset_for_training(dataset, tokenizer, config):
         total_tokens_processed += total_length
 
         if total_length == 0:
-            print("TESTING LENGTH 0, SKIPPING")
             continue
 
         for i in range(0, total_length, config.MAX_SEQ_LENGTH):
@@ -125,15 +125,7 @@ def process_dataset_for_training(dataset, tokenizer, config):
             chunk_ids = token_ids[i:end]
             
             all_chunks['input_ids'].append(chunk_ids)
-            all_chunks['attention_mask'].append([1] * len(chunk_ids))
     
-    smaller_chunks = 0
-    for input_ids, attention_mask in zip(all_chunks['input_ids'], all_chunks['attention_mask']):
-        assert len(input_ids) == len(attention_mask), "Input IDs and attention mask lengths do not match!"
-        if len(input_ids) < config.MAX_SEQ_LENGTH:
-            smaller_chunks += 1
-            print(f"Partial chunk of length {len(input_ids)} (less than {config.MAX_SEQ_LENGTH}) retained.")
-    print(f"Total partial chunks (less than {config.MAX_SEQ_LENGTH} tokens): {smaller_chunks}")
     processed_dataset = datasets.Dataset.from_dict(all_chunks)
     
     print(f"Total training chunks created: {len(processed_dataset)} (including partial chunks)")
@@ -155,20 +147,13 @@ if __name__ == "__main__":
     # To make this testing block reproducible, we mimic what train.py will do.
     # In the real run, these lines will be in the main training script.
     print(f"\n--- Seeding NumPy for reproducible testing with SEED={config.SEED} ---")
-    np.random.seed(config.SEED)
+    # np.random.seed(config.SEED)
 
     raw_train, raw_eval = load_and_split_data(config)
-    
-    print(raw_train)
-    print(raw_eval)
 
     print("\n--- RUN 1: Generating first epoch dataset ---")
     epoch_dataset_1 = apply_dynamic_sampling(raw_train, config)
 
-    print("\n--- Verifying first epoch dataset ---")
-    print(epoch_dataset_1)
-    print(raw_eval)
-    sys.exit(0)
     
     print("\n--- RUN 2: Generating second epoch dataset ---")
     epoch_dataset_2 = apply_dynamic_sampling(raw_train, config)

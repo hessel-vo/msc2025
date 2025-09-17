@@ -16,14 +16,14 @@ os.environ['HF_HOME'] = str(HF_CACHE_DIR)
 import evaluate
 
 # Constants for the model and results folder
-MODEL_NAME = "gemma-3-1b-it"
+MODEL_NAME = "gemma-3-12b-it"
 RESULTS_SUBFOLDER = "baseline"
 TASK = "summarization"
 
 def validate_arguments(args):
     if len(args) < 4:
         print("Usage: python run_summarization_evaluation.py <xl|auto> <summary_length> <shot_count>")
-        print("Example: python run_summarization_evaluation.py one short")
+        print("Example: python run_summarization_evaluation.py xl short one")
         sys.exit(1)
 
     source, summary_length, shot_count, subset = args[1], args[2], args[3], args[4] if len(args) == 5 else None
@@ -73,6 +73,7 @@ def calculate_bleu_scores(df):
     return problem_scores, corpus_scores
 
 def calculate_rouge_scores(df):
+    # Seeded due to bootstrapping applied when calculating corpus-level scores
     rouge_metric = evaluate.load("rouge", seed=42)
     
     all_predictions = df["generated"].astype(str).tolist()
@@ -99,6 +100,7 @@ def calculate_rouge_scores(df):
         predictions=all_predictions,
         references=all_references
     )
+    
     corpus_scores = {f"corpus_{key}": value for key, value in corpus_result.items()}
 
     return problem_scores, corpus_scores
@@ -115,7 +117,7 @@ def calculate_bertscore(df):
         predictions=all_predictions,
         references=all_references,
         lang="en",
-        model_type="microsoft/deberta-xlarge-mnli"
+        model_type="microsoft/deberta-xlarge-mnli",
     )
 
     problem_scores = {}
@@ -125,7 +127,7 @@ def calculate_bertscore(df):
             'bertscore_recall': individual_results['recall'][i],
             'bertscore_f1': individual_results['f1'][i]
         }
-    
+
     print("Calculating corpus-level BERTScore...")
     # Average score for overall corpus score
     corpus_scores = {
@@ -138,7 +140,7 @@ def calculate_bertscore(df):
 
 def main():
     source, summary_length, shot_count, subset = validate_arguments(sys.argv)
-    print(f"Starting summarization evaluation for: [Shots: {shot_count}, Summary: {summary_length}]")
+    print(f"Starting summarization evaluation for: [Source: {source}, Summary: {summary_length}, Shots: {shot_count}]")
 
     input_filename = f"{MODEL_NAME}_{TASK}_{source}_{summary_length}_{shot_count}_results.csv"
     input_filepath = PROJECT_ROOT / "results" / "benchmark" / RESULTS_SUBFOLDER / input_filename
