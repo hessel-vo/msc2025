@@ -77,7 +77,7 @@ def run_benchmark():
     else:
         PROMPTS_DIR = PROJECT_ROOT / "benchmark_dataset" / "prompts" / "created_prompts" / task_type / "zero_shot" / short_or_long
     
-    OUTPUT_DIR = PROJECT_ROOT / "results" / "benchmark" / RESULT_TYPE
+    OUTPUT_DIR = PROJECT_ROOT / "results" / "benchmark" / RESULT_TYPE / "habrok"
     OUTPUT_FILENAME = OUTPUT_DIR / f"{MODEL_NAME}_{task_type}_{source}_{short_or_long}_{shot_count}_results.csv"
 
     if subset == "subset":
