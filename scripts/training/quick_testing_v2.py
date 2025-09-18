@@ -64,7 +64,7 @@ try:
     print("-----------------------\n")
 
     # --- Key Configuration Values ---
-    config = model.config['text_config']
+    config = model.config
     print("--- Key Configuration Values ---")
 
     print(config)
