@@ -13,7 +13,7 @@ EXCLUDED_DIRS = {
     "__pycache__", "node_modules", "vendor", "release-notes", "changelog"
 
     "build", "bin", "obj", "dist", "out", "target", "third_party",
-    "thirdparty", "license", "licenses", "pugixml",
+    "thirdparty", "license", "licenses", "pugixml"
 }
 
 EXCLUDED_FILENAME_ROOTS = {

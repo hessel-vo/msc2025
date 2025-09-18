@@ -3,9 +3,9 @@ import os
 
 BASE_PATH = "/home/hessel/workspace/RUG/MSc2025/project/code/repositories/all_repos"
 
-JSONL_FILE = "../scripts/data_preparation/03_deduplication/target_only/final_dataset_target_only.jsonl"
+JSONL_FILE = "../scripts/data_preparation/03_deduplication/core/final_dataset_core.jsonl"
 
-OUTPUT_FILE = "file_list_target_only.txt"
+OUTPUT_FILE = "file_list_core.txt"
 
 
 def generate_full_paths(base_path, jsonl_file):

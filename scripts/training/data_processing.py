@@ -42,7 +42,6 @@ def apply_dynamic_sampling(raw_train_dataset, config):
     for repo_id in tqdm(unique_repo_ids, desc="Sampling and shuffling repositories"):
         repo_dataset = raw_train_dataset.filter(lambda x: x['repo_id'] == repo_id)
         
-        # --- MODIFIED FOR REPRODUCIBILITY ---
         # Relies on the global NumPy random state, which should be seeded once
         # at the beginning of the main training script.
         shuffled_repo_dataset = repo_dataset.shuffle()
@@ -68,7 +67,7 @@ def process_dataset_for_training(dataset, tokenizer, config):
     - Groups files by repository.
     - With 50% probability, prepends repository metadata.
     - Concatenates files with a <file_sep> token.
-    - Appends an <|endoftext|> token after each repository's content.
+    - Appends an <endoftext> token after each repository's content.
     - Chunks the result, keeping all data (including partial final chunks).
     This function relies on a pre-seeded NumPy global random state for reproducibility.
     """
@@ -78,10 +77,9 @@ def process_dataset_for_training(dataset, tokenizer, config):
     
     REPO_NAME_TOKEN = "<repo_name>"
     FILE_SEP_TOKEN = "<file_sep>"
-    END_OF_TEXT_TOKEN = "<|endoftext|>"
+    END_OF_TEXT_TOKEN = "<endoftext>"
     
     unique_repo_ids = sorted(list(set(dataset['repo_id'])))
-    print(unique_repo_ids)
     total_tokens_processed = 0
     
     for repo_id in tqdm(unique_repo_ids, desc="Processing repositories"):
@@ -89,9 +87,8 @@ def process_dataset_for_training(dataset, tokenizer, config):
         
         repo_content_parts = []
         
-        # --- MODIFIED FOR REPRODUCIBILITY ---
         # StarCoder2: 50% chance to include repository metadata, using NumPy's RNG.
-        include_metadata = 1
+        include_metadata = np.random.rand() < 0.5
         
         if include_metadata:
             repo_header = f"{REPO_NAME_TOKEN}{repo_id}"
@@ -147,7 +144,7 @@ if __name__ == "__main__":
     # To make this testing block reproducible, we mimic what train.py will do.
     # In the real run, these lines will be in the main training script.
     print(f"\n--- Seeding NumPy for reproducible testing with SEED={config.SEED} ---")
-    # np.random.seed(config.SEED)
+    np.random.seed(config.SEED)
 
     raw_train, raw_eval = load_and_split_data(config)
 
@@ -168,7 +165,7 @@ if __name__ == "__main__":
     tokenizer = AutoTokenizer.from_pretrained(config.MODEL_ID, token=config.HF_TOKEN)
     
     special_tokens_dict = {
-        'additional_special_tokens': ['<repo_name>', '<file_sep>', '<|endoftext|>']
+        'additional_special_tokens': ['<repo_name>', '<file_sep>', '<endoftext>']
     }
     tokenizer.add_special_tokens(special_tokens_dict)
     print("Tokenizer initialized with StarCoder2 special tokens.")

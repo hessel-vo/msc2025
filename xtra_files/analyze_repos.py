@@ -7,14 +7,15 @@ Used in project as a rought guide to determine which repos to use for validation
 import json
 import os
 from collections import defaultdict
+import sys
 
 
 BASE_PATH = "/home/hessel/workspace/RUG/MSc2025/project/code/repositories/all_repos"
 
 # The cloc JSON report file
-CLOC_JSON_FILE = "cloc_output_all.json"
+CLOC_JSON_FILE = "cloc_results_to3.json"
 
-LANGUAGES_TO_ANALYZE = {"Python", "Java", "C", "C++"}
+LANGUAGES_TO_ANALYZE = {"Python", "Java", "C", "C++", "C/C++ Header"}
 
 
 def analyze_cloc_data(cloc_file, base_path, languages_to_include):
@@ -54,7 +55,10 @@ def analyze_cloc_data(cloc_file, base_path, languages_to_include):
         language = data.get('language')
         code_lines = data.get('code', 0)
 
-        if language not in languages_to_include or code_lines == 0:
+        if language not in languages_to_include:
+            print("shouldnt happen")
+            print(f"Skipping file: {filepath} (Language: {language}, Lines: {code_lines})")
+            # sys.exit(1)
             continue
         
         normalized_filepath = os.path.normpath(filepath)

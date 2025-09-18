@@ -19,7 +19,7 @@ MODEL_ID = "google/gemma-3-4b-it"
 
 MAX_SEQ_LENGTH = 4096
 
-DATASET_TYPE = "extensive"
+DATASET_TYPE = "target_only"
 
 # --- Dataset & Paths ---
 # The path to the input JSONL file containing the processed source code.
@@ -27,10 +27,11 @@ DATASET_PATH = PROJECT_ROOT / "scripts/training/datasets" / f"final_dataset_{DAT
 
 # A list of repository IDs to use for the validation set.
 VALIDATION_REPO_IDS = [
+    'cdsp',
+    'wayland-ivi-extensionme',
+    'ramses-citymodel-demo',
     'pybip',
-    'paho.mqtt.java',
-    'roadC',
-    'dlt-viewer'
+    'barefoot'
 ]
 
 # The maximum number of files to sample from any single repository per epoch.
