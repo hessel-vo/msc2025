@@ -29,7 +29,7 @@ from transformers import AutoProcessor, AutoModelForCausalLM, AutoTokenizer
 
 # --- 2. Configuration ---
 # NOTE: Using the model from your latest script
-MODEL_ID = "google/gemma-3-1b-it"
+MODEL_ID = "google/gemma-3-4b-it"
 
 
 # --- 3. Setup Device (GPU or CPU) ---
@@ -49,7 +49,9 @@ try:
     # Load the model onto the CPU to inspect it without using GPU VRAM
     model = AutoModelForCausalLM.from_pretrained(
         MODEL_ID,
-        token=HF_TOKEN
+        token=HF_TOKEN,
+        torch_dtype=torch.bfloat16,
+        device_map="auto"
     )
     print("Model loaded successfully.\n")
 
@@ -62,8 +64,10 @@ try:
     print("-----------------------\n")
 
     # --- Key Configuration Values ---
-    config = model.config
+    config = model.config['text_config']
     print("--- Key Configuration Values ---")
+
+    # print(config)
     print(f"Hidden Size (d_model): {config.hidden_size}")
     print(f"Number of Hidden Layers: {config.num_hidden_layers}")
     print(f"Intermediate Size (FFN): {config.intermediate_size}")
