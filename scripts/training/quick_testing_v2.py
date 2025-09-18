@@ -29,7 +29,7 @@ from transformers import AutoProcessor, AutoModelForCausalLM, AutoTokenizer
 
 # --- 2. Configuration ---
 # NOTE: Using the model from your latest script
-MODEL_ID = "google/gemma-3-4b-it"
+MODEL_ID = "google/gemma-3-12b-it"
 
 
 # --- 3. Setup Device (GPU or CPU) ---
@@ -67,14 +67,14 @@ try:
     config = model.config['text_config']
     print("--- Key Configuration Values ---")
 
-    # print(config)
-    print(f"Hidden Size (d_model): {config.hidden_size}")
-    print(f"Number of Hidden Layers: {config.num_hidden_layers}")
-    print(f"Intermediate Size (FFN): {config.intermediate_size}")
-    print(f"Number of Attention Heads: {config.num_attention_heads}")
-    print(f"Number of Key/Value Heads: {config.num_key_value_heads}")
-    print(f"Max Position Embeddings: {config.max_position_embeddings}")
-    print("------------------------------\n")
+    print(config)
+    # print(f"Hidden Size (d_model): {config.hidden_size}")
+    # print(f"Number of Hidden Layers: {config.num_hidden_layers}")
+    # print(f"Intermediate Size (FFN): {config.intermediate_size}")
+    # print(f"Number of Attention Heads: {config.num_attention_heads}")
+    # print(f"Number of Key/Value Heads: {config.num_key_value_heads}")
+    # print(f"Max Position Embeddings: {config.max_position_embeddings}")
+    # print("------------------------------\n")
 
     # --- Model Architecture ---
     # This will show the layer structure and names (e.g., 'q_proj', 'v_proj')
