@@ -39,7 +39,7 @@ def apply_dynamic_sampling(raw_train_dataset, config):
     print(f"Found {len(unique_repo_ids)} unique repositories in the training set.")
 
     sampled_datasets = []
-    for repo_id in tqdm(unique_repo_ids, desc="Sampling and shuffling repositories"):
+    for repo_id in unique_repo_ids:
         repo_dataset = raw_train_dataset.filter(lambda x: x['repo_id'] == repo_id)
         
         # Relies on the global NumPy random state, which should be seeded once
@@ -80,9 +80,8 @@ def process_dataset_for_training(dataset, tokenizer, config):
     END_OF_TEXT_TOKEN = "<endoftext>"
     
     unique_repo_ids = sorted(list(set(dataset['repo_id'])))
-    total_tokens_processed = 0
     
-    for repo_id in tqdm(unique_repo_ids, desc="Processing repositories"):
+    for repo_id in unique_repo_ids:
         repo_files = dataset.filter(lambda x: x['repo_id'] == repo_id)
         
         repo_content_parts = []
@@ -112,7 +111,6 @@ def process_dataset_for_training(dataset, tokenizer, config):
         )['input_ids']
 
         total_length = len(token_ids)
-        total_tokens_processed += total_length
 
         if total_length == 0:
             continue
@@ -128,10 +126,6 @@ def process_dataset_for_training(dataset, tokenizer, config):
     print(f"Total training chunks created: {len(processed_dataset)} (including partial chunks)")
     print("--- Dataset processing complete ---")
 
-    print(f"\n--- Data Utilization Stats ---")
-    print("All repositories and tokens are kept.")
-    print(f"Total tokens processed: {total_tokens_processed}")
-    print("Token Utilization: 100.00%")
 
     return processed_dataset
 
@@ -148,18 +142,18 @@ if __name__ == "__main__":
 
     raw_train, raw_eval = load_and_split_data(config)
 
-    print("\n--- RUN 1: Generating first epoch dataset ---")
-    epoch_dataset_1 = apply_dynamic_sampling(raw_train, config)
+    # print("\n--- RUN 1: Generating first epoch dataset ---")
+    # epoch_dataset_1 = apply_dynamic_sampling(raw_train, config)
 
     
-    print("\n--- RUN 2: Generating second epoch dataset ---")
-    epoch_dataset_2 = apply_dynamic_sampling(raw_train, config)
+    # print("\n--- RUN 2: Generating second epoch dataset ---")
+    # epoch_dataset_2 = apply_dynamic_sampling(raw_train, config)
 
-    # --- Verification of epoch-to-epoch randomness ---
-    order_is_different = epoch_dataset_1[0]['content'] != epoch_dataset_2[0]['content']
-    print(f"\nIs the order of examples different between epochs? {'Yes' if order_is_different else 'No'}")
-    assert order_is_different, "Epochs are not being shuffled differently! Check seeding."
-    print("Validation successful: Per-epoch data is correctly randomized.")
+    # # --- Verification of epoch-to-epoch randomness ---
+    # order_is_different = epoch_dataset_1[0]['content'] != epoch_dataset_2[0]['content']
+    # print(f"\nIs the order of examples different between epochs? {'Yes' if order_is_different else 'No'}")
+    # assert order_is_different, "Epochs are not being shuffled differently! Check seeding."
+    # print("Validation successful: Per-epoch data is correctly randomized.")
     
     print("\n--- Initializing tokenizer for testing ---")
     tokenizer = AutoTokenizer.from_pretrained(config.MODEL_ID, token=config.HF_TOKEN)
@@ -169,6 +163,11 @@ if __name__ == "__main__":
     }
     tokenizer.add_special_tokens(special_tokens_dict)
     print("Tokenizer initialized with StarCoder2 special tokens.")
+
+    print("\n--- Processing evaluation dataset for verification ---")
+    processed_eval_dataset = process_dataset_for_training(raw_eval, tokenizer, config)
+
+    sys.exit(1)  
 
     # Process one of the sampled datasets for a final check
     processed_train_dataset = process_dataset_for_training(epoch_dataset_1, tokenizer, config)
