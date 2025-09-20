@@ -138,6 +138,19 @@ public:
         }
     }
 
+    void joinOnExit(std::uintptr_t conn, std::thread & t) {
+        std::lock_guard<std::mutex> lock(mutex_);
+        if (connections_.end() != connections_.find(conn)) {
+            bool found(false);
+            std::vector<std::thread*>::const_iterator it = threads_.begin();
+            while (!found && it != threads_.end()) {
+                found = (&t == *it++);
+            }
+            if (!found) {
+                threads_.push_back(&t);
+            }
+        }
+    }
 
 private:
 
@@ -502,17 +515,6 @@ bool DBusConnection::isConnected() const {
 
 DBusProxyConnection::ConnectionStatusEvent& DBusConnection::getConnectionStatusEvent() {
     return dbusConnectionStatusEvent_;
-}
-
-//Does this need to be a weak pointer?
-const std::shared_ptr<DBusObjectManager> DBusConnection::getDBusObjectManager() {
-    if (!dbusObjectManager_) {
-        std::lock_guard<std::mutex> itsLock(objectManagerGuard_);
-        if (!dbusObjectManager_) {
-            dbusObjectManager_ = std::make_shared<DBusObjectManager>(shared_from_this());
-        }
-    }
-    return dbusObjectManager_;
 }
 
 bool DBusConnection::requestServiceNameAndBlock(const std::string& serviceName) const {
@@ -1882,11 +1884,11 @@ void DBusConnection::handleSignalStates() {
 **[Target]**
 **Use the summary below to generate the related Cpp function**
 Return the full target function code, including function signature and function implementation
-Do NOT include surrounding file code
+Output ONLY the target function below, do NOT include other file code
 Do NOT add comments to the code and provide only the code as output
 
 **Summary:**
-"Atomically registers a given thread to be joined later by adding it to a list, but only if its associated connection is active and the thread is not already present in the list"
+"Lazily initializes and returns a thread-safe, singleton `DBusObjectManager` instance using a double-checked locking pattern"
 
 **Code:**
-void joinOnExit(std::uintptr_t conn, std::thread & t) {
+const std::shared_ptr<DBusObjectManager> DBusConnection::getDBusObjectManager() {

@@ -68,12 +68,6 @@ DBusConnectionStatusEvent::DBusConnectionStatusEvent(DBusConnection* dbusConnect
                 dbusConnection_(dbusConnection) {
 }
 
-void DBusConnectionStatusEvent::onListenerAdded(const Listener &_listener, const Subscription _subscription) {
-    (void)_subscription;
-    if (dbusConnection_->isConnected())
-        _listener(AvailabilityStatus::AVAILABLE);
-}
-
 // Helper class to ensure that CommonAPI::Runtime (static instance) is not destroyed unless last
 // connection is closed. Also tries to safely join dispatch threads (~CompletionHelper will be
 // executed in main thread's context on program exit), in case DBusConnection::disconnect() has
@@ -138,6 +132,19 @@ public:
         }
     }
 
+    void joinOnExit(std::uintptr_t conn, std::thread & t) {
+        std::lock_guard<std::mutex> lock(mutex_);
+        if (connections_.end() != connections_.find(conn)) {
+            bool found(false);
+            std::vector<std::thread*>::const_iterator it = threads_.begin();
+            while (!found && it != threads_.end()) {
+                found = (&t == *it++);
+            }
+            if (!found) {
+                threads_.push_back(&t);
+            }
+        }
+    }
 
 private:
 
@@ -1882,11 +1889,11 @@ void DBusConnection::handleSignalStates() {
 **[Target]**
 **Use the summary below to generate the related Cpp function**
 Return the full target function code, including function signature and function implementation
-Do NOT include surrounding file code
+Output ONLY the target function below, do NOT include other file code
 Do NOT add comments to the code and provide only the code as output
 
 **Summary:**
-"Atomically registers a given thread to be joined later by adding it to a list, but only if its associated connection is active and the thread is not already present in the list"
+"When a new listener is added, this callback immediately notifies it with an `AVAILABLE` status if the D-Bus connection is already active"
 
 **Code:**
-void joinOnExit(std::uintptr_t conn, std::thread & t) {
+void DBusConnectionStatusEvent::onListenerAdded(const Listener &_listener, const Subscription _subscription) {

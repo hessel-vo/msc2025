@@ -235,6 +235,12 @@ class Datatypes:
                 return t
         return None
 
+    @classmethod
+    def is_datatype(cls, value: Any, datatype: str) -> bool:
+        t = cls.get_type(datatype)
+        if t is None:
+            raise DatatypesException(f"Unsupported datatype: {datatype}")
+        return t[1](value)
 
     @classmethod
     def is_subtype_of(cls, check: str, base: str) -> bool:
@@ -245,35 +251,6 @@ class Datatypes:
         if not base_type:
             raise DatatypesException(f"Not a valid type: '{base}'")
         return check in base_type[2] or check == base
-
-
-def get_fqn_namespaced_datatypes(fqn: str | None = None) -> dict[str, str]:
-    """
-    We want to be able to reference datatypes from within the same file
-    or same namespace since we support structs in structs
-
-    For instance if we have the struct Types.A.B.C
-    and we have another struct Types.A.B.D then the D struct
-    should be able to reference C as a datatype
-    """
-    if not fqn:
-        return {}
-    fqn_namespaced_datatypes = {}
-    for t in dynamic_datatypes:
-        # This excludes referencing the own struct as a datatype
-        if fqn.startswith(t):
-            continue
-
-        # fqn: Types.A.B.C.x_property
-        # t: Types.A.B.D
-        # We are checking whether fqn starts with Types.A.B
-        # in this case we add {D: Types.A.B.D}
-        if fqn.startswith(".".join(t.split(".")[:-1])):
-            fqn_namespaced_datatypes[(t.split(".")[-1])] = t
-
-    if fqn_namespaced_datatypes:
-        log.debug(f"Namespaced datatypes, {fqn=}, {fqn_namespaced_datatypes=}")
-    return fqn_namespaced_datatypes
 
 
 def get_dynamic_datatypes(fqn: str | None = None) -> list[str]:
@@ -316,11 +293,11 @@ def is_array(datatype: str) -> bool:
 **[Target]**
 **Use the summary below to generate the related Python function**
 Return the full target function code, including function signature and function implementation
-Do NOT include surrounding file code
+Output ONLY the target function below, do NOT include other file code
 Do NOT add comments to the code and provide only the code as output
 
 **Summary:**
-"Raises an exception if the specified 'datatype' is unsupported, otherwise retrieves that type's validation function and returns the boolean result of calling it with the provided 'value'"
+"Returns a dictionary mapping the short name to the full FQN for all dynamic datatypes that exist in the same namespace as the provided FQN"
 
 **Code:**
-def is_datatype(cls, value: Any, datatype: str) -> bool:
+def get_fqn_namespaced_datatypes(fqn: str | None = None) -> dict[str, str]:

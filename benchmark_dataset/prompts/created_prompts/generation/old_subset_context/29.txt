@@ -106,6 +106,15 @@ public class HomeCardFragment extends Fragment implements HomeCardInterface.View
     }
 
     @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+        mRootView = inflater.inflate(R.layout.card_fragment, container, false);
+        mCardTitle = mRootView.findViewById(R.id.card_name);
+        mCardIcon = mRootView.findViewById(R.id.card_icon);
+        return mRootView;
+    }
+
+    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mPresenter.onViewCreated();
@@ -224,17 +233,6 @@ public class HomeCardFragment extends Fragment implements HomeCardInterface.View
         updateControlBarButton(rightButton, mControlBarRightButton);
     }
 
-    private void updateControlBarButton(DescriptiveTextWithControlsView.Control buttonContent,
-            ImageButton buttonView) {
-        if (buttonContent != null) {
-            buttonView.setImageDrawable(buttonContent.getIcon());
-            buttonView.setOnClickListener(buttonContent.getOnClickListener());
-            buttonView.setVisibility(View.VISIBLE);
-        } else {
-            buttonView.setVisibility(View.GONE);
-        }
-    }
-
     protected final void updateTextBlock(CharSequence mainText, CharSequence tapForMoreText) {
         getTextBlockLayoutView().setVisibility(View.VISIBLE);
         mTextBlock.setText(mainText);
@@ -318,11 +316,11 @@ public class HomeCardFragment extends Fragment implements HomeCardInterface.View
 **[Target]**
 **Use the summary below to generate the related Java function**
 Return the full target function code, including function signature and function implementation
-Do NOT include surrounding file code
+Output ONLY the target function below, do NOT include other file code
 Do NOT add comments to the code and provide only the code as output
 
 **Summary:**
-"Inflates the `card_fragment` layout, finds and assigns the card's title and icon views, and returns the resulting root view"
+"Updates an `ImageButton`'s icon and click listener from a content object and makes it visible, or hides the button if the content is null"
 
 **Code:**
-public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+private void updateControlBarButton(DescriptiveTextWithControlsView.Control buttonContent, ImageButton buttonView) {

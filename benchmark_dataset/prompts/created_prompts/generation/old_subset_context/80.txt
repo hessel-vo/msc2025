@@ -176,24 +176,25 @@ void send_positive_reset_response(uint8_t reset_type) {
   }
 }
 
-void send_request_download_response() {
-  int ret;
-  uint8_t positive_sid = UDS_SID_REQUEST_DOWNLOAD + 0x40;
+void handle_ecu_reset(uint8_t *data, size_t len) {
+  if (len != 2) {
+    send_negative_response(UDS_SID_ECU_RESET,
+                           UDS_NRC_INCORRECT_MESSAGE_LENGTH_OR_INVALID_FORMAT);
+    return;
+  }
 
-  // TODO: get max packet length from configured buffers sizes
-  // e.g. size of net buffers
+  uint8_t reset_type = data[1];
 
-  uint8_t tx_data[] = {
-    positive_sid,
-    0x20,  // positive response code
-    0x00,
-    0xD2,  // block size = 258 - 2
-  };
+  if (reset_type == UDS_RESET_TYPE_HARD) {
+    send_positive_reset_response(UDS_RESET_TYPE_HARD);
 
-  ret = isotp_send(&send_ctx, can_dev, tx_data, sizeof(tx_data), &tx_addr,
-                   &rx_addr, send_complete_cb, NULL);
-  if (ret != ISOTP_N_OK) {
-    LOG_ERR("Error while sending data to ID %d [%d]\n", tx_addr.std_id, ret);
+    k_sleep(K_MSEC(100));
+
+    LOG_DBG("Hard reset\n");
+    sys_reboot(SYS_REBOOT_COLD);
+  } else {
+    send_negative_response(UDS_SID_ECU_RESET,
+                           UDS_NRC_SUBFUNCTION_NOT_SUPPORTED);
   }
 }
 
@@ -455,11 +456,11 @@ K_THREAD_DEFINE(
 **[Target]**
 **Use the summary below to generate the related C function**
 Return the full target function code, including function signature and function implementation
-Do NOT include surrounding file code
+Output ONLY the target function below, do NOT include other file code
 Do NOT add comments to the code and provide only the code as output
 
 **Summary:**
-"Processes a UDS ECU Reset request, validating the 2-byte message length, sending a positive response before triggering a system reboot for a 'hard reset', and sending a negative response for either an incorrect length or an unsupported reset sub-function"
+"Constructs and sends a 4-byte UDS positive response for a "Request Download" service, specifying a maximum block length of 0x00D2, over a CAN bus using the ISO-TP protocol and logging an error on failure"
 
 **Code:**
-void handle_ecu_reset(uint8_t *data, size_t len) {
+void send_request_download_response() {
