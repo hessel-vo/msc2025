@@ -19,7 +19,7 @@ Existing code in the file can be used to generate the correct function.
 **[Target]**
 **Use the summary below to generate the related <code language> function**
 Return the full target function code, including function signature and function implementation
-Do NOT include surrounding file code
+Return ONLY the code from the single target function
 Do NOT add comments to the code and provide only the code as output
 
 **Summary:**

@@ -316,7 +316,7 @@ public class HomeCardFragment extends Fragment implements HomeCardInterface.View
 **[Target]**
 **Use the summary below to generate the related Java function**
 Return the full target function code, including function signature and function implementation
-Do NOT include surrounding file code
+Return ONLY the code from the single target function
 Do NOT add comments to the code and provide only the code as output
 
 **Summary:**

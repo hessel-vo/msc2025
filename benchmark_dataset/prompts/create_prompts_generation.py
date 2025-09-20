@@ -30,7 +30,7 @@ def create_prompts(source, num_examples, sum_length, subset=None):
         output_dir = os.path.join(BASE_OUTPUT_DIR, f"{num_examples}_shot", sum_length, source_folder)
 
     if subset:
-        output_dir = os.path.join(BASE_OUTPUT_DIR, subset)
+        output_dir = os.path.join(BASE_OUTPUT_DIR, 'subset_context')
 
     examples_dir = os.path.join(BASE_EXAMPLES_DIR, source_folder, f"{sum_length}_summ")
 
