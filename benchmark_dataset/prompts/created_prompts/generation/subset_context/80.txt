@@ -455,8 +455,7 @@ K_THREAD_DEFINE(
 
 **[Target]**
 **Use the summary below to generate the related C function**
-Return the full target function code, including function signature and function implementation
-Return ONLY the code from the single target function
+Return ONLY the full target function code, including function signature and function implementation
 Do NOT add comments to the code and provide only the code as output
 
 **Summary:**
