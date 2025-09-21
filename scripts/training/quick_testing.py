@@ -40,17 +40,17 @@ else:
     print("Current device:", device)
 
 # --- 3. Load Model and Processor ---
-print(f"Loading model: {MODEL_ID}...")
+# print(f"Loading model: {MODEL_ID}...")
 
-model = AutoModelForCausalLM.from_pretrained(
-    MODEL_ID,
-    torch_dtype=torch.bfloat16,
-    device_map="auto",
-    token=HF_TOKEN
-).eval()
-print("Model and processor loaded successfully.")
+# model = AutoModelForCausalLM.from_pretrained(
+#     MODEL_ID,
+#     torch_dtype=torch.bfloat16,
+#     device_map="auto",
+#     token=HF_TOKEN
+# ).eval()
+# print("Model and processor loaded successfully.")
 
-print(model)
+# print(model)
 # Access the config object attached to the model
 # config = model.config
 
@@ -68,6 +68,12 @@ print(tokenizer.special_tokens_map)
 
 print("\n--- Full List of Special Tokens ---")
 print(tokenizer.all_special_tokens)
+
+special_tokens_dict = {'additional_special_tokens': ['<repo_name>', '<file_sep>', '<endoftext>']}
+num_added_toks = tokenizer.add_special_tokens(special_tokens_dict)
+print(f"Added {num_added_toks} new special tokens.")
+
+print(tokenizer.special_tokens_map)
 
 print("\n--- Added Tokens (Often includes special ones) ---")
 # This shows tokens added after initial pre-training

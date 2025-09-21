@@ -17,26 +17,26 @@ SEED=42
 # --- Model Parameters ---
 MODEL_ID = "google/gemma-3-1b-it"
 
-MAX_SEQ_LENGTH = 4096
+MAX_SEQ_LENGTH = 2048
 
-DATASET_TYPE = "target_only"
+# The maximum number of chunks to sample from any single repository per epoch.
+# This helps prevent dominant repositories from biasing the training.
+MAX_CHUNKS_PER_REPO = 260
+
 
 # --- Dataset & Paths ---
+DATASET_TYPE = "target_only"
 # The path to the input JSONL file containing the processed source code.
 DATASET_PATH = PROJECT_ROOT / "scripts/training/datasets" / f"final_dataset_{DATASET_TYPE}.jsonl"
 
 # A list of repository IDs to use for the validation set.
 VALIDATION_REPO_IDS = [
     'cdsp',
-    'wayland-ivi-extensionme',
+    'wayland-ivi-extension',
     'ramses-citymodel-demo',
     'pybip',
     'barefoot'
 ]
-
-# The maximum number of files to sample from any single repository per epoch.
-# This helps prevent dominant repositories from biasing the training.
-MAX_FILES_PER_REPO = 200
 
 # Directory to save the trained LoRA adapter and any training checkpoints.
 OUTPUT_DIR = PROJECT_ROOT / "scripts/training/trained_models"

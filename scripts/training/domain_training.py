@@ -1,9 +1,13 @@
+# main_train.py
+
+import os
+import sys
+import numpy as np
+import torch
+
 import config
 import data_processing as dp
 
-import os
-import torch
-import numpy as np
 from transformers import (
     AutoTokenizer,
     AutoModelForCausalLM,
@@ -13,12 +17,14 @@ from transformers import (
     EarlyStoppingCallback,
 )
 from peft import get_peft_model, LoraConfig
-import datasets
-import sys
 
+
+# -----------------------
+# Step 1: Environment
+# -----------------------
 
 def setup_environment():
-    """Sets random seeds for reproducibility and creates the output directory."""
+    """Sets random seeds for reproducibility and ensures output dir exists."""
     print("--- [Step 1] Initializing Setup ---")
     np.random.seed(config.SEED)
     torch.manual_seed(config.SEED)
@@ -30,38 +36,50 @@ def setup_environment():
     config.OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     print("--- Setup complete ---")
 
+
+# -----------------------
+# Step 2: Model + Tokenizer
+# -----------------------
+
 def load_model_and_tokenizer():
-    """Loads the base model and tokenizer, adding special tokens."""
+    """Loads base model & tokenizer, registers special tokens, resizes embeddings."""
     print("\n--- [Step 2] Loading Tokenizer & Model ---")
-    
-    # Load tokenizer
+
+    # Tokenizer
     tokenizer = AutoTokenizer.from_pretrained(
         config.MODEL_ID,
         token=config.HF_TOKEN,
     )
 
-    special_tokens_dict = {'additional_special_tokens': ['<repo_name>', '<file_sep>', '<endoftext>']}
+    # Add task/domain markers as additional special tokens
+    special_tokens_dict = {"additional_special_tokens": ["<repo_name>", "<file_sep>", "<endoftext>"]}
     num_added_toks = tokenizer.add_special_tokens(special_tokens_dict)
     print(f"Added {num_added_toks} new special tokens.")
 
+    # Ensure we have a pad token (common for causal LMs)
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
         print("Using `eos_token` as `pad_token`.")
 
-    # Load model
+    # Base model
     model = AutoModelForCausalLM.from_pretrained(
         config.MODEL_ID,
         token=config.HF_TOKEN,
         torch_dtype=torch.bfloat16,
         device_map="auto",
-        attn_implementation='eager'
+        attn_implementation="eager",
     )
-    
-    # Resize embeddings for new tokens
+
+    # Resize embeddings to include newly added tokens
     model.resize_token_embeddings(len(tokenizer))
     print(f"Base model '{config.MODEL_ID}' loaded. Token embeddings resized to {len(tokenizer)}.")
     print("--- Model and tokenizer loading complete ---")
     return model, tokenizer
+
+
+# -----------------------
+# Step 3: LoRA
+# -----------------------
 
 def apply_lora_to_model(model):
     """Applies LoRA configuration to the model."""
@@ -73,48 +91,69 @@ def apply_lora_to_model(model):
         target_modules=config.LORA_TARGET_MODULES,
         task_type="CAUSAL_LM",
     )
-
     model = get_peft_model(model, lora_config)
     print("LoRA configuration applied to the model.")
     model.print_trainable_parameters()
     print("--- LoRA setup complete ---")
     return model
 
-def main():
-    """
-    Main function to orchestrate the entire training and evaluation process.
-    """
-    # --- Part 1: Setup ---
-    setup_environment()
-    model, tokenizer = load_model_and_tokenizer()
-    model = apply_lora_to_model(model)
 
-    # --- Part 2: Data Preparation ---
+# -----------------------
+# Step 4: Data
+# -----------------------
+
+def prepare_datasets(tokenizer):
+    """
+    Uses the rolling, in-place dataset from data_processing.py
+    and returns (train_dataset, eval_dataset, advance_callback).
+    """
     print("\n--- [Step 4] Preparing Datasets ---")
-    raw_train_dataset, raw_eval_dataset = dp.load_and_split_data(config)
-    
-    # The evaluation dataset is static, so we can process it once upfront.
-    print("\n--- Processing static evaluation dataset ---")
-    print(raw_eval_dataset)
-    processed_eval_dataset = dp.process_dataset_for_training(raw_eval_dataset, tokenizer, config)
-    print("--- Evaluation dataset processing complete ---")
-    sys.exit(1)
+    train_chunks_by_repo, eval_dataset = dp.load_and_preprocess_data(config, tokenizer)
 
-    # --- Part 3: Trainer Setup ---
+    # Rolling train dataset (fixed length per epoch, per-repo window advances each epoch)
+    rolling_train_ds = dp.BalancedRollingRepoDataset(
+        chunks_by_repo=train_chunks_by_repo,
+        max_chunks_per_repo=config.MAX_CHUNKS_PER_REPO,
+        base_seed=config.SEED,
+    )
+
+    # Callback that advances the dataset window each epoch (no replacement of dataset object)
+    advance_callback = dp.AdvanceEpochWindows(rolling_train_ds)
+
+    # Eval dataset is a static HF Dataset built in load_and_preprocess_data
+    print("--- Data preparation complete ---")
+    return rolling_train_ds, eval_dataset, advance_callback
+
+
+# -----------------------
+# Step 5: Trainer
+# -----------------------
+
+def build_trainer(model, tokenizer, train_dataset, eval_dataset, advance_callback):
+    """Configures the HF Trainer with rolling dataset + LoRA + early stopping."""
     print("\n--- [Step 5] Configuring Hugging Face Trainer ---")
+
     training_args = TrainingArguments(
         output_dir=str(config.OUTPUT_DIR),
         per_device_train_batch_size=config.BATCH_SIZE,
         per_device_eval_batch_size=config.BATCH_SIZE,
         learning_rate=config.LEARNING_RATE,
         logging_steps=config.LOGGING_STEPS,
-        num_train_epochs=config.NUM_EPOCHS, # This is a placeholder; the loop controls epochs.
-        eval_strategy="steps",
+        num_train_epochs=config.NUM_EPOCHS,
+        eval_strategy="steps",        # <-- corrected name
         eval_steps=config.EVAL_STEPS,
         save_strategy="steps",
         save_steps=config.EVAL_STEPS,
         load_best_model_at_end=True,
         bf16=True,
+        group_by_length=True,               # buckets by length to reduce padding waste
+    )
+
+    # Collator for causal LM (pads per batch; labels from input_ids)
+    data_collator = DataCollatorForLanguageModeling(
+        tokenizer=tokenizer,
+        mlm=False,
+        pad_to_multiple_of=8,               # optional; can help with throughput on GPU
     )
 
     early_stopping_callback = EarlyStoppingCallback(
@@ -124,52 +163,47 @@ def main():
     trainer = Trainer(
         model=model,
         args=training_args,
-        eval_dataset=processed_eval_dataset,
+        train_dataset=train_dataset,        # <-- rolling dataset object
+        eval_dataset=eval_dataset,          # <-- static eval dataset from preprocessing
         tokenizer=tokenizer,
-        data_collator=DataCollatorForLanguageModeling(tokenizer, mlm=False),
-        callbacks=[early_stopping_callback],
-        # train_dataset is set dynamically inside the loop
+        data_collator=data_collator,
+        callbacks=[early_stopping_callback, advance_callback],
     )
-    print("--- Trainer configured ---")
+    return trainer
 
-    # --- Part 4: Dynamic Training Loop ---
-    print("\n--- [Step 6] Starting Dynamic Training Loop ---")
-    last_checkpoint = None
-    for epoch in range(config.NUM_EPOCHS):
-        print(f"\n" + "="*50)
-        print(f"--- Starting Epoch {epoch + 1}/{config.NUM_EPOCHS} ---")
-        print("="*50)
-        
-        # Resample and process data for the current epoch
-        epoch_train_dataset_sampled = dp.apply_dynamic_sampling(raw_train_dataset, config)
-        processed_train_dataset = dp.process_dataset_for_training(epoch_train_dataset_sampled, tokenizer, config)
-        
-        # Update the trainer with the new dataset for this epoch
-        trainer.train_dataset = processed_train_dataset
-        
-        # The trainer internally handles the number of steps for one epoch.
-        # We resume from the last checkpoint to continue training state (optimizer, etc.).
-        train_result = trainer.train(resume_from_checkpoint=last_checkpoint)
-        
-        # After each epoch, we find the latest checkpoint to resume from in the next iteration.
-        # This ensures we don't restart training from scratch every epoch.
-        last_checkpoint = training_args.output_dir + f"/checkpoint-{trainer.state.global_step}"
-        
-        # Check if early stopping has been triggered
-        if trainer.state.is_early_stopping:
-            print(f"\nEarly stopping triggered after epoch {epoch + 1}. Training is stopping.")
-            break
-            
-    print("\n--- Training loop finished ---")
 
-    # --- Part 5: Save Final Model ---
-    print("\n--- [Step 7] Saving Final Model ---")
-    # The trainer already loaded the best model at the end of training
-    # because `load_best_model_at_end=True`. We just need to save it.
-    final_save_path = os.path.join(config.OUTPUT_DIR, "final_best_model")
-    trainer.save_model(final_save_path)
-    print(f"Best model saved to {final_save_path}")
-    print("\n--- All steps complete! ---")
+# -----------------------
+# Step 6: Orchestration
+# -----------------------
+
+def main():
+    """
+    Orchestrates setup, data, trainer, and training loop.
+    """
+    setup_environment()
+    model, tokenizer = load_model_and_tokenizer()
+    model = apply_lora_to_model(model)
+
+    train_dataset, eval_dataset, advance_callback = prepare_datasets(tokenizer)
+    trainer = build_trainer(model, tokenizer, train_dataset, eval_dataset, advance_callback)
+
+    print("\n--- [Step 6] Training ---")
+    train_output = trainer.train()
+    print("Training complete.")
+    print(f"Final training loss: {train_output.training_loss:.6f}")
+
+    print("\n--- [Step 7] Saving adapter + tokenizer ---")
+    # For PEFT PeftModel, save_pretrained() saves the adapter; tokenizer saves specials.
+    trainer.model.save_pretrained(str(config.OUTPUT_DIR))
+    tokenizer.save_pretrained(str(config.OUTPUT_DIR))
+    print(f"Saved adapter and tokenizer to: {config.OUTPUT_DIR}")
+
+    # If you ever train base embeddings as well (not typical with pure LoRA),
+    # consider merging and saving full weights:
+    # merged = trainer.model.merge_and_unload()
+    # merged.save_pretrained(str(config.OUTPUT_DIR / "merged"))
+    # tokenizer.save_pretrained(str(config.OUTPUT_DIR / "merged"))
+
 
 if __name__ == "__main__":
     main()

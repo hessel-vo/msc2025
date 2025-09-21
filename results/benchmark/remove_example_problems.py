@@ -3,6 +3,7 @@ import os
 import pandas as pd
 
 CSV_FILE_PATH = './baseline/gemma-3-1b-it_summarization_xl_one_shot_short_results.csv'
+FOLDER_PATH = './baseline/to_process/'
 
 def get_problem_ids(shot_type):
     if shot_type not in ['one', 'three']:
@@ -42,18 +43,27 @@ def filter_csv_file(csv_path, ids_to_remove):
 
 
 def main():
-    if len(sys.argv) != 2:
-        print("Usage: python filter_results.py <one|three>")
+    if len(sys.argv) != 3:
+        print("Usage: python filter_results.py <one|three> <file|folder>")
         sys.exit(1) # Exit with an error code
 
     shot_argument = sys.argv[1]
+    process_mode = sys.argv[2]
 
     # Get the set of problem IDs to be removed
     problem_ids_to_remove = get_problem_ids(shot_argument)
     print(f"Loaded {len(problem_ids_to_remove)} problem IDs from 'examples_{shot_argument}_shot.txt'.")
     
-    # Filter the specified CSV file
-    filter_csv_file(CSV_FILE_PATH, problem_ids_to_remove)
+    if process_mode == 'file':
+        # Filter the specified CSV file
+        filter_csv_file(CSV_FILE_PATH, problem_ids_to_remove)
+    elif process_mode == 'folder':
+        for filename in os.listdir(FOLDER_PATH):
+            if filename.endswith('.csv'):
+                file_path = os.path.join(FOLDER_PATH, filename)
+                filter_csv_file(file_path, problem_ids_to_remove)
+    else:
+        print("Invalid argument. Please specify 'file' or 'folder'.")
 
 
 if __name__ == '__main__':

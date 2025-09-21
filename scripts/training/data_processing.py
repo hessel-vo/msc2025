@@ -1,94 +1,116 @@
-import datasets
 import config
-from tqdm import tqdm
-from transformers import AutoTokenizer
+
 import numpy as np
-import sys
+import datasets
+from collections import defaultdict
+from torch.utils.data import Dataset
+from transformers import TrainerCallback, AutoTokenizer
 
-def load_and_split_data(config):
-    """
-    Loads the dataset from the specified JSONL file and splits it into
-    training and evaluation sets based on repository IDs.
-    """
-    print("--- Loading and splitting data ---")
+
+# Extra function for analyzing repo sizes
+import numpy as np
+
+import pandas as pd
+import numpy as np
+
+def analyze_repo_distribution(train_chunks_by_repo, eval_chunks_by_repo,
+                              cap = None,
+                              percentiles=(50, 75, 90, 95, 99)):
+    # Combine train + validation counts per repo
+    combined_counts: dict[str, int] = {}
+    for rid, chunks in train_chunks_by_repo.items():
+        combined_counts[rid] = combined_counts.get(rid, 0) + len(chunks)
+    for rid, chunks in eval_chunks_by_repo.items():
+        combined_counts[rid] = combined_counts.get(rid, 0) + len(chunks)
+
+    # Apply cap
+    if cap is not None:
+        combined_counts = {rid: min(c, int(cap)) for rid, c in combined_counts.items()}
+
+    rows = [(rid, c) for rid, c in combined_counts.items()]
+    df = pd.DataFrame(rows, columns=["repo_id", "num_chunks"])
+
+    print("\n=== Repository Distribution (train+valid combined)"
+          + (f" — AFTER CAP={cap}" if cap is not None else " — BEFORE CAP")
+          + " ===")
+
+    if df.empty:
+        print("  (No repositories found.)")
+        return
+
+    df = df.sort_values(by=["num_chunks", "repo_id"], ascending=[False, True]).reset_index(drop=True)
+    total_chunks = int(df["num_chunks"].sum())
+    df["percentage"] = (df["num_chunks"] / total_chunks * 100.0).round(2)
+
+    # Print dataframe chunk overview
+    pd.set_option("display.max_rows", None)
+    print(f"  repos={len(df)}  total_chunks={total_chunks}")
+    print("\n  Per-repo breakdown:")
+    print(df)
+
+    # Percentiles overview
+    counts = df["num_chunks"].to_numpy(dtype=np.int64)
+    print("\nPercentiles over num_chunks:")
+    pct_vals = np.percentile(counts, percentiles, method="linear")
+    for p, v in zip(percentiles, pct_vals):
+        p_str = f"{str(p)}"
+        print(f"    {p_str}= {v}")
+
+
+def load_and_preprocess_data(config, tokenizer):
+    print("--- Loading and Pre-processing All Data into Training Pool ---")
+    all_chunks_by_repo = _preprocess_and_chunk_all_data(config, tokenizer)
+
+    print("\n--- Splitting chunks into Training and Validation sets ---")
+    train_chunks_by_repo = {
+        repo_id: chunks for repo_id, chunks in all_chunks_by_repo.items()
+        if repo_id not in config.VALIDATION_REPO_IDS
+    }
+    eval_chunks_by_repo = {
+        repo_id: chunks for repo_id, chunks in all_chunks_by_repo.items()
+        if repo_id in config.VALIDATION_REPO_IDS
+    }
+
+    # analyze_repo_distribution(train_chunks_by_repo, eval_chunks_by_repo)
+    # analyze_repo_distribution(train_chunks_by_repo, eval_chunks_by_repo, cap=config.MAX_CHUNKS_PER_REPO)
+
+    print(f"Training repositories: {len(train_chunks_by_repo)}")
+    print(f"Validation repositories: {len(eval_chunks_by_repo)}")
+
+    eval_chunks_flat = [chunk for chunks in eval_chunks_by_repo.values() for chunk in chunks]
+    eval_dataset = datasets.Dataset.from_dict({"input_ids": eval_chunks_flat})
+
+    print(f"Total training repositories: {len(train_chunks_by_repo)}")
+    print(f"Created a static validation dataset with {len(eval_dataset)} chunks.")
+    print("--- Data preparation complete ---")
+
+    return train_chunks_by_repo, eval_dataset
+
+
+def _preprocess_and_chunk_all_data(config, tokenizer):
+    # Helper function to preprocess data
+
     full_dataset = datasets.load_dataset(
-        'json', data_files=str(config.DATASET_PATH), split='train'
+        'json',
+        data_files=str(config.DATASET_PATH),
+        split='train',
+        cache_dir=config.HF_CACHE_DIR
     )
-    print(f"Total examples loaded: {len(full_dataset)}")
+    files_grouped_by_repo = defaultdict(list)
+    for example in full_dataset:
+        files_grouped_by_repo[example['repo_id']].append(example)
 
-    raw_train_dataset = full_dataset.filter(
-        lambda example: example['repo_id'] not in config.VALIDATION_REPO_IDS
-    )
-    raw_eval_dataset = full_dataset.filter(
-        lambda example: example['repo_id'] in config.VALIDATION_REPO_IDS
-    )
-
-    print(f"Raw training set size: {len(raw_train_dataset)} examples")
-    print(f"Raw evaluation set size: {len(raw_eval_dataset)} examples")
-    print("--- Data loading and splitting complete ---")
-    return raw_train_dataset, raw_eval_dataset
-
-def apply_dynamic_sampling(raw_train_dataset, config):
-    """
-    Balances and randomizes the training data for a single epoch by sampling
-    from large repositories and shuffling the file order for all.
-    This function relies on a pre-seeded NumPy global random state for reproducibility.
-    """
-    print("\n--- Applying dynamic sampling and shuffling for new epoch ---")
-    unique_repo_ids = sorted(list(set(raw_train_dataset['repo_id'])))
-    print(f"Found {len(unique_repo_ids)} unique repositories in the training set.")
-
-    sampled_datasets = []
-    for repo_id in unique_repo_ids:
-        repo_dataset = raw_train_dataset.filter(lambda x: x['repo_id'] == repo_id)
-        
-        # Relies on the global NumPy random state, which should be seeded once
-        # at the beginning of the main training script.
-        shuffled_repo_dataset = repo_dataset.shuffle()
-
-        if len(shuffled_repo_dataset) > config.MAX_FILES_PER_REPO:
-            sampled_repo_dataset = shuffled_repo_dataset.select(range(config.MAX_FILES_PER_REPO))
-        else:
-            sampled_repo_dataset = shuffled_repo_dataset
-        
-        sampled_datasets.append(sampled_repo_dataset)
-
-    final_epoch_dataset = datasets.concatenate_datasets(sampled_datasets)
-    # --- MODIFIED FOR REPRODUCIBILITY ---
-    final_epoch_dataset = final_epoch_dataset.shuffle()
-
-    print(f"Total examples in this epoch's dataset: {len(final_epoch_dataset)}")
-    print("--- Dynamic sampling and shuffling complete ---")
-    return final_epoch_dataset
-
-def process_dataset_for_training(dataset, tokenizer, config):
-    """
-    Processes a dataset using the StarCoder2 methodology:
-    - Groups files by repository.
-    - With 50% probability, prepends repository metadata.
-    - Concatenates files with a <file_sep> token.
-    - Appends an <endoftext> token after each repository's content.
-    - Chunks the result, keeping all data (including partial final chunks).
-    This function relies on a pre-seeded NumPy global random state for reproducibility.
-    """
-    print("\n--- Processing dataset for training (StarCoder2 format) ---")
-    
-    all_chunks = {'input_ids': []}
-    
+    chunks_grouped_by_repo = defaultdict(list)
     REPO_NAME_TOKEN = "<repo_name>"
     FILE_SEP_TOKEN = "<file_sep>"
     END_OF_TEXT_TOKEN = "<endoftext>"
-    
-    unique_repo_ids = sorted(list(set(dataset['repo_id'])))
-    
-    for repo_id in unique_repo_ids:
-        repo_files = dataset.filter(lambda x: x['repo_id'] == repo_id)
-        
+
+    for repo_id, repo_files in files_grouped_by_repo.items():
         repo_content_parts = []
-        
-        # StarCoder2: 50% chance to include repository metadata, using NumPy's RNG.
+
+        # Applying StarCoder2 format, 50% chance to include repository metadata
         include_metadata = np.random.rand() < 0.5
-        
+
         if include_metadata:
             repo_header = f"{REPO_NAME_TOKEN}{repo_id}"
             for file_example in repo_files:
@@ -102,96 +124,157 @@ def process_dataset_for_training(dataset, tokenizer, config):
             repo_full_content = "".join(repo_content_parts)
 
         repo_full_content += END_OF_TEXT_TOKEN
-        
-        token_ids = tokenizer(
-            repo_full_content,
-            truncation=False,
-            padding=False,
-            return_attention_mask=False
-        )['input_ids']
+        token_ids = tokenizer(repo_full_content, truncation=False, padding=False)['input_ids']
 
-        total_length = len(token_ids)
+        for i in range(0, len(token_ids), config.MAX_SEQ_LENGTH):
+            chunk = token_ids[i: i + config.MAX_SEQ_LENGTH]
+            chunks_grouped_by_repo[repo_id].append(chunk)
 
-        if total_length == 0:
-            continue
-
-        for i in range(0, total_length, config.MAX_SEQ_LENGTH):
-            end = i + config.MAX_SEQ_LENGTH
-            chunk_ids = token_ids[i:end]
-            
-            all_chunks['input_ids'].append(chunk_ids)
-    
-    processed_dataset = datasets.Dataset.from_dict(all_chunks)
-    
-    print(f"Total training chunks created: {len(processed_dataset)} (including partial chunks)")
-    print("--- Dataset processing complete ---")
+    return chunks_grouped_by_repo
 
 
-    return processed_dataset
+class BalancedRollingRepoDataset(Dataset):
+    # Custom dataset to regularize/balance large repository contributions to training data
+
+    def __init__(self, chunks_by_repo, max_chunks_per_repo, base_seed=42):
+        self.repo_to_chunks = chunks_by_repo
+        self.per_repo_quota_cap = max_chunks_per_repo
+        self.base_seed = base_seed
+
+        self.ordered_repo_ids = list(self.repo_to_chunks.keys())
+
+        # Preprocessing: determine repo sizes, quotas, permutation
+        rng = np.random.default_rng(self.base_seed)
+        self.repo_size_map = {rid: len(self.repo_to_chunks[rid]) for rid in self.ordered_repo_ids}
+        self.per_repo_quota = {rid: min(self.repo_size_map[rid], self.per_repo_quota_cap)
+                               for rid in self.ordered_repo_ids}
+        self.per_repo_perm = {
+            rid: rng.permutation(self.repo_size_map[rid]).tolist()
+            for rid in self.ordered_repo_ids
+        }
+
+        # Set dataset size (stays constant across epochs)
+        self._fixed_epoch_length = sum(self.per_repo_quota[rid] for rid in self.ordered_repo_ids)
+
+        self._current_epoch_index_map = []
+        # Apply initial sampling
+        self.resample(epoch_index=0)
+
+    def __len__(self):
+        return self._fixed_epoch_length
+
+    def __getitem__(self, flat_index):
+        repo_id, repo_local_idx = self._current_epoch_index_map[flat_index]
+        return {"input_ids": self.repo_to_chunks[repo_id][repo_local_idx]}
+
+    def _per_repo_window(self, repo_id, epoch_index):
+        # Helper function to map epoch to new window to ensure we iterate over larger repos without repetition
+        size = self.repo_size_map[repo_id]
+        quota = self.per_repo_quota[repo_id]
+        perm = self.per_repo_perm[repo_id]
+
+        if size <= quota:
+            # Small repos contribute all items every epoch
+            return perm
+
+        start = (epoch_index * quota) % size
+        end = start + quota
+        if end <= size:
+            return perm[start:end]
+        else:
+            wrap = end - size
+            return perm[start:] + perm[:wrap]
+
+    def resample(self, epoch_index: int):
+        # Reconstruct the actual dataset for a new epoch
+        flat_index_map = []
+        for rid in self.ordered_repo_ids:
+            repo_indices_for_epoch = self._per_repo_window(rid, epoch_index)
+            flat_index_map.extend((rid, int(j)) for j in repo_indices_for_epoch)
+
+        # Safety check, length should remain constant
+        assert len(flat_index_map) == self._fixed_epoch_length, "Epoch length changed unexpectedly."
+        self._current_epoch_index_map = flat_index_map
 
 
-# --- Testing Block ---
+class AdvanceEpochWindows(TrainerCallback):
+    # Custom callback to use per epoch
+    def __init__(self, rolling_dataset: BalancedRollingRepoDataset):
+        self.rolling_dataset = rolling_dataset
+
+    def on_epoch_begin(self, args, state, control, **kwargs):
+        epoch_idx = int(state.epoch) if state.epoch is not None else 0
+        print(f"\n--- Advancing rolling windows for Epoch {epoch_idx + 1} ---")
+        self.rolling_dataset.resample(epoch_index=epoch_idx)
+
+
+def create_balanced_rolling_dataset(train_chunks_by_repo, config, base_seed=42):
+    return BalancedRollingRepoDataset(
+        chunks_by_repo=train_chunks_by_repo,
+        max_chunks_per_repo=config.MAX_CHUNKS_PER_REPO,
+        base_seed=base_seed,
+    )
+
+
 if __name__ == "__main__":
-    print("Running data_processing.py in standalone mode for testing.")
-    
-    # --- ADDED FOR STANDALONE REPRODUCIBILITY ---
-    # To make this testing block reproducible, we mimic what train.py will do.
-    # In the real run, these lines will be in the main training script.
-    print(f"\n--- Seeding NumPy for reproducible testing with SEED={config.SEED} ---")
+    # The entire main function is used for testing, not used in training process
+    print("=" * 80)
+    print("--- Testing data_processing.py functionality ---")
+    print("=" * 80)
+
+    print("\n--- [Test 1] Initializing components ---")
     np.random.seed(config.SEED)
 
-    raw_train, raw_eval = load_and_split_data(config)
-
-    # print("\n--- RUN 1: Generating first epoch dataset ---")
-    # epoch_dataset_1 = apply_dynamic_sampling(raw_train, config)
-
-    
-    # print("\n--- RUN 2: Generating second epoch dataset ---")
-    # epoch_dataset_2 = apply_dynamic_sampling(raw_train, config)
-
-    # # --- Verification of epoch-to-epoch randomness ---
-    # order_is_different = epoch_dataset_1[0]['content'] != epoch_dataset_2[0]['content']
-    # print(f"\nIs the order of examples different between epochs? {'Yes' if order_is_different else 'No'}")
-    # assert order_is_different, "Epochs are not being shuffled differently! Check seeding."
-    # print("Validation successful: Per-epoch data is correctly randomized.")
-    
-    print("\n--- Initializing tokenizer for testing ---")
     tokenizer = AutoTokenizer.from_pretrained(config.MODEL_ID, token=config.HF_TOKEN)
-    
-    special_tokens_dict = {
-        'additional_special_tokens': ['<repo_name>', '<file_sep>', '<endoftext>']
-    }
+    special_tokens_dict = {'additional_special_tokens': ['<repo_name>', '<file_sep>', '<endoftext>']}
     tokenizer.add_special_tokens(special_tokens_dict)
-    print("Tokenizer initialized with StarCoder2 special tokens.")
+    print("Tokenizer initialized successfully.")
 
-    print("\n--- Processing evaluation dataset for verification ---")
-    processed_eval_dataset = process_dataset_for_training(raw_eval, tokenizer, config)
+    print("\n--- [Test 2] Running main data loading and preprocessing ---")
+    train_chunks_by_repo, eval_dataset = load_and_preprocess_data(config, tokenizer)
 
-    sys.exit(1)  
+    print("\n--- Verification of loaded data ---")
+    print(f"Type of train_chunks_by_repo: {type(train_chunks_by_repo)}")
+    print(f"Number of repositories in training pool: {len(train_chunks_by_repo)}")
+    print(f"Type of eval_dataset: {type(eval_dataset)}")
+    print(f"Features in eval_dataset: {eval_dataset.features}")
 
-    # Process one of the sampled datasets for a final check
-    processed_train_dataset = process_dataset_for_training(epoch_dataset_1, tokenizer, config)
-    
-    print("\n--- Verifying processed dataset ---")
-    if len(processed_train_dataset) > 0:
-        first_chunk = processed_train_dataset[0]
-        last_chunk = processed_train_dataset[-1]
-        
-        print(f"Number of chunks: {len(processed_train_dataset)}")
-        print(f"Keys in a chunk: {list(first_chunk.keys())}")
-        print(f"Length of input_ids in first chunk: {len(first_chunk['input_ids'])}")
-        print(f"Length of input_ids in last chunk: {len(last_chunk['input_ids'])} (can be partial)")
-        
-        print("\nDecoding the first 50 tokens of first chunk to check format:")
-        decoded_tokens = tokenizer.decode(first_chunk['input_ids'][:50])
-        print(decoded_tokens)
+    print("\n--- [Test 3] Building rolling dataset and simulating epochs ---")
+    rolling_train_ds = create_balanced_rolling_dataset(train_chunks_by_repo, config, base_seed=1234)
+    print(f"Fixed training epoch length: {len(rolling_train_ds)} "
+          f"(sum of per-repo min(size, MAX_CHUNKS_PER_REPO))")
 
-        print("\nDecoding the last 50 tokens of last chunk to check format:")
-        decoded_tokens = tokenizer.decode(last_chunk['input_ids'][-50:])
-        print(decoded_tokens)
-        
-        print("\nValidation successful: Processed dataset has the correct structure.")
-    else:
-        print("Warning: No training chunks were created.")
+    sample_positions = [0, min(10, len(rolling_train_ds) - 1), max(0, len(rolling_train_ds)//2)]
+    saved_samples = []
 
-    print("\n--- data_processing.py all tests complete ---")
+    for epoch_idx in range(5):
+        rolling_train_ds.resample(epoch_index=epoch_idx)
+        snapshot = [rolling_train_ds[pos]["input_ids"] for pos in sample_positions]
+        saved_samples.append(snapshot)
+        print(f"Epoch {epoch_idx + 1} sample snapshot collected.")
+
+    # Check that samples differ across epochs
+    any_diff = any(saved_samples[e] != saved_samples[0] for e in range(1, len(saved_samples)))
+    print(f"Do later epochs differ from Epoch 1 at inspected positions? {'Yes' if any_diff else 'No'}")
+    if not any_diff:
+        raise AssertionError("Rolling windows did not change content across epochs—check implementation.")
+
+    print("\n--- [Test 4] Inspecting sample data outputs ---")
+
+    print("\n--- Sample from Evaluation Dataset ---")
+    print(f"Total eval chunks: {len(eval_dataset)}")
+    sample_eval_chunk = eval_dataset[0]['input_ids']
+    print(f"Length of first eval chunk: {len(sample_eval_chunk)}")
+    print("Decoded first 50 tokens of eval chunk:")
+    print(f"'{tokenizer.decode(sample_eval_chunk[:50])}'")
+
+    print("\n--- Sample from Training Rolling Dataset (Epoch 1) ---")
+    rolling_train_ds.resample(epoch_index=0)
+    sample_train_chunk = rolling_train_ds[0]['input_ids']
+    print(f"Length of first train chunk: {len(sample_train_chunk)}")
+    print("Decoded first 50 tokens of first train chunk:")
+    print(f"'{tokenizer.decode(sample_train_chunk[:50])}'")
+
+    print("\n" + "=" * 80)
+    print("--- Standalone testing complete. All checks passed. ---")
+    print("=" * 80)

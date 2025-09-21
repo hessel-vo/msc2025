@@ -1,0 +1,84 @@
+=== Repository Distribution (train+valid combined) — AFTER CAP=260 ===
+  repos=72  total_chunks=5019
+
+  Per-repo breakdown:
+                                repo_id  num_chunks  percentage
+0             EclipseDataSpaceConnector         260        5.18
+1                            dlt-daemon         260        5.18
+2                                 joynr         260        5.18
+3                                ramses         260        5.18
+4                       ramses-composer         260        5.18
+5                          ramses-logic         260        5.18
+6                              valhalla         260        5.18
+7                               vsomeip         260        5.18
+8                                jeromq         232        4.62
+9                                  capu         225        4.48
+10                           dlt-viewer         215        4.28
+11                       paho.mqtt.java         208        4.14
+12                             odxtools         201        4.00
+13                              MoCOCrW         175        3.49
+14                   capicxx-core-tools         125        2.49
+15                wayland-ivi-extension         105        2.09
+16                             Open1722         101        2.01
+17                             barefoot          93        1.85
+18                                  lua          87        1.73
+19             vehicle_signal_interface          87        1.73
+20  eclipse-tractusx_tractusx-edc-merge          78        1.55
+21                                 cdsp          77        1.53
+22                   capicxx-dbus-tools          76        1.51
+23                  selfsupervised_flow          63        1.26
+24                                 Emma          52        1.04
+25               capicxx-someip-runtime          50        1.00
+26                      FB-SSEM-dataset          40        0.80
+27                ramses-citymodel-demo          39        0.78
+28                                pybip          37        0.74
+29                          leaderboard          34        0.68
+30                           remoteperf          33        0.66
+31                           python-dlt          32        0.64
+32                                 ifex          31        0.62
+33                                 s2dm          30        0.60
+34              graphql-vss-server-libs          27        0.54
+35                 capicxx-wamp-runtime          25        0.50
+36                               muesli          25        0.50
+37                 capicxx-core-runtime          23        0.46
+38                   capicxx-wamp-tools          21        0.42
+39       automotive_feature_engineering          20        0.40
+40                                 acme          19        0.38
+41                              dltlyse          18        0.36
+42                           cananalyze          16        0.32
+43                       ramses-android          16        0.32
+44                  eene-nav-bandit-sim          14        0.28
+45           graphql_schema2cpp_codegen          14        0.28
+46               franca_ara_integration          12        0.24
+47              graphql-vss-data-server          12        0.24
+48        android-external-audio-mixing          11        0.22
+49                                roadC          11        0.22
+50                                 smrf          11        0.22
+51               vehicle_signal_manager          11        0.22
+52                   vss2graphql_schema          11        0.22
+53                  function_dispatcher          10        0.20
+54            open-simulation-interface          10        0.20
+55                               pypbap          10        0.20
+56                           vsomeip_py           9        0.18
+57                   ros_realtime_tests           8        0.16
+58                              hmm-lib           7        0.14
+59                                  akm           6        0.12
+60                             stracepy           5        0.10
+61                                wscpp           5        0.10
+62       pcl-people-tracker-timing-test           4        0.08
+63                      aasig-vhal-demo           3        0.06
+64    android-vehicleplugin-vss-graphql           3        0.06
+65            automotive_regression_xai           3        0.06
+66                      mf4_ai_importer           3        0.06
+67                 offline-map-matching           3        0.06
+68                  test-someip-service           3        0.06
+69   android-vss-authentication-service           2        0.04
+70                  commercial-vehicles           1        0.02
+71                          ros_chatter           1        0.02
+
+Percentiles over num_chunks:
+    50= 25.0
+    75= 88.5
+    90= 257.19999999999993
+    95= 260.0
+    99= 260.0

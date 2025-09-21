@@ -13,7 +13,7 @@ import sys
 BASE_PATH = "/home/hessel/workspace/RUG/MSc2025/project/code/repositories/all_repos"
 
 # The cloc JSON report file
-CLOC_JSON_FILE = "cloc_results_to3.json"
+CLOC_JSON_FILE = "cloc_results_to.json"
 
 LANGUAGES_TO_ANALYZE = {"Python", "Java", "C", "C++", "C/C++ Header"}
 

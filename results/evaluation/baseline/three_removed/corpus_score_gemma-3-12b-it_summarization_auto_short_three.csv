@@ -1,0 +1,2 @@
+model_name,bleu_score,corpus_rouge1,corpus_rouge2,corpus_rougeL,corpus_rougeLsum,corpus_bertscore_precision,corpus_bertscore_recall,corpus_bertscore_f1
+gemma-3-12b-it,13.228753449083118,0.5036030537383687,0.2462439713374473,0.42786529358541625,0.4272159660258762,0.7200894267721609,0.7779098783027042,0.7471272769299421
