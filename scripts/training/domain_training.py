@@ -67,7 +67,7 @@ def load_model_and_tokenizer():
         token=config.HF_TOKEN,
         torch_dtype=torch.bfloat16,
         device_map="auto",
-        attn_implementation="eager",
+        attn_implementation="flash_attention_2",
     )
 
     # Resize embeddings to include newly added tokens
@@ -183,6 +183,13 @@ def main():
     setup_environment()
     model, tokenizer = load_model_and_tokenizer()
     model = apply_lora_to_model(model)
+
+    try:
+        print("Layer-0 attn class:", type(model.model.layers[0].self_attn).__name__)
+        print(f"\n[VERIFICATION] The actual attention implementation being used is: {first_layer_attention_class}\n")
+    except Exception as e:
+        print(f"Could not automatically determine attention class. Error: {e}")
+    sys.exit(1)
 
     train_dataset, eval_dataset, advance_callback = prepare_datasets(tokenizer)
     trainer = build_trainer(model, tokenizer, train_dataset, eval_dataset, advance_callback)

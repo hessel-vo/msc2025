@@ -15,7 +15,7 @@ os.environ['HF_HOME'] = str(HF_CACHE_DIR)
 SEED=42
 
 # --- Model Parameters ---
-MODEL_ID = "google/gemma-3-1b-it"
+MODEL_ID = "google/gemma-3-12b-it"
 
 MAX_SEQ_LENGTH = 2048
 
