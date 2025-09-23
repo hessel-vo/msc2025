@@ -92,6 +92,7 @@ def apply_lora_to_model(model):
         task_type="CAUSAL_LM",
     )
     model = get_peft_model(model, lora_config)
+    model.enable_input_require_grads()
     print("LoRA configuration applied to the model.")
     model.print_trainable_parameters()
     print("--- LoRA setup complete ---")
@@ -145,6 +146,8 @@ def build_trainer(model, tokenizer, train_dataset, eval_dataset, advance_callbac
         save_strategy="steps",
         save_steps=config.EVAL_STEPS,
         load_best_model_at_end=True,
+        gradient_checkpointing=True,
+        gradient_accumulation_steps=4,
         bf16=True,
         group_by_length=True,               # buckets by length to reduce padding waste
     )
@@ -183,13 +186,6 @@ def main():
     setup_environment()
     model, tokenizer = load_model_and_tokenizer()
     model = apply_lora_to_model(model)
-
-    try:
-        print("Layer-0 attn class:", type(model.model.layers[0].self_attn).__name__)
-        print(f"\n[VERIFICATION] The actual attention implementation being used is: {first_layer_attention_class}\n")
-    except Exception as e:
-        print(f"Could not automatically determine attention class. Error: {e}")
-    sys.exit(1)
 
     train_dataset, eval_dataset, advance_callback = prepare_datasets(tokenizer)
     trainer = build_trainer(model, tokenizer, train_dataset, eval_dataset, advance_callback)
