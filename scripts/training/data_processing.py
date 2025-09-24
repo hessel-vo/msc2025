@@ -134,13 +134,15 @@ def _preprocess_and_chunk_all_data(config, tokenizer):
     FILE_SEP_TOKEN = "<file_sep>"
     END_OF_TEXT_TOKEN = "<endoftext>"
     
+    eval_metadata_count = 0
     for repo_id, repo_files in files_grouped_by_repo.items():
         repo_content_parts = []
 
         # Applying StarCoder2 format, 50% chance to include repository metadata
         include_metadata = np.random.rand() < 0.5
-
         if include_metadata:
+            if repo_id in config.VALIDATION_REPO_IDS:
+                eval_metadata_count += 1
             repo_header = f"{REPO_NAME_TOKEN}{repo_id}"
             for file_example in repo_files:
                 file_str = f"{FILE_SEP_TOKEN}{file_example['path_in_repo']}\n{file_example['content']}"
@@ -158,7 +160,7 @@ def _preprocess_and_chunk_all_data(config, tokenizer):
         for i in range(0, len(token_ids), config.MAX_SEQ_LENGTH):
             chunk = token_ids[i: i + config.MAX_SEQ_LENGTH]
             chunks_grouped_by_repo[repo_id].append(chunk)
-    
+    print(f"Total metadata-included validation repos: {eval_metadata_count}")
     return chunks_grouped_by_repo
 
 
