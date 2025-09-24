@@ -4,6 +4,7 @@ import pandas as pd
 from pathlib import Path
 from dotenv import load_dotenv
 from tqdm import tqdm
+import numpy as np
 
 # Load environment variables from .env file
 load_dotenv()
@@ -91,6 +92,9 @@ def calculate_codebleu_scores(df):
     return problem_scores, corpus_scores_by_lang
 
 def main():
+
+    np.random.seed(42)
+
     source, summary_length, shot_count, subset = validate_arguments(sys.argv)
     print(f"Starting code generation evaluation for: [Source: {source}, Summary: {summary_length}, Shots: {shot_count}]")
 
@@ -130,11 +134,21 @@ def main():
     # Save corpus-level results
     corpus_rows = []
     for lang, scores in corpus_codebleu_scores_by_lang.items():
-        row_data = {'model_name': MODEL_NAME, 'language': lang}
+        row_data = {'test_name': f"{MODEL_NAME}-{source}-{summary_length}-{shot_count}", 'language': lang}
         row_data.update(scores)
         corpus_rows.append(row_data)
 
     corpus_df = pd.DataFrame(corpus_rows)
+
+    # Calculate the average of the numeric columns
+    average_scores = corpus_df.select_dtypes(include='number').mean()
+
+    # Create a new row for the averages
+    average_row = {'test_name': f"{MODEL_NAME}-{source}-{summary_length}-{shot_count}", 'language': 'average'}
+    average_row.update(average_scores)
+
+    # Append the average row to the DataFrame
+    corpus_df = pd.concat([corpus_df, pd.DataFrame([average_row])], ignore_index=True)
     
     corpus_output_filename = f"corpus_score_{MODEL_NAME}_{TASK}_{source}_{summary_length}_{shot_count}.csv"
     corpus_output_filepath = OUTPUT_ROOT / corpus_output_filename

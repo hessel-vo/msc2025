@@ -67,7 +67,7 @@ def load_model_and_tokenizer():
         token=config.HF_TOKEN,
         torch_dtype=torch.bfloat16,
         device_map="auto",
-        attn_implementation="eager",
+        attn_implementation="flash_attention_2",
     )
 
     # Resize embeddings to include newly added tokens
@@ -141,7 +141,7 @@ def build_trainer(model, tokenizer, train_dataset, eval_dataset, advance_callbac
         learning_rate=config.LEARNING_RATE,
         logging_steps=config.LOGGING_STEPS,
         num_train_epochs=config.NUM_EPOCHS,
-        eval_strategy="steps",        # <-- corrected name
+        eval_strategy="steps",
         eval_steps=config.EVAL_STEPS,
         save_strategy="steps",
         save_steps=config.EVAL_STEPS,
@@ -149,7 +149,6 @@ def build_trainer(model, tokenizer, train_dataset, eval_dataset, advance_callbac
         gradient_checkpointing=True,
         gradient_accumulation_steps=4,
         bf16=True,
-        group_by_length=True,               # buckets by length to reduce padding waste
     )
 
     # Collator for causal LM (pads per batch; labels from input_ids)
