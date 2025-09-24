@@ -45,7 +45,7 @@ OUTPUT_DIR = PROJECT_ROOT / "scripts/training/trained_models"
 # --- Training Hyperparameters ---
 # The number of training examples per device (e.g., per GPU).
 # Adjust based on your GPU's VRAM.
-BATCH_SIZE = 2
+BATCH_SIZE = 1
 
 # The initial learning rate for the AdamW optimizer. 2e-4 is a common
 # starting point for LoRA fine-tuning.
