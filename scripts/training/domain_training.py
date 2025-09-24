@@ -186,6 +186,9 @@ def main():
     model, tokenizer = load_model_and_tokenizer()
     model = apply_lora_to_model(model)
 
+    print(model.config)
+    print(model.config._attn_implementation)
+
     train_dataset, eval_dataset, advance_callback = prepare_datasets(tokenizer)
     trainer = build_trainer(model, tokenizer, train_dataset, eval_dataset, advance_callback)
 
