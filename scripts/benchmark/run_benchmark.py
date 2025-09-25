@@ -34,32 +34,27 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 
 
 def setup_environment():
-    """Sets random seeds for reproducibility and ensures output dir exists."""
     print("--- [Step 1] Initializing Setup ---")
     np.random.seed(config.SEED)
     torch.manual_seed(config.SEED)
     if torch.cuda.is_available():
         torch.cuda.manual_seed_all(config.SEED)
 
-    print(f"Random seed set to: {config.SEED}")
-    print("--- Setup complete ---")
-
 def apply_peft_adapter(model):
     print("IMPLEMENT PEFT ADAPTER LOADING!")
     sys.exit()
 
 def load_model_and_tokenizer():
-    """Loads base model & tokenizer, registers special tokens, resizes embeddings."""
     print("\n--- [Step 2] Loading Tokenizer & Model ---")
 
-
+    # Tokenizer
+    tokenizer = AutoTokenizer.from_pretrained(
+        config.MODEL_ID,
+        token=config.HF_TOKEN,
+    )
 
     if RESULT_TYPE == "baseline":
-        # Tokenizer
-        tokenizer = AutoTokenizer.from_pretrained(
-            config.MODEL_ID,
-            token=config.HF_TOKEN,
-        )
+
 
         # Base model
         model = AutoModelForCausalLM.from_pretrained(
@@ -70,11 +65,6 @@ def load_model_and_tokenizer():
         ).eval()
         return model, tokenizer
     else:
-        # Tokenizer
-        tokenizer = AutoTokenizer.from_pretrained(
-            config.MODEL_ID,
-            token=config.HF_TOKEN,
-        )
 
         # Base model
         model = AutoModelForCausalLM.from_pretrained(

@@ -94,8 +94,8 @@ def load_and_preprocess_data(config, tokenizer):
         if repo_id in config.VALIDATION_REPO_IDS
     }
 
-    analyze_repo_distribution(train_chunks_by_repo, eval_chunks_by_repo)
-    analyze_repo_distribution(train_chunks_by_repo, eval_chunks_by_repo, cap=config.MAX_CHUNKS_PER_REPO)
+    # analyze_repo_distribution(train_chunks_by_repo, eval_chunks_by_repo)
+    # analyze_repo_distribution(train_chunks_by_repo, eval_chunks_by_repo, cap=config.MAX_CHUNKS_PER_REPO)
 
     print(f"Training repositories: {len(train_chunks_by_repo)}")
     print(f"Validation repositories: {len(eval_chunks_by_repo)}")
@@ -107,7 +107,7 @@ def load_and_preprocess_data(config, tokenizer):
     print(f"Created a static validation dataset with {len(eval_dataset)} chunks.")
     print("--- Data preparation complete ---")
 
-    _sanity_check_splits(train_chunks_by_repo, eval_chunks_by_repo, config.VALIDATION_REPO_IDS)
+    # _sanity_check_splits(train_chunks_by_repo, eval_chunks_by_repo, config.VALIDATION_REPO_IDS)
 
     return train_chunks_by_repo, eval_dataset
 

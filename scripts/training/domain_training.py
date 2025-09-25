@@ -18,7 +18,6 @@ from transformers import (
 )
 from peft import get_peft_model, LoraConfig
 
-
 # -----------------------
 # Step 1: Environment
 # -----------------------
@@ -145,6 +144,7 @@ def build_trainer(model, tokenizer, train_dataset, eval_dataset, advance_callbac
         eval_steps=config.EVAL_STEPS,
         save_strategy="steps",
         save_steps=config.EVAL_STEPS,
+        save_total_limit=4,
         load_best_model_at_end=True,
         gradient_checkpointing=True,
         gradient_accumulation_steps=4,
@@ -189,11 +189,6 @@ def main():
     print(model.config)
     print(model.config._attn_implementation)
 
-    emb = model.get_input_embeddings()
-    print(emb.weight.requires_grad)  # should be True only if you enabled training as above
-    model.print_trainable_parameters()
-    sys.exit(1)
-
     train_dataset, eval_dataset, advance_callback = prepare_datasets(tokenizer)
     trainer = build_trainer(model, tokenizer, train_dataset, eval_dataset, advance_callback)
 
@@ -203,7 +198,7 @@ def main():
     print(f"Final training loss: {train_output.training_loss:.6f}")
 
     print("\n--- [Step 7] Saving adapter + tokenizer ---")
-    # For PEFT PeftModel, save_pretrained() saves the adapter; tokenizer saves specials.
+
     final_model_dir = config.OUTPUT_DIR / "final_adapter"
     final_tokenizer_dir = config.OUTPUT_DIR / "final_tokenizer"
     final_model_dir.mkdir(parents=True, exist_ok=True)
@@ -212,8 +207,10 @@ def main():
     tokenizer.save_pretrained(str(final_tokenizer_dir))
     print(f"Saved adapter and tokenizer to: {config.OUTPUT_DIR}")
 
-    # If you ever train base embeddings as well (not typical with pure LoRA),
-    # consider merging and saving full weights:
+    final_metrics = trainer.evaluate(metric_key_prefix="final")
+    trainer.log_metrics("final", final_metrics)
+    trainer.save_metrics("final", final_metrics)
+
     # merged = trainer.model.merge_and_unload()
     # merged.save_pretrained(str(config.OUTPUT_DIR / "merged"))
     # tokenizer.save_pretrained(str(config.OUTPUT_DIR / "merged"))
