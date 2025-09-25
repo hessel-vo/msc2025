@@ -49,7 +49,7 @@ BATCH_SIZE = 1
 
 # The initial learning rate for the AdamW optimizer. 2e-4 is a common
 # starting point for LoRA fine-tuning.
-LEARNING_RATE = 2e-4
+LEARNING_RATE = 1e-4
 
 # The total number of training epochs to perform.
 NUM_EPOCHS = 10
@@ -68,11 +68,11 @@ EARLY_STOPPING_PATIENCE = 6
 # --- LoRA (Low-Rank Adaptation) Configuration ---
 # The rank of the update matrices. A lower rank means fewer trainable parameters.
 # Common values are 8, 16, 32.
-LORA_R = 16
+LORA_R = 8
 
 # The alpha parameter for LoRA scaling. A common practice is to set alpha
 # to be twice the rank (r).
-LORA_ALPHA = 32
+LORA_ALPHA = 16
 
 # Dropout probability for the LoRA layers.
 LORA_DROPOUT = 0.1
