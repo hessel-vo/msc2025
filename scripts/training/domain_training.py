@@ -66,7 +66,7 @@ def load_model_and_tokenizer():
         token=config.HF_TOKEN,
         torch_dtype=torch.bfloat16,
         device_map="auto",
-        attn_implementation="flash_attention_2",
+        attn_implementation="eager",
     )
 
     # Resize embeddings to include newly added tokens
