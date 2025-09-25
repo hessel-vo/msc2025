@@ -15,7 +15,7 @@ os.environ['HF_HOME'] = str(HF_CACHE_DIR)
 SEED=42
 
 # --- Model Parameters ---
-MODEL_ID = "google/gemma-3-1b-it"
+MODEL_ID = "google/gemma-3-12b-it"
 
 MAX_SEQ_LENGTH = 2048
 
@@ -55,14 +55,14 @@ LEARNING_RATE = 2e-4
 NUM_EPOCHS = 10
 
 # How often to log training metrics (e.g., loss) to the console.
-LOGGING_STEPS = 25
+LOGGING_STEPS = 100
 
 # How often to run evaluation on the validation set.
-EVAL_STEPS = 100
+EVAL_STEPS = 400
 
 # The number of evaluation steps to wait for improvement before stopping
 # training early. This helps prevent overfitting.
-EARLY_STOPPING_PATIENCE = 3
+EARLY_STOPPING_PATIENCE = 8
 
 
 # --- LoRA (Low-Rank Adaptation) Configuration ---
