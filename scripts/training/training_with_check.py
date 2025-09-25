@@ -80,60 +80,112 @@ def label_pad_sanity(labels, pad_id, ignore_index=-100):
     return pad_in_labels, unmasked_pad
 
 
-def quick_eval_batch_canary(trainer, pad_id, ignore_index=-100):
+def repetition_rate(labels_tensor, ignore_index=-100):
     """
-    Runs a single eval forward pass and prints a dict of diagnostics:
-      - masked_acc: correct, shifted, masked accuracy
-      - unmasked_acc: counts pad/token positions (should NOT be much higher)
-      - unshifted_acc: no shift; should NOT meaningfully beat masked_acc
-      - pad_in_labels, unmasked_pad: both should be 0 with proper masking
-    Also prints simple warnings if anomalies are detected.
+    Fraction of positions where labels[t+1] == labels[t], ignoring -100.
+    High repetition is common in code and helps explain high token accuracy.
+    """
+    import torch
+    labels = labels_tensor
+    # valid when both current and next positions are not ignored
+    valid = (labels[:, :-1] != ignore_index) & (labels[:, 1:] != ignore_index)
+    if not valid.any():
+        return float("nan")
+    reps = (labels[:, 1:][valid] == labels[:, :-1][valid]).float().mean().item()
+    return float(reps)
+
+
+def _stats(x):
+    import statistics as stats
+    if not x:
+        return {}
+    return {
+        "mean": float(stats.mean(x)),
+        "min": float(min(x)),
+        "max": float(max(x)),
+        "n":   int(len(x)),
+    }
+
+
+def run_canary_over_k_batches_spread(trainer, pad_id, k=8, ignore_index=-100):
+    """
+    Runs forward passes on ~K eval batches, spaced across the eval dataloader.
+    Prints aggregated stats (+ simple warnings) for:
+      - masked_acc, unmasked_acc, unshifted_acc
+      - repetition_rate
+      - total pad presence in labels
     """
     import torch
 
     model = trainer.model
     model.eval()
     dl = trainer.get_eval_dataloader()
+
+    # If the dataloader length is known, choose spread indices; else fall back to first K
     try:
-        batch = next(iter(dl))
-    except StopIteration:
-        print("[Canary] Eval dataloader is empty; skipping canary.")
-        return
+        total_batches = len(dl)
+    except TypeError:
+        total_batches = None
 
-    with torch.no_grad():
-        batch_on_device = {k: v.to(model.device) for k, v in batch.items() if isinstance(v, torch.Tensor)}
-        out = model(**batch_on_device)
-        logits = out.logits.detach().cpu()
-        labels = batch["labels"].detach().cpu()
+    if total_batches and total_batches > 0:
+        k_eff = min(k, total_batches)
+        # even spread: 0, step, 2*step, ...
+        step = max(1, total_batches // k_eff)
+        chosen_idxs = sorted(set(min(i * step, total_batches - 1) for i in range(k_eff)))
+    else:
+        chosen_idxs = list(range(k))  # best-effort
 
-    masked_acc    = token_accuracy_from_logits(logits, labels, ignore_index)
-    unmasked_acc  = token_accuracy_unmasked(logits, labels)
-    unshifted_acc = token_accuracy_unshifted(logits, labels, ignore_index)
-    pad_in_labels, unmasked_pad = label_pad_sanity(labels, pad_id, ignore_index)
+    masked, unmasked, unshifted, reps = [], [], [], []
+    total_pad_in, total_unmasked_pad = 0, 0
+
+    # Iterate once and evaluate only the selected batch indices (spread)
+    for bidx, batch in enumerate(dl):
+        if bidx not in chosen_idxs:
+            continue
+        with torch.no_grad():
+            batch_on_device = {k: v.to(model.device) for k, v in batch.items() if isinstance(v, torch.Tensor)}
+            out = model(**batch_on_device)
+            logits = out.logits.detach().cpu()
+            labels = batch["labels"].detach().cpu()
+
+        masked.append(token_accuracy_from_logits(logits, labels, ignore_index))
+        unmasked.append(token_accuracy_unmasked(logits, labels))
+        unshifted.append(token_accuracy_unshifted(logits, labels, ignore_index))
+        reps.append(repetition_rate(labels, ignore_index))
+        pi, up = label_pad_sanity(labels, pad_id, ignore_index)
+        total_pad_in += pi
+        total_unmasked_pad += up
 
     report = {
-        "masked_acc": masked_acc,
-        "unmasked_acc": unmasked_acc,
-        "unshifted_acc": unshifted_acc,
-        "pad_in_labels": pad_in_labels,
-        "unmasked_pad": unmasked_pad,
+        "masked_acc_stats": _stats(masked),
+        "unmasked_acc_stats": _stats(unmasked),
+        "unshifted_acc_stats": _stats(unshifted),
+        "repetition_rate_stats": _stats(reps),
+        "total_pad_in_labels": int(total_pad_in),
+        "total_unmasked_pad": int(total_unmasked_pad),
+        "sampled_batch_indices": chosen_idxs,
     }
-    print("\n[Canary] One-batch eval diagnostics:", report)
 
-    # Simple heuristics to flag common bugs:
+    print("\n[Canary] Spread multi-batch eval diagnostics:")
+    print(report)
+
+    # Heuristic warnings
     flagged = False
-    if unmasked_pad > 0:
+    if total_unmasked_pad > 0:
         flagged = True
         print("  ⚠️  Detected PAD tokens in labels that are not ignored (padding leak).")
-    if unmasked_acc > max(masked_acc + 0.10, masked_acc * 1.25):
+    # Compare means if available
+    m_masked = report["masked_acc_stats"].get("mean", None)
+    m_unmasked = report["unmasked_acc_stats"].get("mean", None)
+    m_unshifted = report["unshifted_acc_stats"].get("mean", None)
+    if m_masked is not None and m_unmasked is not None and m_unmasked > max(m_masked + 0.10, m_masked * 1.25):
         flagged = True
-        print("  ⚠️  Unmasked accuracy >> masked accuracy (likely counting pads).")
-    if unshifted_acc > masked_acc + 0.05:
+        print("  ⚠️  Unmasked accuracy >> masked accuracy on average (likely counting pads).")
+    if m_masked is not None and m_unshifted is not None and m_unshifted > m_masked + 0.05:
         flagged = True
         print("  ⚠️  Unshifted accuracy > masked accuracy (possible shift/misalignment bug).")
-
     if not flagged:
-        print("  ✅  Canary looks good: masking/shift/pad handling appear sane.")
+        print("  ✅  Canary looks good across spread batches.")
 
 
 # -----------------------
@@ -268,7 +320,7 @@ def build_trainer(model, tokenizer, train_dataset, eval_dataset, advance_callbac
         learning_rate=config.LEARNING_RATE,
         logging_steps=config.LOGGING_STEPS,
         num_train_epochs=config.NUM_EPOCHS,
-        evaluation_strategy="steps",        # <-- fixed (was eval_strategy)
+        evaluation_strategy="steps",        # <-- correct key
         eval_steps=config.EVAL_STEPS,
         save_strategy="steps",
         save_steps=config.EVAL_STEPS,
@@ -277,8 +329,7 @@ def build_trainer(model, tokenizer, train_dataset, eval_dataset, advance_callbac
         gradient_checkpointing=True,
         gradient_accumulation_steps=4,
         bf16=True,
-        # If you plan to compute token accuracy during eval using predictions/logits,
-        # set prediction_loss_only=False and maybe eval_accumulation_steps>1
+        # If you later compute logits via Trainer APIs, set:
         # prediction_loss_only=False,
         # eval_accumulation_steps=2,
         report_to="none",  # set to "tensorboard"/"wandb"/"mlflow" if desired
@@ -325,10 +376,11 @@ def main():
     train_dataset, eval_dataset, advance_callback = prepare_datasets(tokenizer)
     trainer = build_trainer(model, tokenizer, train_dataset, eval_dataset, advance_callback)
 
-    # --- Canary: run a one-batch eval sanity check BEFORE training ---
-    print("\n--- [Canary] Quick one-batch evaluation sanity check ---")
+    # --- Canary: run a spread multi-batch eval sanity check BEFORE training ---
+    print("\n--- [Canary] Spread multi-batch evaluation sanity check ---")
     if eval_dataset is not None and len(eval_dataset) > 0:
-        quick_eval_batch_canary(trainer, pad_id=tokenizer.pad_token_id, ignore_index=-100)
+        K = getattr(config, "CANARY_EVAL_BATCHES", 8)  # tweakable from config
+        run_canary_over_k_batches_spread(trainer, pad_id=tokenizer.pad_token_id, k=K, ignore_index=-100)
     else:
         print("[Canary] No eval dataset available; skipping canary.")
 
@@ -354,7 +406,7 @@ def main():
 
     # merged = trainer.model.merge_and_unload()
     # merged.save_pretrained(str(config.OUTPUT_DIR / "merged"))
-    # tokenizer.save_pretrained(str(config.OUTPUT_DIR / "merged"))
+    # tokenizer.save_pretrained(str(final_tokenizer_dir / "merged"))
 
 
 if __name__ == "__main__":
