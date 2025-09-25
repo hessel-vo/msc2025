@@ -189,6 +189,11 @@ def main():
     print(model.config)
     print(model.config._attn_implementation)
 
+    emb = model.get_input_embeddings()
+    print(emb.weight.requires_grad)  # should be True only if you enabled training as above
+    model.print_trainable_parameters()
+    sys.exit(1)
+
     train_dataset, eval_dataset, advance_callback = prepare_datasets(tokenizer)
     trainer = build_trainer(model, tokenizer, train_dataset, eval_dataset, advance_callback)
 
@@ -199,8 +204,12 @@ def main():
 
     print("\n--- [Step 7] Saving adapter + tokenizer ---")
     # For PEFT PeftModel, save_pretrained() saves the adapter; tokenizer saves specials.
-    trainer.model.save_pretrained(str(config.OUTPUT_DIR))
-    tokenizer.save_pretrained(str(config.OUTPUT_DIR))
+    final_model_dir = config.OUTPUT_DIR / "final_adapter"
+    final_tokenizer_dir = config.OUTPUT_DIR / "final_tokenizer"
+    final_model_dir.mkdir(parents=True, exist_ok=True)
+    final_tokenizer_dir.mkdir(parents=True, exist_ok=True)
+    trainer.model.save_pretrained(str(final_model_dir))
+    tokenizer.save_pretrained(str(final_tokenizer_dir))
     print(f"Saved adapter and tokenizer to: {config.OUTPUT_DIR}")
 
     # If you ever train base embeddings as well (not typical with pure LoRA),

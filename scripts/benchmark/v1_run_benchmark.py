@@ -1,5 +1,3 @@
-import config
-
 import os
 import pandas as pd
 import torch
@@ -7,23 +5,23 @@ from pathlib import Path
 from dotenv import load_dotenv
 import sys
 import re
-import numpy as np
 
 print(torch._dynamo.config.cache_size_limit)
 torch._dynamo.config.cache_size_limit = 256
 
+load_dotenv()
 
-PROJECT_ROOT = config.PROJECT_ROOT
-HF_TOKEN = config.HF_TOKEN
-MODEL_ID = config.MODEL_ID
+project_root_str = os.getenv("PROJECT_ROOT")
+PROJECT_ROOT = Path(project_root_str)
+HF_TOKEN = os.getenv('HUGGING_FACE_HUB_TOKEN')
+MODEL_ID = "google/gemma-3-12b-it"
+MODEL_NAME = MODEL_ID.split("/")[-1]
 RESULT_TYPE = "baseline" # Swich "baseline" to "adapted" for final eval
 
-if RESULT_TYPE == "adapted":
-    MODEL_ID = MODEL_ID
-else:
-    MODEL_NAME = MODEL_ID.split("/")[-1]
+HF_CACHE_DIR = PROJECT_ROOT / "hf_cache"
 
-
+# Set the HF_HOME environment variable before importing transformers
+os.environ['HF_HOME'] = str(HF_CACHE_DIR)
 
 print("--- Project Setup Confirmation ---")
 print(f"Project Root: {PROJECT_ROOT}")
@@ -32,67 +30,6 @@ print("---------------------------------")
 
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-
-def setup_environment():
-    """Sets random seeds for reproducibility and ensures output dir exists."""
-    print("--- [Step 1] Initializing Setup ---")
-    np.random.seed(config.SEED)
-    torch.manual_seed(config.SEED)
-    if torch.cuda.is_available():
-        torch.cuda.manual_seed_all(config.SEED)
-
-    print(f"Random seed set to: {config.SEED}")
-    print("--- Setup complete ---")
-
-def apply_peft_adapter(model):
-    print("IMPLEMENT PEFT ADAPTER LOADING!")
-    sys.exit()
-
-def load_model_and_tokenizer():
-    """Loads base model & tokenizer, registers special tokens, resizes embeddings."""
-    print("\n--- [Step 2] Loading Tokenizer & Model ---")
-
-
-
-    if RESULT_TYPE == "baseline":
-        # Tokenizer
-        tokenizer = AutoTokenizer.from_pretrained(
-            config.MODEL_ID,
-            token=config.HF_TOKEN,
-        )
-
-        # Base model
-        model = AutoModelForCausalLM.from_pretrained(
-            config.MODEL_ID,
-            token=config.HF_TOKEN,
-            torch_dtype=torch.bfloat16,
-            device_map="auto",
-        ).eval()
-        return model, tokenizer
-    else:
-        # Tokenizer
-        tokenizer = AutoTokenizer.from_pretrained(
-            config.MODEL_ID,
-            token=config.HF_TOKEN,
-        )
-
-        # Base model
-        model = AutoModelForCausalLM.from_pretrained(
-            config.MODEL_ID,
-            token=config.HF_TOKEN,
-            torch_dtype=torch.bfloat16,
-            device_map="auto",
-        )
-        print("Model and tokenizer loaded successfully.")
-
-        # Resize embeddings to include newly added tokens
-        model.resize_token_embeddings(len(tokenizer))
-        print(f"Base model '{MODEL_ID}' loaded. Token embeddings resized to {len(tokenizer)}.")
-
-        model = apply_peft_adapter(model)
-
-        print("--- Model and tokenizer loading complete ---")
-        return model, tokenizer
 
 def remove_markdown_wrapping(code_string):
     pattern = r"^\s*```(?:\w+)?\n(.*?)\n```\s*$"
@@ -167,7 +104,16 @@ def run_benchmark():
 
     print(f"Loading model: {MODEL_ID}")
 
-    model, tokenizer = load_model_and_tokenizer()
+    tokenizer = AutoTokenizer.from_pretrained(MODEL_ID, token=HF_TOKEN)
+
+    model = AutoModelForCausalLM.from_pretrained(
+        MODEL_ID,
+        torch_dtype=torch.bfloat16,
+        device_map="auto",
+        token=HF_TOKEN
+    ).eval()
+    print("Model and tokenizer loaded successfully.")
+
 
     # Load dataset
     try:
@@ -263,6 +209,4 @@ def run_benchmark():
     print(f"Results saved successfully to '{OUTPUT_FILENAME}'")
 
 if __name__ == "__main__":
-    if RESULT_TYPE == "adapted":
-        setup_environment()
     run_benchmark()
