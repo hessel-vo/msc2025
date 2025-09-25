@@ -18,16 +18,13 @@ def _sanity_check_splits(train_chunks_by_repo, eval_chunks_by_repo, validation_r
     train_repos = set(train_chunks_by_repo.keys())
     eval_repos = set(eval_chunks_by_repo.keys())
 
-    # 1) Disjointness
     overlap = train_repos & eval_repos
     assert not overlap, f"Train/Eval repo overlap detected: {sorted(list(overlap))[:10]}"
 
-    # 2) Validate intended eval repos exist
     missing = [rid for rid in validation_repo_ids if rid not in eval_repos]
     if missing:
         print(f"[WARN] Some intended validation repos not found in dataset: {missing}")
 
-    # 3) Basic counts
     n_train_chunks = sum(len(v) for v in train_chunks_by_repo.values())
     n_eval_chunks = sum(len(v) for v in eval_chunks_by_repo.values())
     total = n_train_chunks + n_eval_chunks
@@ -35,7 +32,6 @@ def _sanity_check_splits(train_chunks_by_repo, eval_chunks_by_repo, validation_r
     print(f"[SPLIT] train repos={len(train_repos)} eval repos={len(eval_repos)}")
     print(f"[SPLIT] train_chunks={n_train_chunks} eval_chunks={n_eval_chunks} (eval={share:.2f}% of total)")
 
-    # 4) Show a few repo sizes
     top_eval = sorted(((rid, len(v)) for rid, v in eval_chunks_by_repo.items()), key=lambda x: -x[1])[:5]
     print("[SPLIT] Top-5 eval repos by chunks:", top_eval)
 
@@ -98,8 +94,8 @@ def load_and_preprocess_data(config, tokenizer):
         if repo_id in config.VALIDATION_REPO_IDS
     }
 
-    # analyze_repo_distribution(train_chunks_by_repo, eval_chunks_by_repo)
-    # analyze_repo_distribution(train_chunks_by_repo, eval_chunks_by_repo, cap=config.MAX_CHUNKS_PER_REPO)
+    analyze_repo_distribution(train_chunks_by_repo, eval_chunks_by_repo)
+    analyze_repo_distribution(train_chunks_by_repo, eval_chunks_by_repo, cap=config.MAX_CHUNKS_PER_REPO)
 
     print(f"Training repositories: {len(train_chunks_by_repo)}")
     print(f"Validation repositories: {len(eval_chunks_by_repo)}")

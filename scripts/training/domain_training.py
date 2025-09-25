@@ -155,7 +155,7 @@ def build_trainer(model, tokenizer, train_dataset, eval_dataset, advance_callbac
     data_collator = DataCollatorForLanguageModeling(
         tokenizer=tokenizer,
         mlm=False,
-        pad_to_multiple_of=8,               # optional; can help with throughput on GPU
+        pad_to_multiple_of=8,
     )
 
     early_stopping_callback = EarlyStoppingCallback(
@@ -165,8 +165,8 @@ def build_trainer(model, tokenizer, train_dataset, eval_dataset, advance_callbac
     trainer = Trainer(
         model=model,
         args=training_args,
-        train_dataset=train_dataset,        # <-- rolling dataset object
-        eval_dataset=eval_dataset,          # <-- static eval dataset from preprocessing
+        train_dataset=train_dataset,
+        eval_dataset=eval_dataset,
         tokenizer=tokenizer,
         data_collator=data_collator,
         callbacks=[early_stopping_callback, advance_callback],
