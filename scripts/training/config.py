@@ -58,11 +58,11 @@ NUM_EPOCHS = 10
 LOGGING_STEPS = 100
 
 # How often to run evaluation on the validation set.
-EVAL_STEPS = 400
+EVAL_STEPS = 300
 
 # The number of evaluation steps to wait for improvement before stopping
 # training early. This helps prevent overfitting.
-EARLY_STOPPING_PATIENCE = 8
+EARLY_STOPPING_PATIENCE = 6
 
 
 # --- LoRA (Low-Rank Adaptation) Configuration ---
