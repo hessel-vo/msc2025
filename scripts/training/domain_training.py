@@ -138,7 +138,7 @@ def build_trainer(model, tokenizer, train_dataset, eval_dataset, advance_callbac
         per_device_train_batch_size=config.BATCH_SIZE,
         per_device_eval_batch_size=config.BATCH_SIZE,
         learning_rate=config.LEARNING_RATE,
-        # warmup_ratio=0.05,
+        warmup_ratio=0.05,
         logging_steps=config.LOGGING_STEPS,
         num_train_epochs=config.NUM_EPOCHS,
         eval_strategy="steps",
@@ -148,7 +148,7 @@ def build_trainer(model, tokenizer, train_dataset, eval_dataset, advance_callbac
         save_total_limit=4,
         load_best_model_at_end=True,
         gradient_checkpointing=True,
-        gradient_accumulation_steps=4,
+        gradient_accumulation_steps=8,
         bf16=True,
     )
 
