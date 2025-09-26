@@ -35,7 +35,11 @@ VALIDATION_REPO_IDS = [
     'wayland-ivi-extension',
     'ramses-citymodel-demo',
     'pybip',
-    'barefoot'
+    'barefoot',
+    'roadC',
+    's2dm',
+    'MoCOCrW',
+    'paho.mqtt.java',
 ]
 
 # Directory to save the trained LoRA adapter and any training checkpoints.
@@ -62,7 +66,7 @@ EVAL_STEPS = 150
 
 # The number of evaluation steps to wait for improvement before stopping
 # training early. This helps prevent overfitting.
-EARLY_STOPPING_PATIENCE = 6
+EARLY_STOPPING_PATIENCE = 8
 
 
 # --- LoRA (Low-Rank Adaptation) Configuration ---
