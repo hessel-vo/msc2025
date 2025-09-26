@@ -55,10 +55,10 @@ LEARNING_RATE = 1e-4
 NUM_EPOCHS = 10
 
 # How often to log training metrics (e.g., loss) to the console.
-LOGGING_STEPS = 100
+LOGGING_STEPS = 50
 
 # How often to run evaluation on the validation set.
-EVAL_STEPS = 300
+EVAL_STEPS = 150
 
 # The number of evaluation steps to wait for improvement before stopping
 # training early. This helps prevent overfitting.
