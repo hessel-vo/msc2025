@@ -32,8 +32,8 @@ def extract_unique_repo_ids(input_file_path, output_file_path):
         print(f"An error occurred: {e}")
 
 if __name__ == '__main__':
-    input_file = "../scripts/data_preparation/03_deduplication/core/final_dataset_core.jsonl"
+    input_file = "../scripts/data_preparation/03_deduplication/target_only/final_dataset_target_only.jsonl"
 
-    output_file = "repo_ids.txt"
+    output_file = "repo_ids_to.txt"
     
     extract_unique_repo_ids(input_file, output_file)

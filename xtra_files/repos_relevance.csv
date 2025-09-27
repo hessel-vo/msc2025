@@ -1,0 +1,127 @@
+repo link,language,relevance_filter,note
+https://github.com/volvo-cars/gatling-report,java,0,
+https://github.com/volvo-cars/spinnaker-halyard,java,0,
+https://github.com/volvo-cars/function_dispatcher,cpp,1,
+https://github.com/volvo-cars/terraform-vault-backend,python,0,
+https://github.com/volvo-cars/remoteperf,python,1,
+https://github.com/volvo-cars/coppercomm,python,0,
+https://github.com/volvo-cars/Reviewcheck,python,0,
+https://github.com/volvo-cars/FB-SSEM-dataset,python,1,"note: repository named as ""dataset"" but also includes code"
+https://github.com/volvo-cars/eene-nav-bandit-sim,python,1,
+https://github.com/volvo-cars/docker-airflow,python,0,
+https://github.com/COVESA/aosp_device_covesa_emulator,java,1,
+https://github.com/COVESA/android-vss-authentication-service,java,1,
+https://github.com/COVESA/android-vehicleplugin-vss-graphql,java,1,
+https://github.com/COVESA/vss-tools,python,1,
+https://github.com/COVESA/s2dm,python,1,
+https://github.com/COVESA/ifex,python,1,
+https://github.com/COVESA/commercial-vehicles,python,1,
+https://github.com/COVESA/vsomeip_py,python,1,
+https://github.com/COVESA/akm,python,1,
+https://github.com/COVESA/vss2graphql_schema,python,1,
+https://github.com/COVESA/graphql_schema2cpp_codegen,python,1,
+https://github.com/COVESA/vehicle_signal_manager,python,1,
+https://github.com/COVESA/vsomeip,cpp,1,
+https://github.com/COVESA/dlt-viewer,cpp,1,
+https://github.com/COVESA/cdsp,cpp,1,
+https://github.com/COVESA/capicxx-dbus-tools,cpp,1,
+https://github.com/COVESA/capicxx-core-tools,cpp,1,
+https://github.com/COVESA/capicxx-someip-runtime,cpp,1,
+https://github.com/COVESA/capicxx-core-runtime,cpp,1,
+https://github.com/COVESA/capicxx-dbus-runtime,cpp,1,
+https://github.com/COVESA/graphql-vss-server-libs,cpp,1,
+https://github.com/COVESA/graphql-vss-data-server,cpp,1,
+https://github.com/COVESA/test-someip-service,cpp,1,
+https://github.com/COVESA/aasig-vhal-demo,cpp,1,
+https://github.com/COVESA/ramses-citymodel-demo,cpp,1,
+https://github.com/COVESA/franca_ara_integration,cpp,1,note: clone issue
+https://github.com/COVESA/capicxx-wamp-tools,cpp,1,
+https://github.com/COVESA/capicxx-wamp-runtime,cpp,1,
+https://github.com/COVESA/dlt-daemon,c,1,
+https://github.com/COVESA/Open1722,c,1,
+https://github.com/COVESA/wayland-ivi-extension,c,1,
+https://github.com/COVESA/android-external-audio-mixing,c,1,
+https://github.com/COVESA/vehicle_signal_interface,c,1,
+https://github.com/mercedes-benz/openssl,c,0,
+https://github.com/mercedes-benz/ardep,c,1,
+https://github.com/mercedes-benz/roadC,c,1,
+https://github.com/mercedes-benz/valhalla,cpp,1,
+https://github.com/mercedes-benz/dlt-daemon,cpp,0,"note: relevant but already included, duplicate from COVESA"
+https://github.com/mercedes-benz/DnA,java,0,
+https://github.com/mercedes-benz/sechub,java,0,note: tool created by automotive manufacturer but provides generalised testing framework
+https://github.com/mercedes-benz/micronaut-redis,java,0,
+https://github.com/mercedes-benz/pinot,java,0,
+https://github.com/mercedes-benz/sechub-plugin-eclipse,java,0,
+https://github.com/mercedes-benz/EclipseDataSpaceConnector,java,1,
+https://github.com/mercedes-benz/sechub-plugin-intellij,java,0,
+https://github.com/mercedes-benz/zap-extensions,java,0,
+https://github.com/mercedes-benz/eclipse-tractusx_tractusx-edc-merge,java,1,
+https://github.com/mercedes-benz/spotbugs,java,0,
+https://github.com/mercedes-benz/zaproxy,java,0,
+https://github.com/mercedes-benz/micronaut-cache,java,0,
+https://github.com/mercedes-benz/ShedLock,java,0,
+https://github.com/mercedes-benz/odxtools,python,1,
+https://github.com/mercedes-benz/automotive_regression_xai,python,1,
+https://github.com/mercedes-benz/automotive_feature_engineering,python,1,
+https://github.com/mercedes-benz/mf4_ai_importer,python,1,
+https://github.com/mercedes-benz/wenum,python,0,
+https://github.com/mercedes-benz/neural_representation_of_differentiable_trees,python,0,
+https://github.com/mercedes-benz/bd_export_spdx2.2,python,0,
+https://github.com/mercedes-benz/kafka-integration-samples,python,0,
+https://github.com/mercedes-benz/OSCI,python,0,
+https://github.com/mercedes-benz/rules_pyvenv,python,0,
+https://github.com/mercedes-benz/selfsupervised_flow,python,1,
+https://github.com/mercedes-benz/bandit,python,0,
+https://github.com/mercedes-benz/jira,python,0,
+https://github.com/mercedes-benz/open-simulation-interface,python,1,
+https://github.com/mercedes-benz/blackbricks,python,0,
+https://github.com/mercedes-benz/leaderboard,python,1,
+https://github.com/mercedes-benz/GreenCodeEvaluator,python,0,note: competition submission
+https://github.com/mercedes-benz/netbox-docker,python,0,
+https://github.com/mercedes-benz/netbox,python,0,
+https://github.com/bmwcarit/ramses-logic,cpp,1,
+https://github.com/bmwcarit/ramses-composer,cpp,1,
+https://github.com/bmwcarit/ramses,cpp,1,
+https://github.com/bmwcarit/MoCOCrW,cpp,1,
+https://github.com/bmwcarit/ANGLE,cpp,0,
+https://github.com/bmwcarit/wscpp,cpp,1,note: domain-agnostic but meant for vehicle software
+https://github.com/bmwcarit/smrf,cpp,1,note: domain-agnostic but meant for vehicle software
+https://github.com/bmwcarit/ros_realtime_tests,cpp,1,note: domain-agnostic but very relevant for automotive software
+https://github.com/bmwcarit/muesli,cpp,1,note: domain-agnostic but relevant for automotive software and made by bmw
+https://github.com/bmwcarit/ros_chatter,cpp,1,note: domain-agnostic but meant for vehicle software
+https://github.com/bmwcarit/capu,cpp,1,note: domain-agnostic but meant for vehicle software
+https://github.com/bmwcarit/dlt-viewer,cpp,0,"note: relevant but already included, duplicate from COVESA"
+https://github.com/bmwcarit/pcl-people-tracker-timing-test,cpp,1,note: domain-agnostic but highly relevant
+https://github.com/bmwcarit/ignored_oneshot_timer,cpp,0,note: relevant but only implements small test with single file
+https://github.com/bmwcarit/stuck_at_shutdown,cpp,0,note: relevant but only implements small test with single file
+https://github.com/bmwcarit/lua,c,1,note: domain-agnostic but used for on-vehicle software
+https://github.com/bmwcarit/cgroup-tests,c,0,
+https://github.com/bmwcarit/joynr,java,1,note: domain-agnostic but meant for vehicle software
+https://github.com/bmwcarit/docker-java,java,0,
+https://github.com/bmwcarit/barefoot,java,1,
+https://github.com/bmwcarit/paho.mqtt.java,java,1,note: domain-agnostic but used for on-vehicle software
+https://github.com/bmwcarit/jeromq,java,1,note: domain-agnostic but used for on-vehicle software
+https://github.com/bmwcarit/ramses-android,java,1,
+https://github.com/bmwcarit/bazel,java,0,
+https://github.com/bmwcarit/hmm-lib,java,1,
+https://github.com/bmwcarit/offline-map-matching,java,1,
+https://github.com/bmwcarit/acme,java,1,note: domain-agnostic but made by bmw for automotive software engineering
+https://github.com/bmwcarit/Emma,python,1,note: domain-agnostic but made by bmw for automotive software engineering
+https://github.com/bmwcarit/python-dlt,python,1,
+https://github.com/bmwcarit/dltlyse,python,1,
+https://github.com/bmwcarit/zubbi,python,0,
+https://github.com/bmwcarit/nose3,python,0,
+https://github.com/bmwcarit/pyrate,python,0,
+https://github.com/bmwcarit/pybip,python,1,note: domain-agnostic but made by bmw for automotive software engineering
+https://github.com/bmwcarit/spdx-tools-python,python,0,
+https://github.com/bmwcarit/GitPython,python,0,
+https://github.com/bmwcarit/pypbap,python,1,
+https://github.com/bmwcarit/devana,python,0,
+https://github.com/bmwcarit/stracepy,python,1,note: domain-agnostic but made by bmw for automotive software engineering
+https://github.com/bmwcarit/meta-abicompat,python,0,"note: domain-agnostic but highly relevant, possibly re-include"
+http://github.com/bmwcarit/meta-abicompat-poky,python,0,"note: domain-agnostic but highly relevant, possibly re-include"
+https://github.com/renault/cananalyze,python,1,
+,,,
+,,46,
+,,76,98
+,,,25
