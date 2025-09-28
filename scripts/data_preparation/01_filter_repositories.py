@@ -32,30 +32,28 @@ INCLUDED_FILES = {
     "Android.bp", "Android.mk",
 }
 
-INCLUDED_EXTENSIONS_EXTENSIVE = {
+INCLUDED_EXTENSIONS_EXTENSIVE_ALL = {
     # Core 
     ".c", ".cpp", ".h", ".hpp", ".java", ".py",
-    ".gradle", ".kts", ".dtsi", ".overlay", ".map", ".rc",
-    ".proto", ".fbs", ".fidl", ".arxml", ".franca",
-    ".md", ".rst", ".adoc", ".vspec",
+    ".md", ".rst", ".adoc", ".dox"
 
     # Other
+    ".gradle", ".kts", ".dtsi", ".overlay", ".map", ".rc",
+    ".proto", ".fbs", ".fidl", ".arxml", ".franca",
     ".js", ".ts", ".html", ".css", ".ui",
     ".m", ".mm", ".kt", ".go", ".rs", ".swift",
-    ".sh", ".bat", ".lua",
-    ".dox", ".doxyfile", ".puml",
+    ".sh", ".bat", ".lua", ".vspec",
+    ".doxyfile", ".puml",
     ".jinja2", ".j2", ".tpl",
     ".conf", ".json", ".xml", ".yaml", ".yml", ".toml",
 }
 
-INCLUDED_EXTENSIONS_CORE = {
+INCLUDED_EXTENSIONS_EXTENDED = {
     ".c", ".cpp", ".h", ".hpp", ".java", ".py",
-    ".gradle", ".kts", ".dtsi", ".overlay", ".map", ".rc",
-    ".proto", ".fbs", ".fidl", ".arxml", ".franca",
-    ".md", ".rst", ".adoc", ".vspec",
+    ".md", ".rst", ".adoc", ".dox"
 }
 
-INCLUDED_EXTENSIONS_TARGET_ONLY = {
+INCLUDED_EXTENSIONS_CORE = {
     ".c", ".cpp", ".h", ".hpp", ".java", ".py",
 }
 
@@ -71,12 +69,13 @@ class PathFilter:
         self.excluded_exact_filenames = EXCLUDED_EXACT_FILENAMES
         self.included_files = INCLUDED_FILES
 
-        if filter_level == "extensive":
-            self.included_extensions = INCLUDED_EXTENSIONS_EXTENSIVE
+        if filter_level == "extensive_all":
+            self.included_extensions = INCLUDED_EXTENSIONS_EXTENSIVE_ALL
+        elif filter_level == "extended":
+            self.included_extensions = INCLUDED_EXTENSIONS_EXTENDED
+            self.included_files = set() 
         elif filter_level == "core":
             self.included_extensions = INCLUDED_EXTENSIONS_CORE
-        elif filter_level == "target_only":
-            self.included_extensions = INCLUDED_EXTENSIONS_TARGET_ONLY
             self.included_files = set()  
 
 
@@ -129,7 +128,7 @@ def main():
             output_dir = project_root / "scripts" / "data_preparation" / "01_filtering" / "repository_specific"
 
     else:
-        logging.error("Specify filter level (extensive, core, target_only) and all/repo dataset.")
+        logging.error("Specify filter level (core, extended, extensive_all) and all/repo dataset.")
         return
 
     output_dir.mkdir(parents=True, exist_ok=True)

@@ -1,2 +1,3 @@
 ramses/tests/unittests/framework/SceneGraph/Scene/ActionTestScene.h
 ramses/src/framework/internal/Core/Utils/LoggingUtils.h
+ifex/tests/protobuf/unit_test_files/protobuf/unittest_enormous_descriptor.proto

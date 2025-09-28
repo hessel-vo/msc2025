@@ -1,3 +1,5 @@
+EclipseDataSpaceConnector/docs/developer/terminology.md
+Emma/doc/test_project/supplement/terms_and_notations.md
 MoCOCrW/tests/unit/test_x509.cpp
 akm/akm_tools/__init__.py
 akm/tests/__init__.py
@@ -181,6 +183,7 @@ graphql_schema2cpp_codegen/graphql_schema2cpp_codegen/__init__.py
 graphql_schema2cpp_codegen/graphql_schema2cpp_codegen/generators/cppgraphqlgen/collectors/__init__.py
 graphql_schema2cpp_codegen/vss_deploy/model/deploy/types/__init__.py
 graphql_schema2cpp_codegen/vss_deploy/model/franca_idl/__init__.py
+ifex/docs/static-footer.md
 ifex/input_filters/__init__.py
 ifex/input_filters/franca/__init__.py
 ifex/input_filters/franca/franca_to_ifex.py
@@ -206,6 +209,7 @@ mf4_ai_importer/src/mf4_ai_importer/__init__.py
 muesli/include/muesli/Muesli.h
 odxtools/examples/__init__.py
 odxtools/tests/__init__.py
+open-simulation-interface/.antora/modules/gen/doxynav.adoc
 open-simulation-interface/tests/__init__.py
 python-dlt/tests/__init__.py
 ramses-logic/ci/scripts/code_style_checker/__init__.py
@@ -270,6 +274,10 @@ remoteperf/remoteperf/models/__init__.py
 remoteperf/remoteperf/utils/__init__.py
 remoteperf/tests/__init__.py
 ros_chatter/chatter_receiver/src/Receiver.cpp
+s2dm/docs-gen/IMAGE_REFERENCE_GUIDE.md
+s2dm/docs-gen/content/tools/3.1-cli/_index.md
+s2dm/docs-gen/content/tools/3.2-automation/_index.md
+s2dm/docs-gen/content/tools/_index.md
 s2dm/src/s2dm/concept/__init__.py
 s2dm/src/s2dm/exporters/__init__.py
 s2dm/src/s2dm/idgen/__init__.py
