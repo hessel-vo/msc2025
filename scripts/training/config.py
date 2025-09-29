@@ -53,7 +53,7 @@ BATCH_SIZE = 1
 
 # The initial learning rate for the AdamW optimizer. 2e-4 is a common
 # starting point for LoRA fine-tuning.
-LEARNING_RATE = 9e-5
+LEARNING_RATE = 1e-4
 
 # The total number of training epochs to perform.
 NUM_EPOCHS = 10
@@ -66,7 +66,7 @@ EVAL_STEPS = 120
 
 # The number of evaluation steps to wait for improvement before stopping
 # training early. This helps prevent overfitting.
-EARLY_STOPPING_PATIENCE = 8
+EARLY_STOPPING_PATIENCE = 12
 
 
 # --- LoRA (Low-Rank Adaptation) Configuration ---
