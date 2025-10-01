@@ -32,7 +32,7 @@ def main():
         
     project_root = Path(project_root_str)
     data_prep_dir = project_root / "scripts" / "data_preparation"
-    manifest_path = data_prep_dir / "01_filtering" / "filtered_file_paths_extensive.txt"
+    manifest_path = data_prep_dir / "01_filtering" / "filtered_file_paths_extended.txt"
     
     report_output_path = data_prep_dir / "secrets_report.txt"
     

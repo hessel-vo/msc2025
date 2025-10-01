@@ -100,7 +100,7 @@ def passes_quality_heuristics(doc: Dict[str, str]) -> Tuple[bool, str]:
     if len(content) > MAX_FILE_SIZE_BYTES:
         return False, "file_too_large"
 
-    is_markdown = path_in_repo.endswith(('.md', '.rst', '.adoc'))
+    is_markdown = path_in_repo.endswith(('.md', '.rst', '.adoc', '.dox'))
 
     if not is_markdown:
         header_text = "\n".join(lines[:NUM_LINES_TO_CHECK_FOR_GENERATED]).lower()

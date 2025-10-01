@@ -27,6 +27,6 @@ vss2graphql_schema/vss2graphql_schema/__init__.py
 vss2graphql_schema/vss2graphql_schema/graphql_generators/__init__.py
 vss2graphql_schema/vss2graphql_schema/graphql_generators/model/__init__.py
 vss2graphql_schema/vss2graphql_schema/graphql_generators/emitters/__init__.py
-vss2graphql_schema/vss2graphql_schema/graphql_generators/node_filters/__init__.py
 vss2graphql_schema/vss2graphql_schema/graphql_generators/layer_generators/__init__.py
+vss2graphql_schema/vss2graphql_schema/graphql_generators/node_filters/__init__.py
 vss2graphql_schema/vss2graphql_schema/graphql_generators/vss_generators/__init__.py
