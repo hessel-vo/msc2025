@@ -29,7 +29,7 @@ from transformers import AutoProcessor, AutoModelForCausalLM, AutoTokenizer
 
 # --- 2. Configuration ---
 # NOTE: Using the model from your latest script
-MODEL_ID = "google/gemma-3-12b-it"
+MODEL_ID = "google/gemma-3-1b-it"
 
 
 # --- 3. Setup Device (GPU or CPU) ---

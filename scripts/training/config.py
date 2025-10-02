@@ -25,7 +25,7 @@ MAX_CHUNKS_PER_REPO = 260
 
 
 # --- Dataset & Paths ---
-DATASET_TYPE = "target_only"
+DATASET_TYPE = "core"
 # The path to the input JSONL file containing the processed source code.
 DATASET_PATH = PROJECT_ROOT / "scripts/training/datasets" / f"final_dataset_{DATASET_TYPE}.jsonl"
 
