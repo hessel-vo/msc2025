@@ -12,7 +12,7 @@ HF_CACHE_DIR.mkdir(exist_ok=True)
 
 os.environ['HF_HOME'] = str(HF_CACHE_DIR)
 
-SEED=42
+SEED=314
 
 # --- Model Parameters ---
 MODEL_ID = "google/gemma-3-12b-it"
@@ -53,7 +53,7 @@ BATCH_SIZE = 1
 
 # The initial learning rate for the AdamW optimizer. 2e-4 is a common
 # starting point for LoRA fine-tuning.
-LEARNING_RATE = 1.2e-4
+LEARNING_RATE = 1e-4
 
 # The total number of training epochs to perform.
 NUM_EPOCHS = 10
