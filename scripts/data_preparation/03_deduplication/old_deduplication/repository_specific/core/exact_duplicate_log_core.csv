@@ -1,9 +1,0 @@
-kept_file,exact_duplicate_of_kept_file
-ardep/samples/digital_input_interrupt/boards/ardep.overlay,ardep/samples/digital_input_interrupt/boards/nucleo_g474re.overlay
-ardep/samples/hardware_tester/Kconfig,ardep/samples/hardware_test/Kconfig
-ardep/samples/hardware_tester/Kconfig,ardep/samples/led/Kconfig
-ardep/samples/lin/commander_scheduler/boards/ardep.overlay,ardep/samples/lin/commander/boards/ardep.overlay
-ardep/samples/lin/commander_scheduler/boards/ardep.overlay,ardep/samples/lin2can/commander/boards/ardep.overlay
-ardep/samples/lin/commander_scheduler/boards/ardep.overlay,ardep/samples/lin2can/gateway/boards/ardep.overlay
-ardep/samples/uds/CMakeLists.txt,ardep/samples/can/CMakeLists.txt
-vss-tools/tests/vspec/test_overlay_struct/struct1.vspec,vss-tools/tests/vspec/test_overlay_struct_array/struct1.vspec

@@ -4,7 +4,7 @@ import sys
 
 # --- Configuration ---
 TEMPLATE_FILE_PATH = "prompt_template_generation.txt"
-TEMPLATE_SUBSET = "prompt_template_generation_context.txt" # Set to "prompt_template_generation_context.txt" for benchmark subset
+TEMPLATE_SUBSET = "prompt_template_generation_context.txt" # Set to "prompt_template_generation_context.txt" for benchmark  (with file context)
 CSV_FILE_PATH = "benchmark_dataset_subset.csv" # Set to "benchmark_dataset_subset.csv" for benchmark subset
 BASE_OUTPUT_DIR = "created_prompts/generation"
 BASE_EXAMPLES_DIR = "examples/generation"

@@ -1,5 +1,0 @@
-filepath,pii_type,matched_value
-ardep/README.rst,[EMAIL_ADDRESS],git@github.com
-capicxx-dbus-runtime/src/CommonAPI/DBus/DBusConnection.cpp,[SECRET],addSignalMemberHandler
-vss-tools/docs/plantuml.md,[EMAIL_ADDRESS],ansgar.radermacher@cea.fr
-vss-tools/pyproject.toml,[EMAIL_ADDRESS],covesa-dev@covesa.global

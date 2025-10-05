@@ -60,10 +60,10 @@ def calculate_bleu_scores(df):
         
         problem_scores[p_id] = {
             'bleu_score': bleu_results['score'],
-            # 'bleu_1': bleu_results['precisions'][0],
-            # 'bleu_2': bleu_results['precisions'][1],
-            # 'bleu_3': bleu_results['precisions'][2],
-            # 'bleu_4': bleu_results['precisions'][3]
+            'bleu_1': bleu_results['precisions'][0],
+            'bleu_2': bleu_results['precisions'][1],
+            'bleu_3': bleu_results['precisions'][2],
+            'bleu_4': bleu_results['precisions'][3]
         }
 
     print("Calculating corpus-level BLEU score...")
@@ -92,7 +92,7 @@ def calculate_rouge_scores(df):
             'rouge1': individual_results['rouge1'][i],
             'rouge2': individual_results['rouge2'][i],
             'rougeL': individual_results['rougeL'][i],
-            # 'rougeLsum': individual_results['rougeLsum'][i],
+            'rougeLsum': individual_results['rougeLsum'][i],
         }
 
     print("Calculating corpus-level ROUGE scores...")
@@ -101,7 +101,7 @@ def calculate_rouge_scores(df):
         references=all_references
     )
     
-    corpus_scores = {f"corpus_{key}": value for key, value in corpus_result.items() if key != 'rougeLsum'}
+    corpus_scores = {f"corpus_{key}": value for key, value in corpus_result.items()}
 
     return problem_scores, corpus_scores
 

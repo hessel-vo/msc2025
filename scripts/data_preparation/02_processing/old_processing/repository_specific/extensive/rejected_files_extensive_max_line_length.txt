@@ -1,6 +1,0 @@
-vss-tools/obsolete/ocf/vehicleURI.swagger.json
-vss-tools/tests/vspec/test_datatypes/expected.json
-vss-tools/tests/vspec/test_min_max/expected.json
-vss-tools/tests/vspec/test_instances/expected.json
-vss-tools/tests/vspec/test_comment/expected.json
-ardep/doc/doxygen/doxygen-awesome-darkmode-toggle.js
