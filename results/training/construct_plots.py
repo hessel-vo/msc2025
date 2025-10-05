@@ -1,27 +1,3 @@
-#!/usr/bin/env python3
-"""
-Minimal plotting script for Hugging Face Trainer 'trainer_state.json' files.
-
-What it does:
-- Iterates runs R1..R14 and opens 'R{idx}_trainer_state.json' from INPUT_DIR
-- Extracts training loss (loss vs step) and eval loss (eval_loss vs step)
-- Plots:
-    - loss_by_step__train_all_runs.png  (training losses across runs)
-    - loss_by_step__eval_all_runs.png   (eval losses across runs)
-    - best_run_bar.png                  (bar chart of best metric per run; y-axis truncated for visibility)
-- Writes:
-    - runs_summary.csv                  (columns: run_id, best_metric, best_eval_step, last_step, num_eval_points)
-
-Constraints:
-- No CLI args; constants at top for input/output dirs
-- Steps only on X-axis (no epoch variants)
-- No smoothing, no de-duplication, no vertical markers
-- No regex/glob; filenames are constructed R1..R14 explicitly
-
-Dependencies:
-    pip install python-dotenv pandas matplotlib
-"""
-
 import os
 import json
 from pathlib import Path
@@ -32,14 +8,12 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 
-# ========= CONFIG =========
 load_dotenv()
 project_root_str = os.getenv("PROJECT_ROOT")
 PROJECT_ROOT = Path(project_root_str)
 
-# Adjust these two paths if needed:
-INPUT_DIR = PROJECT_ROOT / "results" / "training"               # folder containing R{idx}_trainer_state.json
-OUTPUT_DIR = PROJECT_ROOT / "results" / "training" / "plots"    # output folder for plots & CSV
+INPUT_DIR = PROJECT_ROOT / "results" / "training"
+OUTPUT_DIR = PROJECT_ROOT / "results" / "training" / "plots"
 
 RUN_START = 1
 RUN_END = 14
@@ -48,7 +22,6 @@ TRAIN_PLOT_NAME = "loss_by_step__train_all_runs.png"
 EVAL_PLOT_NAME = "loss_by_step__eval_all_runs.png"
 BAR_PLOT_NAME = "best_run_bar.png"
 SUMMARY_CSV_NAME = "runs_summary.csv"
-# ==========================
 
 
 def load_trainer_state(fp: Path) -> Dict[str, Any]:
@@ -57,11 +30,7 @@ def load_trainer_state(fp: Path) -> Dict[str, Any]:
 
 
 def collect_points(state: Dict[str, Any]) -> Tuple[pd.DataFrame, pd.DataFrame]:
-    """
-    Returns:
-        train_df: columns [step, epoch, loss, learning_rate, grad_norm]
-        eval_df:  columns [step, epoch, eval_loss]
-    """
+
     logs = state.get("log_history", []) or []
 
     train_rows = []
@@ -124,7 +93,6 @@ def main():
             eval_df = eval_df.assign(run_id=run_id)
             all_eval.append(eval_df)
 
-        # CSV fields (only the requested ones)
         best_metric = state.get("best_metric", None)
         best_eval_step = state.get("best_global_step", None)  # from file
         num_eval_points = int(len(eval_df)) if not eval_df.empty else 0
@@ -150,27 +118,22 @@ def main():
     train_all_df = pd.concat(all_train, ignore_index=True) if all_train else pd.DataFrame(columns=["run_id","step","loss"])
     eval_all_df  = pd.concat(all_eval,  ignore_index=True) if all_eval  else pd.DataFrame(columns=["run_id","step","eval_loss"])
 
-    # ---------------- CSV (write first) ----------------
     summary_df = pd.DataFrame(summary_rows, columns=["run_id","best_metric","best_eval_step","last_step","num_eval_points"])
     summary_path = OUTPUT_DIR / SUMMARY_CSV_NAME
     summary_df.to_csv(summary_path, index=False)
     print(f"Wrote summary CSV → {summary_path}")
 
-    # --------- ORDER & COLORS (inline, no helpers) ----------
-    # Numeric run order (R1, R2, ..., R14)
     all_run_ids = sorted(
         list(set(train_all_df["run_id"]).union(set(eval_all_df["run_id"]))),
         key=lambda rid: int(rid[1:]) if isinstance(rid, str) and rid[1:].isdigit() else 10**9
     )
-    # Use tab20 palette; build a simple mapping so colors are consistent across plots
+    # tab20 palette, simple mapping so colors are consistent across plots
     palette = plt.cm.tab20.colors
     color_map = {rid: palette[i % len(palette)] for i, rid in enumerate(all_run_ids)}
 
-    # ---------------- Plots ----------------
-    # A) Training loss across runs
+    # A) Training loss all runs
     if not train_all_df.empty:
         fig, ax = plt.subplots(figsize=(10, 6))
-        # ensure the axis uses tab20 cycling as a fallback
         ax.set_prop_cycle(color=palette)
         for rid in all_run_ids:
             g = train_all_df[train_all_df["run_id"] == rid]
@@ -189,7 +152,7 @@ def main():
     else:
         print("No training data found to plot.")
 
-    # B) Eval loss across runs
+    # B) Eval loss all runs
     if not eval_all_df.empty:
         fig, ax = plt.subplots(figsize=(10, 6))
         ax.set_prop_cycle(color=palette)
@@ -210,13 +173,11 @@ def main():
     else:
         print("No eval data found to plot.")
 
-    # C) Best-metric bar chart (values from summary CSV)
+    # C) Best-metric bar chart
     try:
         chart_df = pd.read_csv(summary_path)
         chart_df["best_metric"] = pd.to_numeric(chart_df["best_metric"], errors="coerce")
         chart_df = chart_df.dropna(subset=["best_metric"])
-        # numeric order for x-axis
-        chart_df = chart_df.sort_values(by="run_id", key=lambda s: s.str[1:].astype(int))
 
         if not chart_df.empty:
             vmin = float(chart_df["best_metric"].min())

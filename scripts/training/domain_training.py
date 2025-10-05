@@ -1,5 +1,3 @@
-# main_train.py
-
 import os
 import sys
 import numpy as np
@@ -18,10 +16,7 @@ from transformers import (
 )
 from peft import get_peft_model, LoraConfig
 
-# -----------------------
 # Step 1: Environment
-# -----------------------
-
 def setup_environment():
     """Sets random seeds for reproducibility and ensures output dir exists."""
     print("--- [Step 1] Initializing Setup ---")
@@ -36,10 +31,7 @@ def setup_environment():
     print("--- Setup complete ---")
 
 
-# -----------------------
 # Step 2: Model + Tokenizer
-# -----------------------
-
 def load_model_and_tokenizer():
     """Loads base model & tokenizer, registers special tokens, resizes embeddings."""
     print("\n--- [Step 2] Loading Tokenizer & Model ---")
@@ -76,10 +68,7 @@ def load_model_and_tokenizer():
     return model, tokenizer
 
 
-# -----------------------
 # Step 3: LoRA
-# -----------------------
-
 def apply_lora_to_model(model):
     """Applies LoRA configuration to the model."""
     print("\n--- [Step 3] Configuring and Applying LoRA ---")
@@ -98,10 +87,7 @@ def apply_lora_to_model(model):
     return model
 
 
-# -----------------------
 # Step 4: Data
-# -----------------------
-
 def prepare_datasets(tokenizer):
     """
     Uses the rolling, in-place dataset from data_processing.py
@@ -117,18 +103,14 @@ def prepare_datasets(tokenizer):
         base_seed=config.SEED,
     )
 
-    # Callback that advances the dataset window each epoch (no replacement of dataset object)
+    # Callback that advances the dataset window each epoch
     advance_callback = dp.AdvanceEpochWindows(rolling_train_ds)
 
-    # Eval dataset is a static HF Dataset built in load_and_preprocess_data
     print("--- Data preparation complete ---")
     return rolling_train_ds, eval_dataset, advance_callback
 
 
-# -----------------------
 # Step 5: Trainer
-# -----------------------
-
 def build_trainer(model, tokenizer, train_dataset, eval_dataset, advance_callback):
     """Configures the HF Trainer with rolling dataset + LoRA + early stopping."""
     print("\n--- [Step 5] Configuring Hugging Face Trainer ---")
@@ -176,10 +158,7 @@ def build_trainer(model, tokenizer, train_dataset, eval_dataset, advance_callbac
     return trainer
 
 
-# -----------------------
-# Step 6: Orchestration
-# -----------------------
-
+# Step 6: Main script
 def main():
     """
     Orchestrates setup, data, trainer, and training loop.
