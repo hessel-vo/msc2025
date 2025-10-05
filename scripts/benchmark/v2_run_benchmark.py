@@ -1,3 +1,5 @@
+import config
+
 import os
 import pandas as pd
 import torch
@@ -5,27 +7,23 @@ from pathlib import Path
 from dotenv import load_dotenv
 import sys
 import re
+import numpy as np
 
 print(torch._dynamo.config.cache_size_limit)
 torch._dynamo.config.cache_size_limit = 256
 
-load_dotenv()
 
-project_root_str = os.getenv("PROJECT_ROOT")
-PROJECT_ROOT = Path(project_root_str)
-HF_TOKEN = os.getenv('HUGGING_FACE_HUB_TOKEN')
-MODEL_ID = "google/gemma-3-1b-it"
-RESULT_TYPE = "baseline" # Swich "baseline" to "adapted" for eval of adapted model
+PROJECT_ROOT = config.PROJECT_ROOT
+HF_TOKEN = config.HF_TOKEN
+MODEL_ID = config.MODEL_ID
+RESULT_TYPE = "baseline" # Swich "baseline" to "adapted" for final eval
 
 if RESULT_TYPE == "adapted":
-    MODEL_NAME = MODEL_ID
+    MODEL_ID = MODEL_ID
 else:
     MODEL_NAME = MODEL_ID.split("/")[-1]
 
-HF_CACHE_DIR = PROJECT_ROOT / "hf_cache"
 
-# Set the HF_HOME environment variable before importing transformers
-os.environ['HF_HOME'] = str(HF_CACHE_DIR)
 
 print("--- Project Setup Confirmation ---")
 print(f"Project Root: {PROJECT_ROOT}")
@@ -34,6 +32,13 @@ print("---------------------------------")
 
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
+
+def setup_environment():
+    print("--- [Step 1] Initializing Setup ---")
+    np.random.seed(config.SEED)
+    torch.manual_seed(config.SEED)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(config.SEED)
 
 def apply_peft_adapter(model):
     print("IMPLEMENT PEFT ADAPTER LOADING!")
@@ -44,8 +49,8 @@ def load_model_and_tokenizer():
 
     # Tokenizer
     tokenizer = AutoTokenizer.from_pretrained(
-        MODEL_ID,
-        token=HF_TOKEN,
+        config.MODEL_ID,
+        token=config.HF_TOKEN,
     )
 
     if RESULT_TYPE == "baseline":
@@ -53,8 +58,8 @@ def load_model_and_tokenizer():
 
         # Base model
         model = AutoModelForCausalLM.from_pretrained(
-            MODEL_ID,
-            token=HF_TOKEN,
+            config.MODEL_ID,
+            token=config.HF_TOKEN,
             torch_dtype=torch.bfloat16,
             device_map="auto",
         ).eval()
@@ -63,8 +68,8 @@ def load_model_and_tokenizer():
 
         # Base model
         model = AutoModelForCausalLM.from_pretrained(
-            MODEL_ID,
-            token=HF_TOKEN,
+            config.MODEL_ID,
+            token=config.HF_TOKEN,
             torch_dtype=torch.bfloat16,
             device_map="auto",
         )
@@ -153,7 +158,6 @@ def run_benchmark():
     print(f"Loading model: {MODEL_ID}")
 
     model, tokenizer = load_model_and_tokenizer()
-
 
     # Load dataset
     try:
@@ -249,4 +253,6 @@ def run_benchmark():
     print(f"Results saved successfully to '{OUTPUT_FILENAME}'")
 
 if __name__ == "__main__":
+    if RESULT_TYPE == "adapted":
+        setup_environment()
     run_benchmark()

@@ -12,7 +12,7 @@ HF_CACHE_DIR.mkdir(exist_ok=True)
 
 os.environ['HF_HOME'] = str(HF_CACHE_DIR)
 
-SEED=314
+SEED=42
 
 # --- Model Parameters ---
 MODEL_ID = "google/gemma-3-12b-it"
@@ -59,10 +59,10 @@ LEARNING_RATE = 1e-4
 NUM_EPOCHS = 10
 
 # How often to log training metrics (e.g., loss) to the console.
-LOGGING_STEPS = 40
+LOGGING_STEPS = 25
 
 # How often to run evaluation on the validation set.
-EVAL_STEPS = 120
+EVAL_STEPS = 100
 
 # The number of evaluation steps to wait for improvement before stopping
 # training early. This helps prevent overfitting.
