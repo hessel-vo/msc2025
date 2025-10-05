@@ -1,3 +1,0 @@
-id,reference,generated
-2,Validates if a value conforms to a datatype specified by a string,"""Checks if a given value is of a specified data type."""
-3,Checks if a value or list of values is a valid integer for a specified bit-width and signedness.,"""Checks if a number is an x-tuple, ensuring it's non-negative and contains only non-negative integers."""

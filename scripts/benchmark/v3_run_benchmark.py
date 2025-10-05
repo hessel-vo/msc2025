@@ -5,7 +5,6 @@ from pathlib import Path
 from dotenv import load_dotenv
 import sys
 import re
-import rcimsg
 
 print(torch._dynamo.config.cache_size_limit)
 torch._dynamo.config.cache_size_limit = 256
@@ -15,11 +14,11 @@ load_dotenv()
 project_root_str = os.getenv("PROJECT_ROOT")
 PROJECT_ROOT = Path(project_root_str)
 HF_TOKEN = os.getenv('HUGGING_FACE_HUB_TOKEN')
-MODEL_ID = "google/gemma-3-12b-it"
-RESULT_TYPE = "baseline" # Switch "baseline" to "adapted" for eval of adapted model
+MODEL_ID = "google/gemma-3-1b-it"
+RESULT_TYPE = "baseline" # Swich "baseline" to "adapted" for eval of adapted model
 
 ADAPTER_TYPE = "core" # "core" or "extended"
-ADAPTER_ID = PROJECT_ROOT / "scripts" / "training" / f"trained_models_{ADAPTER_TYPE}" / "final_adapter"
+ADAPTER = PROJECT_ROOT / "scripts" / "training" / f"trained_models_{ADAPTER_TYPE}" / "final_adapter"
 
 if RESULT_TYPE == "adapted":
     MODEL_NAME = MODEL_ID
@@ -53,6 +52,7 @@ def load_model_and_tokenizer():
     )
 
     if RESULT_TYPE == "baseline":
+
 
         # Base model
         model = AutoModelForCausalLM.from_pretrained(
@@ -89,28 +89,6 @@ def remove_markdown_wrapping(code_string):
         return match.group(1)
     return code_string
 
-def generate_with_chat(model, tokenizer, messages, max_new_tokens=800):
-    """
-    Helper for chat-style generation that returns only newly generated tokens.
-    """
-    inputs = tokenizer.apply_chat_template(
-        messages,
-        add_generation_prompt=True,
-        tokenize=True,
-        return_tensors="pt"
-    ).to(model.device)
-
-    input_len = inputs.shape[-1]
-    with torch.inference_mode():
-        outputs = model.generate(
-            input_ids=inputs,
-            max_new_tokens=max_new_tokens,
-            do_sample=False
-        )
-    new_token_ids = outputs[0][input_len:]
-    decoded = tokenizer.decode(new_token_ids, skip_special_tokens=True).strip()
-    return decoded
-
 def run_benchmark():
 
     # Configure input and output paths from arguments
@@ -141,7 +119,7 @@ def run_benchmark():
 
     source_folder = 'xlcost' if source == 'xl' else 'automotive'
     summary_type = f'summary_{short_or_long}'
-    rci_message = rcimsg.RCI_GEN if task_type == "generation" else rcimsg.RCI_SUM
+
 
     INPUT_CSV_PATH = PROJECT_ROOT / "benchmark_dataset" / "benchmark_dataset.csv"
 
@@ -159,7 +137,9 @@ def run_benchmark():
         PROMPTS_DIR = PROJECT_ROOT / "benchmark_dataset" / "prompts" / "created_prompts" / task_type / "subset_context"
         OUTPUT_FILENAME = OUTPUT_DIR / f"{MODEL_NAME}_{task_type}_subset_results.csv"
     
+
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+
 
     print("Loading model and tokenizer")
     # Load and prepare model
@@ -177,12 +157,14 @@ def run_benchmark():
 
     model, tokenizer = load_model_and_tokenizer()
 
+
     # Load dataset
     try:
         dataset_df = pd.read_csv(INPUT_CSV_PATH)
     except FileNotFoundError:
         print(f"Error: Input CSV not found at '{INPUT_CSV_PATH}'. Make sure the file exists.")
         return
+
 
     results = []
     print(f"Starting benchmark on {len(dataset_df)} problems...")
@@ -193,11 +175,12 @@ def run_benchmark():
         problem_id = row['id']
         language = row['language']
 
-        # # TESTING/DEBUGGING, REMOVE FOR FULL RUN
-        # if language != "python":
+        # TESTING/DEBUGGING, REMOVE FOR FULL RUN
+        # if language != "java":
         #     continue
         # else:
         #     count += 1
+
         # if count > 3:
         #     break
 
@@ -212,44 +195,48 @@ def run_benchmark():
         try:
             with open(prompt_filepath, 'r', encoding='utf-8') as f:
                 prompt_text = f.read()
+                # print(prompt_text)
         except FileNotFoundError:
             print(f"    - Warning: Prompt file not found for ID '{problem_id}' at '{prompt_filepath}'. Skipping.")
             continue
 
-        # -------- First-pass generation --------
-        messages_first = [
+        # 1. Format the input using chat template
+        messages = [
             {"role": "user", "content": [{"type": "text", "text": prompt_text}]}
         ]
-        generated_output = generate_with_chat(
-            model=model,
-            tokenizer=tokenizer,
-            messages=messages_first,
-            max_new_tokens=800
-        )
-        print(f"    - Generated (first pass): {generated_output}")
+        
+        # 2. Apply the template and tokenize the input
+        inputs = tokenizer.apply_chat_template(
+            messages,
+            add_generation_prompt=True,
+            tokenize=True,
+            return_tensors="pt"
+        ).to(model.device)
 
-        # RCI step
-        # original instructions, first output, RCI instructions
-        messages_rci = [
-            {"role": "user", "content": [{"type": "text", "text": prompt_text}]},
-            {"role": "assistant", "content": [{"type": "text", "text": generated_output}]},
-            {"role": "user", "content": [{"type": "text", "text": rci_message}]}
-        ]
-        generated_output_rci = generate_with_chat(
-            model=model,
-            tokenizer=tokenizer,
-            messages=messages_rci,
-            max_new_tokens=800
-        )
-        print(f"    - Generated (RCI): {generated_output_rci}")
+        # Store the length of the input to remove from output
+        input_len = inputs.shape[-1]
 
-        # Collect results
+        # 3. Generate the response
+        with torch.inference_mode():
+            outputs = model.generate(
+                input_ids=inputs,
+                max_new_tokens=800,
+                do_sample=False
+            )
+        
+        # 4. Decode new tokens
+        generated_ids = outputs[0][input_len:]
+        generated_output = tokenizer.decode(generated_ids, skip_special_tokens=True).strip()
+
+
+        print(f"    - Generated: {generated_output}")
+        
+        # 2. Add the language to the results dictionary
         results.append({
             "id": problem_id,
             "language": language,
             "reference": reference,
-            "generated": remove_markdown_wrapping(generated_output),
-            "generated_rci": remove_markdown_wrapping(generated_output_rci),
+            "generated": remove_markdown_wrapping(generated_output)
         })
 
     print("Benchmark run complete.")
