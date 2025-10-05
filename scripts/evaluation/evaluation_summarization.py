@@ -22,7 +22,7 @@ TASK = "summarization"
 
 def validate_arguments(args):
     if len(args) < 4:
-        print("Usage: python run_summarization_evaluation.py <xl|auto> <summary_length> <shot_count>")
+        print("Usage: python run_summarization_evaluation.py <xl|auto> <summary_length> <shot_count> [subset]")
         print("Example: python run_summarization_evaluation.py xl short one")
         sys.exit(1)
 
@@ -38,105 +38,106 @@ def validate_arguments(args):
         print(f"Error: Invalid shot_count '{shot_count}'. Must be 'zero', 'one', or 'three'.")
         sys.exit(1)
 
-
     return source, summary_length, shot_count, subset
 
-def calculate_bleu_scores(df):
+def _round2(x):
+    return round(float(x), 2)
+
+def calculate_bleu_scores(predictions, references, ids):
+    """
+    SacreBLEU returns scores in 0-100 already. We only round to 2 decimals.
+    """
     bleu_metric = evaluate.load("sacrebleu")
     problem_scores = {}
-    all_predictions = []
-    all_references = []
 
-    print("Calculating problem-level BLEU scores...")
-    for _, row in df.iterrows():
-        prediction = str(row["generated"])
-        reference = str(row["reference"])
-        p_id = row["id"]
-
-        all_predictions.append(prediction)
-        all_references.append([reference])
-
-        bleu_results = bleu_metric.compute(predictions=[prediction], references=[[reference]])
-        
-        problem_scores[p_id] = {
-            'bleu_score': bleu_results['score'],
-            # 'bleu_1': bleu_results['precisions'][0],
-            # 'bleu_2': bleu_results['precisions'][1],
-            # 'bleu_3': bleu_results['precisions'][2],
-            # 'bleu_4': bleu_results['precisions'][3]
+    # Problem-level
+    for p, r, pid in zip(predictions, references, ids):
+        bleu_results = bleu_metric.compute(predictions=[p], references=[[r]])
+        problem_scores[pid] = {
+            "bleu_score": _round2(bleu_results["score"])
         }
 
-    print("Calculating corpus-level BLEU score...")
-    corpus_result = bleu_metric.compute(predictions=all_predictions, references=all_references)
-    corpus_scores = {'bleu_score': corpus_result['score']}
+    # Corpus-level
+    corpus_result = bleu_metric.compute(predictions=predictions, references=[[r] for r in references])
+    corpus_scores = {"bleu_score": _round2(corpus_result["score"])}
 
     return problem_scores, corpus_scores
 
-def calculate_rouge_scores(df):
-    # Seeded due to bootstrapping applied when calculating corpus-level scores
+def calculate_rouge_scores(predictions, references, ids):
+    """
+    ROUGE from evaluate returns 0–1; rescale to 0–100 and round to 2 decimals.
+    """
     rouge_metric = evaluate.load("rouge", seed=42)
-    
-    all_predictions = df["generated"].astype(str).tolist()
-    all_references = df["reference"].astype(str).tolist()
-    
-    print("Calculating problem-level ROUGE scores...")
-    individual_results = rouge_metric.compute(
-        predictions=all_predictions,
-        references=all_references,
+
+    # Problem-level (no aggregator)
+    individual = rouge_metric.compute(
+        predictions=predictions,
+        references=references,
         use_aggregator=False
     )
-    
+
     problem_scores = {}
-    for i, p_id in enumerate(df["id"]):
-        problem_scores[p_id] = {
-            'rouge1': individual_results['rouge1'][i],
-            'rouge2': individual_results['rouge2'][i],
-            'rougeL': individual_results['rougeL'][i],
-            # 'rougeLsum': individual_results['rougeLsum'][i],
+    for i, pid in enumerate(ids):
+        problem_scores[pid] = {
+            "rouge1": _round2(individual["rouge1"][i] * 100.0),
+            "rouge2": _round2(individual["rouge2"][i] * 100.0),
+            "rougeL": _round2(individual["rougeL"][i] * 100.0),
         }
 
-    print("Calculating corpus-level ROUGE scores...")
-    corpus_result = rouge_metric.compute(
-        predictions=all_predictions,
-        references=all_references
-    )
-    
-    corpus_scores = {f"corpus_{key}": value for key, value in corpus_result.items() if key != 'rougeLsum'}
+    # Corpus-level (aggregated)
+    corpus = rouge_metric.compute(predictions=predictions, references=references)
+    corpus_scores = {
+        "corpus_rouge1": _round2(corpus["rouge1"] * 100.0),
+        "corpus_rouge2": _round2(corpus["rouge2"] * 100.0),
+        "corpus_rougeL": _round2(corpus["rougeL"] * 100.0),
+        # corpus["rougeLsum"] omitted by design
+    }
 
     return problem_scores, corpus_scores
 
-def calculate_bertscore(df):
-
+def calculate_bertscore(predictions, references, ids):
+    """
+    BERTScore returns 0–1; rescale F1 to 0–100 and round to 2 decimals.
+    """
     bertscore_metric = evaluate.load("bertscore")
-    
-    all_predictions = df["generated"].astype(str).tolist()
-    all_references = df["reference"].astype(str).tolist()
-
-    print("Calculating batch problem-level BERTScore...")
-    individual_results = bertscore_metric.compute(
-        predictions=all_predictions,
-        references=all_references,
+    individual = bertscore_metric.compute(
+        predictions=predictions,
+        references=references,
         lang="en",
         model_type="microsoft/deberta-xlarge-mnli",
     )
 
     problem_scores = {}
-    for i, p_id in enumerate(df["id"]):
-        problem_scores[p_id] = {
-            'bertscore_precision': individual_results['precision'][i],
-            'bertscore_recall': individual_results['recall'][i],
-            'bertscore_f1': individual_results['f1'][i]
+    for i, pid in enumerate(ids):
+        problem_scores[pid] = {
+            "bertscore_f1": _round2(individual["f1"][i] * 100.0)
         }
 
-    print("Calculating corpus-level BERTScore...")
-    # Average score for overall corpus score
     corpus_scores = {
-        "corpus_bertscore_precision": sum(individual_results['precision']) / len(individual_results['precision']),
-        "corpus_bertscore_recall": sum(individual_results['recall']) / len(individual_results['recall']),
-        "corpus_bertscore_f1": sum(individual_results['f1']) / len(individual_results['f1']),
+        "corpus_bertscore_f1": _round2(sum(individual["f1"]) / len(individual["f1"]) * 100.0)
     }
 
     return problem_scores, corpus_scores
+
+def evaluate_for_column(df, pred_col):
+    predictions = df[pred_col].astype(str).tolist()
+    references = df["reference"].astype(str).tolist()
+    ids = df["id"].tolist()
+
+    problem_bleu, corpus_bleu = calculate_bleu_scores(predictions, references, ids)
+    problem_rouge, corpus_rouge = calculate_rouge_scores(predictions, references, ids)
+    problem_bert, corpus_bert = calculate_bertscore(predictions, references, ids)
+
+    # Per-problem dataframes
+    bleu_df = pd.DataFrame.from_dict(problem_bleu, orient="index").reset_index().rename(columns={"index": "id"})
+    rouge_df = pd.DataFrame.from_dict(problem_rouge, orient="index").reset_index().rename(columns={"index": "id"})
+    bert_df = pd.DataFrame.from_dict(problem_bert, orient="index").reset_index().rename(columns={"index": "id"})
+
+    per_problem = df.merge(bleu_df, on="id").merge(rouge_df, on="id").merge(bert_df, on="id")
+
+    # Corpus dict
+    corpus_scores = {**corpus_bleu, **corpus_rouge, **corpus_bert}
+    return per_problem, corpus_scores
 
 def main():
     source, summary_length, shot_count, subset = validate_arguments(sys.argv)
@@ -144,7 +145,7 @@ def main():
 
     input_filename = f"{MODEL_NAME}_{TASK}_{source}_{summary_length}_{shot_count}_results.csv"
     input_filepath = PROJECT_ROOT / "results" / "benchmark" / RESULTS_SUBFOLDER / "to_process/processed_results" / input_filename
-    
+
     if subset:
         input_filepath = PROJECT_ROOT / "results" / "benchmark" / RESULTS_SUBFOLDER / f"{MODEL_NAME}_{TASK}_subset_results.csv"
 
@@ -155,55 +156,69 @@ def main():
         print(f"Error: Input file not found at {input_filepath}")
         sys.exit(1)
 
-    df['generated'] = df['generated'].str.strip('"')
-    df['reference'] = df['reference'].str.strip('"')
+    # Basic hygiene
+    if "generated" not in df.columns:
+        print("Error: 'generated' column is missing from the input CSV.")
+        sys.exit(1)
+    if "generated_rci" not in df.columns:
+        print("Error: 'generated_rci' column is missing from the input CSV.")
+        sys.exit(1)
+    if "reference" not in df.columns:
+        print("Error: 'reference' column is missing from the input CSV.")
+        sys.exit(1)
 
-    problem_bleu_scores, corpus_bleu_scores = calculate_bleu_scores(df)
-    problem_rouge_scores, corpus_rouge_scores = calculate_rouge_scores(df)
-    problem_bert_scores, corpus_bert_scores = calculate_bertscore(df)
+    df["generated"] = df["generated"].astype(str).str.strip('"')
+    df["generated_rci"] = df["generated_rci"].astype(str).str.strip('"')
+    df["reference"] = df["reference"].astype(str).str.strip('"')
 
-    # Save per-problem results
-    bleu_metrics_df = pd.DataFrame.from_dict(problem_bleu_scores, orient='index')
-    bleu_metrics_df.reset_index(inplace=True)
-    bleu_metrics_df.rename(columns={'index': 'id'}, inplace=True)
+    # Evaluate for original generated
+    print("\n=== Evaluating: generated ===")
+    per_problem_generated, corpus_generated = evaluate_for_column(df, "generated")
 
-    rouge_metrics_df = pd.DataFrame.from_dict(problem_rouge_scores, orient='index')
-    rouge_metrics_df.reset_index(inplace=True)
-    rouge_metrics_df.rename(columns={'index': 'id'}, inplace=True)
+    # Evaluate for generated_rci
+    print("\n=== Evaluating: generated_rci ===")
+    per_problem_rci, corpus_rci = evaluate_for_column(df, "generated_rci")
 
-    bert_metrics_df = pd.DataFrame.from_dict(problem_bert_scores, orient='index')
-    bert_metrics_df.reset_index(inplace=True)
-    bert_metrics_df.rename(columns={'index': 'id'}, inplace=True)
-
-    output_df = pd.merge(df, bleu_metrics_df, on='id')
-    output_df = pd.merge(output_df, rouge_metrics_df, on='id')
-    output_df = pd.merge(output_df, bert_metrics_df, on='id')
-    
-
+    # ---------- Save per-problem results ----------
     OUTPUT_ROOT = PROJECT_ROOT / "results" / "evaluation" / RESULTS_SUBFOLDER
+    OUTPUT_ROOT.mkdir(parents=True, exist_ok=True)
+
     output_filename = f"evaluation_results_{MODEL_NAME}_{TASK}_{source}_{summary_length}_{shot_count}.csv"
     output_filepath = OUTPUT_ROOT / output_filename
     if subset:
         output_filepath = OUTPUT_ROOT / "subset" / f"evaluation_results_{MODEL_NAME}_{TASK}_subset.csv"
-    output_filepath.parent.mkdir(parents=True, exist_ok=True)
-    output_df.to_csv(output_filepath, index=False)
-    print(f"\nDetailed problem-level results saved to: {output_filepath}")
+        output_filepath.parent.mkdir(parents=True, exist_ok=True)
 
-    # Save corpus-level results
-    all_corpus_scores = {**corpus_bleu_scores, **corpus_rouge_scores, **corpus_bert_scores}
-    corpus_df = pd.DataFrame([all_corpus_scores])
-    corpus_df.insert(0, 'model_name', MODEL_NAME)
-    
+    per_problem_generated.to_csv(output_filepath, index=False)
+    print(f"\nDetailed problem-level results (generated) saved to: {output_filepath}")
+
+    # RCI per-problem file with _rci suffix
+    if subset:
+        output_filepath_rci = OUTPUT_ROOT / "subset" / f"evaluation_results_{MODEL_NAME}_{TASK}_subset_rci.csv"
+    else:
+        output_filepath_rci = OUTPUT_ROOT / f"evaluation_results_{MODEL_NAME}_{TASK}_{source}_{summary_length}_{shot_count}_rci.csv"
+
+    per_problem_rci.to_csv(output_filepath_rci, index=False)
+    print(f"Detailed problem-level results (generated_rci) saved to: {output_filepath_rci}")
+
+    # ---------- Save corpus-level results (two rows) ----------
+    test_name_base = f"{MODEL_NAME}-{source}-{summary_length}-{shot_count}"
+    row_generated = {"test_name": test_name_base, **corpus_generated}
+    row_rci = {"test_name": f"{test_name_base}-rci", **corpus_rci}
+    corpus_df = pd.DataFrame([row_generated, row_rci])
+
     corpus_output_filename = f"corpus_score_{MODEL_NAME}_{TASK}_{source}_{summary_length}_{shot_count}.csv"
-    corpus_output_filepath = OUTPUT_ROOT/ corpus_output_filename
+    corpus_output_filepath = OUTPUT_ROOT / corpus_output_filename
     if subset:
         corpus_output_filepath = OUTPUT_ROOT / "subset" / f"corpus_score_{MODEL_NAME}_{TASK}_subset.csv"
-    corpus_df.to_csv(corpus_output_filepath, index=False)
-    print(f"Overall corpus score saved to: {corpus_output_filepath}")
-    print("\n--- Corpus Scores Summary ---")
-    for key, value in all_corpus_scores.items():
-        print(f"{key.replace('_', ' ').title()}: {value:.4f}")
+        corpus_output_filepath.parent.mkdir(parents=True, exist_ok=True)
 
+    corpus_df.to_csv(corpus_output_filepath, index=False)
+    print(f"\nOverall corpus scores saved to: {corpus_output_filepath}")
+
+    print("\n--- Corpus Scores Summary ---")
+    print(f"[generated] {row_generated}")
+    print(f"[generated_rci] {row_rci}")
 
 if __name__ == "__main__":
     main()
