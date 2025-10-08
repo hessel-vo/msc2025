@@ -9,8 +9,6 @@ import numpy as np
 # Load environment variables from .env file
 load_dotenv()
 project_root_str = os.getenv("PROJECT_ROOT")
-if not project_root_str:
-    raise ValueError("PROJECT_ROOT not found in .env file. Please set it.")
 PROJECT_ROOT = Path(project_root_str)
 HF_CACHE_DIR = PROJECT_ROOT / "hf_cache"
 os.environ['HF_HOME'] = str(HF_CACHE_DIR)
@@ -133,9 +131,6 @@ def _rows_with_average(test_name, corpus_scores_by_lang):
     return corpus_rows + [average_row]
 
 def main():
-
-    np.random.seed(42)
-
     source, summary_length, shot_count, subset = validate_arguments(sys.argv)
     print(f"Starting code generation evaluation for: [Source: {source}, Summary: {summary_length}, Shots: {shot_count}]")
 

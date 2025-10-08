@@ -7,8 +7,6 @@ from dotenv import load_dotenv
 # Load environment variables from .env file
 load_dotenv()
 project_root_str = os.getenv("PROJECT_ROOT")
-if not project_root_str:
-    raise ValueError("PROJECT_ROOT not found in .env file. Please set it.")
 PROJECT_ROOT = Path(project_root_str)
 HF_CACHE_DIR = PROJECT_ROOT / "hf_cache"
 os.environ['HF_HOME'] = str(HF_CACHE_DIR)
@@ -43,11 +41,10 @@ def validate_arguments(args):
 def _round2(x):
     return round(float(x), 2)
 
-def calculate_bleu_scores(predictions, references, ids):
+def calculate_bleu_scores(predictions, references, ids, bleu_metric):
     """
     SacreBLEU returns scores in 0-100 already. We only round to 2 decimals.
     """
-    bleu_metric = evaluate.load("sacrebleu")
     problem_scores = {}
 
     # Problem-level
@@ -63,12 +60,10 @@ def calculate_bleu_scores(predictions, references, ids):
 
     return problem_scores, corpus_scores
 
-def calculate_rouge_scores(predictions, references, ids):
+def calculate_rouge_scores(predictions, references, ids, rouge_metric):
     """
     ROUGE from evaluate returns 0–1; rescale to 0–100 and round to 2 decimals.
     """
-    rouge_metric = evaluate.load("rouge", seed=42)
-
     # Problem-level (no aggregator)
     individual = rouge_metric.compute(
         predictions=predictions,
@@ -95,11 +90,10 @@ def calculate_rouge_scores(predictions, references, ids):
 
     return problem_scores, corpus_scores
 
-def calculate_bertscore(predictions, references, ids):
+def calculate_bertscore(predictions, references, ids, bertscore_metric):
     """
     BERTScore returns 0–1; rescale F1 to 0–100 and round to 2 decimals.
     """
-    bertscore_metric = evaluate.load("bertscore")
     individual = bertscore_metric.compute(
         predictions=predictions,
         references=references,
@@ -119,14 +113,16 @@ def calculate_bertscore(predictions, references, ids):
 
     return problem_scores, corpus_scores
 
-def evaluate_for_column(df, pred_col):
+def evaluate_for_column(df, pred_col, bleu_metric, rouge_metric, bertscore_metric):
     predictions = df[pred_col].astype(str).tolist()
     references = df["reference"].astype(str).tolist()
     ids = df["id"].tolist()
 
-    problem_bleu, corpus_bleu = calculate_bleu_scores(predictions, references, ids)
-    problem_rouge, corpus_rouge = calculate_rouge_scores(predictions, references, ids)
-    problem_bert, corpus_bert = calculate_bertscore(predictions, references, ids)
+    problem_bleu, corpus_bleu = calculate_bleu_scores(predictions, references, ids, bleu_metric)
+    problem_rouge, corpus_rouge = calculate_rouge_scores(predictions, references, ids, rouge_metric)
+    print("evaluating BERTScore")
+    problem_bert, corpus_bert = calculate_bertscore(predictions, references, ids, bertscore_metric)
+    print("done evaluating BERTScore")
 
     # Per-problem dataframes
     bleu_df = pd.DataFrame.from_dict(problem_bleu, orient="index").reset_index().rename(columns={"index": "id"})
@@ -171,13 +167,19 @@ def main():
     df["generated_rci"] = df["generated_rci"].astype(str).str.strip('"')
     df["reference"] = df["reference"].astype(str).str.strip('"')
 
+    # Load metrics
+    bleu_metric = evaluate.load("sacrebleu")
+    rouge_metric = evaluate.load("rouge", seed=42)
+    bertscore_metric = evaluate.load("bertscore")
+
+
     # Evaluate for original generated
     print("\n=== Evaluating: generated ===")
-    per_problem_generated, corpus_generated = evaluate_for_column(df, "generated")
+    per_problem_generated, corpus_generated = evaluate_for_column(df, "generated", bleu_metric, rouge_metric, bertscore_metric)
 
     # Evaluate for generated_rci
     print("\n=== Evaluating: generated_rci ===")
-    per_problem_rci, corpus_rci = evaluate_for_column(df, "generated_rci")
+    per_problem_rci, corpus_rci = evaluate_for_column(df, "generated_rci", bleu_metric, rouge_metric, bertscore_metric)
 
     # ---------- Save per-problem results ----------
     OUTPUT_ROOT = PROJECT_ROOT / "results" / "evaluation" / RESULTS_SUBFOLDER

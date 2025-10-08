@@ -66,7 +66,7 @@ def is_xintx(value: Any, signed: bool, bits: int):
     for type_def in cls.__dict__.get('types', []):
         if type_def[0] == datatype:
             return type_def
-    return None",0.6518280095423702,0.5016993910962959,0.546690088150626,0.7407407407407407,0.8181818181818182
+    return None",0.6291007368150975,0.5016993910962959,0.546690088150626,0.7407407407407407,0.7272727272727273
 5,python,"def get_fqn_namespaced_datatypes(fqn: str | None = None) -> dict[str, str]:
     if not fqn:
         return {}
@@ -452,7 +452,7 @@ def traverse_signal_tree(tree: VSSNode, fd: TextIOWrapper, static_uid: bool, add
         if branch_name not in instances_meta:
             instances_meta[branch_name] = []
         instances_meta[branch_name].append(node.name)
-    return instances_meta",0.27291153048891104,0.12167211618074669,0.17217902571390759,0.47126436781609193,0.32653061224489793
+    return instances_meta",0.2780135713052376,0.12167211618074669,0.17217902571390759,0.47126436781609193,0.3469387755102041
 22,python,"def is_VSS_leaf(node: VSSNode) -> bool:
    if isinstance(node.data, VSSDataDatatype):
         return True
@@ -542,7 +542,7 @@ def traverse_signal_tree(tree: VSSNode, fd: TextIOWrapper, static_uid: bool, add
             view = mDescriptiveTextOnlyLayoutView;
         }
         return view;
-    }",0.15410240083509083,0.15312892961228738,0.1798582138350278,0.13636363636363635,0.14705882352941177
+    }",0.13204357730567906,0.15312892961228738,0.1798582138350278,0.13636363636363635,0.058823529411764705
 31,java,"public void updateHeaderView(CardHeader header) {
     requireActivity().runOnUiThread(() -> {
         mRootView.setVisibility(View.VISIBLE);
@@ -710,7 +710,7 @@ def traverse_signal_tree(tree: VSSNode, fd: TextIOWrapper, static_uid: bool, add
         }
 
         return null;
-    }",0.1533107227323042,0.07263380254965987,0.10770865547912403,0.24242424242424243,0.19047619047619047
+    }",0.15926310368468516,0.07263380254965987,0.10770865547912403,0.24242424242424243,0.21428571428571427
 39,java,"private void initializeCards() {
     if (mHomeCardModules == null) {
         mHomeCardModules = new ArraySet<>();
@@ -846,7 +846,7 @@ def traverse_signal_tree(tree: VSSNode, fd: TextIOWrapper, static_uid: bool, add
         imageView.setImageBitmap(scaledBitmap);
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         return imageView;
-    }",0.25212562081541,0.04101638546162058,0.09900173533009175,0.5581395348837209,0.3103448275862069
+    }",0.27798768978092725,0.04101638546162058,0.09900173533009175,0.5581395348837209,0.41379310344827586
 44,java,"private void updateBackgroundImage(Drawable image) {
     if (image != null && getCardSize() != null) {
         int maxDimen = Math.max(getCardSize().getWidth(), getCardSize().getHeight());

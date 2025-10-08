@@ -15,7 +15,7 @@ load_dotenv()
 project_root_str = os.getenv("PROJECT_ROOT")
 PROJECT_ROOT = Path(project_root_str)
 HF_TOKEN = os.getenv('HUGGING_FACE_HUB_TOKEN')
-MODEL_ID = "google/gemma-3-12b-it"
+MODEL_ID = "google/gemma-3-1b-it"
 RESULT_TYPE = "baseline" # Switch "baseline" to "adapted" for eval of adapted model
 
 ADAPTER_TYPE = "core" # "core" or "extended"
@@ -54,7 +54,6 @@ def load_model_and_tokenizer():
 
     if RESULT_TYPE == "baseline":
 
-        # Base model
         model = AutoModelForCausalLM.from_pretrained(
             MODEL_ID,
             token=HF_TOKEN,
@@ -64,22 +63,16 @@ def load_model_and_tokenizer():
         return model, tokenizer
     else:
 
-        # Base model
         model = AutoModelForCausalLM.from_pretrained(
             MODEL_ID,
             token=HF_TOKEN,
             torch_dtype=torch.bfloat16,
             device_map="auto",
         )
+
         print("Model and tokenizer loaded successfully.")
 
-        # Resize embeddings to include newly added tokens
-        model.resize_token_embeddings(len(tokenizer))
-        print(f"Base model '{MODEL_ID}' loaded. Token embeddings resized to {len(tokenizer)}.")
-
         model = apply_peft_adapter(model)
-
-        print("--- Model and tokenizer loading complete ---")
         return model, tokenizer
 
 def remove_markdown_wrapping(code_string):

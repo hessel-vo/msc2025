@@ -15,7 +15,7 @@ os.environ['HF_HOME'] = str(HF_CACHE_DIR)
 SEED=42
 
 # --- Model Parameters ---
-MODEL_ID = "google/gemma-3-12b-it"
+MODEL_ID = "google/gemma-3-1b-it"
 
 MAX_SEQ_LENGTH = 2048
 
@@ -25,7 +25,7 @@ MAX_CHUNKS_PER_REPO = 260
 
 
 # --- Dataset & Paths ---
-DATASET_TYPE = "extended"
+DATASET_TYPE = "core"
 # The path to the input JSONL file containing the processed source code.
 DATASET_PATH = PROJECT_ROOT / "scripts/training/datasets" / f"final_dataset_{DATASET_TYPE}.jsonl"
 

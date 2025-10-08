@@ -2,8 +2,9 @@ import sys
 import os
 import pandas as pd
 
-CSV_FILE_PATH = './baseline/gemma-3-1b-it_summarization_xl_one_shot_short_results.csv'
-FOLDER_PATH = './baseline/to_process/'
+RESULT_TYPE = "baseline" # Switch "baseline" to "adapted" for eval of adapted model
+CSV_FILE_PATH = f'./{RESULT_TYPE}/gemma-3-1b-it_summarization_xl_one_shot_short_results.csv'
+FOLDER_PATH = f'./{RESULT_TYPE}/to_process/'
 
 def get_problem_ids(shot_type):
     if shot_type not in ['one', 'three']:
