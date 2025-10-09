@@ -184,7 +184,7 @@ def main():
     # ---------- Save per-problem results ----------
     OUTPUT_ROOT = PROJECT_ROOT / "results" / "evaluation" / RESULTS_SUBFOLDER
     OUTPUT_ROOT.mkdir(parents=True, exist_ok=True)
-
+    
     output_filename = f"evaluation_results_{MODEL_NAME}_{TASK}_{source}_{summary_length}_{shot_count}.csv"
     output_filepath = OUTPUT_ROOT / output_filename
     if subset:
@@ -204,9 +204,13 @@ def main():
     print(f"Detailed problem-level results (generated_rci) saved to: {output_filepath_rci}")
 
     # ---------- Save corpus-level results (two rows) ----------
-    test_name_base = f"{MODEL_NAME}-{source}-{summary_length}-{shot_count}"
-    row_generated = {"test_name": test_name_base, **corpus_generated}
-    row_rci = {"test_name": f"{test_name_base}-rci", **corpus_rci}
+    if RESULTS_SUBFOLDER == "adapted":
+        test_model = f"adapted_{MODEL_NAME.split('-')[2]}"
+    else:
+        test_model = f"base_{MODEL_NAME.split('-')[2]}"
+    test_name = f"{test_model}-{source}-{summary_length}-{shot_count}"
+    row_generated = {"test_name": test_name, **corpus_generated}
+    row_rci = {"test_name": f"{test_name}-rci", **corpus_rci}
     corpus_df = pd.DataFrame([row_generated, row_rci])
 
     corpus_output_filename = f"corpus_score_{MODEL_NAME}_{TASK}_{source}_{summary_length}_{shot_count}.csv"

@@ -182,11 +182,15 @@ def main():
     _save_per_problem(df, problem_rci, out_path_rci)
 
     # ---------- Save corpus-level results ----------
-    base_test = f"{MODEL_NAME}-{source}-{summary_length}-{shot_count}"
+    if RESULTS_SUBFOLDER == "adapted":
+        test_model = f"adapted_{MODEL_NAME.split('-')[2]}"
+    else:
+        test_model = f"base_{MODEL_NAME.split('-')[2]}"
+    test_name = f"{test_model}-{source}-{summary_length}-{shot_count}"
 
     rows = []
-    rows += _rows_with_average(base_test, corpus_gen_by_lang)            # generated rows (+ average)
-    rows += _rows_with_average(f"{base_test}-rci", corpus_rci_by_lang)   # rci rows (+ average)
+    rows += _rows_with_average(test_name, corpus_gen_by_lang)            # generated rows (+ average)
+    rows += _rows_with_average(f"{test_name}-rci", corpus_rci_by_lang)   # rci rows (+ average)
 
     corpus_df = pd.DataFrame(rows)
 
