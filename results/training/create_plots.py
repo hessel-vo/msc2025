@@ -8,14 +8,11 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 
-# ── Constants ──────────────────────────────────────────────────────────────────
 load_dotenv()
 project_root_str = os.getenv("PROJECT_ROOT")
-if not project_root_str:
-    raise RuntimeError("PROJECT_ROOT environment variable is not set.")
 PROJECT_ROOT = Path(project_root_str)
 
-DATASET_TYPE = "core"
+DATASET_TYPE = "extended"
 MODEL_SIZE = "1b"
 
 INPUT_DIR = PROJECT_ROOT / "results" / "training"
@@ -27,19 +24,12 @@ EVAL_PLOT_NAME = "loss_by_step__eval.png"
 BOTH_PLOT_NAME = "loss_by_step__train_and_eval.png"
 
 
-# ── Helpers ───────────────────────────────────────────────────────────────────
 def load_trainer_state(fp: Path) -> Dict[str, Any]:
     with fp.open("r", encoding="utf-8") as f:
         return json.load(f)
 
 
 def collect_points(state: Dict[str, Any]) -> Tuple[pd.DataFrame, pd.DataFrame]:
-    """
-    Extract training and evaluation points from Hugging Face Trainer 'log_history'.
-    Returns two DataFrames with columns:
-      train_df: step, epoch, loss, learning_rate, grad_norm
-      eval_df : step, epoch, eval_loss
-    """
     logs = state.get("log_history", []) or []
 
     train_rows = []
@@ -70,7 +60,6 @@ def collect_points(state: Dict[str, Any]) -> Tuple[pd.DataFrame, pd.DataFrame]:
     return train_df, eval_df
 
 
-# ── Main ──────────────────────────────────────────────────────────────────────
 def main():
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 

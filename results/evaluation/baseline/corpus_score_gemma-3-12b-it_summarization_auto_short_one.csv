@@ -1,3 +1,0 @@
-test_name,bleu_score,corpus_rouge1,corpus_rouge2,corpus_rougeL,corpus_bertscore_f1
-gemma-3-12b-it-auto-short-one,11.14,49.16,22.87,41.88,75.5
-gemma-3-12b-it-auto-short-one-rci,10.19,48.14,21.36,40.94,75.42

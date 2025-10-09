@@ -15,14 +15,15 @@ load_dotenv()
 project_root_str = os.getenv("PROJECT_ROOT")
 PROJECT_ROOT = Path(project_root_str)
 HF_TOKEN = os.getenv('HUGGING_FACE_HUB_TOKEN')
-MODEL_ID = "google/gemma-3-1b-it"
-RESULT_TYPE = "baseline" # Switch "baseline" to "adapted" for eval of adapted model
+MODEL_ID = "google/gemma-3-12b-it"
+RESULT_TYPE = "adapted" # "baseline" or "adapted" for model eval
 
-ADAPTER_TYPE = "core" # "core" or "extended"
-ADAPTER_ID = PROJECT_ROOT / "scripts" / "training" / f"trained_models_{ADAPTER_TYPE}" / "final_adapter"
+MODEL_SIZE = "12b"
+DATASET_TYPE = "core"
+ADAPTER_ID = PROJECT_ROOT / "scripts" / "training" / f"{MODEL_SIZE}_{DATASET_TYPE}_trained_models" / "final_adapter"
 
 if RESULT_TYPE == "adapted":
-    MODEL_NAME = MODEL_ID
+    MODEL_NAME = f"adapted_{MODEL_ID.split('-')[2]}"
 else:
     MODEL_NAME = MODEL_ID.split("/")[-1]
 
@@ -37,11 +38,13 @@ print(f"Hugging Face Cache Directory (HF_HOME) set to: {os.environ['HF_HOME']}")
 print("---------------------------------")
 
 from transformers import AutoModelForCausalLM, AutoTokenizer
+from peft import PeftModel
 
 
 def apply_peft_adapter(model):
-    print("IMPLEMENT PEFT ADAPTER LOADING!")
-    sys.exit()
+    model = PeftModel.from_pretrained(model, ADAPTER_ID)
+    model.eval()
+    return model
 
 def load_model_and_tokenizer():
     print("\n--- [Step 2] Loading Tokenizer & Model ---")
@@ -69,10 +72,9 @@ def load_model_and_tokenizer():
             torch_dtype=torch.bfloat16,
             device_map="auto",
         )
+        model = PeftModel.from_pretrained(model, str(ADAPTER_ID))
+        model.eval()
 
-        print("Model and tokenizer loaded successfully.")
-
-        model = apply_peft_adapter(model)
         return model, tokenizer
 
 def remove_markdown_wrapping(code_string):

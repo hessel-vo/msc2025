@@ -51,7 +51,7 @@ def calculate_bleu_scores(predictions, references, ids, bleu_metric):
     for p, r, pid in zip(predictions, references, ids):
         bleu_results = bleu_metric.compute(predictions=[p], references=[[r]])
         problem_scores[pid] = {
-            "bleu_score": bleu_results["score"]
+            "bleu_score": _round2(bleu_results["score"])
         }
 
     # Corpus-level
@@ -74,9 +74,9 @@ def calculate_rouge_scores(predictions, references, ids, rouge_metric):
     problem_scores = {}
     for i, pid in enumerate(ids):
         problem_scores[pid] = {
-            "rouge1": individual["rouge1"][i] * 100.0,
-            "rouge2": individual["rouge2"][i] * 100.0,
-            "rougeL": individual["rougeL"][i] * 100.0,
+            "rouge1": _round2(individual["rouge1"][i] * 100.0),
+            "rouge2": _round2(individual["rouge2"][i] * 100.0),
+            "rougeL": _round2(individual["rougeL"][i] * 100.0),
         }
 
     # Corpus-level (aggregated)
@@ -104,7 +104,7 @@ def calculate_bertscore(predictions, references, ids, bertscore_metric):
     problem_scores = {}
     for i, pid in enumerate(ids):
         problem_scores[pid] = {
-            "bertscore_f1": individual["f1"][i] * 100.0
+            "bertscore_f1": _round2(individual["f1"][i] * 100.0)
         }
 
     corpus_scores = {
@@ -134,43 +134,6 @@ def evaluate_for_column(df, pred_col, bleu_metric, rouge_metric, bertscore_metri
     # Corpus dict
     corpus_scores = {**corpus_bleu, **corpus_rouge, **corpus_bert}
     return per_problem, corpus_scores
-
-# NEW: corpus-by-language helper
-def evaluate_corpus_by_language(df, pred_col, bleu_metric, rouge_metric, bertscore_metric):
-    """
-    Computes corpus-level metrics per language for the given prediction column.
-    Returns a list of dict rows, one per language.
-    """
-
-    rows = []
-    # Normalize language labels a bit and guard against NaNs
-    lang_series = df["language"].astype(str)
-    for lang, group in df.assign(language=lang_series).groupby("language"):
-        preds = group[pred_col].astype(str).tolist()
-        refs = group["reference"].astype(str).tolist()
-
-        # BLEU (already 0–100)
-        bleu_res = bleu_metric.compute(predictions=preds, references=[[r] for r in refs])
-        # ROUGE (0–1 -> 0–100)
-        rouge_res = rouge_metric.compute(predictions=preds, references=refs)
-        # BERTScore (0–1 -> 0–100); keep same config as main corpus calc
-        bert_res = bertscore_metric.compute(
-            predictions=preds,
-            references=refs,
-            lang="en",
-            model_type="microsoft/deberta-xlarge-mnli",
-        )
-        row = {
-            "language": lang,
-            "bleu_score": _round2(bleu_res["score"]),
-            "corpus_rouge1": _round2(rouge_res["rouge1"] * 100.0),
-            "corpus_rouge2": _round2(rouge_res["rouge2"] * 100.0),
-            "corpus_rougeL": _round2(rouge_res["rougeL"] * 100.0),
-            "corpus_bertscore_f1": _round2(sum(bert_res["f1"]) / len(bert_res["f1"]) * 100.0),
-        }
-        rows.append(row)
-
-    return rows
 
 def main():
     source, summary_length, shot_count, subset = validate_arguments(sys.argv)
@@ -208,6 +171,7 @@ def main():
     bleu_metric = evaluate.load("sacrebleu")
     rouge_metric = evaluate.load("rouge", seed=42)
     bertscore_metric = evaluate.load("bertscore")
+
 
     # Evaluate for original generated
     print("\n=== Evaluating: generated ===")
@@ -260,35 +224,8 @@ def main():
         corpus_output_filepath = OUTPUT_ROOT / "subset" / f"corpus_score_{MODEL_NAME}_{TASK}_subset.csv"
         corpus_output_filepath.parent.mkdir(parents=True, exist_ok=True)
 
-    corpus_df.to_csv(corpus_output_filepath, index=False, float_format="%.2f")
+    corpus_df.to_csv(corpus_output_filepath, index=False)
     print(f"\nOverall corpus scores saved to: {corpus_output_filepath}")
-
-    # NEW: ---------- Save per-language corpus-level results ----------
-    if "language" in df.columns:
-        print("\n=== Evaluating corpus by language ===")
-        by_lang_generated = evaluate_corpus_by_language(df, "generated", bleu_metric, rouge_metric, bertscore_metric)
-        for row in by_lang_generated:
-            row["test_name"] = test_name
-
-        by_lang_rci = evaluate_corpus_by_language(df, "generated_rci", bleu_metric, rouge_metric, bertscore_metric)
-        for row in by_lang_rci:
-            row["test_name"] = f"{test_name}-rci"
-
-        per_lang_df = pd.DataFrame(by_lang_generated + by_lang_rci)
-
-        cols = ["test_name"] + [c for c in per_lang_df.columns if c != "test_name"]
-        per_lang_df = per_lang_df[cols]
-
-        per_lang_output_filename = f"corpus_score_by_language_{MODEL_NAME}_{TASK}_{source}_{summary_length}_{shot_count}.csv"
-        per_lang_output_filepath = OUTPUT_ROOT / per_lang_output_filename
-        if subset:
-            per_lang_output_filepath = OUTPUT_ROOT / "subset" / f"corpus_score_by_language_{MODEL_NAME}_{TASK}_subset.csv"
-            per_lang_output_filepath.parent.mkdir(parents=True, exist_ok=True)
-
-        per_lang_df.to_csv(per_lang_output_filepath, index=False, float_format="%.2f")
-        print(f"Per-language corpus scores saved to: {per_lang_output_filepath}")
-    else:
-        print("Warning: 'language' column missing; per-language corpus file not created.")
 
     print("\n--- Corpus Scores Summary ---")
     print(f"[generated] {row_generated}")

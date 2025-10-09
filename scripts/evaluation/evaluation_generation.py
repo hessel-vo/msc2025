@@ -186,7 +186,11 @@ def main():
         test_model = f"adapted_{MODEL_NAME.split('-')[2]}"
     else:
         test_model = f"base_{MODEL_NAME.split('-')[2]}"
-    test_name = f"{test_model}-{source}-{summary_length}-{shot_count}"
+
+    if shot_count == "zero":
+        test_name = f"{test_model}-{summary_length}-{shot_count}"
+    else:
+        test_name = f"{test_model}-{source}-{summary_length}-{shot_count}"
 
     rows = []
     rows += _rows_with_average(test_name, corpus_gen_by_lang)            # generated rows (+ average)
