@@ -248,7 +248,7 @@ def create_balanced_rolling_dataset(train_chunks_by_repo, config, base_seed=42):
 
 
 if __name__ == "__main__":
-    # The entire main function is used for testing, not used in training process
+    # The entire main function is used for testing this data prep script, not used in training process
     print("=" * 80)
     print("--- Testing data_processing.py functionality ---")
     print("=" * 80)

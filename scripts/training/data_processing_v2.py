@@ -129,8 +129,6 @@ def _preprocess_and_chunk_all_data(config, tokenizer):
     REPO_NAME_TOKEN = "<repo_name>"
     FILE_SEP_TOKEN = "<file_sep>"
     END_OF_TEXT_TOKEN = "<endoftext>"
-    EOS_TOKEN = tokenizer.eos_token
-    print(f"!!Using `eos_token`: '{EOS_TOKEN}")
     
     training_repos_with_metadata = []
     eval_metadata_count = 0
@@ -151,7 +149,7 @@ def _preprocess_and_chunk_all_data(config, tokenizer):
             repo_full_content = repo_header + "".join(repo_content_parts)
         else:
             for file_example in repo_files:
-                file_str = f"{FILE_SEP_TOKEN}{file_example['content']}"
+                file_str = f"\n# FILE SEPARATOR #\n{file_example['content']}"
                 repo_content_parts.append(file_str)
             repo_full_content = "".join(repo_content_parts)
 
@@ -250,7 +248,7 @@ def create_balanced_rolling_dataset(train_chunks_by_repo, config, base_seed=42):
 
 
 if __name__ == "__main__":
-    # The entire main function is used for testing, not used in training process
+    # The entire main function is used for testing this data prep script, not used in training process
     print("=" * 80)
     print("--- Testing data_processing.py functionality ---")
     print("=" * 80)
