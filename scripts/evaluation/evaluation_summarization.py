@@ -15,8 +15,12 @@ import evaluate
 
 # Constants for the model and results folder
 MODEL_NAME = "gemma-3-12b-it"
-RESULTS_SUBFOLDER = "baseline"
+RESULTS_SUBFOLDER = "adapted"
+DATASET_TYPE = "core"
 TASK = "summarization"
+
+if RESULTS_SUBFOLDER == "adapted":
+    MODEL_NAME = f"adapted_{MODEL_NAME.split('-')[2]}_{DATASET_TYPE}"
 
 def validate_arguments(args):
     if len(args) < 4:
@@ -241,7 +245,7 @@ def main():
 
     # ---------- Save corpus-level results (two rows) ----------
     if RESULTS_SUBFOLDER == "adapted":
-        test_model = f"adapted_{MODEL_NAME.split('-')[2]}"
+        test_model = MODEL_NAME
     else:
         test_model = f"base_{MODEL_NAME.split('-')[2]}"
     

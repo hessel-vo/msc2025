@@ -129,6 +129,8 @@ def _preprocess_and_chunk_all_data(config, tokenizer):
     REPO_NAME_TOKEN = "<repo_name>"
     FILE_SEP_TOKEN = "<file_sep>"
     END_OF_TEXT_TOKEN = "<endoftext>"
+    EOS_TOKEN = tokenizer.eos_token
+    print(f"!!Using `eos_token`: '{EOS_TOKEN}")
     
     training_repos_with_metadata = []
     eval_metadata_count = 0
@@ -136,7 +138,7 @@ def _preprocess_and_chunk_all_data(config, tokenizer):
         repo_content_parts = []
 
         # Applying StarCoder2 format, 50% chance to include repository metadata
-        include_metadata = np.random.rand() < 0.5
+        include_metadata = False
         if include_metadata:
             if repo_id in config.VALIDATION_REPO_IDS:
                 eval_metadata_count += 1

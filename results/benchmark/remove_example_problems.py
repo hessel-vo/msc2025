@@ -2,7 +2,7 @@ import sys
 import os
 import pandas as pd
 
-RESULT_TYPE = "baseline" # Switch "baseline" to "adapted" for eval of adapted model
+RESULT_TYPE = "adapted" # "baseline" or "adapted"
 CSV_FILE_PATH = f'./{RESULT_TYPE}/gemma-3-1b-it_summarization_xl_one_shot_short_results.csv'
 FOLDER_PATH = f'./{RESULT_TYPE}/to_process/'
 

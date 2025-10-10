@@ -20,6 +20,9 @@ MODEL_NAME = "gemma-3-12b-it"
 RESULTS_SUBFOLDER = "baseline"
 TASK = "generation"
 
+if RESULTS_SUBFOLDER == "adapted":
+    MODEL_NAME = f"adapted_{MODEL_NAME.split('-')[2]}"
+
 def validate_arguments(args):
     if len(args) < 4:
         print("Usage: python run_generation_evaluation.py <source> <summary_length> <shot_count> [subset]")
