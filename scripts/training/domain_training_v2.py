@@ -4,7 +4,7 @@ import numpy as np
 import torch
 
 import config
-import data_processing as dp
+import data_processing_v2 as dp
 
 from transformers import (
     AutoTokenizer,
