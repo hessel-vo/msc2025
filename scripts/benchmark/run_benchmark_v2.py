@@ -56,6 +56,8 @@ def load_model_and_tokenizer():
         token=HF_TOKEN,
     )
 
+    print(f"initial tokenizer vocab size: {len(tokenizer)}")
+
     if RESULT_TYPE == "baseline":
 
         model = AutoModelForCausalLM.from_pretrained(
@@ -79,6 +81,8 @@ def load_model_and_tokenizer():
 
         model = PeftModel.from_pretrained(model, str(ADAPTER_ID))
         model.eval()
+
+        print(f"resized tokenizer vocab size: {len(tokenizer)}")
 
         return model, tokenizer
 
@@ -176,6 +180,8 @@ def run_benchmark():
     print(f"Loading model: {MODEL_ID}")
 
     model, tokenizer = load_model_and_tokenizer()
+
+    print(f"using tokenizer with vocab size: {len(tokenizer)}")
 
     # Load dataset
     try:
