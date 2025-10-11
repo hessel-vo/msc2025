@@ -20,7 +20,7 @@ RESULT_TYPE = "adapted" # "baseline" or "adapted" for model eval
 DATASET_TYPE = "core"
 
 MODEL_SIZE = MODEL_ID.split("-")[2]
-ADAPTER_ID = PROJECT_ROOT / "scripts" / "training" / f"{MODEL_SIZE}_{DATASET_TYPE}_trained_models" / "final_adapter"
+ADAPTER_ID = PROJECT_ROOT / "scripts" / "training" / f"new_{MODEL_SIZE}_{DATASET_TYPE}_trained_models" / "final_adapter"
 
 if RESULT_TYPE == "adapted":
     MODEL_NAME = f"adapted_{MODEL_SIZE}_{DATASET_TYPE}"
