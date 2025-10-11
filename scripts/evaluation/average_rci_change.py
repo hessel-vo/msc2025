@@ -71,6 +71,8 @@ def _summarize_task(task_name: str, files: list[Path]) -> pd.DataFrame:
         print(f"[{task_name}] No valid CSVs processed after validation.")
         return pd.DataFrame(columns=["language", "avg no. RCI different", "avg percentage different"])
 
+    print(frames)
+
     all_rows = pd.concat(frames, ignore_index=True)
 
     # Per-language macro-averages across files/rows
