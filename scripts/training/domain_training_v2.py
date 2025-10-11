@@ -61,7 +61,7 @@ def load_model_and_tokenizer():
         attn_implementation="flash_attention_2",
     )
 
-    # Resize embeddings to include newly added tokens
+    # Resize embeddings to include newly added tokens (note: removed for v2 training run)
     # model.resize_token_embeddings(len(tokenizer))
     print(f"Base model '{config.MODEL_ID}' loaded. Token embeddings resized to {len(tokenizer)}.")
     print("--- Model and tokenizer loading complete ---")

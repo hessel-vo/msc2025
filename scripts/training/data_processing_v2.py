@@ -129,6 +129,7 @@ def _preprocess_and_chunk_all_data(config, tokenizer):
     REPO_NAME_TOKEN = "<repo_name>"
     FILE_SEP_TOKEN = "<file_sep>"
     END_OF_TEXT_TOKEN = "<endoftext>"
+    EOS_TOKEN = tokenizer.eos_token
     
     training_repos_with_metadata = []
     eval_metadata_count = 0
@@ -153,7 +154,7 @@ def _preprocess_and_chunk_all_data(config, tokenizer):
                 repo_content_parts.append(file_str)
             repo_full_content = "".join(repo_content_parts)
 
-        repo_full_content += END_OF_TEXT_TOKEN
+        repo_full_content += EOS_TOKEN
         token_ids = tokenizer(repo_full_content, truncation=False, padding=False)['input_ids']
 
         for i in range(0, len(token_ids), config.MAX_SEQ_LENGTH):
