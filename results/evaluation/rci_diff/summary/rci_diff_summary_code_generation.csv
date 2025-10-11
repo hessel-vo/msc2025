@@ -1,6 +1,6 @@
 language,avg no. RCI different,avg percentage different
-c,6.2,28.18
-cpp,9.7,44.09
-java,6.7,30.45
-python,7.9,35.91
-all_languages,7.62,34.66
+c,12.8,58.18
+cpp,17.7,80.45
+java,14.3,65.0
+python,6.8,30.91
+all_languages,12.9,58.64

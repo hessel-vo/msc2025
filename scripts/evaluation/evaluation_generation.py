@@ -16,13 +16,17 @@ os.environ['HF_HOME'] = str(HF_CACHE_DIR)
 from codebleu import calc_codebleu
 
 # Constants for the model and results folder
-MODEL_NAME = "gemma-3-12b-it"
-RESULTS_SUBFOLDER = "adapted"  # "baseline" or "adapted"
+INPUT_MODEL_NAME = "gemma-3-12b-it"
+MODEL_SIZE = "12b"
+RESULTS_SUBFOLDER = "baseline"  # "baseline" or "adapted"
 DATASET_TYPE = "core"
 TASK = "generation"
 
 if RESULTS_SUBFOLDER == "adapted":
-    MODEL_NAME = f"adapted_{MODEL_NAME.split('-')[2]}_{DATASET_TYPE}"
+    MODEL_NAME = f"adapted_{MODEL_SIZE}_{DATASET_TYPE}"
+    INPUT_MODEL_NAME = MODEL_NAME
+else:
+    MODEL_NAME = f"base_{MODEL_SIZE}"
 
 def validate_arguments(args):
     if len(args) < 4:
@@ -138,11 +142,11 @@ def main():
     source, summary_length, shot_count, subset = validate_arguments(sys.argv)
     print(f"Starting code generation evaluation for: [Source: {source}, Summary: {summary_length}, Shots: {shot_count}]")
 
-    input_filename = f"{MODEL_NAME}_{TASK}_{source}_{summary_length}_{shot_count}_results.csv"
+    input_filename = f"{INPUT_MODEL_NAME}_{TASK}_{source}_{summary_length}_{shot_count}_results.csv"
     input_filepath = PROJECT_ROOT / "results" / "benchmark" / RESULTS_SUBFOLDER / "to_process/processed_results" / input_filename
 
     if subset:
-        input_filepath = PROJECT_ROOT / "results" / "benchmark" / RESULTS_SUBFOLDER / f"{MODEL_NAME}_{TASK}_subset_results.csv"
+        input_filepath = PROJECT_ROOT / "results" / "benchmark" / RESULTS_SUBFOLDER / f"{INPUT_MODEL_NAME}_{TASK}_subset_results.csv"
 
     try:
         df = pd.read_csv(input_filepath)
@@ -186,15 +190,10 @@ def main():
     _save_per_problem(df, problem_rci, out_path_rci)
 
     # ---------- Save corpus-level results ----------
-    if RESULTS_SUBFOLDER == "adapted":
-        test_model = MODEL_NAME
-    else:
-        test_model = f"base_{MODEL_NAME.split('-')[2]}"
-
     if shot_count == "zero":
-        test_name = f"{test_model}-{summary_length}-{shot_count}"
+        test_name = f"{MODEL_NAME}-{summary_length}-{shot_count}"
     else:
-        test_name = f"{test_model}-{source}-{summary_length}-{shot_count}"
+        test_name = f"{MODEL_NAME}-{source}-{summary_length}-{shot_count}"
 
     rows = []
     rows += _rows_with_average(test_name, corpus_gen_by_lang)            # generated rows (+ average)
@@ -208,7 +207,7 @@ def main():
         corpus_out_path = OUTPUT_ROOT / "subset" / f"corpus_score_{MODEL_NAME}_{TASK}_subset.csv"
         corpus_out_path.parent.mkdir(parents=True, exist_ok=True)
 
-    corpus_df.to_csv(corpus_out_path, index=False)
+    corpus_df.to_csv(corpus_out_path, index=False, float_format='%.2f')
     print(f"Overall corpus scores by language (including RCI) saved to: {corpus_out_path}")
 
     # ----- Print summaries -----

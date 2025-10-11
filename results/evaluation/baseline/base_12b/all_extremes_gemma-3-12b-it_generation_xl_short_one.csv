@@ -1,0 +1,276 @@
+category,rank,language,id,reference,generated,generated_rci,codebleu
+top,1,python,11,"def deep_update(base: dict[str, Any], update: dict[str, Any]) -> None:
+    for key, value in update.items():
+        if isinstance(value, dict):
+            if key in base and isinstance(base[key], dict):
+                deep_update(base[key], value)
+            else:
+                base[key] = value
+        else:
+            base[key] = value","def deep_update(base: dict[str, Any], update: dict[str, Any]) -> None:
+    for key, value in update.items():
+        if isinstance(value, dict) and key in base and isinstance(base[key], dict):
+            deep_update(base[key], value)
+        else:
+            base[key] = value","def deep_update(base: dict[str, Any], update: dict[str, Any]) -> None:
+    for key, value in update.items():
+        if isinstance(value, dict) and key in base and isinstance(base[key], dict):
+            deep_update(base[key], value)
+        else:
+            base[key] = value",81.35
+top,2,java,29,"private void updateControlBarButton(DescriptiveTextWithControlsView.Control buttonContent,
+        ImageButton buttonView) {
+    if (buttonContent != null) {
+        buttonView.setImageDrawable(buttonContent.getIcon());
+        buttonView.setOnClickListener(buttonContent.getOnClickListener());
+        buttonView.setVisibility(View.VISIBLE);
+    } else {
+        buttonView.setVisibility(View.GONE);
+    }
+}","private void updateControlBarButton(DescriptiveTextWithControlsView.Control buttonContent, ImageButton buttonView) {
+        if (buttonContent != null && buttonContent.getIcon() != null) {
+            buttonView.setIcon(buttonContent.getIcon());
+            buttonView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    buttonContent.executeAction();
+                }
+            });
+            buttonView.setVisibility(View.VISIBLE);
+        } else {
+            buttonView.setVisibility(View.GONE);
+        }
+    }","private void updateControlBarButton(DescriptiveTextWithControlsView.Control buttonContent, ImageButton buttonView) {
+        if (buttonContent != null && buttonContent.getIcon() != null) {
+            buttonView.setIcon(buttonContent.getIcon());
+            buttonView.setOnClickListener(v -> buttonContent.executeAction());
+            buttonView.setVisibility(View.VISIBLE);
+        } else {
+            buttonView.setVisibility(View.GONE);
+        }
+    }",75.38
+top,3,cpp,71,"void DBusProxyBase::addSignalStateHandler(
+            std::shared_ptr<DBusProxyConnection::DBusSignalHandler> _handler,
+            const uint32_t _subscription) {
+    connection_->addSignalStateHandler(_handler, _subscription);
+}","void DBusProxyBase::addSignalStateHandler(std::shared_ptr<DBusProxyConnection::DBusSignalHandler> _handler, const uint32_t _subscription) {
+    m_connection->addSignalStateHandler(_handler, _subscription);
+}","void DBusProxyBase::addSignalStateHandler(std::shared_ptr<DBusProxyConnection::DBusSignalHandler> _handler, const uint32_t _subscription) {
+    m_connection->addSignalStateHandler(_handler, _subscription);
+}",71.39
+top,4,java,45,"private void updateMediaView(CharSequence title, CharSequence subtitle) {
+    getMediaLayoutView().setVisibility(View.VISIBLE);
+    mMediaTitle.setText(title);
+    mMediaSubtitle.setText(subtitle);
+}","private void updateMediaView(CharSequence title, CharSequence subtitle) {
+    mediaView.setVisibility(View.VISIBLE);
+    mediaView.setTitle(title);
+    mediaView.setSubtitle(subtitle);
+}","private void updateMediaView(CharSequence title, CharSequence subtitle) {
+    mediaView.setVisibility(View.VISIBLE);
+    mediaView.setTitle(title);
+    mediaView.setSubtitle(subtitle);
+}",70.84
+top,5,java,34,"private static boolean shouldAddToLaunchables(@NonNull ComponentName componentName,
+        @NonNull Set<String> appsToHide,
+        @NonNull Set<String> customMediaComponents,
+        @AppTypes int appTypesToShow,
+        @AppTypes int componentAppType) {
+    if (appsToHide.contains(componentName.getPackageName())) {
+        return false;
+    }
+    switch (componentAppType) {
+        case APP_TYPE_MEDIA_SERVICES:
+            if (customMediaComponents.contains(componentName.flattenToString())
+                    && (appTypesToShow & APP_TYPE_LAUNCHABLES) != 0) {
+                return false;
+            }
+            return true;
+        case APP_TYPE_LAUNCHABLES:
+            return true;
+        default:
+            Log.e(TAG, ""Invalid componentAppType : "" + componentAppType);
+            return false;
+    }
+}","private static boolean shouldAddToLaunchables(@NonNull ComponentName componentName,
+        @NonNull Set<String> appsToHide,
+        @NonNull Set<String> customMediaComponents,
+        @AppTypes int appTypesToShow,
+        @AppTypes int componentAppType) {
+    if (appsToHide.contains(componentName.getPackageName())) {
+        return false;
+    }
+    if ((appTypesToShow & componentAppType) == 0) {
+        return false;
+    }
+    if (customMediaComponents.contains(componentName.getClassName())) {
+        return false;
+    }
+    return true;
+}","private static boolean shouldAddToLaunchables(@NonNull ComponentName componentName,
+        @NonNull Set<String> appsToHide,
+        @NonNull Set<String> customMediaComponents,
+        @AppTypes int appTypesToShow,
+        @AppTypes int componentAppType) {
+    if (appsToHide.contains(componentName.getPackageName())) {
+        return false;
+    }
+    if ((appTypesToShow & componentAppType) == 0) {
+        return false;
+    }
+    if (customMediaComponents.contains(componentName.getClassName())) {
+        return false;
+    }
+    return true;
+}",64.75
+bottom,1,c,99,"int abstract_lin_scheduler_set_active_table(
+    abstract_lin_scheduler_handle_t sched, size_t table_index) {
+  if (table_index >= sched->table_count) {
+    return -ENOENT;
+  }
+
+  bool active_before = sched->current_table != -1;
+
+  if (active_before) {
+    k_sem_take(&sched->active, K_FOREVER);
+  }
+
+  sched->current_table = table_index;
+  sched->current_table_entry = 0;  // start from the beginning again.
+
+  k_sem_give(&sched->active);
+
+  return 0;
+}","int abstract_lin_scheduler_set_active_table(void) {
+    lin_scheduler->active_table = 0;
+    lin_scheduler->position = 0;
+    return 0;
+}","int abstract_lin_scheduler_set_active_table(void) {
+    lin_scheduler->active_table = 0;
+    lin_scheduler->position = 0;
+    return 0;
+}",8.62
+bottom,2,c,78,"void send_positive_reset_response(uint8_t reset_type) {
+  int ret;
+  uint8_t positive_sid = UDS_SID_ECU_RESET + 0x40;
+
+  uint8_t tx_data[] = {positive_sid, reset_type};
+
+  ret = isotp_send(&send_ctx, can_dev, tx_data, sizeof(tx_data), &tx_addr,
+                   &rx_addr, send_complete_cb, NULL);
+  if (ret != ISOTP_N_OK) {
+    LOG_ERR(""Error while sending data to ID %d [%d]\n"", tx_addr.std_id, ret);
+  }
+}","void send_positive_reset_response(uint8_t reset_type) {
+    uint8_t response[2];
+    response[0] = 0x10;
+    response[1] = reset_type;
+    uds_send(response, 2);
+}","void send_positive_reset_response(uint8_t reset_type) {
+    uint8_t response[2];
+    response[0] = 0x10;
+    response[1] = reset_type;
+    send_uds_response(response, 2);
+}",10.45
+bottom,3,c,81,"static void send_transfer_data_response(uint8_t block_sequence_counter) {
+  int ret;
+  uint8_t positive_sid = UDS_SID_TRANSFER_DATA + 0x40;
+
+  uint8_t tx_data[] = {positive_sid, block_sequence_counter};
+
+  ret = isotp_send(&send_ctx, can_dev, tx_data, sizeof(tx_data), &tx_addr,
+                   &rx_addr, send_complete_cb, NULL);
+  if (ret != ISOTP_N_OK) {
+    LOG_ERR(""Error while sending data to ID %d [%d]\n"", tx_addr.std_id, ret);
+  }
+}","static void send_transfer_data_response(uint8_t block_sequence_counter) {
+    uint8_t response[2];
+    response[0] = 0x53;
+    response[1] = block_sequence_counter;
+    uds_send(response, 2);
+}","static void send_transfer_data_response(uint8_t block_sequence_counter) {
+    uint8_t response[2];
+    response[0] = 0x53;
+    response[1] = block_sequence_counter;
+    uds_send(response, 2);
+}",12.26
+bottom,4,java,30,"protected final View getDescriptiveTextOnlyLayoutView() {
+    if (mDescriptiveTextOnlyLayoutView == null) {
+        ViewStub stub = mRootView.findViewById(R.id.descriptive_text_layout);
+        mDescriptiveTextOnlyLayoutView = stub.inflate();
+        mDescriptiveTextOnlyTitle = mDescriptiveTextOnlyLayoutView.findViewById(
+                R.id.primary_text);
+        mDescriptiveTextOnlySubtitle = mDescriptiveTextOnlyLayoutView.findViewById(
+                R.id.secondary_text);
+        mDescriptiveTextOnlyOptionalImage = mDescriptiveTextOnlyLayoutView.findViewById(
+                R.id.optional_image);
+        mDescriptiveTextOnlyTapForMore = mDescriptiveTextOnlyLayoutView.findViewById(
+                R.id.tap_for_more_text);
+    }
+    return mDescriptiveTextOnlyLayoutView;
+}","protected final View getDescriptiveTextOnlyLayoutView() {
+        View view = mDescriptiveTextOnlyLayoutView;
+        if (view == null) {
+            mDescriptiveTextOnlyLayoutView = createDescriptiveTextOnlyLayoutView();
+            view = mDescriptiveTextOnlyLayoutView;
+        }
+        return view;
+    }","protected final View getDescriptiveTextOnlyLayoutView() {
+        View view = mDescriptiveTextOnlyLayoutView;
+        if (view == null) {
+            mDescriptiveTextOnlyLayoutView = createDescriptiveTextOnlyLayoutView();
+            view = mDescriptiveTextOnlyLayoutView;
+        }
+        return view;
+    }",13.94
+bottom,5,java,38,"private Intent getMapsIntent() {
+    Intent defaultIntent =
+            Intent.makeMainSelectorActivity(Intent.ACTION_MAIN, Intent.CATEGORY_APP_MAPS);
+    PackageManager pm = getPackageManager();
+    ComponentName defaultActivity = defaultIntent.resolveActivity(pm);
+
+    for (String intentUri : getResources().getStringArray(
+            R.array.config_homeCardPreferredMapActivities)) {
+        Intent preferredIntent;
+        try {
+            preferredIntent = Intent.parseUri(intentUri, Intent.URI_ANDROID_APP_SCHEME);
+        } catch (URISyntaxException se) {
+            Log.w(TAG, ""Invalid intent URI in config_homeCardPreferredMapActivities"", se);
+            continue;
+        }
+
+        if (defaultActivity != null && !defaultActivity.getPackageName().equals(
+                preferredIntent.getPackage())) {
+            continue;
+        }
+
+        if (preferredIntent.resolveActivityInfo(pm, /* flags= */ 0) != null) {
+            return preferredIntent;
+        }
+    }
+    return defaultIntent;
+}","private Intent getMapsIntent() {
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(""geo:0,0?q=current location""));
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            return intent;
+        }
+
+        intent = new Intent(Intent.ACTION_VIEW, Uri.parse(""geo:0,0""));
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            return intent;
+        }
+
+        return null;
+    }","private Intent getMapsIntent() {
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(""geo:0,0?q=current location""));
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            return intent;
+        }
+
+        intent = new Intent(Intent.ACTION_VIEW, Uri.parse(""geo:0,0""));
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            return intent;
+        }
+
+        return null;
+    }",14.74

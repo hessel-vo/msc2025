@@ -9,7 +9,10 @@ load_dotenv()
 # --- Configuration ---
 PROJECT_ROOT = Path(os.getenv("PROJECT_ROOT"))
 
-RESULTS_SUBFOLDER = "baseline"
+RESULTS_SUBFOLDER = "adapted"
+MODEL_SIZE = "12b"
+DATASET_TYPE = "core"
+
 INPUT_FOLDER = f"results/benchmark/{RESULTS_SUBFOLDER}/to_process/processed_results"
 OUTPUT_FOLDER = "results/evaluation/rci_diff"
 OVERVIEW_OUTPUT_FILENAME = "rci_diff_overview.csv"
@@ -117,20 +120,40 @@ def process_single_csv(csv_path: Path, out_dir: Path) -> pd.DataFrame:
           )
           .reset_index()
     )
+
+    print(per_lang)
     # Compute percentages safely
     per_lang["percentage different"] = per_lang.apply(
         lambda r: (100.0 * r["changed"] / r["total"]) if r["total"] else 0.0,
         axis=1
     )
 
-    # Rename to requested columns and order
+    print(per_lang)
+
+    # Rename and order columns for output
     per_lang_out = per_lang.rename(columns={
         "language": "language",
         "changed": "no. RCI different"
     })[["language", "no. RCI different", "percentage different"]]
 
     # Write per-file output
-    per_file_name = f"{csv_path.stem}_rci_diff_by_language.csv"
+
+    if RESULTS_SUBFOLDER == "adapted":
+        input_filename = csv_path.stem.split("_")
+        task_type = input_filename[3]
+        source = input_filename[4]
+        summary_length = input_filename[5]
+        shot_count = input_filename[6]
+        test_name = f"adapted_{MODEL_SIZE}_{DATASET_TYPE}_{task_type}_{source}_{summary_length}_{shot_count}"
+    else:
+        input_filename = csv_path.stem.split("_")
+        task_type = input_filename[1]
+        source = input_filename[2]
+        summary_length = input_filename[3]
+        shot_count = input_filename[4]        
+        test_name = f"base_{MODEL_SIZE}_{task_type}_{source}_{summary_length}_{shot_count}"
+
+    per_file_name = f"{test_name}_rci_diff_by_language.csv"
     per_file_path = out_dir / per_file_name
     per_lang_out.to_csv(per_file_path, index=False)
 
@@ -140,7 +163,7 @@ def process_single_csv(csv_path: Path, out_dir: Path) -> pd.DataFrame:
     pct_changed = (100.0 * total_changed / total_rows) if total_rows else 0.0
 
     overview_row = pd.DataFrame([{
-        "test_name": csv_path.stem,
+        "test_name": test_name,
         "no. RCI different": total_changed,
         "percentage different": pct_changed
     }])
