@@ -9,7 +9,7 @@ load_dotenv()
 # --- Configuration ---
 PROJECT_ROOT = Path(os.getenv("PROJECT_ROOT"))
 
-RESULTS_SUBFOLDER = "baseline"
+RESULTS_SUBFOLDER = "adapted"
 MODEL_SIZE = "12b"
 DATASET_TYPE = "core"
 
@@ -19,31 +19,6 @@ OVERVIEW_OUTPUT_FILENAME = "rci_diff_overview.csv"
 
 NORMALIZE_WHITESPACE = False
 REMOVE_CODE_FENCES = False
-
-
-def _strip_code_fences(text: str) -> str:
-    if text is None:
-        return ""
-    s = str(text).strip()
-
-    # Leading fence
-    if s.startswith("```"):
-        # Drop the first fence line (could be ``` or ```lang)
-        lines = s.splitlines()
-        if lines:
-            lines = lines[1:]
-            s = "\n".join(lines).strip()
-
-    # Trailing fence
-    if s.endswith("```"):
-        # Remove last fence line
-        lines = s.splitlines()
-        if lines and lines[-1].strip() == "```":
-            lines = lines[:-1]
-            s = "\n".join(lines).strip()
-
-    return s
-
 
 def compare_changed(series_a: pd.Series, series_b: pd.Series) -> pd.Series:
     both_empty = (series_a == "") & (series_b == "")

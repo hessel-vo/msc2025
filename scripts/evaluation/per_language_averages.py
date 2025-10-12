@@ -8,13 +8,13 @@ load_dotenv()
 # Configuration
 PROJECT_ROOT = Path(os.getenv("PROJECT_ROOT"))
 
-RESULTS_SUBFOLDER = "baseline"
+RESULTS_SUBFOLDER = "adapted"
 MODEL_SIZE = "12b"
 DATASET_TYPE = "core"
 
 if RESULTS_SUBFOLDER == "adapted":
     MODEL = f"adapted_{MODEL_SIZE}_{DATASET_TYPE}"
-    INPUT_ROOT = PROJECT_ROOT / f"results/evaluation/{RESULTS_SUBFOLDER}/{MODEL}_{DATASET_TYPE}"
+    INPUT_ROOT = PROJECT_ROOT / f"results/evaluation/{RESULTS_SUBFOLDER}/{MODEL}"
 else:
     MODEL = f"base_{MODEL_SIZE}"
     INPUT_ROOT = PROJECT_ROOT / f"results/evaluation/{RESULTS_SUBFOLDER}/{MODEL}"

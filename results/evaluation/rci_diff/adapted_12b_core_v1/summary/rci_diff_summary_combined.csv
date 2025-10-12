@@ -1,11 +1,11 @@
 task,language,avg no. RCI different,avg percentage different
-generation,c,12.8,58.18
-generation,cpp,17.7,80.45
-generation,java,14.3,65.0
-generation,python,6.8,30.91
-generation,all_languages,12.9,58.64
-summarization,c,13.0,59.09
-summarization,cpp,16.0,72.73
-summarization,java,15.2,69.09
-summarization,python,16.6,75.45
-summarization,all_languages,15.2,69.09
+generation,c,12.80,58.18
+generation,cpp,17.70,80.45
+generation,java,14.30,65.00
+generation,python,6.80,30.91
+generation,all_languages,12.90,58.64
+summarization,c,13.00,59.09
+summarization,cpp,16.00,72.73
+summarization,java,15.20,69.09
+summarization,python,16.60,75.45
+summarization,all_languages,15.20,69.09

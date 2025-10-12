@@ -1,0 +1,5 @@
+language,corpus_codebleu,corpus_ngram_match_score,corpus_weighted_ngram_match_score,corpus_syntax_match_score,corpus_dataflow_match_score
+c,32.63,8.97,30.44,38.42,52.69
+cpp,36.48,2.20,20.31,48.68,74.74
+java,29.44,4.22,24.79,35.96,52.80
+python,33.79,12.53,27.46,42.69,52.47

@@ -1,0 +1,5 @@
+language,bleu_score,corpus_rouge1,corpus_rouge2,corpus_rougeL,corpus_bertscore_f1
+c,11.89,50.12,22.33,41.34,73.89
+cpp,10.29,42.41,17.43,34.60,71.90
+java,13.89,49.88,24.17,41.32,73.16
+python,15.76,50.34,25.01,42.70,74.48
