@@ -17,7 +17,7 @@ MODEL_SIZE = "1b"
 
 INPUT_DIR = PROJECT_ROOT / "results" / "training"
 OUTPUT_DIR = PROJECT_ROOT / "results" / "training" / "plots" / MODEL_SIZE / DATASET_TYPE
-TRAINER_STATE_FILENAME = f"{MODEL_SIZE}_{DATASET_TYPE}_trainer_state.json"  # adjust if your file is named differently
+TRAINER_STATE_FILENAME = f"v1_{MODEL_SIZE}_{DATASET_TYPE}_trainer_state.json"  # adjust if your file is named differently
 
 TRAIN_PLOT_NAME = "loss_by_step__train.png"
 EVAL_PLOT_NAME = "loss_by_step__eval.png"

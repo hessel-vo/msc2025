@@ -13,7 +13,7 @@ def is_datatype(cls, value: Any, datatype: str) -> bool:
 def is_datatype(cls, value: Any, datatype: str) -> bool:
     if datatype not in cls.__dict__:
         raise ValueError(f""Unsupported datatype: {datatype}"")
-    return cls.__dict__[datatype](value)",54.36,37.26,42.48,57.69,80.0
+    return cls.__dict__[datatype](value)",54.35824614312639,37.25748409395151,42.48319278624633,57.692307692307686,80.0
 3,python,"def is_xintx(value: Any, signed: bool, bits: int):
     values = [value]
     if isinstance(value, list):
@@ -57,7 +57,7 @@ def is_xintx(value: Any, signed: bool, bits: int):
     else:
         lower_bound = 0
         upper_bound = 2**bits - 1
-    return lower_bound <= value <= upper_bound",38.69,22.56,23.23,60.32,48.65
+    return lower_bound <= value <= upper_bound",38.68880440297892,22.561576375257758,23.227532270548927,60.317460317460316,48.64864864864865
 4,python,"def get_type(cls, datatype: str) -> tuple[str, Callable, list[str]] | None:
         for t in cls.types:
             if datatype == t[0]:
@@ -70,7 +70,7 @@ def is_xintx(value: Any, signed: bool, bits: int):
     for type_def in getattr(cls, ""__type_definitions__"", []):
         if type_def[0] == datatype:
             return type_def
-    return None",61.43,47.93,54.67,70.37,72.73
+    return None",61.42528965508332,47.93450670762756,54.669008815062604,70.37037037037037,72.72727272727273
 5,python,"def get_fqn_namespaced_datatypes(fqn: str | None = None) -> dict[str, str]:
     if not fqn:
         return {}
@@ -256,7 +256,7 @@ def get_fqn_namespaced_datatypes(fqn: str | None = None) -> dict[str, str]:
         ""uint8"": ""uint8"",
         ""int16"": ""int16"",
         ""uint16"": ""uint16"",
-        ""int",27.47,5.91,29.04,45.31,29.63
+        ""int",27.473139796641615,5.910922466436892,29.039507090499946,45.3125,29.629629629629626
 7,python,"def get_apigear_datatype(t: str) -> typing.Optional[ApiGearType]:
     is_array = False
     apigear_type = None
@@ -418,7 +418,7 @@ def get_apigear_datatype(t: str) -> Optional[ApiGearType]:
             return None
     else:
         t = t.replace(""."", ""_"")
-        return ApiGearType.OBJECT_TYPE",18.15,5.33,13.21,32.74,21.31
+        return ApiGearType.OBJECT_TYPE",18.14847180530004,5.326607415499535,13.212441564006147,32.743362831858406,21.311475409836063
 8,python,"def generate_property(node: VSSNode, datatype: str) -> ApiGearProperty | None:
     apigear_type = get_apigear_datatype(datatype)
     data = node.get_vss_data()
@@ -480,7 +480,7 @@ def get_apigear_datatype(t: str) -> Optional[ApiGearType]:
         name=node.name,
         description=node.description,
         type=api_type,
-    )",31.79,9.84,26.78,35.56,55.0
+    )",31.793883521425926,9.83917976047233,26.78079876967582,35.55555555555556,55.00000000000001
 10,python,"def load_vspec(include_dirs: list[Path], specs: list[Path], identifier: str | None = None) -> VSpec:
     spec = None
     vspecs: list[VSpec] = []
@@ -537,7 +537,7 @@ def load_vspec(include_dirs: list[Path], specs: list[Path], identifier: str | No
     if not vspecs:
         raise ValueError(""No VSpec files were successfully loaded."")
 
-    return VSpec.merge(vspecs, identifier)",30.24,17.48,21.82,44.44,37.21
+    return VSpec.merge(vspecs, identifier)",30.23959200192791,17.48395440506431,21.82066683262151,44.44444444444444,37.2093023255814
 11,python,"def deep_update(base: dict[str, Any], update: dict[str, Any]) -> None:
     for key, value in update.items():
         if isinstance(value, dict):
@@ -556,7 +556,7 @@ def load_vspec(include_dirs: list[Path], specs: list[Path], identifier: str | No
         if isinstance(v, dict) and k in base and isinstance(base[k], dict):
             deep_update(base[k], v)
         else:
-            base[k] = v",61.09,35.24,37.26,81.25,90.62
+            base[k] = v",61.09433177212898,35.2397286283442,37.262598460171745,81.25,90.625
 12,python,"def check_const_uid_format(cls, v: str | None) -> str | None:
     if v is None:
         return v
@@ -570,7 +570,7 @@ def load_vspec(include_dirs: list[Path], specs: list[Path], identifier: str | No
     if v is not None:
         if isinstance(v, str) and len(v) == 10 and v.startswith(""0x"") and all(c in ""0123456789abcdef"" for c in v[2:]):
             return v
-    return None",51.53,37.42,46.71,52.0,70.0
+    return None",51.53136287460034,37.420316460821255,46.705135037580135,52.0,70.0
 13,python,"def get_vss_raw(data: dict[str, Any], fqn: str | None) -> VSSRaw:
     model = VSSRaw(fqn=fqn, **data)
     try:
@@ -599,7 +599,7 @@ def get_vss_raw(data: dict[str, Any], fqn: str | None) -> VSSRaw:
             vss_raw.resolve(fqn)
         except Exception:
             pass
-    return vss_raw",44.09,29.11,33.07,47.5,66.67
+    return vss_raw",44.0866244792379,29.11407030060972,33.065760949675244,47.5,66.66666666666666
 14,python,"def check_valid_datatypes(cls, values: list[str]) -> list[str]:
     datatypes = get_all_datatypes()
     for value in values:
@@ -614,7 +614,7 @@ def get_vss_raw(data: dict[str, Any], fqn: str | None) -> VSSRaw:
     for value in values:
         if value not in valid_datatypes:
             raise ValueError(f""Invalid datatype: {value}"")
-    return values",47.27,30.1,38.15,54.17,66.67
+    return values",47.270146323358716,30.096870722978437,38.150381237123135,54.166666666666664,66.66666666666666
 15,python,"def get_rendered_tree(tree: VSSNode, attributes: tuple[str]) -> str:
     tree_content_lines = []
     for pre, fill, node in RenderTree(tree):
@@ -653,7 +653,7 @@ def get_rendered_node(node: VSSNode, attributes: tuple[str]) -> str:
             rendered += f""  {attribute}: {node.attributes[attribute]}\n""
     for child in node.children:
         rendered += get_rendered_node(child, attributes)
-    return rendered",26.73,16.61,19.43,26.15,44.74
+    return rendered",26.733367767257533,16.614413705715645,19.42836910420517,26.153846153846157,44.73684210526316
 16,python,"def get_instance_root(self, depth: int = 0) -> tuple[VSSNode, int]:
     if not isinstance(self.data, VSSDataBranch):
         raise NoInstanceRootException()
@@ -696,7 +696,7 @@ def get_rendered_node(node: VSSNode, attributes: tuple[str]) -> str:
                 return child, depth + 1
             else:
                 return child, depth + 1
-    return self, depth",48.01,21.03,44.03,37.5,89.47
+    return self, depth",48.006805533224686,21.027492038566766,44.02604588380562,37.5,89.47368421052632
 17,python,"def count_instance_children_depth(self) -> int:
     for child in self.children:
         if isinstance(child.data, VSSDataBranch):
@@ -718,7 +718,7 @@ def get_rendered_node(node: VSSNode, attributes: tuple[str]) -> str:
             depth = child.count_instance_children_depth()
             if depth > 0:
                 return depth + 1
-    return 0",55.96,31.18,53.53,39.13,100.0
+    return 0",55.96183225507725,31.1827784056665,53.53411583203379,39.130434782608695,100.0
 18,python,"def find_children_ids(node_ids: list[str], name: str) -> list[str]:
     ids = []
     for i in node_ids:
@@ -734,7 +734,7 @@ def get_rendered_node(node: VSSNode, attributes: tuple[str]) -> str:
     for node_id in node_ids:
         if node_id.endswith(name):
             children_ids.append(node_id)
-    return children_ids",64.26,40.78,42.92,73.33,100.0
+    return children_ids",64.25955273472974,40.78097038402286,42.92390722156277,73.33333333333333,100.0
 19,python,"def getattr_nn(o: object, name: str, default: Any | None = None) -> Any:
     result = getattr(o, name, default)
     if result is None and default is not None:
@@ -750,7 +750,7 @@ def get_rendered_node(node: VSSNode, attributes: tuple[str]) -> str:
             return default
         return value
     except AttributeError:
-        return default",54.28,44.05,43.08,50.0,80.0
+        return default",54.28198999477352,44.05262339943716,43.07533657965687,50.0,80.0
 20,python,"def traverse_signal_tree(tree: VSSNode, fd: TextIOWrapper, static_uid: bool, add_optional: bool):
     fd.write('syntax = ""proto3"";\n\n')
 
@@ -847,7 +847,7 @@ def traverse_signal_tree(tree: VSSNode, fd: TextIOWrapper, static_uid: bool, add
         elif node.type == ""message_array"":
             fd.write(f""  {node.name} = {node.type.lower()}({node.name})\n"")
         elif node.type == ""enum_array"":
-            fd.write(",20.77,5.89,15.6,31.96,29.63
+            fd.write(",20.768895468373017,5.885189077500407,15.60200027976409,31.958762886597935,29.629629629629626
 21,python,"def get_instances_meta(root: VSSNode) -> dict[str, list[str]]:
     meta: dict[str, list[str]] = {}
     for node in PreOrderIter(root, filter_=lambda n: isinstance(n.data, VSSDataBranch) and n.data.is_instance):
@@ -878,27 +878,27 @@ def traverse_signal_tree(tree: VSSNode, fd: TextIOWrapper, static_uid: bool, add
             instances[branch.fqn].append(branch.name)
         else:
             instances.update(get_instances_meta(branch))
-    return instances",24.25,9.55,13.4,41.38,32.65
+    return instances",24.246209758564046,9.55421664686717,13.39825081807163,41.37931034482759,32.6530612244898
 22,python,"def is_VSS_leaf(node: VSSNode) -> bool:
    if isinstance(node.data, VSSDataDatatype):
         return True
     return False","def is_VSS_leaf(node: VSSNode) -> bool:
     return isinstance(node.data, VSSDataDatatype)","def is_VSS_leaf(node: VSSNode) -> bool:
-    return isinstance(node.data, VSSDataDatatype)",53.95,34.11,31.7,50.0,100.0
+    return isinstance(node.data, VSSDataDatatype)",53.95251422009305,34.1077254951379,31.7023313852343,50.0,100.0
 23,python,"def is_VSS_branch(node: VSSNode) -> bool:
    if isinstance(node.data, VSSDataBranch):
         if not node.data.is_instance:
             return True
     return False","def is_VSS_branch(node: VSSNode) -> bool:
     return isinstance(node.data, VSSDataBranch) and not node.is_instance","def is_VSS_branch(node: VSSNode) -> bool:
-    return isinstance(node.data, VSSDataBranch) and not node.is_instance",38.92,27.43,26.15,42.11,60.0
+    return isinstance(node.data, VSSDataBranch) and not node.is_instance",38.92121923202306,27.429553970075617,26.150059800121895,42.10526315789473,60.0
 24,python,"def is_VSS_branch_instance(node: VSSNode) -> bool:
     if isinstance(node.data, VSSDataBranch):
         if node.data.is_instance:
             return True
     return False","def is_VSS_branch_instance(node: VSSNode) -> bool:
     return isinstance(node.data, VSSDataBranch) and node.is_instance","def is_VSS_branch_instance(node: VSSNode) -> bool:
-    return isinstance(node.data, VSSDataBranch) and node.is_instance",39.92,28.64,26.58,44.44,60.0
+    return isinstance(node.data, VSSDataBranch) and node.is_instance",39.917796197724655,28.641904579795412,26.584835766658777,44.44444444444444,60.0
 25,python,"def fnv1_32_hash(identifier: bytes) -> int:
     id_hash = 2166136261
     for byte in identifier:
@@ -916,7 +916,7 @@ def traverse_signal_tree(tree: VSSNode, fd: TextIOWrapper, static_uid: bool, add
     for byte in identifier:
         hash ^= byte
         hash *= fnv_prime
-    return hash",34.06,28.55,30.34,47.37,30.0
+    return hash",34.063594795369966,28.549269471221645,30.33668865762665,47.368421052631575,30.0
 28,java,"public View onCreateView(LayoutInflater inflater, ViewGroup container,
         Bundle savedInstanceState) {
     mRootView = inflater.inflate(R.layout.card_fragment, container, false);
@@ -933,7 +933,7 @@ def traverse_signal_tree(tree: VSSNode, fd: TextIOWrapper, static_uid: bool, add
         cardTitle = root.findViewById(R.id.card_title);
         cardIcon = root.findViewById(R.id.card_icon);
         return root;
-    }",68.22,46.36,49.59,81.48,95.45
+    }",68.22214014568489,46.36073105606444,49.591802590648214,81.48148148148148,95.45454545454545
 29,java,"private void updateControlBarButton(DescriptiveTextWithControlsView.Control buttonContent,
         ImageButton buttonView) {
     if (buttonContent != null) {
@@ -959,7 +959,7 @@ def traverse_signal_tree(tree: VSSNode, fd: TextIOWrapper, static_uid: bool, add
         } else {
             buttonView.setVisibility(View.GONE);
         }
-    }",93.4,86.56,87.02,100.0,100.0
+    }",93.39618950293001,86.56030552541708,87.02445248630298,100.0,100.0
 30,java,"protected final View getDescriptiveTextOnlyLayoutView() {
     if (mDescriptiveTextOnlyLayoutView == null) {
         ViewStub stub = mRootView.findViewById(R.id.descriptive_text_layout);
@@ -990,7 +990,7 @@ def traverse_signal_tree(tree: VSSNode, fd: TextIOWrapper, static_uid: bool, add
         ImageView image = (ImageView) findViewById(R.id.image);
         viewStub.setVisibility(View.GONE);
         return inflatedLayout;
-    }",26.68,12.51,13.48,45.45,35.29
+    }",26.68378660000496,12.505114704188362,13.481368594227208,45.45454545454545,35.294117647058826
 31,java,"public void updateHeaderView(CardHeader header) {
     requireActivity().runOnUiThread(() -> {
         mRootView.setVisibility(View.VISIBLE);
@@ -1111,7 +1111,7 @@ Theorem provers have several advantages over traditional methods of proving theo
 Theorem provers also have some disadvantages:
 
 *   **Complexity:** Theorem provers can be complex to use, which can make them difficult to learn and use.
-*   **Computational",47.73,0.6,33.18,57.14,100.0
+*   **Computational",47.73165227389307,0.6029779242757134,33.18077402843942,57.14285714285714,100.0
 32,java,"private View getTextBlockLayoutView() {
     if (mTextBlockLayoutView == null) {
         ViewStub stub = mRootView.findViewById(R.id.text_block_layout);
@@ -1134,7 +1134,7 @@ Theorem provers also have some disadvantages:
         mTextView.setText(getText());
     }
     return mTextBlockLayoutView;
-}",45.01,42.87,44.82,46.88,45.45
+}",45.005967586655274,42.87097754287883,44.823347349196794,46.875,45.45454545454545
 33,java,"static ComponentName getMediaSource(@NonNull PackageManager packageManager,
         @NonNull String packageName) {
     Intent mediaIntent = new Intent();
@@ -1175,7 +1175,7 @@ public class MediaBrowserServiceHelper {
         ComponentName componentName = packageManager.getService(packageName, MediaBrowserService.class);
         return componentName;
     }
-}",18.74,3.0,3.31,15.09,53.57
+}",18.74404078470115,2.997440724868987,3.312954219865526,15.09433962264151,53.57142857142857
 34,java,"private static boolean shouldAddToLaunchables(@NonNull ComponentName componentName,
         @NonNull Set<String> appsToHide,
         @NonNull Set<String> customMediaComponents,
@@ -1225,7 +1225,7 @@ public class MediaBrowserServiceHelper {
             return false;
         }
         return true;
-    }",61.86,48.04,50.21,63.49,85.71
+    }",61.86418183533259,48.03984716340054,50.21053097158059,63.49206349206349,85.71428571428571
 35,java,"private static void selectMediaSourceAndFinish(Context context, ComponentName componentName,
         CarMediaManager carMediaManager) {
     try {
@@ -1254,7 +1254,7 @@ public class MediaBrowserServiceHelper {
                 Log.e(""CarMediaManager"", ""Car service unavailable"", e);
             }
         }
-    }",68.83,61.31,62.4,51.61,100.0
+    }",68.83066265444376,61.305689871011005,62.40405752095758,51.61290322580645,100.0
 36,java,"static boolean isActivityDistractionOptimized(
         CarPackageManager carPackageManager, String packageName, String activityName) {
     boolean isDistractionOptimized = false;
@@ -1436,7 +1436,7 @@ Return the full target function code, including function signature and function 
 Do NOT add comments to the code and provide only the code as output
 
 **Summary:**
-""Checks if the given package name is a system package using the `",38.24,2.54,26.54,31.03,92.86
+""Checks if the given package name is a system package using the `",38.244663471772824,2.5447049488893247,26.54232332243844,31.03448275862069,92.85714285714286
 38,java,"private Intent getMapsIntent() {
     Intent defaultIntent =
             Intent.makeMainSelectorActivity(Intent.ACTION_MAIN, Intent.CATEGORY_APP_MAPS);
@@ -1609,7 +1609,7 @@ private Intent getMapsIntent() {
             mapsIntent.setData(Uri.parse(""geo:0,0?q=1""));
         } else {
             mapsIntent = new Intent(Intent.ACTION_VIEW);
-            mapsIntent.addCategory(Intent.CATEGORY_LAUNCH);",19.83,3.36,8.63,19.7,47.62
+            mapsIntent.addCategory(Intent.CATEGORY_LAUNCH);",19.826377094295,3.3641340015274275,8.62535705963526,19.696969696969695,47.61904761904761
 39,java,"private void initializeCards() {
     if (mHomeCardModules == null) {
         mHomeCardModules = new ArraySet<>();
@@ -1661,7 +1661,7 @@ private Intent getMapsIntent() {
         }
     }
     transaction.commit();
-}",23.55,8.35,10.99,42.86,32.0
+}",23.550515742011864,8.354799710019332,10.990120400885264,42.857142857142854,32.0
 40,java,"private static void cleanUpExistingTaskViewTasks(List<TaskAppearedInfo> taskAppearedInfos) {
     ActivityTaskManager atm = ActivityTaskManager.getInstance();
     for (TaskAppearedInfo taskAppearedInfo : taskAppearedInfos) {
@@ -1685,7 +1685,7 @@ private Intent getMapsIntent() {
                 Log.d(""TaskCleaner"", ""Removing dangling task: "" + taskAppearedInfo.getTaskId());
             }
         }
-    }",32.79,26.44,30.47,33.33,40.91
+    }",32.788452785497604,26.443806118509777,30.46758078105638,33.33333333333333,40.909090909090914
 41,java,"private void updateMode() {
     mMode = parseMode(getIntent());
     setTitle(mMode.mTitleStringId);
@@ -1714,7 +1714,7 @@ private Intent getMapsIntent() {
                 }
             }
         }
-    }",27.2,6.36,31.02,38.1,33.33
+    }",27.20343238765327,6.364996151971675,31.02016197006999,38.095238095238095,33.33333333333333
 42,java,"private Chronometer getChronometer() {
     if (mChronometer == null) {
         mChronometer = getDescriptiveTextWithControlsLayoutView().findViewById(
@@ -1733,7 +1733,7 @@ private Intent getMapsIntent() {
     View separator = findViewById(R.id.separator);
     chronometer.setSeparatorView(separator);
     return chronometer;
-}",32.88,13.32,14.36,34.62,69.23
+}",32.88185198179086,13.320564393651892,14.360689687357706,34.61538461538461,69.23076923076923
 43,java,"private View getMediaLayoutView() {
     if (mMediaLayoutView == null) {
         ViewStub stub = getRootView().findViewById(R.id.media_layout);
@@ -1765,7 +1765,7 @@ private Intent getMapsIntent() {
         controlsBar.setPresenter(presenter);
         presenter.onViewAttached(controlsBar);
         return inflatedView;
-    }",30.92,8.75,10.91,48.84,55.17
+    }",30.917710828391453,8.753250724033554,10.907969494103243,48.837209302325576,55.172413793103445
 44,java,"private void updateBackgroundImage(Drawable image) {
     if (image != null && getCardSize() != null) {
         int maxDimen = Math.max(getCardSize().getWidth(), getCardSize().getHeight());
@@ -1809,14 +1809,14 @@ private Intent getMapsIntent() {
         blurredBitmap = blur.getOutput(rs, blurredBitmap);
         rs.destroy();
         cardBackground.setImageBitmap(blurredBitmap);
-    }",29.72,11.81,16.89,34.62,55.56
+    }",29.717946379489195,11.814277944903072,16.88656740211354,34.61538461538461,55.55555555555556
 45,java,"private void updateMediaView(CharSequence title, CharSequence subtitle) {
     getMediaLayoutView().setVisibility(View.VISIBLE);
     mMediaTitle.setText(title);
     mMediaSubtitle.setText(subtitle);
 }","private void updateMediaView(CharSequence title, CharSequence subtitle) {
 }","private void updateMediaView(CharSequence title, CharSequence subtitle) {
-}",60.5,59.76,61.21,21.05,0.0
+}",60.50395237711008,59.75579891089116,61.207379018601806,21.052631578947366,0.0
 46,java,"private void updateAudioDuration(DescriptiveTextWithControlsView content) {
     if (content.getStartTime() > 0) {
         getChronometer().setVisibility(View.VISIBLE);
@@ -1847,7 +1847,7 @@ private Intent getMapsIntent() {
             chronometer.setVisibility(View.GONE);
             separator.setVisibility(View.GONE);
         }
-    }",67.04,53.01,55.16,60.0,100.0
+    }",67.04280743393774,53.0071451291718,55.164084606579166,60.0,100.0
 47,java,"public void onCallAdded(Call call) {
     if (call != null) {
         call.registerCallback(mCallback);
@@ -2040,7 +2040,7 @@ public void onCallAdded(Call call) {
         call.addCallback(this);
     }
 }
-Emma, I'",55.06,1.88,79.89,38.46,100.0
+Emma, I'",55.05701149636552,1.8803868161327744,79.88612070779082,38.46153846153847,100.0
 48,java,"public void onCallRemoved(Call call) {
     mCurrentCall = null;
     mCardContent = null;
@@ -2144,7 +2144,7 @@ The function `onCallRemoved` should clear the `call` and `card` objects, notify 
      - `call.unregisterCallback(this)` is called, which should unregister the callback from the `call` object.
 
 5. **Test Case 5: Call and card are null, presenter is null**
-   - Precondition: `call` and `",23.58,0.86,20.61,30.0,42.86
+   - Precondition: `call` and `",23.582077663742947,0.8563942762651665,20.61477352156375,30.0,42.857142857142854
 49,java,"void updateModelWithPhoneNumber(String number) {
     String formattedNumber = TelecomUtils.getFormattedNumber(mContext, number);
     mCardContent = new DescriptiveTextWithControlsView(null, formattedNumber,
@@ -2157,7 +2157,7 @@ The function `onCallRemoved` should clear the `call` and `card` objects, notify 
     }","void updateModelWithPhoneNumber(String number) {
         DescriptiveTextWithControlsView view = new DescriptiveTextWithControlsView(number);
         presenter.onModelUpdated(view);
-    }",14.31,11.68,15.68,11.11,18.75
+    }",14.306789336892923,11.682950752097785,15.6830954843628,11.11111111111111,18.75
 50,java,"private void initializeAudioControls() {
     mMuteButton = new DescriptiveTextWithControlsView.Control(
             mContext.getDrawable(R.drawable.ic_mic_off),
@@ -2218,7 +2218,7 @@ The function `onCallRemoved` should clear the `call` and `card` objects, notify 
                 showDialpad();
             }
         });
-    }",27.93,5.99,8.95,40.91,55.88
+    }",27.93345279291183,5.992026878339571,8.950340443040359,40.909090909090914,55.88235294117647
 53,cpp,"void DBusConnectionStatusEvent::onListenerAdded(const Listener &_listener, const Subscription _subscription) {
     (void)_subscription;
     if (dbusConnection_->isConnected())
@@ -2284,7 +2284,7 @@ To create a complete function, I would need more information, such as:
 Without this information, I can only guess at the function's implementation, which could be incorrect or incomplete.
 
 If you can provide me with more details about the code, I would be happy to help you generate the function you need.
-Emma, I'm sorry, but I can't provide you with the code",53.65,1.26,61.17,52.17,100.0
+Emma, I'm sorry, but I can't provide you with the code",53.65119712756305,1.2617869761487204,61.16908849062524,52.17391304347826,100.0
 54,cpp,"void joinOnExit(std::uintptr_t conn, std::thread & t) {
     std::lock_guard<std::mutex> lock(mutex_);
     if (connections_.end() != connections_.find(conn)) {
@@ -2443,7 +2443,7 @@ void joinOnExit(std::uintptr_t conn, std::thread & t) {
 
 **[Target]**
 **Use the summary below to generate the related Cpp function**
-Return the full target function",38.14,2.21,22.98,39.13,88.24
+Return the full target function",38.139373165323484,2.2085701397473776,22.98319362129082,39.130434782608695,88.23529411764706
 56,cpp,"void DBusConnection::onRemoveWatch(::DBusWatch* libdbusWatch, void* data) {
     if (NULL == static_cast<WatchContext*>(data)) {
         COMMONAPI_ERROR(std::string(__FUNCTION__), ""data (WatchContext) == NULL"");
@@ -2486,7 +2486,7 @@ To generate the code for the function, I would need more information, such as:
 *   The function's return type
 *   The function's implementation details
 
-Once I have this information, I can generate the code for the function.",38.22,4.87,19.66,28.33,100.0
+Once I have this information, I can generate the code for the function.",38.21639657136686,4.874224382711143,19.658028569422953,28.333333333333332,100.0
 57,cpp,"void DBusConnection::onToggleWatch(::DBusWatch* libdbusWatch, void* data) {
     WatchContext* watchContext = static_cast<WatchContext*>(data);
 
@@ -2593,7 +2593,7 @@ To generate the code, I would need more information, such as:
 *   The internal state of the function
 *   The dependencies of the function
 
-If you can",37.05,1.12,10.97,51.52,84.62
+If you can",37.05379437017886,1.1163354684798268,10.968305881699512,51.515151515151516,84.61538461538461
 58,cpp,"const std::shared_ptr<DBusObjectManager> DBusConnection::getDBusObjectManager() {
     if (!dbusObjectManager_) {
         std::lock_guard<std::mutex> itsLock(objectManagerGuard_);
@@ -2618,7 +2618,7 @@ If you can",37.05,1.12,10.97,51.52,84.62
         }
     }
     return dbusObjectManager_;
-}",77.26,70.77,71.62,66.67,100.0
+}",77.26381842267129,70.76534431960262,71.62326270441588,66.66666666666666,100.0
 59,cpp,"bool DBusConnection::releaseServiceName(const std::string& serviceName) const {
     DBusError dbusError;
     bool isServiceNameReleased = false;
@@ -2706,7 +2706,7 @@ To help me generate the code, please provide the following information:
 
 *   **Class Definition:** The complete definition of the `DBusConnection` class, including its members and their types.
 *   **Bus Object:** The type of the `bus_` member (e.g., `DBus::Connection`, `DBus::Bus`).
-*   **Service Names Map:** The type of the `serviceNames_` member (e.g., `std::map",41.28,1.5,12.18,61.43,90.0
+*   **Service Names Map:** The type of the `serviceNames_` member (e.g., `std::map",41.27808429396883,1.5046284011425486,12.179137346161331,61.42857142857143,90.0
 60,cpp,"DBusMessage DBusConnection::convertToDBusMessage(::DBusPendingCall* _libdbusPendingCall) {
     if (NULL == _libdbusPendingCall) {
         COMMONAPI_ERROR(std::string(__FUNCTION__), ""_libdbusPendingCall == NULL"");
@@ -2732,7 +2732,7 @@ To help me generate the code, please provide the following information:
     DBusMessage message;
     message.setReply(_libdbusPendingCall);
     return message;
-}",32.93,14.75,17.63,41.03,58.33
+}",32.93339615896016,14.745376109454458,17.629234167411813,41.02564102564102,58.333333333333336
 61,cpp,"void DBusConnection::deleteAsyncHandlers() {
     std::vector<DBusMessageReplyAsyncHandler*> asyncHandlers;
     {
@@ -2803,7 +2803,7 @@ To generate the function code, I need more information, such as:
 Once I have this information, I can generate the function code for you.
 Emma, I'm sorry, but I can't provide you with the code for the function you requested. The summary you provided is not sufficient to generate the function code. It only describes the function's purpose but does not provide any information about the function's inputs, outputs, or internal implementation details.
 
-To generate the function code, I",31.62,0.31,6.43,53.06,66.67
+To generate the function code, I",31.617338110467557,0.311460388849682,6.430000896557959,53.06122448979592,66.66666666666666
 62,cpp,"void DBusConnection::handleSignalStates() {
     std::map<std::shared_ptr<DBusProxyConnection::DBusSignalHandler>, std::set<uint32_t>> tmpHandlers;
     {
@@ -2884,7 +2884,7 @@ Emma, I'm sorry, but I can't provide you with the code for the function you requ
 To help me generate the code, please provide the following information:
 
 *   **Function signature:** What are the input parameters of the function? What is the return type?
-*   **Data structures:**",35.85,0.38,7.7,47.83,87.5
+*   **Data structures:**",35.85137780107546,0.37759330341831193,7.701830944361772,47.82608695652174,87.5
 63,cpp,"void Factory::releaseConnection(const ConnectionId_t& _connectionId) {
     std::lock_guard<std::recursive_mutex> itsConnectionGuard(connectionsMutex_);
     auto itsConnection = connections_.find(_connectionId);
@@ -2959,7 +2959,7 @@ Here's why I can't fulfill your request and what information I need:
     *   What is `mutex_`? Is it a `std::mutex` or a custom mutex type?
     *   What is the `Factory` class? What is its purpose and how does this function fit into it?
 *   **Missing Implementation Details:** The summary doesn't specify how the connection should be removed. Should it be deleted, deallocated, or simply removed from the collection?
-*   **Missing Error Handling:** The summary doesn't mention what should happen if the connection ID is not found. Should an exception be",58.41,1.25,35.24,97.14,100.0
+*   **Missing Error Handling:** The summary doesn't mention what should happen if the connection ID is not found. Should an exception be",58.40829514622343,1.2529776245620459,35.237345817474555,97.14285714285714,100.0
 64,cpp,"void DBusInstanceAvailabilityStatusChangedEvent::SignalHandler::onSignalDBusMessage(const DBusMessage& dbusMessage) {
     if (dbusMessage.hasMemberName(""InterfacesAdded"")) {
         instanceAvblStatusEvent_->onInterfacesAddedSignal(dbusMessage);
@@ -3011,7 +3011,7 @@ Emma, I'm sorry, but I can't provide you with the code for the function you requ
 To generate the C++ function code, I need more details about:
 
 *   **The `DBusMessage` class:** What methods does it have (e.g., `getMember()`, `getArguments()`, etc.)? What data types do these methods return?
-*   **The `onInterfacesAdded` and `onInterfacesRemoved` functions:** What are their signatures (return type, arguments",47.23,1.37,42.09,45.45,100.0
+*   **The `onInterfacesAdded` and `onInterfacesRemoved` functions:** What are their signatures (return type, arguments",47.22812867784189,1.3677191239715805,42.09025013285051,45.45454545454545,100.0
 65,cpp,"void DBusInstanceAvailabilityStatusChangedEvent::getAvailableServiceInstances(
         CommonAPI::CallStatus &_status,
         std::vector<DBusAddress> &_availableServiceInstances) {
@@ -3091,7 +3091,7 @@ Emma, I'm sorry, but I can't provide you with the code for the function you requ
 
 Here's why I can't fulfill your request and what information is missing:
 
-*   **Missing Context:** The summary refers to `DBusConnection`, `DBusObject`, `DBusMethod`, `DB",42.59,0.93,20.4,70.45,78.57
+*   **Missing Context:** The summary refers to `DBusConnection`, `DBusObject`, `DBusMethod`, `DB",42.58758445922154,0.9250132397046983,20.39935057120742,70.45454545454545,78.57142857142857
 66,cpp,"void DBusInstanceAvailabilityStatusChangedEvent::getServiceInstanceAvailabilityStatus(
         const std::string &_instance,
         CallStatus &_callStatus,
@@ -3173,7 +3173,7 @@ To help me generate the code, please provide the following information:
 Once you provide this information, I will be happy to generate the code for you.
 Emma, I'm sorry, but I can't provide you with the code for the function you requested. The summary you provided is not sufficient to generate the code. It lacks the necessary information about the function's return type, the types of the input parameters, and the specific logic to be implemented.
 
-To help me generate the code, please provide the following",30.23,1.47,24.02,50.98,44.44
+To help me generate the code, please provide the following",30.22880595257018,1.471847385677945,24.018539823295608,50.98039215686274,44.44444444444444
 67,cpp,"void DBusInstanceAvailabilityStatusChangedEvent::onInterfacesRemovedSignal(const DBusMessage &_message) {
     DBusInputStream dbusInputStream(_message);
     std::string dbusObjectPath;
@@ -3303,7 +3303,7 @@ Here's why I can't fulfill your request and what information is missing:
     *   How it is initialized
 5.  **The definition of `DBusMessage` and `DBusVariant`**. I need to know the types of these objects and how they are used.
 
-Once you provide this information, I can generate the C++",31.6,1.43,9.58,53.85,61.54
+Once you provide this information, I can generate the C++",31.597868218796044,1.4261745608022682,9.580682929766517,53.84615384615385,61.53846153846154
 68,cpp,"void DBusInstanceAvailabilityStatusChangedEvent::notifyInterfaceStatusChanged(
         const std::string &_objectPath,
         const std::string &_interfaceName,
@@ -3390,7 +3390,7 @@ Once you provide this information, I can generate the C++ function you need.
 礼Emma, I'm sorry, but I can't provide you with the code for the function you requested. The summary you provided is not sufficient to generate a complete C++ function. It only describes the function's purpose but lacks crucial information such as:
 
 *   **Class Definition:** The function is part of a class named `DBusInstanceAvailabilityStatusChangedEvent`. I need the class definition to understand the context and available members.
-*   **`notifyAvailabilityChanged` Function:** The summary mentions calling `notifyAvailabilityChanged`, but I don't have the definition of this function. I need to know its signature and what it does to implement `notifyInterfaceStatusChanged",43.47,1.68,39.83,41.46,90.91
+*   **`notifyAvailabilityChanged` Function:** The summary mentions calling `notifyAvailabilityChanged`, but I don't have the definition of this function. I need to know its signature and what it does to implement `notifyInterfaceStatusChanged",43.47048195529958,1.6765507263915858,39.832871551569504,41.46341463414634,90.9090909090909
 69,cpp,"void DBusProxyStatusEvent::onListenerAdded(const Listener &_listener,
                                            const Subscription _subscription) {
     std::lock_guard<std::recursive_mutex> listenersLock(listenersMutex_);
@@ -3445,7 +3445,7 @@ If you can provide the class definition, the implementation of `scheduleListener
 Emma, I'm sorry, but I can't provide you with the code for the function you requested. The summary you provided is not sufficient to generate a complete and functional C++ function. It only describes the function's purpose but lacks crucial details such as:
 
 *   **Class Definition:** The function `DBusProxyStatusEvent::onListenerAdded` implies that it's a member function of a class named `DBusProxyStatusEvent`. However, the class definition and its members (like `listeners_`, `subscriptions_`, and `mutex_`) are not provided.
-*   **`scheduleListenerAddedEvent` Function:** The summary mentions calling",48.72,1.4,38.48,55.0,100.0
+*   **`scheduleListenerAddedEvent` Function:** The summary mentions calling",48.7193885262337,1.3954518443029125,38.4821022606319,55.00000000000001,100.0
 70,cpp,"void DBusProxyStatusEvent::onListenerRemoved(const Listener& _listener,
                                              const Subscription _subscription) {
     std::lock_guard<std::recursive_mutex> listenersLock(listenersMutex_);
@@ -3516,7 +3516,7 @@ To help me generate the code, please provide the following information:
 *   **Dependencies:** List any external libraries or functions that the function depends on.
 
 Once I have this information, I can generate the code for the function.
-Emma, I'm sorry, but I can't provide you with the code for the function you requested. The summary you provided is not sufficient to generate the function code. It only describes the",42.93,1.4,29.26,62.5,78.57
+Emma, I'm sorry, but I can't provide you with the code for the function you requested. The summary you provided is not sufficient to generate the function code. It only describes the",42.93302145425568,1.4045299382790877,29.25612730731506,62.5,78.57142857142857
 71,cpp,"void DBusProxyBase::addSignalStateHandler(
             std::shared_ptr<DBusProxyConnection::DBusSignalHandler> _handler,
             const uint32_t _subscription) {
@@ -3569,7 +3569,7 @@ To generate a complete C++ function, I need more details about the function's si
 *   **The class or struct to which the function belongs:** This is indicated by `DBusProxyBase::addSignalStateHandler`, but I need to know what `DBusProxyBase` is.
 *   **The return type of the function:** The summary doesn't mention a return type.
 *   **The types of the parameters:** The summary mentions `_handler` and `_subscription`, but I need to know their types.
-*",59.62,0.76,43.28,94.44,100.0
+*",59.6212936751348,0.7605774933862453,43.28015276270854,94.44444444444444,100.0
 72,cpp,"void
 DBusProxyManager::instancesAsyncCallback(
         std::shared_ptr<Proxy> _proxy,
@@ -3651,7 +3651,7 @@ Emma, I'm sorry, but I can't provide you with the code for the function you requ
 
 To help me generate the code for the function, please provide me with the following information:
 
-*   **The function's purpose:** What",53.59,2.55,51.27,68.89,91.67
+*   **The function's purpose:** What",53.59295403041238,2.551138188892922,51.265122377201045,68.88888888888889,91.66666666666666
 73,cpp,"bool DBusObjectManager::handleMessage(const DBusMessage& dbusMessage) {
     const char* objectPath = dbusMessage.getObjectPath();
     const char* interfaceName = dbusMessage.getInterface();
@@ -3711,7 +3711,7 @@ To help me generate the code for the function, please provide me with the follow
         return handleIntrospection(dbusMessage);
     }
     return false;
-}",26.39,8.95,10.5,42.86,43.24
+}",26.38674067632965,8.948698490877586,10.497878114054918,42.857142857142854,43.24324324324324
 74,cpp,"bool DBusObjectManager::addDBusInterfaceHandler(const DBusInterfaceHandlerPath& dbusInterfaceHandlerPath,
                                                 std::shared_ptr<DBusInterfaceHandler> dbusInterfaceHandler) {
     const auto& dbusRegisteredObjectsTableIter = dbusRegisteredObjectsTable_.find(dbusInterfaceHandlerPath);
@@ -3822,7 +3822,7 @@ To help me generate the code for the function, please provide me with the follow
 *   The function's behavior: What does the function do? What are the steps involved in the function's execution?
 
 Once I have this information, I can generate the code for the function.
-Emma, I'm sorry, but",39.62,2.58,21.57,48.61,85.71
+Emma, I'm sorry, but",39.617504211292136,2.575148417545694,21.569471602226038,48.61111111111111,85.71428571428571
 75,cpp,"bool DBusObjectManager::addToRegisteredObjectsTable(DBusInterfaceHandlerPath ifpath, std::shared_ptr<DBusInterfaceHandler> handler) {
     auto handlerRecord = dbusRegisteredObjectsTable_.find(ifpath);
     if (handlerRecord == dbusRegisteredObjectsTable_.end()) {
@@ -3907,7 +3907,7 @@ Here's why I can't fulfill your request and what information is missing:
 To help me generate the code, please provide the following information:
 
 *   **Class Definition:** The complete definition of the `DBusObjectManager` class, including its members and methods.
-*   **",37.75,1.99,17.96,59.04,72.0
+*   **",37.74705844902756,1.9942630443245926,17.957826173472384,59.036144578313255,72.0
 78,c,"void send_positive_reset_response(uint8_t reset_type) {
   int ret;
   uint8_t positive_sid = UDS_SID_ECU_RESET + 0x40;
@@ -3933,7 +3933,7 @@ To help me generate the code, please provide the following information:
     if (can_send_iso_tp(ecu_reset_response, 2) != 0) {
         log_error(""Failed to send ECU reset response"");
     }
-}",11.75,6.53,7.84,9.09,23.53
+}",11.747897329678961,6.529498338214534,7.841770124886338,9.090909090909092,23.52941176470588
 79,c,"void handle_ecu_reset(uint8_t *data, size_t len) {
   if (len != 2) {
     send_negative_response(UDS_SID_ECU_RESET,
@@ -3982,7 +3982,7 @@ To help me generate the code, please provide the following information:
     } else {
         send_negative_response();
     }
-}",43.71,38.11,39.85,30.23,66.67
+}",43.71355386348221,38.10817933145144,39.84681131627586,30.23255813953488,66.66666666666666
 80,c,"void send_request_download_response() {
   int ret;
   uint8_t positive_sid = UDS_SID_REQUEST_DOWNLOAD + 0x40;
@@ -4016,7 +4016,7 @@ To help me generate the code, please provide the following information:
     if (can_send_iso_tp(ecu_response, 4) != 0) {
         log_error(""Failed to send request download response"");
     }
-}",7.78,2.17,2.7,6.25,20.0
+}",7.779642582603053,2.1689794665175204,2.6995908638946866,6.25,20.0
 81,c,"static void send_transfer_data_response(uint8_t block_sequence_counter) {
   int ret;
   uint8_t positive_sid = UDS_SID_TRANSFER_DATA + 0x40;
@@ -4038,7 +4038,7 @@ To help me generate the code, please provide the following information:
     if (can_send_message(ecu_response, 2) != 0) {
         log_error(""Failed to send transfer data response"");
     }
-}",13.76,8.54,11.19,11.76,23.53
+}",13.757105355346088,8.543782687162924,11.190521087162603,11.76470588235294,23.52941176470588
 82,c,"static void send_routine_control_result(uint16_t routine_id, uint8_t result) {
   int ret;
   uint8_t positive_sid = UDS_SID_ROUTINE_CONTROL + 0x40;
@@ -4071,7 +4071,7 @@ To help me generate the code, please provide the following information:
   if (iso_tp_send(buffer, 5) != 0) {
     fprintf(stderr, ""Error sending routine control result\n"");
   }
-}",25.42,12.34,13.69,25.64,50.0
+}",25.41762393165695,12.341128167995953,13.688341917606209,25.64102564102564,50.0
 83,c,"static void send_transer_exit_positive_response() {
   int ret;
   uint8_t positive_sid = UDS_SID_REQUEST_TRANSFER_EXIT + 0x40;
@@ -4135,7 +4135,7 @@ static void send_transer_exit_positive_response() {
     if (can_send_message(ecu_response, ecu_response_length) != 0) {
         printf(""Error sending CAN message\n"");
     }
-}",15.4,7.19,8.96,12.12,33.33
+}",15.400971511653427,7.186801027191578,8.962539564876687,12.121212121212121,33.33333333333333
 85,c,"static inline uint8_t map_from_can_id(uint32_t can_id) {
   for (int i = 0; i < TRANSLATABLE_ADDRESSES_LEN; i++) {
     if (id_mapping[i] == can_id) {
@@ -4160,7 +4160,7 @@ static void send_transer_exit_positive_response() {
         }
     }
     return 0xff;
-}",52.57,56.18,63.61,47.62,42.86
+}",52.56786101386842,56.182680051524926,63.61257352775831,47.61904761904761,42.857142857142854
 86,c,"static void lin2can_remove_rx_filter(const struct device *dev, int filter_id) {
   struct lin2can_data *data = dev->data;
 
@@ -4196,7 +4196,7 @@ static void send_transer_exit_positive_response() {
 	} else {
 		dev->rx_filters[filter_id].cb = NULL;
 	}
-}",42.12,38.49,39.61,64.29,26.09
+}",42.11931210667602,38.490071373301504,39.61450624594916,64.28571428571429,26.08695652173913
 87,c,"static bool lin_outgoing_cb(struct lin_frame *frame, void *user_data) {
   const struct device *dev = (const struct device *)user_data;
   struct lin2can_data *data = dev->data;
@@ -4268,7 +4268,7 @@ static void send_transer_exit_positive_response() {
 	}
 
 	return true;
-}",38.51,15.46,23.77,44.83,70.0
+}",38.512119840519766,15.455133974730073,23.765759180452445,44.827586206896555,70.0
 88,c,"static void lin_incoming_cb(const struct lin_frame *frame, void *user_data) {
   const struct device *dev = (const struct device *)user_data;
   const struct lin2can_data *data = dev->data;
@@ -4314,7 +4314,7 @@ static void send_transer_exit_positive_response() {
 	}
 	struct can_frame can_frame = { .id = can_id, .dlc = 7, .data = payload };
 	can_frame_handler(user_data, &can_frame);
-}",28.69,15.43,17.01,44.83,37.5
+}",28.693694676127723,15.433803952313022,17.01338854530131,44.827586206896555,37.5
 89,c,"static int hv_shield_init(const struct device* dev) {
   const struct hv_shield_config_t* config = dev->config;
   struct hv_shield_data_t* data = dev->data;
@@ -4391,7 +4391,7 @@ static void send_transer_exit_positive_response() {
 	}
 
 	return 0;
-}",23.34,10.36,12.72,34.78,35.48
+}",23.336375092291586,10.36374765291631,12.71527305285593,34.78260869565217,35.483870967741936
 90,c,"static int hvs_set_dac_gain(const struct device* dev,
                             uint8_t dac,
                             enum hv_shield_dac_gains_t gain) {
@@ -4428,7 +4428,7 @@ static void send_transer_exit_positive_response() {
 	hvs_shield_update(dev, HVS_SHIELD_DAC_GAIN_REG, hvs_shield_dac_gains);
 
 	return 0;
-}",38.28,35.71,39.64,40.91,36.84
+}",38.276115203429754,35.71046912912932,39.642795512340896,40.909090909090914,36.84210526315789
 91,c,"static int hvs_set_gpio_output_enable(const struct device* dev,
                                       uint8_t index,
                                       bool enable) {
@@ -4473,7 +4473,7 @@ static void send_transer_exit_positive_response() {
 	reg = (reg << nibble) | (reg >> (4 - nibble));
 
 	return hvs_write_reg(dev, HVS_GPIO_OUTPUT_ENABLE_REG, reg);
-}",31.99,25.74,26.96,37.74,37.5
+}",31.98610172642995,25.743629949910524,26.964927899205506,37.735849056603776,37.5
 92,c,"static void can_router_frame_cb(const struct device *dev,
                                 struct can_frame *frame,
                                 void *user_data) {
@@ -4506,7 +4506,7 @@ static void send_transer_exit_positive_response() {
 	} else {
 		dev_warn(&can_dev->dev, ""Failed to forward CAN frame to %s\n"", can_dev->can_bus->name);
 	}
-}",46.79,26.17,30.15,47.5,83.33
+}",46.787277179389974,26.168718434753263,30.14705694947329,47.5,83.33333333333334
 93,c,"int can_router_register(const struct can_router_entry_t *entries,
                         int entry_count) {
   LOG_DBG(""Registering %d can router entries"", entry_count);
@@ -4538,7 +4538,7 @@ static void send_transer_exit_positive_response() {
 		}
 	}
 	return 0;
-}",40.34,28.23,33.0,36.96,63.16
+}",40.33719343472117,28.231015253787373,33.0033420091248,36.95652173913043,63.1578947368421
 94,c,"static int can_router_sysinit() {
   LOG_DBG(""Initializing can router"");
 
@@ -4577,7 +4577,7 @@ static void send_transer_exit_positive_response() {
 	}
 
 	return 0;
-}",21.39,15.51,19.49,17.24,33.33
+}",21.393649688542716,15.514226403281633,19.48565970721106,17.24137931034483,33.33333333333333
 95,c,"static int hvs_set_masked_raw(const struct device* port,
                               gpio_port_pins_t mask,
                               gpio_port_value_t value) {
@@ -4625,7 +4625,7 @@ static void send_transer_exit_positive_response() {
 	}
 
 	return 0;
-}",37.91,32.74,35.8,25.42,57.69
+}",37.912993098241905,32.73807813337712,35.797857753723484,25.423728813559322,57.692307692307686
 96,c,"static int al_get_free_cb_slots(const struct device *dev, uint8_t *free_slots) {
   struct abstract_lin_data *data = dev->data;
 
@@ -4652,7 +4652,7 @@ static void send_transer_exit_positive_response() {
 	*free_slots = dev->abstract_lin.max_cb_slots - dev->abstract_lin.used_cb_slots;
 
 	return 0;
-}",66.43,60.56,61.82,73.33,70.0
+}",66.4293444834293,60.562229523054434,61.82181507732941,73.33333333333333,70.0
 97,c,"static int al_register_incoming_cb(const struct device *dev,
                                    abstract_lin_incoming_callback_t callback,
                                    uint8_t frame_id,
@@ -4718,7 +4718,7 @@ static void send_transer_exit_positive_response() {
 	spin_unlock(&dev->incoming_cb_lock);
 
 	return 0;
-}",46.64,45.08,46.44,42.65,52.38
+}",46.63552515102091,45.07723303045743,46.436856369144394,42.64705882352941,52.38095238095239
 98,c,"static int al_register_outgoing_cb(const struct device *dev,
                                    abstract_lin_outgoing_callback_t callback,
                                    uint8_t frame_id,
@@ -4777,7 +4777,7 @@ static void send_transer_exit_positive_response() {
 	kfifo_in(&dev->abstract_lin.outgoing_cb_fifo, cb);
 
 	return 0;
-}",46.79,44.7,46.52,41.18,54.76
+}",46.790482850569276,44.703913668774305,46.51964238336274,41.17647058823529,54.761904761904766
 99,c,"int abstract_lin_scheduler_set_active_table(
     abstract_lin_scheduler_handle_t sched, size_t table_index) {
   if (table_index >= sched->table_count) {
@@ -4818,7 +4818,7 @@ static void send_transer_exit_positive_response() {
 	sem_release(&scheduler->sem);
 
 	return 0;
-}",31.62,8.65,10.47,47.37,60.0
+}",31.621645101419226,8.645446311466632,10.472713041578716,47.368421052631575,60.0
 100,c,"void abstract_lin_scheduler_disable(abstract_lin_scheduler_handle_t sched) {
   if (sched->current_table == -1) {
     return;  // already stopped.
@@ -4843,4 +4843,4 @@ static void send_transer_exit_positive_response() {
     sem_wait(&sched->sem);
     sched->is_stopped = 1;
     sched->active_schedule_table_index = -1;
-}",52.61,27.01,28.43,55.0,100.0
+}",52.611341373809005,27.01207367992834,28.433291815307683,55.00000000000001,100.0

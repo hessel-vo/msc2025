@@ -1,0 +1,11 @@
+test_name,language,corpus_codebleu,corpus_ngram_match_score,corpus_weighted_ngram_match_score,corpus_syntax_match_score,corpus_dataflow_match_score
+base_12b-long-zero,python,39.26,26.95,30.81,44.96,54.35
+base_12b-long-zero,java,36.84,26.02,27.17,43.15,51.02
+base_12b-long-zero,cpp,34.90,19.72,21.01,46.57,52.31
+base_12b-long-zero,c,36.10,28.69,30.24,35.70,49.77
+base_12b-long-zero,average,36.78,25.34,27.31,42.59,51.86
+base_12b-long-zero-rci,python,39.64,27.21,30.75,45.65,54.94
+base_12b-long-zero-rci,java,38.28,27.07,28.28,44.47,53.29
+base_12b-long-zero-rci,cpp,35.41,19.65,20.91,47.24,53.85
+base_12b-long-zero-rci,c,36.16,28.69,30.24,35.70,50.00
+base_12b-long-zero-rci,average,37.37,25.66,27.54,43.27,53.02

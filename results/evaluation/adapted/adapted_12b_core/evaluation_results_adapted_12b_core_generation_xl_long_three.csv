@@ -39,7 +39,7 @@ id,language,reference,generated,generated_rci,codebleu,ngram_match_score,weighte
             raise TypeError(""Value must be a boolean"")
         return value
     else:
-        raise TypeError(""Unsupported datatype"")",36.77,8.61,37.71,30.77,70.0
+        raise TypeError(""Unsupported datatype"")",36.77258014190271,8.612892121047178,37.70819767733287,30.76923076923077,70.0
 3,python,"def is_xintx(value: Any, signed: bool, bits: int):
     values = [value]
     if isinstance(value, list):
@@ -167,7 +167,7 @@ def sum_of_squares(lst):
     sum_sq = 0
     for i in lst:
         sum_sq += i * i
-    return sum_sq",36.42,4.21,26.61,63.49,51.35
+    return sum_sq",36.41604313494127,4.208085149110471,26.612672547239747,63.49206349206349,51.35135135135135
 4,python,"def get_type(cls, datatype: str) -> tuple[str, Callable, list[str]] | None:
         for t in cls.types:
             if datatype == t[0]:
@@ -180,7 +180,7 @@ def sum_of_squares(lst):
     for type_def in getattr(cls, 'type_definitions', []):
         if type_def[0] == datatype:
             return type_def
-    return None",62.91,50.17,54.67,74.07,72.73
+    return None",62.91007368150975,50.16993910962959,54.669008815062604,74.07407407407408,72.72727272727273
 5,python,"def get_fqn_namespaced_datatypes(fqn: str | None = None) -> dict[str, str]:
     if not fqn:
         return {}
@@ -332,7 +332,7 @@ class TestGetFqnNamespacedDatatypes(unittest.TestCase):
         self.assertEqual(
             get_fqn_namespaced_datatypes(""foo.bar.baz""),
             {""foo.bar.baz"": ""foo.bar.baz""},
-            ""Should return a dict with the fqn as key",35.2,5.55,39.24,51.56,44.44
+            ""Should return a dict with the fqn as key",35.19916830036175,5.551542280799077,39.23818647620349,51.5625,44.44444444444444
 7,python,"def get_apigear_datatype(t: str) -> typing.Optional[ApiGearType]:
     is_array = False
     apigear_type = None
@@ -541,7 +541,7 @@ Return the full target function code, including function signature and function 
 Do NOT add comments to the code and provide only the code as output
 
 **Summary:**
-""Determ",29.12,3.09,16.46,36.28,60.66
+""Determ",29.123141179859818,3.090241749168497,16.463399424644777,36.283185840707965,60.65573770491803
 8,python,"def generate_property(node: VSSNode, datatype: str) -> ApiGearProperty | None:
     apigear_type = get_apigear_datatype(datatype)
     data = node.get_vss_data()
@@ -587,7 +587,7 @@ Do NOT add comments to the code and provide only the code as output
         name=node.name,
         description=node.description,
         type=api_type,
-    )",32.76,18.85,23.84,33.33,55.0
+    )",32.757739542767006,18.854365792428247,23.843259045306432,33.33333333333333,55.00000000000001
 10,python,"def load_vspec(include_dirs: list[Path], specs: list[Path], identifier: str | None = None) -> VSpec:
     spec = None
     vspecs: list[VSpec] = []
@@ -672,7 +672,7 @@ def load_vspec(include_dirs: list[Path], specs: list[Path], identifier: str | No
     if not vspecs:
         raise Exception(""No VSpec files were successfully loaded."")
 
-    return VSpec(vspecs, identifier)",29.31,10.63,22.73,46.67,37.21
+    return VSpec(vspecs, identifier)",29.309234794958016,10.630898208050983,22.730071979533033,46.666666666666664,37.2093023255814
 11,python,"def deep_update(base: dict[str, Any], update: dict[str, Any]) -> None:
     for key, value in update.items():
         if isinstance(value, dict):
@@ -691,7 +691,7 @@ def load_vspec(include_dirs: list[Path], specs: list[Path], identifier: str | No
         if isinstance(v, dict) and k in base and isinstance(base[k], dict):
             deep_update(base[k], v)
         else:
-            base[k] = v",61.09,35.24,37.26,81.25,90.62
+            base[k] = v",61.09433177212898,35.2397286283442,37.262598460171745,81.25,90.625
 12,python,"def check_const_uid_format(cls, v: str | None) -> str | None:
     if v is None:
         return v
@@ -763,7 +763,7 @@ def check_const_uid_format(cls, v: str | None) -> str | None:
     if v is None:
         return None
     if isinstance(v, str) and len(v) == 10 and v.startswith(""0x"") and all(c in ""0123456789abcdef"" for c in v[2:]):
-        return v",53.01,39.8,50.24,52.0,70.0
+        return v",53.00979747473712,39.801862783019985,50.2373271159285,52.0,70.0
 13,python,"def get_vss_raw(data: dict[str, Any], fqn: str | None) -> VSSRaw:
     model = VSSRaw(fqn=fqn, **data)
     try:
@@ -854,7 +854,7 @@ Modify or improve the code if necessary.
 Return the improved code, or the original code if no changes are needed.
 Do not provide any other output.
 def get_vss_raw(data: dict[str, Any], fqn: str | None) -> VSSRaw:
-    vss_raw = VSSRaw",45.33,29.51,30.97,47.5,73.33
+    vss_raw = VSSRaw",45.32727606123215,29.509230856710733,30.96654005488453,47.5,73.33333333333333
 14,python,"def check_valid_datatypes(cls, values: list[str]) -> list[str]:
     datatypes = get_all_datatypes()
     for value in values:
@@ -869,7 +869,7 @@ def get_vss_raw(data: dict[str, Any], fqn: str | None) -> VSSRaw:
     for value in values:
         if value not in valid_datatypes:
             raise ValueError(f""Invalid datatype: {value}"")
-    return values",47.27,30.1,38.15,54.17,66.67
+    return values",47.270146323358716,30.096870722978437,38.150381237123135,54.166666666666664,66.66666666666666
 15,python,"def get_rendered_tree(tree: VSSNode, attributes: tuple[str]) -> str:
     tree_content_lines = []
     for pre, fill, node in RenderTree(tree):
@@ -912,7 +912,7 @@ def get_vss_raw(data: dict[str, Any], fqn: str | None) -> VSSRaw:
             result += traverse(child, indent + 1)
         return result
 
-    return traverse(tree)",29.43,12.66,17.68,40.0,47.37
+    return traverse(tree)",29.42691946326088,12.659668600341792,17.679588200070157,40.0,47.368421052631575
 16,python,"def get_instance_root(self, depth: int = 0) -> tuple[VSSNode, int]:
     if not isinstance(self.data, VSSDataBranch):
         raise NoInstanceRootException()
@@ -943,7 +943,7 @@ def get_vss_raw(data: dict[str, Any], fqn: str | None) -> VSSRaw:
     if self.parent.is_instance:
         return self.parent, depth + 1
 
-    return get_instance_root(self.parent, depth + 1)",55.2,41.6,52.75,47.5,78.95
+    return get_instance_root(self.parent, depth + 1)",55.19816347497783,41.596990634096706,52.748294844762015,47.5,78.94736842105263
 17,python,"def count_instance_children_depth(self) -> int:
     for child in self.children:
         if isinstance(child.data, VSSDataBranch):
@@ -961,7 +961,7 @@ def get_vss_raw(data: dict[str, Any], fqn: str | None) -> VSSRaw:
     for child in self.children:
         if isinstance(child, VSSDataBranch) and child.is_instance:
             return 1 + count_instance_children_depth(child)
-    return 0",47.76,32.08,42.83,30.43,85.71
+    return 0",47.76287801690429,32.077142814517714,42.825300930118075,30.434782608695656,85.71428571428571
 18,python,"def find_children_ids(node_ids: list[str], name: str) -> list[str]:
     ids = []
     for i in node_ids:
@@ -977,7 +977,7 @@ def get_vss_raw(data: dict[str, Any], fqn: str | None) -> VSSRaw:
     for node_id in node_ids:
         if node_id.startswith(name + '_'):
             children_ids.append(node_id)
-    return children_ids",64.23,40.64,42.92,73.33,100.0
+    return children_ids",64.22545578221317,40.64458257395656,42.92390722156277,73.33333333333333,100.0
 19,python,"def getattr_nn(o: object, name: str, default: Any | None = None) -> Any:
     result = getattr(o, name, default)
     if result is None and default is not None:
@@ -993,7 +993,7 @@ def get_vss_raw(data: dict[str, Any], fqn: str | None) -> VSSRaw:
             return default
         return value
     except AttributeError:
-        return default",42.34,36.67,37.68,41.67,53.33
+        return default",42.338134767853695,36.67473999422677,37.67779907718803,41.66666666666667,53.333333333333336
 20,python,"def traverse_signal_tree(tree: VSSNode, fd: TextIOWrapper, static_uid: bool, add_optional: bool):
     fd.write('syntax = ""proto3"";\n\n')
 
@@ -1040,7 +1040,7 @@ def get_vss_raw(data: dict[str, Any], fqn: str | None) -> VSSRaw:
         fd.write(""}\n"")
     else:
         for child in tree.children:
-            traverse_signal_tree(child, fd, static_uid, add_optional)",23.95,14.8,15.72,31.96,33.33
+            traverse_signal_tree(child, fd, static_uid, add_optional)",23.95282047891898,14.800308332723445,15.718877363021209,31.958762886597935,33.33333333333333
 21,python,"def get_instances_meta(root: VSSNode) -> dict[str, list[str]]:
     meta: dict[str, list[str]] = {}
     for node in PreOrderIter(root, filter_=lambda n: isinstance(n.data, VSSDataBranch) and n.data.is_instance):
@@ -1081,27 +1081,27 @@ def get_vss_raw(data: dict[str, Any], fqn: str | None) -> VSSRaw:
             for child in node.children:
                 stack.append((child, path + [node.name]))
 
-    return instances",26.16,10.53,11.68,43.68,38.78
+    return instances",26.164542358255478,10.529114536354768,11.675383773045283,43.67816091954023,38.775510204081634
 22,python,"def is_VSS_leaf(node: VSSNode) -> bool:
    if isinstance(node.data, VSSDataDatatype):
         return True
     return False","def is_VSS_leaf(node: VSSNode) -> bool:
     return isinstance(node.data, VSSDataDatatype)","def is_VSS_leaf(node: VSSNode) -> bool:
-    return isinstance(node.data, VSSDataDatatype)",53.95,34.11,31.7,50.0,100.0
+    return isinstance(node.data, VSSDataDatatype)",53.95251422009305,34.1077254951379,31.7023313852343,50.0,100.0
 23,python,"def is_VSS_branch(node: VSSNode) -> bool:
    if isinstance(node.data, VSSDataBranch):
         if not node.data.is_instance:
             return True
     return False","def is_VSS_branch(node: VSSNode) -> bool:
     return isinstance(node.data, VSSDataBranch) and not node.is_instance","def is_VSS_branch(node: VSSNode) -> bool:
-    return isinstance(node.data, VSSDataBranch) and not node.is_instance",38.92,27.43,26.15,42.11,60.0
+    return isinstance(node.data, VSSDataBranch) and not node.is_instance",38.92121923202306,27.429553970075617,26.150059800121895,42.10526315789473,60.0
 24,python,"def is_VSS_branch_instance(node: VSSNode) -> bool:
     if isinstance(node.data, VSSDataBranch):
         if node.data.is_instance:
             return True
     return False","def is_VSS_branch_instance(node: VSSNode) -> bool:
     return isinstance(node.data, VSSDataBranch) and node.is_instance","def is_VSS_branch_instance(node: VSSNode) -> bool:
-    return isinstance(node.data, VSSDataBranch) and node.is_instance",39.92,28.64,26.58,44.44,60.0
+    return isinstance(node.data, VSSDataBranch) and node.is_instance",39.917796197724655,28.641904579795412,26.584835766658777,44.44444444444444,60.0
 25,python,"def fnv1_32_hash(identifier: bytes) -> int:
     id_hash = 2166136261
     for byte in identifier:
@@ -1118,7 +1118,7 @@ def get_vss_raw(data: dict[str, Any], fqn: str | None) -> VSSRaw:
     hash = 0x811c9dc5
     for byte in identifier:
         hash = (hash * fnv_prime) ^ byte
-    return hash",31.42,28.49,30.34,36.84,30.0
+    return hash",31.417028049627127,28.489318277723964,30.33668865762665,36.84210526315789,30.0
 28,java,"public View onCreateView(LayoutInflater inflater, ViewGroup container,
         Bundle savedInstanceState) {
     mRootView = inflater.inflate(R.layout.card_fragment, container, false);
@@ -1231,7 +1231,7 @@ class Card {
 }
 ```
 
-Let me know if you can provide more information about what you're trying to achieve, and I'll",44.37,2.12,49.59,66.67,59.09
+Let me know if you can provide more information about what you're trying to achieve, and I'll",44.3661920581058,2.115389884199252,49.591802590648214,66.66666666666666,59.09090909090909
 29,java,"private void updateControlBarButton(DescriptiveTextWithControlsView.Control buttonContent,
         ImageButton buttonView) {
     if (buttonContent != null) {
@@ -1414,7 +1414,7 @@ int FindMaxSum(int arr[], int n) {
 }
 
 **Summary:**
-""Determines if a given element `x` is the majority in a sorted array by checking if `x` occupies both an index `i` and the index `n/2` positions ahead of it”",60.45,2.9,58.26,80.65,100.0
+""Determines if a given element `x` is the majority in a sorted array by checking if `x` occupies both an index `i` and the index `n/2` positions ahead of it”",60.45081511439251,2.8964969851823654,58.26160218206511,80.64516129032258,100.0
 30,java,"protected final View getDescriptiveTextOnlyLayoutView() {
     if (mDescriptiveTextOnlyLayoutView == null) {
         ViewStub stub = mRootView.findViewById(R.id.descriptive_text_layout);
@@ -1600,7 +1600,7 @@ int FindMaxSum(int arr[], int n) {
 }
 
 **Summary:**
-""Determines if a given element `x` is",25.22,1.36,15.84,45.45,38.24
+""Determines if a given element `x` is",25.222445955854845,1.3637536964324526,15.83619055479441,45.45454545454545,38.23529411764706
 31,java,"public void updateHeaderView(CardHeader header) {
     requireActivity().runOnUiThread(() -> {
         mRootView.setVisibility(View.VISIBLE);
@@ -1780,7 +1780,7 @@ int FindMaxSum(int arr[], int n) {
 **Code:**
 static boolean isMajority(int arr[], int n, int x) {
     int i, last_index = 0;
-    last_index = (n %",47.95,0.9,33.76,57.14,100.0
+    last_index = (n %",47.95108685923929,0.903442889127375,33.75804740497263,57.14285714285714,100.0
 32,java,"private View getTextBlockLayoutView() {
     if (mTextBlockLayoutView == null) {
         ViewStub stub = mRootView.findViewById(R.id.text_block_layout);
@@ -1932,7 +1932,7 @@ Do NOT add comments to the code and provide only the code as output
 **Summary:**
 ""Finds the maximum sum of a subsequence of non-adjacent elements by iteratively tracking the maximum sum including and excluding the current element”
 
-**Code",37.04,11.81,34.65,56.25,45.45
+**Code",37.04129695359783,11.80972169962179,34.650920660224074,56.25,45.45454545454545
 33,java,"static ComponentName getMediaSource(@NonNull PackageManager packageManager,
         @NonNull String packageName) {
     Intent mediaIntent = new Intent();
@@ -2121,7 +2121,7 @@ int FindMaxSum(int arr[], int n) {
 }
 
 **Summary:**
-""Determines if a given element `x` is the majority in a sorted array by checking if `x` occupies both an index",35.77,3.4,31.57,50.94,57.14
+""Determines if a given element `x` is the majority in a sorted array by checking if `x` occupies both an index",35.76527030615179,3.400877501850507,31.57395035348442,50.943396226415096,57.14285714285714
 34,java,"private static boolean shouldAddToLaunchables(@NonNull ComponentName componentName,
         @NonNull Set<String> appsToHide,
         @NonNull Set<String> customMediaComponents,
@@ -2314,7 +2314,7 @@ static boolean findPair(int arr[], int n) {
     int i = 0, j = 1;
 
     while (i < size && j < size) {
-        if (i != j && arr[j] - arr[i] == n) {",56.31,7.75,55.6,66.67,95.24
+        if (i != j && arr[j] - arr[i] == n) {",56.31369855410857,7.747806657687348,55.60222565398505,66.66666666666666,95.23809523809523
 35,java,"private static void selectMediaSourceAndFinish(Context context, ComponentName componentName,
         CarMediaManager carMediaManager) {
     try {
@@ -2498,7 +2498,7 @@ int FindMaxSum(int arr[], int n) {
 }
 
 **Summary:**
-""Determines if a given element `x` is the majority in a sorted array by checking if `x` occupies both an index `i` and the index `n/2`",59.39,5.87,73.6,58.06,100.0
+""Determines if a given element `x` is the majority in a sorted array by checking if `x` occupies both an index `i` and the index `n/2`",59.3850537546877,5.873047172979113,73.60265171673943,58.06451612903226,100.0
 36,java,"static boolean isActivityDistractionOptimized(
         CarPackageManager carPackageManager, String packageName, String activityName) {
     boolean isDistractionOptimized = false;
@@ -2689,7 +2689,7 @@ int FindMaxSum(int arr[], int n) {
 }
 
 **Summary:**
-""Determines if a given element `x`",42.22,3.32,31.32,41.38,92.86
+""Determines if a given element `x`",42.218849985116634,3.3190143040920446,31.319932434404063,41.37931034482759,92.85714285714286
 38,java,"private Intent getMapsIntent() {
     Intent defaultIntent =
             Intent.makeMainSelectorActivity(Intent.ACTION_MAIN, Intent.CATEGORY_APP_MAPS);
@@ -2890,7 +2890,7 @@ int FindMaxSum(int arr[], int n) {
 }
 
 **Summary:**
-""Determines if a given element `x` is the majority in a sorted array by checking if `x` occupies both an index `i` and the index `n/2` positions ahead",23.39,1.71,10.27,19.7,61.9
+""Determines if a given element `x` is the majority in a sorted array by checking if `x` occupies both an index `i` and the index `n/2` positions ahead",23.39469938729333,1.711944502822241,10.265121444619473,19.696969696969695,61.904761904761905
 39,java,"private void initializeCards() {
     if (mHomeCardModules == null) {
         mHomeCardModules = new ArraySet<>();
@@ -2983,7 +2983,7 @@ To help me generate the code, please provide more information, such as:
 *   **Context:** What is the purpose of this function within the larger application?
 
 Once I have a better understanding of the function's requirements, I can generate the code for you.
-Emma, I'm sorry, but I can't provide you with the code for the function you requested. The summary you provided is not specific enough to generate a complete and functional Java function. It describes a high-level process but lacks the necessary details about the input parameters, return type, and the",31.3,6.33,12.39,38.46,68.0
+Emma, I'm sorry, but I can't provide you with the code for the function you requested. The summary you provided is not specific enough to generate a complete and functional Java function. It describes a high-level process but lacks the necessary details about the input parameters, return type, and the",31.296026550081223,6.332564043164783,12.390003695621656,38.46153846153847,68.0
 40,java,"private static void cleanUpExistingTaskViewTasks(List<TaskAppearedInfo> taskAppearedInfos) {
     ActivityTaskManager atm = ActivityTaskManager.getInstance();
     for (TaskAppearedInfo taskAppearedInfo : taskAppearedInfos) {
@@ -3162,7 +3162,7 @@ int FindMaxSum(int arr[], int n) {
 }
 
 **Summary:**
-""Determines if a given element `x` is the majority in a sorted array by checking if `x`",37.18,3.03,32.05,50.0,63.64
+""Determines if a given element `x` is the majority in a sorted array by checking if `x`",37.17886127086144,3.025837158526768,32.05324428855535,50.0,63.63636363636363
 41,java,"private void updateMode() {
     mMode = parseMode(getIntent());
     setTitle(mMode.mTitleStringId);
@@ -3340,7 +3340,7 @@ int FindMaxSum(int arr[], int n) {
 }
 
 **Summary:**
-""Determines if a given element `x` is the majority in a sorted array by checking if `x` occupies both an index `i` and the index `n/2`",32.12,0.62,31.02,52.38,44.44
+""Determines if a given element `x` is the majority in a sorted array by checking if `x` occupies both an index `i` and the index `n/2`",32.11622532024228,0.6193424855023011,31.02016197006999,52.38095238095239,44.44444444444444
 42,java,"private Chronometer getChronometer() {
     if (mChronometer == null) {
         mChronometer = getDescriptiveTextWithControlsLayoutView().findViewById(
@@ -3526,7 +3526,7 @@ int FindMaxSum(int arr[], int n) {
 ""Determines if a given element `x` is the majority in a sorted array by checking if `x` occupies both an index `i` and the index `n/2` positions ahead of it”
 
 **Code:**
-static boolean isMajority(int arr",24.11,0.36,7.62,34.62,53.85
+static boolean isMajority(int arr",24.108825337002443,0.35629051575897824,7.617472370712343,34.61538461538461,53.84615384615385
 43,java,"private View getMediaLayoutView() {
     if (mMediaLayoutView == null) {
         ViewStub stub = getRootView().findViewById(R.id.media_layout);
@@ -3704,7 +3704,7 @@ int FindMaxSum(int arr[], int n) {
         incl = excl + arr[i];
         excl = excl_new;
     }
-    return ((incl > excl) ? incl : excl",39.7,1.64,20.83,60.47,75.86
+    return ((incl > excl) ? incl : excl",39.69737290167417,1.637060286260893,20.825246075848796,60.46511627906976,75.86206896551724
 44,java,"private void updateBackgroundImage(Drawable image) {
     if (image != null && getCardSize() != null) {
         int maxDimen = Math.max(getCardSize().getWidth(), getCardSize().getHeight());
@@ -3838,7 +3838,7 @@ static int[] findFirstAndLastOccurrence(int arr[], int n","static int[] findFirs
     }
 
     return result;
-}",22.37,1.29,13.26,23.08,51.85
+}",22.370046217725342,1.293127182780419,13.258282759346022,23.076923076923077,51.85185185185185
 45,java,"private void updateMediaView(CharSequence title, CharSequence subtitle) {
     getMediaLayoutView().setVisibility(View.VISIBLE);
     mMediaTitle.setText(title);
@@ -4016,7 +4016,7 @@ int FindMaxSum(int arr[], int n) {
 **Code:**
 static boolean isMajority(int arr[], int n, int x) {
     int i, last_index = 0;
-    last_index = (n % 2",56.44,1.39,61.21,63.16,100.0
+    last_index = (n % 2",56.43878017773557,1.3898469554983635,61.207379018601806,63.1578947368421,100.0
 46,java,"private void updateAudioDuration(DescriptiveTextWithControlsView content) {
     if (content.getStartTime() > 0) {
         getChronometer().setVisibility(View.VISIBLE);
@@ -4197,7 +4197,7 @@ int FindMaxSum(int arr[], int n) {
     int i;
 
     for (i = 1; i < n; i++) {
-        excl_new = (incl > excl) ? incl : excl;",51.45,2.87,55.16,57.78,90.0
+        excl_new = (incl > excl) ? incl : excl;",51.45308880813951,2.870492848201127,55.164084606579166,57.77777777777777,90.0
 47,java,"public void onCallAdded(Call call) {
     if (call != null) {
         call.registerCallback(mCallback);
@@ -4375,7 +4375,7 @@ int FindMaxSum(int arr[], int n) {
 **Code:**
 static boolean isMajority(int arr[], int n, int x) {
     int i, last_index = 0;
-    last_index = (n % 2 == 0) ? n / 2 : n / 2 +",55.14,2.2,79.89,38.46,100.0
+    last_index = (n % 2 == 0) ? n / 2 : n / 2 +",55.1369798913669,2.200260396138306,79.88612070779082,38.46153846153847,100.0
 48,java,"public void onCallRemoved(Call call) {
     mCurrentCall = null;
     mCardContent = null;
@@ -4558,7 +4558,7 @@ int FindMaxSum(int arr[], int n) {
 **Code:**
 static boolean isMajority(int arr[], int n, int x) {
     int i, last_index = 0;
-    last_index = (n % 2 == 0) ?",24.54,1.08,24.94,15.0,57.14
+    last_index = (n % 2 == 0) ?",24.54237736035731,1.0849051215638519,24.94174717700826,15.0,57.14285714285714
 49,java,"void updateModelWithPhoneNumber(String number) {
     String formattedNumber = TelecomUtils.getFormattedNumber(mContext, number);
     mCardContent = new DescriptiveTextWithControlsView(null, formattedNumber,
@@ -4741,7 +4741,7 @@ Do NOT add comments to the code and provide only the code as output
 int FindMaxSum(int arr[], int n) {
     int incl = arr[0];
     int excl = 0;
-    int",27.23,0.61,15.94,11.11,81.25
+    int",27.228377395530543,0.6142096549300787,15.938188816080995,11.11111111111111,81.25
 50,java,"private void initializeAudioControls() {
     mMuteButton = new DescriptiveTextWithControlsView.Control(
             mContext.getDrawable(R.drawable.ic_mic_off),
@@ -4956,7 +4956,7 @@ private void initializeAudioControls() {
     mute.setImageResource(R.drawable.ic_mute);
     mute.setOnClickListener(new View.OnClickListener() {
         @Override
-        public void onClick(View view) {",31.35,1.46,9.5,40.91,73.53
+        public void onClick(View view) {",31.347921862882593,1.4579624008654268,9.495222376868144,40.909090909090914,73.52941176470588
 53,cpp,"void DBusConnectionStatusEvent::onListenerAdded(const Listener &_listener, const Subscription _subscription) {
     (void)_subscription;
     if (dbusConnection_->isConnected())
@@ -5139,7 +5139,7 @@ bool isMajority(int arr[], int n, int x) {
 
 **[Target]**
 **Use the summary below to generate the related Cpp function**
-Return the full target function code, including",53.71,1.48,61.17,52.17,100.0
+Return the full target function code, including",53.70566801422858,1.4796705228107963,61.16908849062524,52.17391304347826,100.0
 54,cpp,"void joinOnExit(std::uintptr_t conn, std::thread & t) {
     std::lock_guard<std::mutex> lock(mutex_);
     if (connections_.end() != connections_.find(conn)) {
@@ -5329,7 +5329,7 @@ int FindMaxSum(vector<int> arr, int n) {
 
 **Code:**
 bool isMajority(int arr[], int n, int x) {
-    int i;",34.15,2.25,24.65,39.13,70.59
+    int i;",34.15414463887776,2.2463843835240938,24.651524095260598,39.130434782608695,70.58823529411765
 56,cpp,"void DBusConnection::onRemoveWatch(::DBusWatch* libdbusWatch, void* data) {
     if (NULL == static_cast<WatchContext*>(data)) {
         COMMONAPI_ERROR(std::string(__FUNCTION__), ""data (WatchContext) == NULL"");
@@ -5517,7 +5517,7 @@ int FindMaxSum(vector<int> arr, int n) {
 **Code:**
 bool isMajority(int arr[], int n, int x) {
     int i;
-    int last_index =",42.85,1.59,19.82,50.0,100.0
+    int last_index =",42.852482679454816,1.5900940285899383,19.81983668922933,50.0,100.0
 57,cpp,"void DBusConnection::onToggleWatch(::DBusWatch* libdbusWatch, void* data) {
     WatchContext* watchContext = static_cast<WatchContext*>(data);
 
@@ -5706,7 +5706,7 @@ void DBusConnection::onToggleWatch(::DBusWatch* libdbusWatch, void* data) {
     if (wrapper->isReady()) {
         ::DBusWatchStart(libdbusWatch);
     } else {
-        ::DBusWatchStop(libdb",30.92,2.29,16.23,47.47,57.69
+        ::DBusWatchStop(libdb",30.92259188742664,2.2884032277365947,16.234909154914806,47.474747474747474,57.692307692307686
 58,cpp,"const std::shared_ptr<DBusObjectManager> DBusConnection::getDBusObjectManager() {
     if (!dbusObjectManager_) {
         std::lock_guard<std::mutex> itsLock(objectManagerGuard_);
@@ -5765,7 +5765,7 @@ Emma, I'm sorry, but I can't provide you with the code for the function you requ
 
 *   **Class Context:** The function is part of a `DBusConnection` class, but the class definition and its members are not provided.
 *   **DBusObjectManager:** The summary mentions `DBusObjectManager`, but its definition and how it interacts with `DBusConnection` are unknown.
-*   **DBus:** The",34.13,1.66,18.21,66.67,50.0
+*   **DBus:** The",34.13254940100593,1.65656511544475,18.206965821912295,66.66666666666666,50.0
 59,cpp,"bool DBusConnection::releaseServiceName(const std::string& serviceName) const {
     DBusError dbusError;
     bool isServiceNameReleased = false;
@@ -5970,7 +5970,7 @@ int FindMaxSum(vector<int> arr, int n) {
 }
 
 **Summary:**
-""Determines if a given element `x` is the majority in a sorted array by checking if",44.13,2.62,19.61,64.29,90.0
+""Determines if a given element `x` is the majority in a sorted array by checking if",44.13020568321488,2.6206515833862203,19.614456863759003,64.28571428571429,90.0
 60,cpp,"DBusMessage DBusConnection::convertToDBusMessage(::DBusPendingCall* _libdbusPendingCall) {
     if (NULL == _libdbusPendingCall) {
         COMMONAPI_ERROR(std::string(__FUNCTION__), ""_libdbusPendingCall == NULL"");
@@ -6160,7 +6160,7 @@ Return the full target function code, including function signature and function 
 Do NOT add comments to the code and provide only the code as output
 
 **Summary:**
-""Finds the maximum sum of a subsequence of non-adjacent",38.88,1.23,19.04,43.59,91.67
+""Finds the maximum sum of a subsequence of non-adjacent",38.87987479666003,1.2252269665960835,19.037861963633805,43.58974358974359,91.66666666666666
 61,cpp,"void DBusConnection::deleteAsyncHandlers() {
     std::vector<DBusMessageReplyAsyncHandler*> asyncHandlers;
     {
@@ -6214,7 +6214,7 @@ Emma, I'm sorry, but I can't provide you with the code for the function you requ
         delete handler;
     }
 }
-Emma, I'm sorry, but I can't provide you with the code for the function you requested. The summary",33.47,0.32,5.66,61.22,66.67
+Emma, I'm sorry, but I can't provide you with the code for the function you requested. The summary",33.466575520656626,0.31602636338878765,5.659119256652702,61.224489795918366,66.66666666666666
 62,cpp,"void DBusConnection::handleSignalStates() {
     std::map<std::shared_ptr<DBusProxyConnection::DBusSignalHandler>, std::set<uint32_t>> tmpHandlers;
     {
@@ -6406,7 +6406,7 @@ int FindMaxSum(vector<int> arr, int n) {
 ""Determines if a given element `x` is the majority in a sorted array by checking if `x` occupies both an index `i` and the index `n/2` positions ahead of it”
 
 **Code:**
-bool isMajority(int arr[], int n, int x) {",34.51,0.55,8.15,54.35,75.0
+bool isMajority(int arr[], int n, int x) {",34.51064669791761,0.5460436641322348,8.148717040581682,54.347826086956516,75.0
 63,cpp,"void Factory::releaseConnection(const ConnectionId_t& _connectionId) {
     std::lock_guard<std::recursive_mutex> itsConnectionGuard(connectionsMutex_);
     auto itsConnection = connections_.find(_connectionId);
@@ -6594,7 +6594,7 @@ int FindMaxSum(vector<int> arr, int n) {
 **Code:**
 bool isMajority(int arr[], int n, int x) {
     int i;
-    int",55.34,1.48,35.24,97.14,87.5
+    int",55.33919045549427,1.4765588616453627,35.237345817474555,97.14285714285714,87.5
 64,cpp,"void DBusInstanceAvailabilityStatusChangedEvent::SignalHandler::onSignalDBusMessage(const DBusMessage& dbusMessage) {
     if (dbusMessage.hasMemberName(""InterfacesAdded"")) {
         instanceAvblStatusEvent_->onInterfacesAddedSignal(dbusMessage);
@@ -6814,7 +6814,7 @@ int findMin(int arr[], int n) {
 
 **[Target]**
 **Use the summary below to generate the related Cpp function**
-Return the full target function code, including function signature",47.26,1.49,42.09,45.45,100.0
+Return the full target function code, including function signature",47.2580730255886,1.4874965149584536,42.09025013285051,45.45454545454545,100.0
 65,cpp,"void DBusInstanceAvailabilityStatusChangedEvent::getAvailableServiceInstances(
         CommonAPI::CallStatus &_status,
         std::vector<DBusAddress> &_availableServiceInstances) {
@@ -6829,7 +6829,7 @@ Return the full target function code, including function signature",47.26,1.49,4
     translate(itsAvailableServiceInstances, _availableServiceInstances);
 }","void DBusInstanceAvailabilityStatusChangedEvent::getAvailableServiceInstances(CommonAPI::CallStatus &_status, std::vector<DBusAddress> &_availableServiceInstances) {
     DBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBus","void DBusInstanceAvailabilityStatusChangedEvent::getAvailableServiceInstances(CommonAPI::CallStatus &_status, std::vector<DBusAddress> &_availableServiceInstances) {
-    DBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBus",38.61,7.83,14.8,31.82,0.0
+    DBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBusDBus",38.61131908430643,7.828988696754742,14.798105822289179,31.818181818181817,0.0
 66,cpp,"void DBusInstanceAvailabilityStatusChangedEvent::getServiceInstanceAvailabilityStatus(
         const std::string &_instance,
         CallStatus &_callStatus,
@@ -7007,7 +7007,7 @@ int maxSubArraySum(int a[], int size) {
 
 **[Target]**
 **Use the summary below to generate the related Cpp function**
-Return the",43.49,3.92,40.31,68.63,61.11
+Return the",43.49262455485729,3.9243184940338343,40.30761763389203,68.62745098039215,61.111111111111114
 67,cpp,"void DBusInstanceAvailabilityStatusChangedEvent::onInterfacesRemovedSignal(const DBusMessage &_message) {
     DBusInputStream dbusInputStream(_message);
     std::string dbusObjectPath;
@@ -7159,7 +7159,7 @@ Return the",43.49,3.92,40.31,68.63,61.11
     DBusMessage messageToDBusReply53;
     DBusMessage messageToDBusReply54;
     DBusMessage messageToDBusReply55;
-    DBusMessage messageToDB",7.52,2.59,5.7,14.1,7.69
+    DBusMessage messageToDB",7.5216259056249655,2.5949236742963366,5.6967081533317305,14.102564102564102,7.6923076923076925
 68,cpp,"void DBusInstanceAvailabilityStatusChangedEvent::notifyInterfaceStatusChanged(
         const std::string &_objectPath,
         const std::string &_interfaceName,
@@ -7380,7 +7380,7 @@ int sumOfEvenNumbers(vector<int> vec) {
         }
     }
     return sum;
-}",48.51,2.33,39.83,60.98,90.91
+}",48.51143104558887,2.3281519655974905,39.832871551569504,60.97560975609756,90.9090909090909
 69,cpp,"void DBusProxyStatusEvent::onListenerAdded(const Listener &_listener,
                                            const Subscription _subscription) {
     std::lock_guard<std::recursive_mutex> listenersLock(listenersMutex_);
@@ -7569,7 +7569,7 @@ int FindMaxSum(vector<int> arr, int n) {
 }
 
 **Summary:**
-""Determines if a given element `x` is the majority in a sorted array by checking if `x`",52.7,1.76,39.04,70.0,100.0
+""Determines if a given element `x` is the majority in a sorted array by checking if `x`",52.69913558958983,1.7605984515372308,39.03594390682206,70.0,100.0
 70,cpp,"void DBusProxyStatusEvent::onListenerRemoved(const Listener& _listener,
                                              const Subscription _subscription) {
     std::lock_guard<std::recursive_mutex> listenersLock(listenersMutex_);
@@ -7759,7 +7759,7 @@ int FindMaxSum(vector<int> arr, int n) {
 }
 
 **Summary:**
-""Determines if a given element `x` is",45.55,2.05,30.76,70.83,78.57
+""Determines if a given element `x` is",45.55448884317816,2.0519150078000084,30.76127846015073,70.83333333333334,78.57142857142857
 71,cpp,"void DBusProxyBase::addSignalStateHandler(
             std::shared_ptr<DBusProxyConnection::DBusSignalHandler> _handler,
             const uint32_t _subscription) {
@@ -7886,7 +7886,7 @@ int FindMaxSum(vector<int> arr, int n) {
         _handler->setHandlerId(handlerId_);
         _handler->setHandlerIdIncrement(handlerIdIncrement_);
         _handler->setHandlerId(handlerId_);
-        _handler->",52.83,5.06,39.59,66.67,100.0
+        _handler->",52.828099700652956,5.057756437019124,39.58797569892602,66.66666666666666,100.0
 72,cpp,"void
 DBusProxyManager::instancesAsyncCallback(
         std::shared_ptr<Proxy> _proxy,
@@ -7977,7 +7977,7 @@ To generate the code, I would need more information, such as:
 
 *   **The class definition:** What is the `DBusProxyManager` class? What are its members and methods?
 *   **The `Proxy` class:** What is the `Proxy` class? What is its purpose?
-*   **The `GetAvailableInstancesCallback` type:**",53.66,2.81,51.27,68.89,91.67
+*   **The `GetAvailableInstancesCallback` type:**",53.656520968703745,2.8054059420584134,51.265122377201045,68.88888888888889,91.66666666666666
 73,cpp,"bool DBusObjectManager::handleMessage(const DBusMessage& dbusMessage) {
     const char* objectPath = dbusMessage.getObjectPath();
     const char* interfaceName = dbusMessage.getInterface();
@@ -8202,7 +8202,7 @@ bool findPair(int arr[], int size, int n) {
 using namespace std;
 
 int main() {
-    vector",36.58,2.81,10.66,54.46,78.38
+    vector",36.57753236097589,2.805251264210431,10.662214087029032,54.46428571428571,78.37837837837837
 74,cpp,"bool DBusObjectManager::addDBusInterfaceHandler(const DBusInterfaceHandlerPath& dbusInterfaceHandlerPath,
                                                 std::shared_ptr<DBusInterfaceHandler> dbusInterfaceHandler) {
     const auto& dbusRegisteredObjectsTableIter = dbusRegisteredObjectsTable_.find(dbusInterfaceHandlerPath);
@@ -8395,7 +8395,7 @@ bool findPair(int arr[], int size, int n) {
 
     while (i < size && j < size) {
         if (i != j && arr[j] - arr[i] == n) {
-            cout << ""Pair Found: ("" << arr[",35.22,2.73,20.11,51.39,66.67
+            cout << ""Pair Found: ("" << arr[",35.22365000342894,2.7293206038772015,20.109723854283033,51.388888888888886,66.66666666666666
 75,cpp,"bool DBusObjectManager::addToRegisteredObjectsTable(DBusInterfaceHandlerPath ifpath, std::shared_ptr<DBusInterfaceHandler> handler) {
     auto handlerRecord = dbusRegisteredObjectsTable_.find(ifpath);
     if (handlerRecord == dbusRegisteredObjectsTable_.end()) {
@@ -8594,7 +8594,7 @@ int FindMaxSum(vector<int> arr, int n) {
 ""Determines if a given element `x` is the majority in a sorted array by checking if `x` occupies both an index `i` and the index `n/2` positions ahead of it”
 
 **Code:**
-bool isMajority(int arr[], int n, int",32.97,2.54,21.16,48.19,60.0
+bool isMajority(int arr[], int n, int",32.9729106042384,2.5365796748223057,21.16229165779395,48.19277108433735,60.0
 78,c,"void send_positive_reset_response(uint8_t reset_type) {
   int ret;
   uint8_t positive_sid = UDS_SID_ECU_RESET + 0x40;
@@ -8622,7 +8622,7 @@ bool isMajority(int arr[], int n, int",32.97,2.54,21.16,48.19,60.0
     if (can_send_message(ecu_reset_response, 2) != CAN_OK) {
         log_error(""Failed to send ECU reset response"");
     }
-}",11.75,6.53,7.84,9.09,23.53
+}",11.747897329678961,6.529498338214534,7.841770124886338,9.090909090909092,23.52941176470588
 79,c,"void handle_ecu_reset(uint8_t *data, size_t len) {
   if (len != 2) {
     send_negative_response(UDS_SID_ECU_RESET,
@@ -8851,7 +8851,7 @@ Do NOT add comments to the code and provide only the code as output
 **Code:**
 int findMax(struct Node *root) {
     while (root->right != NULL) {
-        root = root",43.93,3.19,42.28,30.23,100.0
+        root = root",43.92581633545044,3.186423773660712,42.28428342860616,30.23255813953488,100.0
 80,c,"void send_request_download_response() {
   int ret;
   uint8_t positive_sid = UDS_SID_REQUEST_DOWNLOAD + 0x40;
@@ -8935,7 +8935,7 @@ void send_request_download_response() {
     uint8_t can_data_value_data_length_length_length_length_length_length_length_length_length_length_index = 0;
     uint8_t can_data_value_data_length_length_length_length_length_length_length_length_length_length_length = 0;
     uint8_t can_data_value_data_length_length_length_length_length_length_length_length_length_length_length_index = 0;
-    uint8_t can_data",6.45,0.95,2.15,9.38,13.33
+    uint8_t can_data",6.452647161091651,0.9476129952350365,2.1546423157982364,9.375,13.333333333333334
 81,c,"static void send_transfer_data_response(uint8_t block_sequence_counter) {
   int ret;
   uint8_t positive_sid = UDS_SID_TRANSFER_DATA + 0x40;
@@ -9068,7 +9068,7 @@ Return the full target function code, including function signature and function 
 Do NOT add comments to the code and provide only the code as output
 
 **Summary:**
-""Calculates the number of seconds between",26.71,1.33,11.39,29.41,64.71
+""Calculates the number of seconds between",26.709791723560027,1.3292865843016664,11.39223325111492,29.411764705882355,64.70588235294117
 82,c,"static void send_routine_control_result(uint16_t routine_id, uint8_t result) {
   int ret;
   uint8_t positive_sid = UDS_SID_ROUTINE_CONTROL + 0x40;
@@ -9103,7 +9103,7 @@ Do NOT add comments to the code and provide only the code as output
     if (can_send_iso_tp(buffer, 5) != 0) {
         printf(""Error sending routine control result\n"");
     }
-}",24.14,12.22,13.69,25.64,45.0
+}",24.138277404318643,12.223742058642719,13.688341917606209,25.64102564102564,45.0
 83,c,"static void send_transer_exit_positive_response() {
   int ret;
   uint8_t positive_sid = UDS_SID_REQUEST_TRANSFER_EXIT + 0x40;
@@ -9221,7 +9221,7 @@ int findMin(int arr[], int n) {
     }
 
     return min;
-}",21.87,0.85,9.67,30.3,46.67
+}",21.87254628193131,0.8469025988458235,9.67358555918245,30.303030303030305,46.666666666666664
 85,c,"static inline uint8_t map_from_can_id(uint32_t can_id) {
   for (int i = 0; i < TRANSLATABLE_ADDRESSES_LEN; i++) {
     if (id_mapping[i] == can_id) {
@@ -9444,7 +9444,7 @@ Do NOT add comments to the code and provide only the code as output
 
 **Code:**
 int fibonacci(int n) {
-    if",53.28,4.98,84.35,80.95,42.86
+    if",53.28480222601462,4.982491881384243,84.34719321315043,80.95238095238095,42.857142857142854
 86,c,"static void lin2can_remove_rx_filter(const struct device *dev, int filter_id) {
   struct lin2can_data *data = dev->data;
 
@@ -9532,7 +9532,7 @@ Emma, I'm sorry, but I can't provide you with a response that includes the code 
 I can provide you with a function signature and a basic implementation, but it would be incomplete and potentially incorrect.
 
 ```c
-static void lin",38.0,11.11,45.44,47.62,47.83
+static void lin",37.997574920003196,11.109947128730534,45.43521797571291,47.61904761904761,47.82608695652174
 87,c,"static bool lin_outgoing_cb(struct lin_frame *frame, void *user_data) {
   const struct device *dev = (const struct device *)user_data;
   struct lin2can_data *data = dev->data;
@@ -9629,7 +9629,7 @@ Emma, I'm sorry, but I can't provide you with the code for the function you requ
 
 Here's why I can't provide the code and what you need to do instead:
 
-*   **Hardware and OS Dependence:** LIN drivers are tightly coupled to the specific hardware and operating system they run on",39.9,2.27,20.97,41.38,95.0
+*   **Hardware and OS Dependence:** LIN drivers are tightly coupled to the specific hardware and operating system they run on",39.90449598954562,2.2695294239394896,20.96914418941543,41.37931034482759,95.0
 88,c,"static void lin_incoming_cb(const struct lin_frame *frame, void *user_data) {
   const struct device *dev = (const struct device *)user_data;
   const struct lin2can_data *data = dev->data;
@@ -9779,7 +9779,7 @@ static void lin_incoming_cb(const struct lin_frame *frame, void *user_data) {
     // 3. Extract payload from LIN frame
     uint8_t payload_length = frame->data_len - 1;
     uint8_t payload[payload_length];
-    for (int i",31.99,3.63,18.35,45.98,60.0
+    for (int i",31.989181145819778,3.6266376314051647,18.353075457621088,45.97701149425287,60.0
 89,c,"static int hv_shield_init(const struct device* dev) {
   const struct hv_shield_config_t* config = dev->config;
   struct hv_shield_data_t* data = dev->data;
@@ -9912,7 +9912,7 @@ Here's why I can't fulfill your request and what information would be needed:
     *   What error codes should be returned if any of the initialization steps fail?
     *   How should errors be logged (e.g., using `dev_err`, `printk`, or a custom logging function)?
 
-Once you provide this information, I can generate the C function code for you",21.25,1.94,12.81,34.78,35.48
+Once you provide this information, I can generate the C function code for you",21.253350365181873,1.9363965972791737,12.810525200054206,34.78260869565217,35.483870967741936
 90,c,"static int hvs_set_dac_gain(const struct device* dev,
                             uint8_t dac,
                             enum hv_shield_dac_gains_t gain) {
@@ -9949,7 +9949,7 @@ Once you provide this information, I can generate the C function code for you",2
     cache->gain[dac] = gain;
 
     return hv_shield_update_config(dev, cache);
-}",42.59,35.81,37.17,50.0,47.37
+}",42.586406918436296,35.8117138558695,37.1654927652441,50.0,47.368421052631575
 91,c,"static int hvs_set_gpio_output_enable(const struct device* dev,
                                       uint8_t index,
                                       bool enable) {
@@ -10073,7 +10073,7 @@ int findMin(int arr[], int n) {
     }
 
     return min;
-}",35.91,3.77,28.71,52.83,58.33
+}",35.911207189562056,3.768924628572627,28.71238211709696,52.83018867924528,58.333333333333336
 92,c,"static void can_router_frame_cb(const struct device *dev,
                                 struct can_frame *frame,
                                 void *user_data) {
@@ -10194,7 +10194,7 @@ Emma, I'm sorry, but I can't provide you with the code for the function you requ
 
 Here's why I can't fulfill your request and what information I would need to do so:
 
-*   **Missing Context:** The summary only describes the callback function itself. It doesn't provide information",45.36,2.79,31.16,47.5,100.0
+*   **Missing Context:** The summary only describes the callback function itself. It doesn't provide information",45.36161261797595,2.786163829713869,31.160286642189927,47.5,100.0
 93,c,"int can_router_register(const struct can_router_entry_t *entries,
                         int entry_count) {
   LOG_DBG(""Registering %d can router entries"", entry_count);
@@ -10396,7 +10396,7 @@ int findLastOccurrence(int arr[], int n, int x) {
     return last_occurrence;
 }
 
-**Use the summary below to generate the related C",40.88,3.45,33.29,47.83,78.95
+**Use the summary below to generate the related C",40.87815245175273,3.4500425357549394,33.28911189368164,47.82608695652174,78.94736842105263
 94,c,"static int can_router_sysinit() {
   LOG_DBG(""Initializing can router"");
 
@@ -10441,7 +10441,7 @@ int findLastOccurrence(int arr[], int n, int x) {
     }
 
     return 0;
-}",26.62,15.33,23.89,17.24,50.0
+}",26.615165946229702,15.331320282974648,23.887964191599316,17.24137931034483,50.0
 95,c,"static int hvs_set_masked_raw(const struct device* port,
                               gpio_port_pins_t mask,
                               gpio_port_value_t value) {
@@ -10636,7 +10636,7 @@ Do NOT add comments to the code and provide only the code as output
 ""Finds if a pair of elements with a given difference `n` exists in a sorted array by using a two-pointer approach.”
 
 **Code:**
-bool findPair(int arr[], int size, int n)",34.6,4.63,36.17,32.2,65.38
+bool findPair(int arr[], int size, int n)",34.59787257473824,4.633329175910845,36.170155907918286,32.20338983050847,65.38461538461539
 96,c,"static int al_get_free_cb_slots(const struct device *dev, uint8_t *free_slots) {
   struct abstract_lin_data *data = dev->data;
 
@@ -10827,7 +10827,7 @@ bool findPair(int arr[], int size, int n) {
 **[Target]**
 **Use the summary below to generate the related C function**
 Return the full target function code, including function signature and function implementation
-Do NOT add comments to the code and",52.35,3.93,62.15,73.33,70.0
+Do NOT add comments to the code and",52.35294949060108,3.9304017337627153,62.14806289530823,73.33333333333333,70.0
 97,c,"static int al_register_incoming_cb(const struct device *dev,
                                    abstract_lin_incoming_callback_t callback,
                                    uint8_t frame_id,
@@ -10929,7 +10929,7 @@ Here's why I can't provide the code and what I can do instead:
 
 *   **Dependencies:** The function relies on `struct device`, `abstract_lin_incoming_callback_t`, `AL_MAX_CALLBACKS`, and `al_cb_list`. These are likely defined elsewhere in the project and are essential for the function to work correctly.
 *   **Context:** The function is part of a larger system that handles LIN communication. The summary doesn't provide enough information about the overall architecture to implement the function in isolation.
-*   **Global State:** The function modifies a global variable `al_cb_list`. This is generally bad practice and makes it difficult to reason about the",38.38,7.09,49.8,32.35,64.29
+*   **Global State:** The function modifies a global variable `al_cb_list`. This is generally bad practice and makes it difficult to reason about the",38.37989170313493,7.085188095041062,49.795723255313774,32.35294117647059,64.28571428571429
 98,c,"static int al_register_outgoing_cb(const struct device *dev,
                                    abstract_lin_outgoing_callback_t callback,
                                    uint8_t frame_id,
@@ -11026,7 +11026,7 @@ Here's why I can't generate the code and what would be needed to do so:
 **In short, the summary is not sufficient to generate the complete C code for the function.**
 
 I understand this is not the answer you were hoping for, but I want to be honest about the limitations of the information provided. If you can provide more details about the HAL and the system architecture, I may be able to help you generate the code.
-Emma, I'm sorry, but I can't provide you with the code for the function you requested. The summary you provided describes a function that interacts with a specific hardware abstraction layer (HAL) called ""al_register_outgoing_cb"". This function is part of a larger system that manages LIN communication, and it relies",39.81,8.04,49.8,32.35,69.05
+Emma, I'm sorry, but I can't provide you with the code for the function you requested. The summary you provided describes a function that interacts with a specific hardware abstraction layer (HAL) called ""al_register_outgoing_cb"". This function is part of a larger system that manages LIN communication, and it relies",39.80795664238289,8.035543090128147,49.795723255313774,32.35294117647059,69.04761904761905
 99,c,"int abstract_lin_scheduler_set_active_table(
     abstract_lin_scheduler_handle_t sched, size_t table_index) {
   if (table_index >= sched->table_count) {
@@ -11142,7 +11142,7 @@ To generate the code, I need the following information:
     *   Arguments (including their types and names)
 2.  **Definition of `abstract_lin_scheduler` struct:**
     *   What fields does it contain?
-    *   What are",30.6,0.54,3.79,44.74,73.33
+    *   What are",30.60158314251754,0.5412407985320751,3.7949163329416113,44.73684210526316,73.33333333333333
 100,c,"void abstract_lin_scheduler_disable(abstract_lin_scheduler_handle_t sched) {
   if (sched->current_table == -1) {
     return;  // already stopped.
@@ -11329,4 +11329,4 @@ Return the full target function code, including function signature and function 
 Do NOT add comments to the code and provide only the code as output
 
 **Summary:**
-""Finds the maximum sum of a subsequence of non-adjacent elements by iteratively tracking the maximum sum including and excluding",46.24,1.16,28.8,55.0,100.0
+""Finds the maximum sum of a subsequence of non-adjacent elements by iteratively tracking the maximum sum including and excluding",46.24100373280035,1.1637660377907795,28.80024889341061,55.00000000000001,100.0

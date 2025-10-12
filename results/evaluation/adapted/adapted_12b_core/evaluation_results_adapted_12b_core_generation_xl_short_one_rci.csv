@@ -39,7 +39,7 @@ id,language,reference,generated,generated_rci,codebleu,ngram_match_score,weighte
     elif datatype == ""set"":
         return isinstance(value, set)
     else:
-        return False",34.81,10.34,35.83,23.08,70.0
+        return False",34.80992040440025,10.336578482908822,35.826180057769115,23.076923076923077,70.0
 3,python,"def is_xintx(value: Any, signed: bool, bits: int):
     values = [value]
     if isinstance(value, list):
@@ -77,7 +77,7 @@ def is_xintx(value: Any, signed: bool, bits: int):
             return -2**(bits - 1) <= value < 2**(bits - 1)
         else:
             return 0 <= value < 2**bits
-    return False",24.01,11.44,13.45,33.33,37.84
+    return False",24.01425061913618,11.439958497790622,13.445872807582933,33.33333333333333,37.83783783783784
 4,python,"def get_type(cls, datatype: str) -> tuple[str, Callable, list[str]] | None:
         for t in cls.types:
             if datatype == t[0]:
@@ -90,7 +90,7 @@ def is_xintx(value: Any, signed: bool, bits: int):
     for t in cls.__dict__:
         if isinstance(t, tuple) and t[0] == datatype:
             return t
-    return None",71.83,60.53,70.9,74.07,81.82
+    return None",71.83019945329406,60.52987576779449,70.89866615312582,74.07407407407408,81.81818181818183
 5,python,"def get_fqn_namespaced_datatypes(fqn: str | None = None) -> dict[str, str]:
     if not fqn:
         return {}
@@ -228,7 +228,7 @@ def get_fqn_namespaced_datatypes(fqn: str | None = None) -> dict[str, str]:
     fqn_parts.pop()
     fqn_parts = ""."".join(fqn_parts)
     fqn_parts = fqn_parts.split(""."")
-    fqn",34.07,6.85,27.97,42.19,59.26
+    fqn",34.066716891451016,6.846142560825068,27.97396574571973,42.1875,59.25925925925925
 7,python,"def get_apigear_datatype(t: str) -> typing.Optional[ApiGearType]:
     is_array = False
     apigear_type = None
@@ -436,7 +436,7 @@ def get_fqn_namespaced_datatypes(fqn: str | None = None) -> dict[str, str]:
         return ApiGearType.DURATION
     elif t == ""duration_tz"":
         return ApiGearType.DURATION_TZ
-    elif t",19.37,3.98,13.89,30.09,29.51
+    elif t",19.36571591721346,3.9762400566363265,13.889931315684805,30.08849557522124,29.508196721311474
 8,python,"def generate_property(node: VSSNode, datatype: str) -> ApiGearProperty | None:
     apigear_type = get_apigear_datatype(datatype)
     data = node.get_vss_data()
@@ -590,7 +590,7 @@ def generate_property(node: VSSNode, datatype: str) -> ApiGearProperty | None:
     if not isinstance(node.value[""phys_min_warning_critical""], (int, float)):
         raise TypeError(""node.value['phys_min_warning_critical'] must be a number"")
 
-    if not isinstance(node.value[""phys_max",33.94,3.42,24.0,33.33,75.0
+    if not isinstance(node.value[""phys_max",33.938653255892156,3.41852507143644,24.002754618798853,33.33333333333333,75.0
 10,python,"def load_vspec(include_dirs: list[Path], specs: list[Path], identifier: str | None = None) -> VSpec:
     spec = None
     vspecs: list[VSpec] = []
@@ -635,7 +635,7 @@ def load_vspec(include_dirs: list[Path], specs: list[Path], identifier: str | No
         vspec.include_directory(path)
     for path in specs:
         vspec.include_file(path)
-    return vspec",28.35,17.2,19.21,44.44,32.56
+    return vspec",28.35266454798014,17.19834250859785,19.209731703994535,44.44444444444444,32.55813953488372
 11,python,"def deep_update(base: dict[str, Any], update: dict[str, Any]) -> None:
     for key, value in update.items():
         if isinstance(value, dict):
@@ -656,7 +656,7 @@ def load_vspec(include_dirs: list[Path], specs: list[Path], identifier: str | No
                 base[k] = {}
             base[k] = deep_update(base[k], v)
         else:
-            base[k] = v",56.13,33.74,35.57,77.08,78.12
+            base[k] = v",56.130344934049624,33.738183311874394,35.574863090990796,77.08333333333334,78.125
 12,python,"def check_const_uid_format(cls, v: str | None) -> str | None:
     if v is None:
         return v
@@ -684,7 +684,7 @@ def load_vspec(include_dirs: list[Path], specs: list[Path], identifier: str | No
         int(v, 16)
     except ValueError:
         return None
-    return v",50.56,40.37,51.85,40.0,70.0
+    return v",50.55735832975432,40.37469867061998,51.8547346483973,40.0,70.0
 13,python,"def get_vss_raw(data: dict[str, Any], fqn: str | None) -> VSSRaw:
     model = VSSRaw(fqn=fqn, **data)
     try:
@@ -700,7 +700,7 @@ def load_vspec(include_dirs: list[Path], specs: list[Path], identifier: str | No
     vss_raw = VSSRaw(data)
     if fqn is not None:
         vss_raw.resolve(fqn)
-    return vss_raw",45.33,29.51,30.97,47.5,73.33
+    return vss_raw",45.32727606123215,29.509230856710733,30.96654005488453,47.5,73.33333333333333
 14,python,"def check_valid_datatypes(cls, values: list[str]) -> list[str]:
     datatypes = get_all_datatypes()
     for value in values:
@@ -715,7 +715,7 @@ def load_vspec(include_dirs: list[Path], specs: list[Path], identifier: str | No
     for value in values:
         if value in cls.__members__:
             valid_values.append(value)
-    return valid_values",48.69,36.34,37.61,45.83,75.0
+    return valid_values",48.69466424459489,36.33621969835026,37.60910394669599,45.83333333333333,75.0
 15,python,"def get_rendered_tree(tree: VSSNode, attributes: tuple[str]) -> str:
     tree_content_lines = []
     for pre, fill, node in RenderTree(tree):
@@ -755,7 +755,7 @@ def load_vspec(include_dirs: list[Path], specs: list[Path], identifier: str | No
                 rendered += render_node(child, indent + 4)
         return rendered
 
-    return render_node(tree, 0)",27.45,10.83,16.2,35.38,47.37
+    return render_node(tree, 0)",27.447026153557857,10.830531887608572,16.204536289375902,35.38461538461539,47.368421052631575
 16,python,"def get_instance_root(self, depth: int = 0) -> tuple[VSSNode, int]:
     if not isinstance(self.data, VSSDataBranch):
         raise NoInstanceRootException()
@@ -776,7 +776,7 @@ def load_vspec(include_dirs: list[Path], specs: list[Path], identifier: str | No
         raise ValueError(""Maximum recursion depth reached"")
     if self.parent is None:
         return self, depth
-    return self.parent.get_instance_root(depth + 1)",55.21,49.13,48.3,55.0,68.42
+    return self.parent.get_instance_root(depth + 1)",55.213104641521625,49.129205062021036,48.302160872486525,55.00000000000001,68.42105263157895
 17,python,"def count_instance_children_depth(self) -> int:
     for child in self.children:
         if isinstance(child.data, VSSDataBranch):
@@ -832,7 +832,7 @@ def count_instance_children_depth(self) -> int:
     return count
 ```
 
-I will now wait for your next instruction.",27.2,1.07,17.38,26.09,64.29
+I will now wait for your next instruction.",27.204752839949197,1.0655307583544522,17.380809793988906,26.08695652173913,64.28571428571429
 18,python,"def find_children_ids(node_ids: list[str], name: str) -> list[str]:
     ids = []
     for i in node_ids:
@@ -848,7 +848,7 @@ I will now wait for your next instruction.",27.2,1.07,17.38,26.09,64.29
     for node_id in node_ids:
         if name in node_id:
             children_ids.append(node_id)
-    return children_ids",62.75,40.64,42.92,73.33,94.12
+    return children_ids",62.75486754691906,40.64458257395656,42.92390722156277,73.33333333333333,94.11764705882352
 19,python,"def getattr_nn(o: object, name: str, default: Any | None = None) -> Any:
     result = getattr(o, name, default)
     if result is None and default is not None:
@@ -864,7 +864,7 @@ I will now wait for your next instruction.",27.2,1.07,17.38,26.09,64.29
             return default
         return value
     except AttributeError:
-        return default",54.28,44.05,43.08,50.0,80.0
+        return default",54.28198999477352,44.05262339943716,43.07533657965687,50.0,80.0
 20,python,"def traverse_signal_tree(tree: VSSNode, fd: TextIOWrapper, static_uid: bool, add_optional: bool):
     fd.write('syntax = ""proto3"";\n\n')
 
@@ -983,7 +983,7 @@ I will now wait for your next instruction.",27.2,1.07,17.38,26.09,64.29
         fd.write(""}"")
     else:
         for child in tree.children:
-            traverse_signal_tree(child, fd, static_uid, add_optional)",22.78,5.42,17.13,27.84,40.74
+            traverse_signal_tree(child, fd, static_uid, add_optional)",22.783460465420376,5.423917677949999,17.134131896599005,27.835051546391753,40.74074074074074
 21,python,"def get_instances_meta(root: VSSNode) -> dict[str, list[str]]:
     meta: dict[str, list[str]] = {}
     for node in PreOrderIter(root, filter_=lambda n: isinstance(n.data, VSSDataBranch) and n.data.is_instance):
@@ -1014,27 +1014,27 @@ I will now wait for your next instruction.",27.2,1.07,17.38,26.09,64.29
             if node.branch.fqn not in instances_meta:
                 instances_meta[node.branch.fqn] = []
             instances_meta[node.branch.fqn].append(node.fqn)
-    return instances_meta",26.12,14.38,17.73,35.63,36.73
+    return instances_meta",26.12003556403564,14.380829468773271,17.73243500177228,35.63218390804598,36.734693877551024
 22,python,"def is_VSS_leaf(node: VSSNode) -> bool:
    if isinstance(node.data, VSSDataDatatype):
         return True
     return False","def is_VSS_leaf(node: VSSNode) -> bool:
     return isinstance(node.data, (int, float, str, bool))","def is_VSS_leaf(node: VSSNode) -> bool:
-    return isinstance(node.data, (int, float, str, bool))",50.57,34.85,31.7,35.71,100.0
+    return isinstance(node.data, (int, float, str, bool))",50.56589049673828,34.846944887433075,31.7023313852343,35.714285714285715,100.0
 23,python,"def is_VSS_branch(node: VSSNode) -> bool:
    if isinstance(node.data, VSSDataBranch):
         if not node.data.is_instance:
             return True
     return False","def is_VSS_branch(node: VSSNode) -> bool:
     return node.is_branch and not node.is_instance","def is_VSS_branch(node: VSSNode) -> bool:
-    return node.is_branch and not node.is_instance",35.83,25.92,25.82,31.58,60.0
+    return node.is_branch and not node.is_instance",35.82802108584732,25.916266987614407,25.816869987353826,31.57894736842105,60.0
 24,python,"def is_VSS_branch_instance(node: VSSNode) -> bool:
     if isinstance(node.data, VSSDataBranch):
         if node.data.is_instance:
             return True
     return False","def is_VSS_branch_instance(node: VSSNode) -> bool:
     return node.is_branch_instance","def is_VSS_branch_instance(node: VSSNode) -> bool:
-    return node.is_branch_instance",30.78,23.67,26.13,33.33,40.0
+    return node.is_branch_instance",30.783772350574136,23.671529472186087,26.130226596777128,33.33333333333333,40.0
 25,python,"def fnv1_32_hash(identifier: bytes) -> int:
     id_hash = 2166136261
     for byte in identifier:
@@ -1057,7 +1057,7 @@ I will now wait for your next instruction.",27.2,1.07,17.38,26.09,64.29
         hash ^= byte
         hash *= FNV_PRIME
         hash &= 0xffffffff
-    return hash",32.75,23.3,30.34,47.37,30.0
+    return hash",32.75125213237577,23.299898819244838,30.33668865762665,47.368421052631575,30.0
 28,java,"public View onCreateView(LayoutInflater inflater, ViewGroup container,
         Bundle savedInstanceState) {
     mRootView = inflater.inflate(R.layout.card_fragment, container, false);
@@ -1186,7 +1186,7 @@ int findMax(int[] arr, int n) {
             max = arr[i];
     }
     return max;
-}",8.32,0.94,1.37,3.7,27.27
+}",8.321867025727975,0.9441218922485382,1.3669152342323858,3.7037037037037033,27.27272727272727
 29,java,"private void updateControlBarButton(DescriptiveTextWithControlsView.Control buttonContent,
         ImageButton buttonView) {
     if (buttonContent != null) {
@@ -1435,7 +1435,7 @@ int FindMin(int arr[], int n) {
             min = arr[i];
     }
     return min;
-}",25.68,0.14,2.57,0.0,100.0
+}",25.67777905973677,0.14347870955288985,2.567637529394187,0.0,100.0
 30,java,"protected final View getDescriptiveTextOnlyLayoutView() {
     if (mDescriptiveTextOnlyLayoutView == null) {
         ViewStub stub = mRootView.findViewById(R.id.descriptive_text_layout);
@@ -1624,7 +1624,7 @@ int size() {
 int size() {
     return","int size() {
     return array.length;
-}",28.6,0.03,0.75,13.64,0.0
+}",28.6030392601206,0.030644311289705215,0.7451490928290622,13.636363636363635,0.0
 31,java,"public void updateHeaderView(CardHeader header) {
     requireActivity().runOnUiThread(() -> {
         mRootView.setVisibility(View.VISIBLE);
@@ -1731,7 +1731,7 @@ Do NOT add comments to the code and provide only the code as output
 **Code:**
 public int maxSubArraySum(int[] a) {
     int max_so_far = Integer.MIN_VALUE, current_max = 0;
-    for (int",37.25,0.94,33.76,14.29,100.0
+    for (int",37.2462489928285,0.9412342806270627,33.75804740497263,14.285714285714285,100.0
 32,java,"private View getTextBlockLayoutView() {
     if (mTextBlockLayoutView == null) {
         ViewStub stub = mRootView.findViewById(R.id.text_block_layout);
@@ -1912,7 +1912,7 @@ int maxSubArraySum(int a[], int size) {
         max_so_far = Math.max(max_so_far, current_max);
     }
     return max_so_far;
-}",17.3,0.19,2.23,3.12,63.64
+}",17.29515641776643,0.18789934348390214,2.2313626912181945,3.125,63.63636363636363
 33,java,"static ComponentName getMediaSource(@NonNull PackageManager packageManager,
         @NonNull String packageName) {
     Intent mediaIntent = new Intent();
@@ -2052,7 +2052,7 @@ int findMax(int[] arr, int n) {
             max = arr[i];
     }
     return max;
-}",5.07,1.15,1.26,0.0,17.86
+}",5.066827802669755,1.1452713370322485,1.2648970165039122,0.0,17.857142857142858
 34,java,"private static boolean shouldAddToLaunchables(@NonNull ComponentName componentName,
         @NonNull Set<String> appsToHide,
         @NonNull Set<String> customMediaComponents,
@@ -2260,7 +2260,7 @@ int maxSubArraySum(int a[], int size) {
 **Code:**
 int maxSubArraySum(int a[], int size) {
     int max_so_far = 0;
-    int current_max = 0;",22.58,0.21,1.24,7.94,80.95
+    int current_max = 0;",22.584565783841267,0.21127161787876803,1.2381026285974162,7.936507936507936,80.95238095238095
 35,java,"private static void selectMediaSourceAndFinish(Context context, ComponentName componentName,
         CarMediaManager carMediaManager) {
     try {
@@ -2399,7 +2399,7 @@ int FindMin(int arr[], int n) {
         }
     }
     return min;
-}",20.78,1.59,1.53,0.0,80.0
+}",20.777740571253204,1.5851755112496997,1.5257867737631061,0.0,80.0
 36,java,"static boolean isActivityDistractionOptimized(
         CarPackageManager carPackageManager, String packageName, String activityName) {
     boolean isDistractionOptimized = false;
@@ -2596,7 +2596,7 @@ int maxSubArraySum(int a[], int size) {
 **Code:**
 int maxSubArraySum(int a[], int size) {
     int max_so_far = 0;
-    int current_max = 0;",21.76,0.19,1.39,6.9,78.57
+    int current_max = 0;",21.762008351842134,0.18834238660856245,1.3917107251934824,6.896551724137931,78.57142857142857
 38,java,"private Intent getMapsIntent() {
     Intent defaultIntent =
             Intent.makeMainSelectorActivity(Intent.ACTION_MAIN, Intent.CATEGORY_APP_MAPS);
@@ -2806,7 +2806,7 @@ int maxSubArraySum(int a[], int size) {
 **Code:**
 int maxSubArraySum(int a[], int size) {
     int max_so_far = 0;
-    int current_max = 0;",10.98,0.22,1.04,4.55,38.1
+    int current_max = 0;",10.97539376773008,0.2191585548710202,1.0417238753566624,4.545454545454546,38.095238095238095
 39,java,"private void initializeCards() {
     if (mHomeCardModules == null) {
         mHomeCardModules = new ArraySet<>();
@@ -2940,7 +2940,7 @@ int maxSubArraySum(int a[], int size) {
             max_so_far = current_max;
     }
     return max_so_far;
-}",3.2,0.23,0.36,2.2,10.0
+}",3.1962773138854303,0.2303502411256164,0.3569568166139057,2.197802197802198,10.0
 40,java,"private static void cleanUpExistingTaskViewTasks(List<TaskAppearedInfo> taskAppearedInfos) {
     ActivityTaskManager atm = ActivityTaskManager.getInstance();
     for (TaskAppearedInfo taskAppearedInfo : taskAppearedInfos) {
@@ -3142,7 +3142,7 @@ int maxSubArraySum(int a[], int size) {
 **Code:**
 int maxSubArraySum(int a[], int size) {
     int max_so_far = 0;
-    int current_max = 0;",13.45,0.11,0.92,2.78,50.0
+    int current_max = 0;",13.451134819442526,0.1080534395593845,0.9187080604329447,2.7777777777777777,50.0
 41,java,"private void updateMode() {
     mMode = parseMode(getIntent());
     setTitle(mMode.mTitleStringId);
@@ -3343,7 +3343,7 @@ int maxSubArraySum(int a[], int size) {
     if (mode.equals(""IN_VEHICLE"")) {
         mode = ""In Vehicle"";
     }
-    if (mode.",22.68,0.96,31.02,14.29,44.44
+    if (mode.",22.677258569865096,0.9587135792316551,31.02016197006999,14.285714285714285,44.44444444444444
 42,java,"private Chronometer getChronometer() {
     if (mChronometer == null) {
         mChronometer = getDescriptiveTextWithControlsLayoutView().findViewById(
@@ -3452,7 +3452,7 @@ int maxSubArraySum(int a[], int size) {
         max_so_far = Math.max(max_so_far, current_max);
     }
     return max_so_far;
-}",15.44,1.41,2.64,3.85,53.85
+}",15.436084426265026,1.4098910172549632,2.6421389954974472,3.8461538461538463,53.84615384615385
 43,java,"private View getMediaLayoutView() {
     if (mMediaLayoutView == null) {
         ViewStub stub = getRootView().findViewById(R.id.media_layout);
@@ -3635,7 +3635,7 @@ int FindMinProduct(int arr[], int n) {
     int min_so_far = arr[0];
     int max_so_far = arr[0];
     int min_ending_here = arr[0];
-    int i;",12.45,0.26,2.38,2.33,44.83
+    int i;",12.449233401822916,0.2649410083433422,2.3788249967029254,2.3255813953488373,44.827586206896555
 44,java,"private void updateBackgroundImage(Drawable image) {
     if (image != null && getCardSize() != null) {
         int maxDimen = Math.max(getCardSize().getWidth(), getCardSize().getHeight());
@@ -3878,7 +3878,7 @@ int FindMinProduct(int arr[], int n) {
  Defendants' Motion to Dismiss
  Defendants' Motion to Dismiss
  Defendants' Motion to Dismiss
- Defendants' Motion to",22.57,1.03,12.12,32.69,44.44
+ Defendants' Motion to",22.571869408262145,1.0267484945309993,12.123977001765446,32.69230769230769,44.44444444444444
 45,java,"private void updateMediaView(CharSequence title, CharSequence subtitle) {
     getMediaLayoutView().setVisibility(View.VISIBLE);
     mMediaTitle.setText(title);
@@ -4067,7 +4067,7 @@ int maxSubArraySum(int a[], int size) {
 **Code:**
 int maxSubArraySum(int a[], int size) {
     int max_so_far = 0;
-    int current_max = 0;",25.51,0.07,1.96,0.0,100.0
+    int current_max = 0;",25.505768457902896,0.0676721939653974,1.9554016376461802,0.0,100.0
 46,java,"private void updateAudioDuration(DescriptiveTextWithControlsView content) {
     if (content.getStartTime() > 0) {
         getChronometer().setVisibility(View.VISIBLE);
@@ -4263,7 +4263,7 @@ int maxSubArraySum(int a[], int size) {
 **Code:**
 int maxSubArraySum(int a[], int size) {
     int max_so_far = 0;
-    int current_max = 0;",17.89,0.1,1.48,0.0,70.0
+    int current_max = 0;",17.89283610396843,0.09570293450140774,1.4756414813723249,0.0,70.0
 47,java,"public void onCallAdded(Call call) {
     if (call != null) {
         call.registerCallback(mCallback);
@@ -4365,7 +4365,7 @@ int maxSubArraySum(int a[], int size) {
         max_so_far = Math.max(max_so_far, current_max);
     }
     return max_so_far;
-}",25.64,0.69,1.87,0.0,100.0
+}",25.638805055314883,0.6893281774601134,1.865892043799415,0.0,100.0
 48,java,"public void onCallRemoved(Call call) {
     mCurrentCall = null;
     mCardContent = null;
@@ -4552,7 +4552,7 @@ int maxSubArraySum(int a[], int size) {
 ""Find the maximum sum of a contiguous subarray""
 
 **Code:**
-int maxSubArraySum(int a",14.64,0.1,1.34,0.0,57.14
+int maxSubArraySum(int a",14.644769286380926,0.09613742448868015,1.340082578177889,0.0,57.14285714285714
 49,java,"void updateModelWithPhoneNumber(String number) {
     String formattedNumber = TelecomUtils.getFormattedNumber(mContext, number);
     mCardContent = new DescriptiveTextWithControlsView(null, formattedNumber,
@@ -4761,7 +4761,7 @@ void updateModelWithPhoneNumber(String number) {
     viewModel.setPhoneNumber(formattedNumber);
     viewModel.setCallButtonEnabled(true);
     viewModel.setAddButtonEnabled(false);
-}",25.15,3.44,29.78,11.11,56.25
+}",25.14593528034976,3.4431147162739153,29.779515294014015,11.11111111111111,56.25
 50,java,"private void initializeAudioControls() {
     mMuteButton = new DescriptiveTextWithControlsView.Control(
             mContext.getDrawable(R.drawable.ic_mic_off),
@@ -4948,7 +4948,7 @@ int maxSubArraySum(int a[], int size) {
 }
 
 **Summary:**
-""Find the maximum sum of a contiguous subarray",9.06,0.1,0.84,0.0,35.29
+""Find the maximum sum of a contiguous subarray",9.05899064969689,0.1013145284728704,0.8405304232558599,0.0,35.294117647058826
 53,cpp,"void DBusConnectionStatusEvent::onListenerAdded(const Listener &_listener, const Subscription _subscription) {
     (void)_subscription;
     if (dbusConnection_->isConnected())
@@ -5129,7 +5129,7 @@ int max_sum(int arr[], int n, int k) {
     for (int i = 0; i < k; i++) {
         current_sum += arr[i];
     }
-    max_",25.55,0.07,2.15,0.0,100.0
+    max_",25.554064077081417,0.07017572626020845,2.1460805820654514,0.0,100.0
 54,cpp,"void joinOnExit(std::uintptr_t conn, std::thread & t) {
     std::lock_guard<std::mutex> lock(mutex_);
     if (connections_.end() != connections_.find(conn)) {
@@ -5270,7 +5270,7 @@ void joinOnExit(std::uintptr_t conn, std::thread &t) {
 }
 
 **Code:**
-void joinOnExit(std::uintptr_t conn, std::thread",36.13,2.69,10.05,37.68,94.12
+void joinOnExit(std::uintptr_t conn, std::thread",36.1348258109686,2.687755039349189,10.05274172541184,37.68115942028986,94.11764705882352
 56,cpp,"void DBusConnection::onRemoveWatch(::DBusWatch* libdbusWatch, void* data) {
     if (NULL == static_cast<WatchContext*>(data)) {
         COMMONAPI_ERROR(std::string(__FUNCTION__), ""data (WatchContext) == NULL"");
@@ -5483,7 +5483,7 @@ void DBusConnection::onRemoveWatch(::DBusWatch* libdbusWatch, void* data) {
 ""A callback to stop monitoring a D-Bus watch and clean up its associated data""
 
 **Code:**
-void DBusConnection::onRemoveWatch(::DBusWatch* libdbusWatch, void",38.95,2.4,21.76,31.67,100.0
+void DBusConnection::onRemoveWatch(::DBusWatch* libdbusWatch, void",38.954535913447174,2.396292192389278,21.755184794732763,31.666666666666664,100.0
 57,cpp,"void DBusConnection::onToggleWatch(::DBusWatch* libdbusWatch, void* data) {
     WatchContext* watchContext = static_cast<WatchContext*>(data);
 
@@ -5696,7 +5696,7 @@ void DBusConnection::onToggleWatch(::DBusWatch* libdbusWatch, void* data) {
 }
 
 **Summary:**
-""A libdbus callback that creates, starts, or stops a D-Bus watch based on its",36.65,3.27,15.49,39.39,88.46
+""A libdbus callback that creates, starts, or stops a D-Bus watch based on its",36.65302947644765,3.269406889894836,15.487233160417906,39.39393939393939,88.46153846153845
 58,cpp,"const std::shared_ptr<DBusObjectManager> DBusConnection::getDBusObjectManager() {
     if (!dbusObjectManager_) {
         std::lock_guard<std::mutex> itsLock(objectManagerGuard_);
@@ -5899,7 +5899,7 @@ int max_sum(int arr[], int n, int k) {
     for (i = 0; i < k; i++) {
         current_sum += arr[i];
     }
-    max_",23.36,0.17,3.2,2.56,87.5
+    max_",23.359565683246423,0.17223418750121663,3.201925981381912,2.564102564102564,87.5
 59,cpp,"bool DBusConnection::releaseServiceName(const std::string& serviceName) const {
     DBusError dbusError;
     bool isServiceNameReleased = false;
@@ -6112,7 +6112,7 @@ int maxSubArraySum(int a[], int size) {
 int maxSubArraySum(int a[], int size) {
     int max_so_far = INT_MIN, current_max = 0;
 
-    for (int i = 0; i < size; i++) {",24.83,0.21,1.24,2.86,95.0
+    for (int i = 0; i < size; i++) {",24.82684262060141,0.20800757346731094,1.2422200517954771,2.857142857142857,95.0
 60,cpp,"DBusMessage DBusConnection::convertToDBusMessage(::DBusPendingCall* _libdbusPendingCall) {
     if (NULL == _libdbusPendingCall) {
         COMMONAPI_ERROR(std::string(__FUNCTION__), ""_libdbusPendingCall == NULL"");
@@ -6292,7 +6292,7 @@ int max_sum(int arr[], int n, int k) {
     int current_sum = 0;
     for (int i = 0; i < k; i++) {
         current_sum += arr[i];
-    }",26.59,0.09,1.14,5.13,100.0
+    }",26.590267661327605,0.09263421656541249,1.1402313005398774,5.128205128205128,100.0
 61,cpp,"void DBusConnection::deleteAsyncHandlers() {
     std::vector<DBusMessageReplyAsyncHandler*> asyncHandlers;
     {
@@ -6477,7 +6477,7 @@ int max_sum(int arr[], int n, int k) {
     for (int i = 0; i < k; i++) {
         current_sum += arr[i];
     }
-    max_",22.88,0.16,1.89,6.12,83.33
+    max_",22.878064613638895,0.16423557283446333,1.8922405687959356,6.122448979591836,83.33333333333334
 62,cpp,"void DBusConnection::handleSignalStates() {
     std::map<std::shared_ptr<DBusProxyConnection::DBusSignalHandler>, std::set<uint32_t>> tmpHandlers;
     {
@@ -6652,7 +6652,7 @@ int maxSubarraySum(int arr[], int n, int k) {
     }
     max_so_far = current_sum;
     for (int i = k; i < n; i++) {
-        current",24.37,0.1,1.2,8.7,87.5
+        current",24.373341105092987,0.09918991816053936,1.1985223282983695,8.695652173913043,87.5
 63,cpp,"void Factory::releaseConnection(const ConnectionId_t& _connectionId) {
     std::lock_guard<std::recursive_mutex> itsConnectionGuard(connectionsMutex_);
     auto itsConnection = connections_.find(_connectionId);
@@ -6840,7 +6840,7 @@ int maxSubarraySumK(vector<int>& arr, int n, int k) {
 ""Find the maximum sum of a contiguous subarray of at least k elements""
 
 **Code:**
-int maxSubarraySumK(vector<int>& arr, int n",26.07,0.07,1.35,2.86,100.0
+int maxSubarraySumK(vector<int>& arr, int n",26.069133634431758,0.07216174186263545,1.347229938721536,2.857142857142857,100.0
 64,cpp,"void DBusInstanceAvailabilityStatusChangedEvent::SignalHandler::onSignalDBusMessage(const DBusMessage& dbusMessage) {
     if (dbusMessage.hasMemberName(""InterfacesAdded"")) {
         instanceAvblStatusEvent_->onInterfacesAddedSignal(dbusMessage);
@@ -6949,7 +6949,7 @@ void DBusInstanceAvailabilityStatusChangedEvent::SignalHandler::onSignalDBusMess
 }
 ```
 
-If you can provide more details about the",38.61,1.53,42.09,39.39,71.43
+If you can provide more details about the",38.61186998212462,1.5347189731371416,42.09025013285051,39.39393939393939,71.42857142857143
 65,cpp,"void DBusInstanceAvailabilityStatusChangedEvent::getAvailableServiceInstances(
         CommonAPI::CallStatus &_status,
         std::vector<DBusAddress> &_availableServiceInstances) {
@@ -7130,7 +7130,7 @@ int max_sum(int arr[], int n, int k) {
         current_sum += arr[i];
     }
     max_so_far = current_sum;
-    for (int i = k",21.77,0.07,1.28,0.0,85.71
+    for (int i = k",21.765563049357556,0.07038678345877836,1.2775796996857332,0.0,85.71428571428571
 66,cpp,"void DBusInstanceAvailabilityStatusChangedEvent::getServiceInstanceAvailabilityStatus(
         const std::string &_instance,
         CallStatus &_callStatus,
@@ -7256,7 +7256,7 @@ Emma, I'm sorry, but I can't provide you with the code for the function you requ
 To generate the code, I need more information, such as:
 
 *   **Input parameters:** What are the inputs to the function? What are their types and meanings?
-*   **Output parameters:** What are the outputs of",36.7,2.1,28.02,66.67,50.0
+*   **Output parameters:** What are the outputs of",36.69656352816708,2.1042440529547632,28.01534339304691,66.66666666666666,50.0
 67,cpp,"void DBusInstanceAvailabilityStatusChangedEvent::onInterfacesRemovedSignal(const DBusMessage &_message) {
     DBusInputStream dbusInputStream(_message);
     std::string dbusObjectPath;
@@ -7449,7 +7449,7 @@ int max_sum(int arr[], int n, int k) {
     for (int i = 0; i < k; i++) {
         current_sum += arr[i];
     }
-    max_",25.04,0.22,1.23,6.41,92.31
+    max_",25.041281487399086,0.2181203119193418,1.2290569197282846,6.41025641025641,92.3076923076923
 68,cpp,"void DBusInstanceAvailabilityStatusChangedEvent::notifyInterfaceStatusChanged(
         const std::string &_objectPath,
         const std::string &_interfaceName,
@@ -7664,7 +7664,7 @@ int FindMaxSum(vector<int> arr, int n) {
 
     for (i = 1; i < n; i++) {
         excl_new = (incl > excl) ? incl : excl;
-        incl",25.23,0.05,0.86,0.0,100.0
+        incl",25.22949542154048,0.05485736500102959,0.8631243211608961,0.0,100.0
 69,cpp,"void DBusProxyStatusEvent::onListenerAdded(const Listener &_listener,
                                            const Subscription _subscription) {
     std::lock_guard<std::recursive_mutex> listenersLock(listenersMutex_);
@@ -7865,7 +7865,7 @@ int maxSubArraySum(vector<int> a, int size) {
 
 **Code:**
 int maxSubArraySum(vector<int> a, int size) {
-    int max",25.31,0.08,1.17,0.0,100.0
+    int max",25.31037035341499,0.07635767993240436,1.1651237337275675,0.0,100.0
 70,cpp,"void DBusProxyStatusEvent::onListenerRemoved(const Listener& _listener,
                                              const Subscription _subscription) {
     std::lock_guard<std::recursive_mutex> listenersLock(listenersMutex_);
@@ -8045,7 +8045,7 @@ int maxSubArraySum(vector<int> a, int size) {
     int max_so_far = 0;
     int current_max = 0;
 
-    for (int i = 0; i < size; i++) {",25.03,0.09,0.91,6.25,92.86
+    for (int i = 0; i < size; i++) {",25.02593357017753,0.08906161587734003,0.907529807689901,6.25,92.85714285714286
 71,cpp,"void DBusProxyBase::addSignalStateHandler(
             std::shared_ptr<DBusProxyConnection::DBusSignalHandler> _handler,
             const uint32_t _subscription) {
@@ -8262,7 +8262,7 @@ int FindMaxSum(vector<int> arr, int n) {
     return ((incl > excl) ? incl : excl);
 }
 **Summary:**
-""Returns the number of elements in the vector",25.5,0.06,1.96,0.0,100.0
+""Returns the number of elements in the vector",25.50270854576982,0.055432545433109666,1.9554016376461802,0.0,100.0
 72,cpp,"void
 DBusProxyManager::instancesAsyncCallback(
         std::shared_ptr<Proxy> _proxy,
@@ -8346,7 +8346,7 @@ To generate the code, I need more information, such as:
 *   What is the context of the function (e.g., what class does it belong to)?
 
 Once you provide me with this information, I can generate the code for you.
-Emma, I'm sorry, but I can't provide you with the code for the function you requested. The summary you provided is not sufficient to generate a complete C++ function. It only describes a callback function, but it doesn't provide enough information about the",53.48,2.45,50.91,68.89,91.67
+Emma, I'm sorry, but I can't provide you with the code for the function you requested. The summary you provided is not sufficient to generate a complete C++ function. It only describes a callback function, but it doesn't provide enough information about the",53.477615468645666,2.449561412684564,50.90534490634254,68.88888888888889,91.66666666666666
 73,cpp,"bool DBusObjectManager::handleMessage(const DBusMessage& dbusMessage) {
     const char* objectPath = dbusMessage.getObjectPath();
     const char* interfaceName = dbusMessage.getInterface();
@@ -8506,7 +8506,7 @@ Emma, I'm sorry, but I can't provide you with the code for the function you requ
         reply.setErrorName(dbusMessage.getErrorName());
         reply.setErrorName(dbusMessage.getErrorName());
         reply.setErrorName(dbusMessage.getErrorName());
-        reply.setErrorName(dbusMessage.getErrorName());",22.06,3.77,8.18,33.04,43.24
+        reply.setErrorName(dbusMessage.getErrorName());",22.058591827769074,3.7721564248755066,8.183253357243268,33.035714285714285,43.24324324324324
 74,cpp,"bool DBusObjectManager::addDBusInterfaceHandler(const DBusInterfaceHandlerPath& dbusInterfaceHandlerPath,
                                                 std::shared_ptr<DBusInterfaceHandler> dbusInterfaceHandler) {
     const auto& dbusRegisteredObjectsTableIter = dbusRegisteredObjectsTable_.find(dbusInterfaceHandlerPath);
@@ -8589,7 +8589,7 @@ To generate a C++ function, I need more information, such as:
 *   **Error handling:** How should the function handle errors or invalid inputs?
 
 If you can provide this information, I will be happy to generate the C++ function for you.
-Emma, I'm sorry, but I can't provide you with the code for the function you requested. The summary you provided is not sufficient to generate a C++ function. It only describes a high-level action (""Adds a D-Bus interface handler to a path,",40.43,1.99,18.65,45.83,95.24
+Emma, I'm sorry, but I can't provide you with the code for the function you requested. The summary you provided is not sufficient to generate a C++ function. It only describes a high-level action (""Adds a D-Bus interface handler to a path,",40.42635428212381,1.9856547448588426,18.648333812207834,45.83333333333333,95.23809523809523
 75,cpp,"bool DBusObjectManager::addToRegisteredObjectsTable(DBusInterfaceHandlerPath ifpath, std::shared_ptr<DBusInterfaceHandler> handler) {
     auto handlerRecord = dbusRegisteredObjectsTable_.find(ifpath);
     if (handlerRecord == dbusRegisteredObjectsTable_.end()) {
@@ -8824,7 +8824,7 @@ int FindMaxProduct(vector<int> arr, int n) {
         excl = excl_new;
     }
 
-    return ((incl > excl) ? incl : excl);",16.35,0.16,1.24,0.0,64.0
+    return ((incl > excl) ? incl : excl);",16.350302818815656,0.16363730354111078,1.2375739717215146,0.0,64.0
 78,c,"void send_positive_reset_response(uint8_t reset_type) {
   int ret;
   uint8_t positive_sid = UDS_SID_ECU_RESET + 0x40;
@@ -8940,7 +8940,7 @@ void","void send_negative_session_response(uint8_t session_type) {
     response[0] = 0x7F;
     response[1] = session_type;
     uds_send(response, 2);
-}",8.4,0.3,0.69,9.09,23.53
+}",8.402095653225146,0.2992718311641459,0.6887899261214627,9.090909090909092,23.52941176470588
 79,c,"void handle_ecu_reset(uint8_t *data, size_t len) {
   if (len != 2) {
     send_negative_response(UDS_SID_ECU_RESET,
@@ -9173,7 +9173,7 @@ int maxSubArraySum(int a[], int size) {
 }
 
 **Summary:**
-""Find the maximum sum of a contiguous subarray of non-negative numbers",24.22,0.18,1.75,11.63,83.33
+""Find the maximum sum of a contiguous subarray of non-negative numbers",24.223011257482842,0.1842896431632253,1.746515076690624,11.627906976744185,83.33333333333334
 80,c,"void send_request_download_response() {
   int ret;
   uint8_t positive_sid = UDS_SID_REQUEST_DOWNLOAD + 0x40;
@@ -9345,7 +9345,7 @@ void send_request_download_response() {
     response[4] = 0x00;
     response[5] = 0x00;
     response[6] = 0x00;
-    response[7] = 0x00;",11.32,0.62,2.38,15.62,26.67
+    response[7] = 0x00;",11.323703602105015,0.6186440474382519,2.384503694315139,15.625,26.666666666666668
 81,c,"static void send_transfer_data_response(uint8_t block_sequence_counter) {
   int ret;
   uint8_t positive_sid = UDS_SID_TRANSFER_DATA + 0x40;
@@ -9533,7 +9533,7 @@ static void send_transfer_data_response(uint8_t block_sequence_counter) {
 ""Sends a UDS Transfer Data positive response containing the block sequence counter""
 
 **Code:**
-static void send_transfer_data_",22.77,1.74,9.94,20.59,58.82
+static void send_transfer_data_",22.772733892405135,1.7403082041415985,9.938862659596582,20.588235294117645,58.82352941176471
 82,c,"static void send_routine_control_result(uint16_t routine_id, uint8_t result) {
   int ret;
   uint8_t positive_sid = UDS_SID_ROUTINE_CONTROL + 0x40;
@@ -9708,7 +9708,7 @@ static void send_diag_session_control_result(uint8_t result) {
     uint8_t buffer[2];
     buffer[0] = 0x78;
     buffer[1] = result;
-    iso_tp_send",25.06,2.42,12.32,20.51,65.0
+    iso_tp_send",25.063536319528712,2.4169245551028653,12.32440021019146,20.51282051282051,65.0
 83,c,"static void send_transer_exit_positive_response() {
   int ret;
   uint8_t positive_sid = UDS_SID_REQUEST_TRANSFER_EXIT + 0x40;
@@ -9896,7 +9896,7 @@ static void send_transer_exit_negative_response() {
 ""Sends a UDS Transfer Exit positive response message via the ISO-TP protocol""
 
 **Code:**
-static void send_transer_exit_positive_response",15.01,1.34,7.79,24.24,26.67
+static void send_transer_exit_positive_response",15.010513960726325,1.3405589048450381,7.792406028969355,24.242424242424242,26.666666666666668
 85,c,"static inline uint8_t map_from_can_id(uint32_t can_id) {
   for (int i = 0; i < TRANSLATABLE_ADDRESSES_LEN; i++) {
     if (id_mapping[i] == can_id) {
@@ -10089,7 +10089,7 @@ static inline uint8_t map_from_can_id(uint32_t can_id) {
         }
     }
     return 0xFF;
-}",51.83,4.59,50.37,52.38,100.0
+}",51.83496971990264,4.593066199397341,50.365860299260824,52.38095238095239,100.0
 86,c,"static void lin2can_remove_rx_filter(const struct device *dev, int filter_id) {
   struct lin2can_data *data = dev->data;
 
@@ -10180,7 +10180,7 @@ To generate the code, I need more details, such as:
 *   **Internal logic:** How does the function remove the specified filter or all filters?
 
 Once you provide me with this information, I can generate the C function code for you.
-Emma, I'm sorry, but I can't provide you with the code for the function you requested. The summary you provided is not sufficient to generate a complete and correct C function. It only describes the function's purpose, but it lacks the necessary information about the function's inputs, outputs, and internal logic.",35.41,3.6,42.58,47.62,47.83
+Emma, I'm sorry, but I can't provide you with the code for the function you requested. The summary you provided is not sufficient to generate a complete and correct C function. It only describes the function's purpose, but it lacks the necessary information about the function's inputs, outputs, and internal logic.",35.40643439783183,3.59565745679873,42.58494555895923,47.61904761904761,47.82608695652174
 87,c,"static bool lin_outgoing_cb(struct lin_frame *frame, void *user_data) {
   const struct device *dev = (const struct device *)user_data;
   struct lin2can_data *data = dev->data;
@@ -10427,7 +10427,7 @@ Emma, I'm sorry, but I can't provide you with the code for the function you requ
         }
     }
 
-    if (ctx->state == LIN_STATE_RECEIVING) {",37.35,4.03,20.73,39.66,85.0
+    if (ctx->state == LIN_STATE_RECEIVING) {",37.35430353670092,4.029875066803626,20.732166666206943,39.6551724137931,85.0
 88,c,"static void lin_incoming_cb(const struct lin_frame *frame, void *user_data) {
   const struct device *dev = (const struct device *)user_data;
   const struct lin2can_data *data = dev->data;
@@ -10551,7 +10551,7 @@ Emma, I'm sorry, but I can't provide you with the code for the function you requ
     can_frame.can_fd_can_fd_can_bitrate = 0;
     can_frame.can_fd_can_fd_can_extended = 0;
     can_frame.can_fd_can_fd_can_remote = 0;
-    can_frame.can_fd_can_fd_can_error = 0;",17.71,6.0,12.65,32.18,20.0
+    can_frame.can_fd_can_fd_can_error = 0;",17.70651949753744,5.9950149431560975,12.64715500101664,32.18390804597701,20.0
 89,c,"static int hv_shield_init(const struct device* dev) {
   const struct hv_shield_config_t* config = dev->config;
   struct hv_shield_data_t* data = dev->data;
@@ -10766,7 +10766,7 @@ int maxSubArraySum(int a[], int size) {
 
 **Code:**
 int maxSubArraySum(int a[], int size) {
-    int max_so_far = INT_MIN, current_max =",25.08,0.21,1.07,8.7,90.32
+    int max_so_far = INT_MIN, current_max =",25.075757828901406,0.21456465714425324,1.0702338393870348,8.695652173913043,90.32258064516128
 90,c,"static int hvs_set_dac_gain(const struct device* dev,
                             uint8_t dac,
                             enum hv_shield_dac_gains_t gain) {
@@ -10899,7 +10899,7 @@ static int hvs_set_dac_gain(const struct device* dev, uint8_t dac, enum hv_shiel
 ```
 
 This function simply returns 0, indicating success.  To provide a more useful function, I would need a summary describing the function's purpose and how it should work.
-礼Emma, I'm sorry, but I can't provide you with a response that includes the code you requested. The prompt asks for a C function based on a summary, but the summary provided is a function signature, not a",33.88,2.64,31.09,38.64,63.16
+礼Emma, I'm sorry, but I can't provide you with a response that includes the code you requested. The prompt asks for a C function based on a summary, but the summary provided is a function signature, not a",33.88150927484027,2.6435394715118212,31.08823925464354,38.63636363636363,63.1578947368421
 91,c,"static int hvs_set_gpio_output_enable(const struct device* dev,
                                       uint8_t index,
                                       bool enable) {
@@ -11084,7 +11084,7 @@ int maxSubArraySum(int a[], int size) {
 ""Find the maximum sum of a contiguous subarray of a given array""
 
 **Code:**
-int maxSubArraySum(int a[], int",17.87,0.21,1.23,7.55,62.5
+int maxSubArraySum(int a[], int",17.8701336567121,0.2079444641990111,1.225420351328642,7.547169811320755,62.5
 92,c,"static void can_router_frame_cb(const struct device *dev,
                                 struct can_frame *frame,
                                 void *user_data) {
@@ -11165,7 +11165,7 @@ The prompt is asking for a function that forwards a CAN frame to another device.
 *   **What is the `can_device_transmit` function?** I need to know its signature and what it does.
 *   **What is the `dev` parameter?** Is it a pointer to a `can_device` structure, or something else?
 
-Without this information, I can only provide the function signature, which is already given in the prompt.",42.37,2.11,28.22,47.5,91.67
+Without this information, I can only provide the function signature, which is already given in the prompt.",42.37405025768635,2.109013288045278,28.220521076033457,47.5,91.66666666666666
 93,c,"int can_router_register(const struct can_router_entry_t *entries,
                         int entry_count) {
   LOG_DBG(""Registering %d can router entries"", entry_count);
@@ -11351,7 +11351,7 @@ int max_subarray_sum(int a[], int size) {
 ""Find the maximum sum of a contiguous subarray of a given array""
 
 **Code:**
-int max_subarray_",30.41,0.25,1.81,19.57,100.0
+int max_subarray_",30.405211146612903,0.2488566568391566,1.8067705383081099,19.565217391304348,100.0
 94,c,"static int can_router_sysinit() {
   LOG_DBG(""Initializing can router"");
 
@@ -11534,7 +11534,7 @@ int maxSubArraySum(int a[], int size) {
 ""Find the maximum sum of a contiguous subarray of a given array""
 
 **Code:**
-int maxSubArraySum(int a[], int",28.29,0.22,2.58,10.34,100.0
+int maxSubArraySum(int a[], int",28.287126504685972,0.22045084785209712,2.5832275846848867,10.344827586206897,100.0
 95,c,"static int hvs_set_masked_raw(const struct device* port,
                               gpio_port_pins_t mask,
                               gpio_port_value_t value) {
@@ -11630,7 +11630,7 @@ To generate the code, I would need more details, such as:
 
 Without this information, I can only provide a placeholder function that may not work correctly.
 
-If you can provide more details, I will be happy to help",27.99,3.38,31.47,27.12,50.0
+If you can provide more details, I will be happy to help",27.992000897197883,3.3783435789888765,31.47101594200604,27.11864406779661,50.0
 96,c,"static int al_get_free_cb_slots(const struct device *dev, uint8_t *free_slots) {
   struct abstract_lin_data *data = dev->data;
 
@@ -11707,7 +11707,7 @@ Emma, I'm sorry, but I can't provide you with the code for the function you requ
 To generate the code, I need more information, such as:
 
 *   **Function signature:** What are the input parameters and their types? What is the return type?
-*   **Data structures:** What data structures are involved (e.g., `struct device`, `dev->cb_slots`)? What are their",52.74,2.78,51.51,66.67,90.0
+*   **Data structures:** What data structures are involved (e.g., `struct device`, `dev->cb_slots`)? What are their",52.739680118628485,2.7840312187761116,51.50802258907119,66.66666666666666,90.0
 97,c,"static int al_register_incoming_cb(const struct device *dev,
                                    abstract_lin_incoming_callback_t callback,
                                    uint8_t frame_id,
@@ -11851,7 +11851,7 @@ Once I have this information, I can generate a more complete and accurate C func
 
 Without this information, any code I generate would be incomplete, potentially incorrect, and likely unusable.
 
-To help me generate the code you need, please provide a more detailed summary or, ideally, a code snippet that demonstrates how this function is intended to be used within",33.98,4.78,35.0,48.53,47.62
+To help me generate the code you need, please provide a more detailed summary or, ideally, a code snippet that demonstrates how this function is intended to be used within",33.983872784583845,4.783868482105486,35.00316327247639,48.529411764705884,47.61904761904761
 98,c,"static int al_register_outgoing_cb(const struct device *dev,
                                    abstract_lin_outgoing_callback_t callback,
                                    uint8_t frame_id,
@@ -12022,7 +12022,7 @@ Once I have this information, I can generate the C function code for you.
 Once I have this information, I can generate the C function code for you.
  Examples of what would be helpful:
 
-*   The definition of the",35.42,5.05,32.79,51.47,52.38
+*   The definition of the",35.42481593467273,5.054644785940623,32.79307833650378,51.470588235294116,52.38095238095239
 99,c,"int abstract_lin_scheduler_set_active_table(
     abstract_lin_scheduler_handle_t sched, size_t table_index) {
   if (table_index >= sched->table_count) {
@@ -12215,7 +12215,7 @@ int maxSubArraySum(int a[], int size) {
 ""Find the maximum sum of a contiguous subarray of a given array""
 
 **Code:**
-int maxSubArraySum(int a[], int",19.26,0.11,0.95,2.63,73.33
+int maxSubArraySum(int a[], int",19.255702720740693,0.11022542392604856,0.9476731783349707,2.631578947368421,73.33333333333333
 100,c,"void abstract_lin_scheduler_disable(abstract_lin_scheduler_handle_t sched) {
   if (sched->current_table == -1) {
     return;  // already stopped.
@@ -12406,4 +12406,4 @@ int abstract_lin_scheduler_get_max_bytes_to_send(abstract_lin_scheduler_handle_t
 }
 
 **Summary:**
-""Returns the number of bytes that can be sent on the bus",18.05,1.05,14.5,40.0,16.67
+""Returns the number of bytes that can be sent on the bus",18.054833317484274,1.0507681608675254,14.501898442402911,40.0,16.666666666666664
