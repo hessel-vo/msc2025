@@ -3,7 +3,6 @@ import csv
 import sys
 
 # --- Configuration ---
-# Adjusted base directories to match the project structure
 TEMPLATE_FILE_PATH = "prompt_template_summarization.txt"
 TEMPLATE_SUBSET = "prompt_template_summarization.txt"
 CSV_FILE_PATH = "benchmark_dataset.csv" # Set to "benchmark_dataset_subset.csv" for benchmark subset

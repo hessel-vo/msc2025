@@ -94,9 +94,6 @@ def remove_markdown_wrapping(code_string):
     return code_string
 
 def generate_with_chat(model, tokenizer, messages, max_new_tokens=800):
-    """
-    Helper for chat-style generation that returns only newly generated tokens.
-    """
     inputs = tokenizer.apply_chat_template(
         messages,
         add_generation_prompt=True,
@@ -222,7 +219,7 @@ def run_benchmark():
             print(f"    - Warning: Prompt file not found for ID '{problem_id}' at '{prompt_filepath}'. Skipping.")
             continue
 
-        # -------- First-pass generation --------
+        # First-pass generation
         messages_first = [
             {"role": "user", "content": [{"type": "text", "text": prompt_text}]}
         ]
@@ -260,7 +257,6 @@ def run_benchmark():
 
     print("Benchmark run complete.")
 
-    # 5. Save Results
     if not results:
         print("No results were generated. Exiting without saving.")
         return

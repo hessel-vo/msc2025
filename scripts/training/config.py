@@ -14,22 +14,20 @@ os.environ['HF_HOME'] = str(HF_CACHE_DIR)
 
 SEED=42
 
-# --- Model Parameters ---
+# Training setup
 MODEL_ID = "google/gemma-3-12b-it"
 
 MAX_SEQ_LENGTH = 2048
 
-# The maximum number of chunks to sample from any single repository per epoch.
-# This helps prevent dominant repositories from biasing the training.
+# Limits the number of chunks per repository to avoid over-representation
 MAX_CHUNKS_PER_REPO = 260
 
 
-# --- Dataset & Paths ---
+# Dataset & Paths
 DATASET_TYPE = "extended"
-# The path to the input JSONL file containing the processed source code.
+# Path to JSONL dataset file
 DATASET_PATH = PROJECT_ROOT / "scripts/training/datasets" / f"final_dataset_{DATASET_TYPE}.jsonl"
 
-# A list of repository IDs to use for the validation set.
 VALIDATION_REPO_IDS = [
     'cdsp',
     'wayland-ivi-extension',
@@ -42,48 +40,35 @@ VALIDATION_REPO_IDS = [
     'paho.mqtt.java',
 ]
 
-# Directory to save the trained LoRA adapter and any training checkpoints.
+# Directory to save the trained LoRA adapter and training checkpoints
 OUTPUT_DIR = PROJECT_ROOT / "scripts/training/trained_models"
 
 
-# --- Training Hyperparameters ---
-# The number of training examples per device (e.g., per GPU).
-# Adjust based on your GPU's VRAM.
+# Hyperparameters
+
+# Low batch size to fit in GPU memory, gradient accumulated used (simulates larger batches)
 BATCH_SIZE = 1
 
-# The initial learning rate for the AdamW optimizer. 2e-4 is a common
-# starting point for LoRA fine-tuning.
 LEARNING_RATE = 1e-4
 
-# The total number of training epochs to perform.
 NUM_EPOCHS = 10
 
-# How often to log training metrics (e.g., loss) to the console.
+# Steps per logging and validation even (training is done on step basis)
 LOGGING_STEPS = 25
 
-# How often to run evaluation on the validation set.
 EVAL_STEPS = 100
 
-# The number of evaluation steps to wait for improvement before stopping
-# training early. This helps prevent overfitting.
+# Validation patience (number of eval steps)
 EARLY_STOPPING_PATIENCE = 12
 
 
-# --- LoRA (Low-Rank Adaptation) Configuration ---
-# The rank of the update matrices. A lower rank means fewer trainable parameters.
-# Common values are 8, 16, 32.
+# LoRA Configuration
 LORA_R = 8
 
-# The alpha parameter for LoRA scaling. A common practice is to set alpha
-# to be twice the rank (r).
 LORA_ALPHA = 16
 
-# Dropout probability for the LoRA layers.
 LORA_DROPOUT = 0.1
 
-# A list of model module names to apply LoRA to. This is model-specific.
-# For Llama-based models, targeting query and value projection matrices is standard.
-# You might need to inspect the model architecture to find the correct module names.
 LORA_TARGET_MODULES = [
     "q_proj",
     "v_proj",

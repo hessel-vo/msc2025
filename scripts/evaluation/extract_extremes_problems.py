@@ -12,6 +12,7 @@ PROJECT_ROOT = Path(project_root_str)
 MODEL_SIZE = "12b"
 RESULT_TYPE = "adapted"  # "baseline" or "adapted"
 DATASET_TYPE = "core"
+SUMM_METRIC = "bertscore_f1"
 
 if RESULT_TYPE == "adapted":
     MODEL_NAME = f"adapted_{MODEL_SIZE}_{DATASET_TYPE}"
@@ -20,9 +21,7 @@ else:
     MODEL_NAME = f"base_{MODEL_SIZE}"
     INPUT_PATH = PROJECT_ROOT / "results" / "evaluation" / f"{RESULT_TYPE}" / f"{MODEL_NAME}"
 
-# ----------------------------
-# CLI args & validation
-# ----------------------------
+
 def main():
 
     if len(sys.argv) != 6:
@@ -54,9 +53,6 @@ def main():
 
     is_rci = (rci_flag == "y")
 
-    # Per-problem evaluation CSV:
-    # baseline: evaluation_results_{MODEL_NAME}_{TASK}_{source}_{summarylength}_{shotcount}[ _rci].csv
-    # adapted:  evaluation_results_{MODEL_NAME}_{DATASET_TYPE}_{TASK}_{source}_{summarylength}_{shotcount}[ _rci].csv
     TASK = tasktype
 
     if RESULT_TYPE == "adapted":
@@ -70,39 +66,27 @@ def main():
     print(f"Loading per-problem evaluation results from: {input_filepath}")
     df = pd.read_csv(input_filepath)
 
-    # ----------------------------
-    # Metric selection & hygiene
-    # ----------------------------
+
     if tasktype == "summarization":
-        metric_col = "bertscore_f1"
-    else:  # generation
+        metric_col = SUMM_METRIC
+    else:
         metric_col = "codebleu"
 
-    # Which generated column to output?
     generated_col = "generated_rci" if is_rci else "generated"
     for required in ["id", metric_col, generated_col, "reference"]:
         if required not in df.columns:
             print(f"Error: Input CSV missing required column: '{required}'")
             sys.exit(1)
 
-    # language is optional but nice to include if present
     has_language = "language" in df.columns
 
-    # Ensure numeric metric (coerce errors to NaN and drop)
     df[metric_col] = pd.to_numeric(df[metric_col], errors="coerce")
-    df_clean = df.dropna(subset=[metric_col]).copy()
-    if df_clean.empty:
-        print(f"Error: No valid '{metric_col}' values found.")
-        sys.exit(1)
 
-    # ----------------------------
-    # Find top-5 and bottom-5
-    # ----------------------------
     k = 5
-    n = len(df_clean)
+    n = len(df)
 
-    top_k = df_clean.nlargest(k, metric_col).copy()
-    bottom_k = df_clean.nsmallest(k, metric_col).copy()
+    top_k = df.nlargest(k, metric_col).copy()
+    bottom_k = df.nsmallest(k, metric_col).copy()
 
     top_k["category"] = "top"
     bottom_k["category"] = "bottom"
@@ -115,13 +99,11 @@ def main():
 
     cols_out = ["category", "rank", "id", "reference", generated_col, metric_col]
     if has_language:
-        cols_out.insert(2, "language")  # after rank
+        cols_out.insert(2, "language")
 
     extremes = pd.concat([top_k[cols_out], bottom_k[cols_out]], ignore_index=True)
 
-    # ----------------------------
     # Save output
-    # ----------------------------
     out_suffix = "_rci" if is_rci else ""
     out_filename = f"all_extremes_{MODEL_NAME}_{TASK}_{source}_{summarylength}_{shotcount}{out_suffix}.csv"
     out_path = INPUT_PATH / out_filename

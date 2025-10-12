@@ -21,7 +21,6 @@ EXCEPTION = "git@github.com"
 
 # Regex pattern to find email addresses.
 EMAIL_PATTERN = re.compile(r"""(^|[\b\s@,?!;:)(\'".<\[\]])([^\b\s@?!;,:)(’\"<]+@[^\b\s@!?;,/]*[^\b\s@?!;,/:)(’\">.]\.\w{2,})(?=$|[\b\s@,?!;:)(’'".>\[\]])""")
-# Replacement string. \1 is a backreference to the first capturing group (e.g., a space).
 EMAIL_REPLACEMENT = r'\1[EMAIL_ADDRESS]'
 LOG_NAME = '[EMAIL_ADDRESS]'
 

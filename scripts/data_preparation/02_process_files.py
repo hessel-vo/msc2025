@@ -281,7 +281,6 @@ def main():
     total_docs_loaded = len(docs_to_process)
     logging.info(f"Loaded {total_docs_loaded:,} documents. Starting parallel processing...")
 
-    # Parallel Processing
     passed_docs_count = 0
     
     rejection_reasons = defaultdict(list)

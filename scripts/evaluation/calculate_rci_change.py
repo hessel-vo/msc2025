@@ -9,7 +9,7 @@ load_dotenv()
 # --- Configuration ---
 PROJECT_ROOT = Path(os.getenv("PROJECT_ROOT"))
 
-RESULTS_SUBFOLDER = "adapted"
+RESULTS_SUBFOLDER = "baseline"
 MODEL_SIZE = "12b"
 DATASET_TYPE = "core"
 
@@ -21,19 +21,7 @@ NORMALIZE_WHITESPACE = False
 REMOVE_CODE_FENCES = False
 
 
-EXPECTED_COLUMNS = [
-    "id",
-    "language",
-    "reference",
-    "generated",
-    "generated_rci",
-]
-
-
 def _strip_code_fences(text: str) -> str:
-    """
-    Removes leading/trailing triple backtick code fences if present, with or without a language hint.
-    """
     if text is None:
         return ""
     s = str(text).strip()
@@ -57,58 +45,15 @@ def _strip_code_fences(text: str) -> str:
     return s
 
 
-def _normalize(text: str) -> str:
-    """
-    Normalizes text for a more forgiving equality check:
-    - Optionally strips code fences
-    - Trims leading/trailing whitespace
-    - Collapses trailing spaces on each line
-    - Normalizes line endings
-    """
-    if text is None:
-        print("Error: Encountered None text during normalization.")
-        sys.exit(1)
-        return ""
-    s = str(text)
-
-    if REMOVE_CODE_FENCES:
-        s = _strip_code_fences(s)
-
-    if NORMALIZE_WHITESPACE:
-        # Normalize line endings and trim per line
-        lines = [ln.rstrip() for ln in s.replace("\r\n", "\n").replace("\r", "\n").split("\n")]
-        # Re-join and strip outer whitespace
-        s = "\n".join(lines).strip()
-    else:
-        s = s.strip()
-
-    return s
-
-
 def compare_changed(series_a: pd.Series, series_b: pd.Series) -> pd.Series:
-    """
-    Returns a boolean Series where True indicates 'generated_rci' differs from 'generated',
-    after normalization. If both are empty after normalization, counts as NOT different.
-    """
-    a_norm = series_a.fillna("").map(_normalize)
-    b_norm = series_b.fillna("").map(_normalize)
-    both_empty = (a_norm == "") & (b_norm == "")
-    return (a_norm != b_norm) & (~both_empty)
+    both_empty = (series_a == "") & (series_b == "")
+    return (series_a != series_b) & (~both_empty)
 
 
 def process_single_csv(csv_path: Path, out_dir: Path) -> pd.DataFrame:
-    """
-    Reads one CSV, computes per-language counts and percentages of changed solutions,
-    writes a per-file breakdown CSV, and returns a single-row DataFrame for the overview.
-    """
     df = pd.read_csv(csv_path)
 
-    # Validate required columns
-    missing = [c for c in EXPECTED_COLUMNS if c not in df.columns]
-    if missing:
-        raise ValueError(f"Missing required columns in {csv_path.name}: {missing}")
-
-    # Compute per-row change boolean
+    # Compute per-row change
     df["_rci_changed"] = compare_changed(df["generated"], df["generated_rci"])
 
     # Per-language aggregation
@@ -122,7 +67,7 @@ def process_single_csv(csv_path: Path, out_dir: Path) -> pd.DataFrame:
     )
 
     print(per_lang)
-    # Compute percentages safely
+    # Compute percentages
     per_lang["percentage different"] = per_lang.apply(
         lambda r: (100.0 * r["changed"] / r["total"]) if r["total"] else 0.0,
         axis=1
@@ -194,7 +139,7 @@ def main():
 
     overview_df = pd.concat(overview_rows, ignore_index=True)
     overview_out_path = output_path / OVERVIEW_OUTPUT_FILENAME
-    overview_df.to_csv(overview_out_path, index=False)
+    overview_df.to_csv(overview_out_path, index=False, float_format="%.2f")
 
     print("\n---")
     print(f"Successfully processed {len(overview_rows)} file(s).")

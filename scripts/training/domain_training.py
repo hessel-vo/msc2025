@@ -18,7 +18,6 @@ from peft import get_peft_model, LoraConfig
 
 # Step 1: Environment
 def setup_environment():
-    """Sets random seeds for reproducibility and ensures output dir exists."""
     print("--- [Step 1] Initializing Setup ---")
     np.random.seed(config.SEED)
     torch.manual_seed(config.SEED)
@@ -33,7 +32,6 @@ def setup_environment():
 
 # Step 2: Model + Tokenizer
 def load_model_and_tokenizer():
-    """Loads base model & tokenizer, registers special tokens, resizes embeddings."""
     print("\n--- [Step 2] Loading Tokenizer & Model ---")
 
     # Tokenizer
@@ -47,12 +45,10 @@ def load_model_and_tokenizer():
     num_added_toks = tokenizer.add_special_tokens(special_tokens_dict)
     print(f"Added {num_added_toks} new special tokens.")
 
-    # Ensure we have a pad token (common for causal LMs)
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
         print("Using `eos_token` as `pad_token`.")
 
-    # Base model
     model = AutoModelForCausalLM.from_pretrained(
         config.MODEL_ID,
         token=config.HF_TOKEN,
@@ -70,7 +66,6 @@ def load_model_and_tokenizer():
 
 # Step 3: LoRA
 def apply_lora_to_model(model):
-    """Applies LoRA configuration to the model."""
     print("\n--- [Step 3] Configuring and Applying LoRA ---")
     lora_config = LoraConfig(
         r=config.LORA_R,
@@ -89,10 +84,6 @@ def apply_lora_to_model(model):
 
 # Step 4: Data
 def prepare_datasets(tokenizer):
-    """
-    Uses the rolling, in-place dataset from data_processing.py
-    and returns (train_dataset, eval_dataset, advance_callback).
-    """
     print("\n--- [Step 4] Preparing Datasets ---")
     train_chunks_by_repo, eval_dataset = dp.load_and_preprocess_data(config, tokenizer)
 
@@ -103,7 +94,7 @@ def prepare_datasets(tokenizer):
         base_seed=config.SEED,
     )
 
-    # Callback that advances the dataset window each epoch
+    # Callback for adjusting
     advance_callback = dp.AdvanceEpochWindows(rolling_train_ds)
 
     print("--- Data preparation complete ---")
@@ -112,7 +103,6 @@ def prepare_datasets(tokenizer):
 
 # Step 5: Trainer
 def build_trainer(model, tokenizer, train_dataset, eval_dataset, advance_callback):
-    """Configures the HF Trainer with rolling dataset + LoRA + early stopping."""
     print("\n--- [Step 5] Configuring Hugging Face Trainer ---")
 
     training_args = TrainingArguments(
@@ -135,7 +125,6 @@ def build_trainer(model, tokenizer, train_dataset, eval_dataset, advance_callbac
         bf16=True,
     )
 
-    # Collator for causal LM (pads per batch; labels from input_ids)
     data_collator = DataCollatorForLanguageModeling(
         tokenizer=tokenizer,
         mlm=False,
@@ -160,9 +149,6 @@ def build_trainer(model, tokenizer, train_dataset, eval_dataset, advance_callbac
 
 # Step 6: Main script
 def main():
-    """
-    Orchestrates setup, data, trainer, and training loop.
-    """
     setup_environment()
     model, tokenizer = load_model_and_tokenizer()
     model = apply_lora_to_model(model)
