@@ -12,7 +12,7 @@ load_dotenv()
 project_root_str = os.getenv("PROJECT_ROOT")
 PROJECT_ROOT = Path(project_root_str)
 
-DATASET_TYPE = "extended"
+DATASET_TYPE = "core"
 MODEL_SIZE = "1b"
 
 INPUT_DIR = PROJECT_ROOT / "results" / "training"

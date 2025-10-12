@@ -16,7 +16,7 @@ import evaluate
 # Constants for the model and results folder
 INPUT_MODEL_NAME = "gemma-3-12b-it"
 MODEL_SIZE = "12b"
-RESULTS_SUBFOLDER = "baseline" # "baseline" or "adapted"
+RESULTS_SUBFOLDER = "adapted" # "baseline" or "adapted"
 DATASET_TYPE = "core"
 TASK = "summarization"
 
@@ -46,9 +46,6 @@ def validate_arguments(args):
 
     return source, summary_length, shot_count, subset
 
-def _round2(x):
-    return round(float(x), 2)
-
 def calculate_bleu_scores(predictions, references, ids, bleu_metric):
     """
     SacreBLEU returns scores in 0-100 already. We only round to 2 decimals.
@@ -64,7 +61,7 @@ def calculate_bleu_scores(predictions, references, ids, bleu_metric):
 
     # Corpus-level
     corpus_result = bleu_metric.compute(predictions=predictions, references=[[r] for r in references])
-    corpus_scores = {"bleu_score": _round2(corpus_result["score"])}
+    corpus_scores = {"bleu_score": corpus_result["score"]}
 
     return problem_scores, corpus_scores
 
@@ -90,9 +87,9 @@ def calculate_rouge_scores(predictions, references, ids, rouge_metric):
     # Corpus-level (aggregated)
     corpus = rouge_metric.compute(predictions=predictions, references=references)
     corpus_scores = {
-        "corpus_rouge1": _round2(corpus["rouge1"] * 100.0),
-        "corpus_rouge2": _round2(corpus["rouge2"] * 100.0),
-        "corpus_rougeL": _round2(corpus["rougeL"] * 100.0),
+        "corpus_rouge1": corpus["rouge1"] * 100.0,
+        "corpus_rouge2": corpus["rouge2"] * 100.0,
+        "corpus_rougeL": corpus["rougeL"] * 100.0,
         # corpus["rougeLsum"] omitted by design
     }
 
@@ -116,7 +113,7 @@ def calculate_bertscore(predictions, references, ids, bertscore_metric):
         }
 
     corpus_scores = {
-        "corpus_bertscore_f1": _round2(sum(individual["f1"]) / len(individual["f1"]) * 100.0)
+        "corpus_bertscore_f1": sum(individual["f1"]) / len(individual["f1"]) * 100.0
     }
 
     return problem_scores, corpus_scores
@@ -170,11 +167,11 @@ def evaluate_corpus_by_language(df, pred_col, bleu_metric, rouge_metric, bertsco
         )
         row = {
             "language": lang,
-            "bleu_score": _round2(bleu_res["score"]),
-            "corpus_rouge1": _round2(rouge_res["rouge1"] * 100.0),
-            "corpus_rouge2": _round2(rouge_res["rouge2"] * 100.0),
-            "corpus_rougeL": _round2(rouge_res["rougeL"] * 100.0),
-            "corpus_bertscore_f1": _round2(sum(bert_res["f1"]) / len(bert_res["f1"]) * 100.0),
+            "bleu_score": bleu_res["score"],
+            "corpus_rouge1": rouge_res["rouge1"] * 100.0,
+            "corpus_rouge2": rouge_res["rouge2"] * 100.0,
+            "corpus_rougeL": rouge_res["rougeL"] * 100.0,
+            "corpus_bertscore_f1": sum(bert_res["f1"]) / len(bert_res["f1"]) * 100.0,
         }
         rows.append(row)
 

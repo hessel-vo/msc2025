@@ -18,7 +18,7 @@ from codebleu import calc_codebleu
 # Constants for the model and results folder
 INPUT_MODEL_NAME = "gemma-3-12b-it"
 MODEL_SIZE = "12b"
-RESULTS_SUBFOLDER = "baseline"  # "baseline" or "adapted"
+RESULTS_SUBFOLDER = "adapted"  # "baseline" or "adapted"
 DATASET_TYPE = "core"
 TASK = "generation"
 
@@ -48,16 +48,6 @@ def validate_arguments(args):
 
     return source, summary_length, shot_count, subset
 
-def _to_0_100_and_round(x):
-    """Rescale to 0–100 if value looks like 0–1; then round to 2 decimals."""
-    try:
-        val = float(x)
-    except Exception:
-        return x
-    if val <= 1.0:
-        val *= 100.0
-    return round(val, 2)
-
 def calculate_codebleu_scores_for_column(df, pred_col, desc_suffix=""):
     """
     Compute per-problem CodeBLEU metrics for the given prediction column,
@@ -83,11 +73,11 @@ def calculate_codebleu_scores_for_column(df, pred_col, desc_suffix=""):
 
         # Rescale/round every value we store
         problem_scores[p_id] = {
-            'codebleu': _to_0_100_and_round(codebleu_results['codebleu']),
-            'ngram_match_score': _to_0_100_and_round(codebleu_results['ngram_match_score']),
-            'weighted_ngram_match_score': _to_0_100_and_round(codebleu_results['weighted_ngram_match_score']),
-            'syntax_match_score': _to_0_100_and_round(codebleu_results['syntax_match_score']),
-            'dataflow_match_score': _to_0_100_and_round(codebleu_results['dataflow_match_score']),
+            'codebleu': codebleu_results['codebleu'] * 100.0,
+            'ngram_match_score': codebleu_results['ngram_match_score'] * 100.0,
+            'weighted_ngram_match_score': codebleu_results['weighted_ngram_match_score'] * 100.0,
+            'syntax_match_score': codebleu_results['syntax_match_score'] * 100.0,
+            'dataflow_match_score': codebleu_results['dataflow_match_score'] * 100.0,
         }
 
     # Corpus-Level Calculation by Language
@@ -111,7 +101,7 @@ def calculate_codebleu_scores_for_column(df, pred_col, desc_suffix=""):
 
         # Rescale + prefix keys with corpus_
         corpus_scores_by_lang[lang] = {
-            f"corpus_{k}": _to_0_100_and_round(v) for k, v in corpus_result.items()
+            f"corpus_{k}": (v *100.0) for k, v in corpus_result.items()
         }
 
     return problem_scores, corpus_scores_by_lang
@@ -133,7 +123,7 @@ def _rows_with_average(test_name, corpus_scores_by_lang):
 
     corpus_df = pd.DataFrame(corpus_rows)
     # Average numeric columns over the languages we just added
-    avg_scores = corpus_df.select_dtypes(include='number').mean().apply(lambda v: round(float(v), 2))
+    avg_scores = corpus_df.select_dtypes(include='number').mean()
     average_row = {'test_name': test_name, 'language': 'average'}
     average_row.update(avg_scores.to_dict())
     return corpus_rows + [average_row]
