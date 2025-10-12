@@ -1,0 +1,3509 @@
+id,language,reference,generated,generated_rci,codebleu,ngram_match_score,weighted_ngram_match_score,syntax_match_score,dataflow_match_score
+2,python,"def is_datatype(cls, value: Any, datatype: str) -> bool:
+    t = cls.get_type(datatype)
+    if t is None:
+        raise DatatypesException(f""Unsupported datatype: {datatype}"")
+    return t[1](value)","from typing import Any
+
+def is_datatype(cls, value: Any, datatype: str) -> bool:
+    if datatype == ""int"":
+        return isinstance(value, int)
+    elif datatype == ""float"":
+        return isinstance(value, float)
+    elif datatype == ""str"":
+        return isinstance(value, str)
+    elif datatype == ""bool"":
+        return isinstance(value, bool)
+    elif datatype == ""list"":
+        return isinstance(value, list)
+    elif datatype == ""tuple"":
+        return isinstance(value, tuple)
+    elif datatype == ""dict"":
+        return isinstance(value, dict)
+    elif datatype == ""set"":
+        return isinstance(value, set)
+    else:
+        raise ValueError(f""Unsupported datatype: {datatype}"")","from typing import Any
+
+def is_datatype(cls, value: Any, datatype: str) -> bool:
+    if datatype == ""int"":
+        return isinstance(value, int)
+    elif datatype == ""float"":
+        return isinstance(value, float)
+    elif datatype == ""str"":
+        return isinstance(value, str)
+    elif datatype == ""bool"":
+        return isinstance(value, bool)
+    elif datatype == ""list"":
+        return isinstance(value, list)
+    elif datatype == ""tuple"":
+        return isinstance(value, tuple)
+    elif datatype == ""dict"":
+        return isinstance(value, dict)
+    elif datatype == ""set"":
+        return isinstance(value, set)
+    else:
+        raise ValueError(f""Unsupported datatype: {datatype}"")",44.074737277137146,10.454077423493677,39.69102553120874,46.15384615384615,80.0
+3,python,"def is_xintx(value: Any, signed: bool, bits: int):
+    values = [value]
+    if isinstance(value, list):
+        values = value
+
+    for v in values:
+        if not isinstance(v, int):
+            return False
+        if not signed and v < 0:
+            return False
+        max = 2**bits - 1
+        min = 0
+        if signed:
+            max = 2 ** (bits - 1) - 1
+            min = -(2 ** (bits - 1))
+        if not (v <= max and v >= min):
+            return False
+    return True","from typing import Any
+
+def is_xintx(value: Any, signed: bool, bits: int):
+    if isinstance(value, int):
+        if signed:
+            min_val = -(2**(bits-1))
+            max_val = 2**(bits-1) - 1
+        else:
+            min_val = 0
+            max_val = 2**bits - 1
+        return min_val <= value <= max_val
+    elif isinstance(value, list):
+        for val in value:
+            if not is_xintx(val, signed, bits):
+                return False
+        return True
+    else:
+        return False","from typing import Any
+
+def is_xintx(value: Any, signed: bool, bits: int):
+    if isinstance(value, int):
+        if signed:
+            min_val = -(2**(bits-1))
+            max_val = 2**(bits-1) - 1
+        else:
+            min_val = 0
+            max_val = 2**bits - 1
+        return min_val <= value <= max_val
+    elif isinstance(value, list):
+        for val in value:
+            if not is_xintx(val, signed, bits):
+                return False
+        return True
+    else:
+        return False",37.852979043082065,18.624889278736596,20.00281410937886,58.730158730158735,54.054054054054056
+4,python,"def get_type(cls, datatype: str) -> tuple[str, Callable, list[str]] | None:
+        for t in cls.types:
+            if datatype == t[0]:
+                return t
+        return None","def get_type(cls, datatype: str) -> tuple[str, Callable, list[str]] | None:
+    for type_def in cls.type_definitions:
+        if type_def[0] == datatype:
+            return type_def
+    return None","def get_type(cls, datatype: str) -> tuple[str, Callable, list[str]] | None:
+    for type_def in cls.type_definitions:
+        if type_def[0] == datatype:
+            return type_def
+    return None",70.34186997887033,52.624397026344624,54.669008815062604,74.07407407407408,100.0
+5,python,"def get_fqn_namespaced_datatypes(fqn: str | None = None) -> dict[str, str]:
+    if not fqn:
+        return {}
+    fqn_namespaced_datatypes = {}
+    for t in dynamic_datatypes:
+        if fqn.startswith(t):
+            continue
+
+        if fqn.startswith(""."".join(t.split(""."")[:-1])):
+            fqn_namespaced_datatypes[(t.split(""."")[-1])] = t
+
+    if fqn_namespaced_datatypes:
+        log.debug(f""Namespaced datatypes, {fqn=}, {fqn_namespaced_datatypes=}"")
+    return fqn_namespaced_datatypes","def get_fqn_namespaced_datatypes(fqn: str | None = None) -> dict[str, str]:
+    if fqn is None:
+        return {}
+
+    fqn_parts = fqn.split(""."")
+    namespace = ""."".join(fqn_parts[:-1])
+    datatype_name = fqn_parts[-1]
+
+    fqn_namespaced_datatypes = {}
+    for datatype_name_candidate in [""Int"", ""Float"", ""String"", ""Boolean"", ""Date"", ""DateTime"", ""Time"", ""Timestamp"", ""Decimal"", ""Bytes"", ""Binary"", ""Array"", ""Map"", ""Object"", ""Enum"", ""Struct""]:
+        fqn_candidate = namespace + ""."" + datatype_name_candidate
+        fqn_namespaced_datatypes[datatype_name_candidate] = fqn_candidate
+
+    return fqn_namespaced_datatypes","def get_fqn_namespaced_datatypes(fqn: str | None = None) -> dict[str, str]:
+    if fqn is None:
+        return {}
+
+    fqn_parts = fqn.split(""."")
+    namespace = ""."".join(fqn_parts[:-1])
+    datatype_name = fqn_parts[-1]
+
+    fqn_namespaced_datatypes = {}
+    for datatype_name_candidate in [""Int"", ""Float"", ""String"", ""Boolean"", ""Date"", ""DateTime"", ""Time"", ""Timestamp"", ""Decimal"", ""Bytes"", ""Binary"", ""Array"", ""Map"", ""Object"", ""Enum"", ""Struct""]:
+        fqn_candidate = namespace + ""."" + datatype_name_candidate
+        fqn_namespaced_datatypes[datatype_name_candidate] = fqn_candidate
+
+    return fqn_namespaced_datatypes",35.788164688180004,23.115362851311637,36.70396256807504,50.0,33.33333333333333
+7,python,"def get_apigear_datatype(t: str) -> typing.Optional[ApiGearType]:
+    is_array = False
+    apigear_type = None
+    if t.endswith(""[]""):
+        is_array = True
+        t = t[0:-2]
+
+    if t in [""int8"", ""int16"", ""int32"", ""uint8"", ""uint16"", ""uint32""]:
+        apigear_type = ApiGearType(ApiGearBasicType.INT32.value)
+    elif t in [""int64"", ""uint64""]:
+        apigear_type = ApiGearType(ApiGearBasicType.INT64.value)
+    elif t == ""float"":
+        apigear_type = ApiGearType(ApiGearBasicType.FLOAT32.value)
+    elif t == ""double"":
+        apigear_type = ApiGearType(ApiGearBasicType.FLOAT64.value)
+    elif t == ""boolean"":
+        apigear_type = ApiGearType(ApiGearBasicType.BOOL.value)
+    elif t == ""string"":
+        apigear_type = ApiGearType(ApiGearBasicType.STRING.value)
+    else:
+        apigear_type = ApiGearType(t.replace(""."", ""_""))
+
+    if is_array and apigear_type is not None:
+        apigear_type.is_array = True
+
+    return apigear_type","import typing
+
+from apigeartypes import ApiGearType
+
+def get_apigear_datatype(t: str) -> typing.Optional[ApiGearType]:
+    if t == ""int"":
+        return ApiGearType.INT
+    elif t == ""float"":
+        return ApiGearType.FLOAT
+    elif t == ""bool"":
+        return ApiGearType.BOOL
+    elif t == ""string"":
+        return ApiGearType.STRING
+    elif t == ""bytes"":
+        return ApiGearType.BYTES
+    elif t == ""date"":
+        return ApiGearType.DATE
+    elif t == ""datetime"":
+        return ApiGearType.DATETIME
+    elif t == ""time"":
+        return ApiGearType.TIME
+    elif t == ""timedelta"":
+        return ApiGearType.TIMEDELTA
+    elif t == ""decimal"":
+        return ApiGearType.DECIMAL
+    elif t == ""uuid"":
+        return ApiGearType.UUID
+    elif t == ""json"":
+        return ApiGearType.JSON
+    elif t == ""binary"":
+        return ApiGearType.BINARY
+    elif t == ""null"":
+        return ApiGearType.NULL
+    elif t.endswith(""[]""):
+        t = t[:-2]
+        if t == ""int"":
+            return ApiGearType.INT_ARRAY
+        elif t == ""float"":
+            return ApiGearType.FLOAT_ARRAY
+        elif t == ""bool"":
+            return ApiGearType.BOOL_ARRAY
+        elif t == ""string"":
+            return ApiGearType.STRING_ARRAY
+        elif t == ""bytes"":
+            return ApiGearType.BYTES_ARRAY
+        elif t == ""date"":
+            return ApiGearType.DATE_ARRAY
+        elif t == ""datetime"":
+            return ApiGearType.DATETIME_ARRAY
+        elif t == ""time"":
+            return ApiGearType.TIME_ARRAY
+        elif t == ""timedelta"":
+            return ApiGearType.TIMEDELTA_ARRAY
+        elif t == ""decimal"":
+            return ApiGearType.DECIMAL_ARRAY
+        elif t == ""uuid"":
+            return ApiGearType.UUID_ARRAY
+        elif t == ""json"":
+            return ApiGearType.JSON_ARRAY
+        elif t == ""binary"":
+            return ApiGearType.BINARY_ARRAY
+        elif t == ""null"":
+            return ApiGearType.NULL_ARRAY
+        else:
+            return ApiGearType.CUSTOM_ARRAY
+    else:
+        t = t.replace(""."", ""_"")
+        return ApiGearType.CUSTOM","import typing
+
+from apigeartypes import ApiGearType
+
+def get_apigear_datatype(t: str) -> typing.Optional[ApiGearType]:
+    if t == ""int"":
+        return ApiGearType.INT
+    elif t == ""float"":
+        return ApiGearType.FLOAT
+    elif t == ""bool"":
+        return ApiGearType.BOOL
+    elif t == ""string"":
+        return ApiGearType.STRING
+    elif t == ""bytes"":
+        return ApiGearType.BYTES
+    elif t == ""date"":
+        return ApiGearType.DATE
+    elif t == ""datetime"":
+        return ApiGearType.DATETIME
+    elif t == ""time"":
+        return ApiGearType.TIME
+    elif t == ""timedelta"":
+        return ApiGearType.TIMEDELTA
+    elif t == ""decimal"":
+        return ApiGearType.DECIMAL
+    elif t == ""uuid"":
+        return ApiGearType.UUID
+    elif t == ""json"":
+        return ApiGearType.JSON
+    elif t == ""binary"":
+        return ApiGearType.BINARY
+    elif t == ""null"":
+        return ApiGearType.NULL
+    elif t.endswith(""[]""):
+        t = t[:-2]
+        if t == ""int"":
+            return ApiGearType.INT_ARRAY
+        elif t == ""float"":
+            return ApiGearType.FLOAT_ARRAY
+        elif t == ""bool"":
+            return ApiGearType.BOOL_ARRAY
+        elif t == ""string"":
+            return ApiGearType.STRING_ARRAY
+        elif t == ""bytes"":
+            return ApiGearType.BYTES_ARRAY
+        elif t == ""date"":
+            return ApiGearType.DATE_ARRAY
+        elif t == ""datetime"":
+            return ApiGearType.DATETIME_ARRAY
+        elif t == ""time"":
+            return ApiGearType.TIME_ARRAY
+        elif t == ""timedelta"":
+            return ApiGearType.TIMEDELTA_ARRAY
+        elif t == ""decimal"":
+            return ApiGearType.DECIMAL_ARRAY
+        elif t == ""uuid"":
+            return ApiGearType.UUID_ARRAY
+        elif t == ""json"":
+            return ApiGearType.JSON_ARRAY
+        elif t == ""binary"":
+            return ApiGearType.BINARY_ARRAY
+        elif t == ""null"":
+            return ApiGearType.NULL_ARRAY
+        else:
+            return ApiGearType.CUSTOM_ARRAY
+    else:
+        t = t.replace(""."", ""_"")
+        return ApiGearType.CUSTOM",19.12507749001092,6.047066721333279,14.628493492591147,34.51327433628318,21.311475409836063
+8,python,"def generate_property(node: VSSNode, datatype: str) -> ApiGearProperty | None:
+    apigear_type = get_apigear_datatype(datatype)
+    data = node.get_vss_data()
+
+    if apigear_type is None:
+        log.warning(f""Datatype {datatype} of node {node.name} currently not supported"")
+        return None
+
+    property = ApiGearProperty(apigear_type)
+    if data.description != """":
+        property.description = data.description
+    return property","def generate_property(node: VSSNode, datatype: str) -> ApiGearProperty | None:
+    if datatype == ""int"":
+        api_type = ApiGearType.INTEGER
+    elif datatype == ""float"":
+        api_type = ApiGearType.REAL
+    elif datatype == ""string"":
+        api_type = ApiGearType.STRING
+    elif datatype == ""bool"":
+        api_type = ApiGearType.BOOLEAN
+    else:
+        logging.warning(f""Unsupported datatype: {datatype}"")
+        return None
+
+    return ApiGearProperty(
+        name=node.name,
+        description=node.description,
+        type=api_type,
+    )","def generate_property(node: VSSNode, datatype: str) -> ApiGearProperty | None:
+    if datatype == ""int"":
+        api_type = ApiGearType.INTEGER
+    elif datatype == ""float"":
+        api_type = ApiGearType.REAL
+    elif datatype == ""string"":
+        api_type = ApiGearType.STRING
+    elif datatype == ""bool"":
+        api_type = ApiGearType.BOOLEAN
+    else:
+        logging.warning(f""Unsupported datatype: {datatype}"")
+        return None
+
+    return ApiGearProperty(
+        name=node.name,
+        description=node.description,
+        type=api_type,
+    )",29.007739542767002,18.854365792428247,23.843259045306432,33.33333333333333,40.0
+10,python,"def load_vspec(include_dirs: list[Path], specs: list[Path], identifier: str | None = None) -> VSpec:
+    spec = None
+    vspecs: list[VSpec] = []
+    for s in specs:
+        includes = [s.parent] + include_dirs
+        vspecs.extend(get_vspecs(includes, s))
+    pre = ""VSpecs""
+    if identifier:
+        pre += f"" ({identifier})""
+    log.info(f""{pre} loaded, amount={len(vspecs)}"")
+    for vspec in vspecs:
+        log.debug(vspec)
+        if spec is None:
+            spec = vspec
+        else:
+            spec.update(vspec)
+    if not spec:
+        msg = f""Weird behavior. Could not load any spec: {specs}""
+        log.error(msg)
+        raise SpecException(msg)
+    return spec","from pathlib import Path
+from typing import List, Optional
+
+from vspec.vspec import VSpec
+from vspec.parser import parse_vspec
+from vspec.exceptions import VSpecError
+
+
+def load_vspec(include_dirs: list[Path], specs: list[Path], identifier: str | None = None) -> VSpec:
+    """"""Loads and parses multiple VSpec files from specified paths, using a list of include directories,
+    then merges them into a single composite VSpec object and returns it, raising an exception if no
+    files are successfully loaded.
+    """"""
+    loaded_specs = []
+    for spec_path in specs:
+        try:
+            loaded_specs.append(parse_vspec(spec_path, include_dirs))
+        except VSpecError as e:
+            raise VSpecError(f""Failed to load {spec_path}: {e}"") from e
+
+    if not loaded_specs:
+        raise VSpecError(""No VSpec files were successfully loaded."")
+
+    return VSpec(loaded_specs, identifier)","from pathlib import Path
+from typing import List, Optional
+
+from vspec.vspec import VSpec
+from vspec.parser import parse_vspec
+from vspec.exceptions import VSpecError
+
+
+def load_vspec(include_dirs: list[Path], specs: list[Path], identifier: str | None = None) -> VSpec:
+    """"""Loads and parses multiple VSpec files from specified paths, using a list of include directories,
+    then merges them into a single composite VSpec object and returns it, raising an exception if no
+    files are successfully loaded.
+    """"""
+    loaded_specs = []
+    for spec_path in specs:
+        try:
+            loaded_specs.append(parse_vspec(spec_path, include_dirs))
+        except VSpecError as e:
+            raise VSpecError(f""Failed to load {spec_path}: {e}"") from e
+
+    if not loaded_specs:
+        raise VSpecError(""No VSpec files were successfully loaded."")
+
+    return VSpec(loaded_specs, identifier)",28.218268708915172,14.021248470885869,21.64252403919342,40.0,37.2093023255814
+11,python,"def deep_update(base: dict[str, Any], update: dict[str, Any]) -> None:
+    for key, value in update.items():
+        if isinstance(value, dict):
+            if key in base and isinstance(base[key], dict):
+                deep_update(base[key], value)
+            else:
+                base[key] = value
+        else:
+            base[key] = value","from typing import Any
+
+def deep_update(base: dict[str, Any], update: dict[str, Any]) -> None:
+    for k, v in update.items():
+        if isinstance(v, dict) and k in base and isinstance(base[k], dict):
+            deep_update(base[k], v)
+        else:
+            base[k] = v","from typing import Any
+
+def deep_update(base: dict[str, Any], update: dict[str, Any]) -> None:
+    for k, v in update.items():
+        if isinstance(v, dict) and k in base and isinstance(base[k], dict):
+            deep_update(base[k], v)
+        else:
+            base[k] = v",58.76662322841648,35.30389445349419,37.262598460171745,81.25,81.25
+12,python,"def check_const_uid_format(cls, v: str | None) -> str | None:
+    if v is None:
+        return v
+    pattern = r""^0x[0-9A-Fa-f]{8}$""
+    assert bool(re.match(pattern, v)), f""'{v}' is not a valid 'constUID'""
+    return v","def check_const_uid_format(cls, v: str | None) -> str | None:
+    if v is None:
+        return None
+    if isinstance(v, str) and len(v) == 10 and v.startswith(""0x"") and all(c in ""0123456789abcdef"" for c in v[2:]):
+        return v
+    return None","def check_const_uid_format(cls, v: str | None) -> str | None:
+    if v is None:
+        return None
+    if isinstance(v, str) and len(v) == 10 and v.startswith(""0x"") and all(c in ""0123456789abcdef"" for c in v[2:].lower()):
+        return v
+    return None",53.00979747473712,39.801862783019985,50.2373271159285,52.0,70.0
+13,python,"def get_vss_raw(data: dict[str, Any], fqn: str | None) -> VSSRaw:
+    model = VSSRaw(fqn=fqn, **data)
+    try:
+        model = resolve_vss_raw(model)
+    except (ValidationError, ModelException):
+        log.debug(f""'{fqn}', incomplete, initialized as '{model.__class__.__name__}'"")
+        return model
+    return model","from vss.raw import VSSRaw
+from vss.exceptions import VSSValidationError, VSSModelError
+
+def get_vss_raw(data: dict[str, Any], fqn: str | None) -> VSSRaw:
+    vss_raw = VSSRaw(data)
+    try:
+        vss_raw.resolve(fqn)
+    except (VSSValidationError, VSSModelError):
+        pass
+    return vss_raw","from vss.raw import VSSRaw
+from vss.exceptions import VSSValidationError, VSSModelError
+
+def get_vss_raw(data: dict[str, Any], fqn: str | None) -> VSSRaw:
+    vss_raw = VSSRaw(data)
+    try:
+        vss_raw.resolve(fqn)
+    except (VSSValidationError, VSSModelError):
+        pass
+    return vss_raw",45.47890981011632,32.18321162412336,33.065760949675244,50.0,66.66666666666666
+14,python,"def check_valid_datatypes(cls, values: list[str]) -> list[str]:
+    datatypes = get_all_datatypes()
+    for value in values:
+        assert value in datatypes, f""Invalid datatype: '{value}'""
+    return values","def check_valid_datatypes(cls, values: list[str]) -> list[str]:
+    valid_datatypes = [""int"", ""float"", ""str"", ""bool""]
+    result = []
+    for value in values:
+        if value in valid_datatypes:
+            result.append(value)
+        else:
+            raise ValueError(f""Invalid datatype: {value}"")
+    return result","def check_valid_datatypes(cls, values: list[str]) -> list[str]:
+    valid_datatypes = [""int"", ""float"", ""str"", ""bool""]
+    return [value for value in values if value in valid_datatypes]",41.978202870683745,31.27670021100431,32.469444605064,45.83333333333333,58.333333333333336
+15,python,"def get_rendered_tree(tree: VSSNode, attributes: tuple[str]) -> str:
+    tree_content_lines = []
+    for pre, fill, node in RenderTree(tree):
+        tree_content_lines.append(""%s%s"" % (pre, node.name))
+        for attribute in attributes:
+            content = getattr(node.data, attribute, None)
+            if content is None:
+                continue
+            if isinstance(content, str):
+                tree_content_lines.append(""%s%s='%s'"" % (fill, attribute, content))
+            else:
+                tree_content_lines.append(""%s%s=%s"" % (fill, attribute, content))
+    return ""\n"".join(tree_content_lines)","def get_rendered_tree(tree: VSSNode, attributes: tuple[str]) -> str:
+    def render_node(node: VSSNode, indent: int = 0) -> str:
+        result = ""  "" * indent + f""{node.name}: ""
+        if attributes:
+            result += "", "".join(
+                [f""{attr}={getattr(node, attr, '')}"" for attr in attributes])
+        result += ""\n""
+        for child in node.children:
+            result += render_node(child, indent + 1)
+        return result
+
+    return render_node(tree)","def get_rendered_tree(tree: VSSNode, attributes: tuple[str]) -> str:
+    def render_node(node: VSSNode, indent: int = 0) -> str:
+        result = ""  "" * indent + f""{node.name}: ""
+        if attributes:
+            result += "", "".join(
+                [f""{attr}={getattr(node, attr, '')}"" for attr in attributes])
+        result += ""\n""
+        for child in node.children:
+            result += render_node(child, indent + 1)
+        return result
+
+    return render_node(tree)",25.876250888110103,12.375603640073978,15.177982908317855,33.84615384615385,42.10526315789473
+16,python,"def get_instance_root(self, depth: int = 0) -> tuple[VSSNode, int]:
+    if not isinstance(self.data, VSSDataBranch):
+        raise NoInstanceRootException()
+
+    if not self.data.is_instance:
+        return self, depth
+
+    if self.parent is None:
+        raise NoInstanceRootException()
+
+    return self.parent.get_instance_root(depth + 1)","def get_instance_root(self, depth: int = 0) -> tuple[VSSNode, int]:
+    if not self.parent:
+        raise ValueError(""Starting node is not a branch"")
+    if not self.parent.parent:
+        return self.parent, depth + 1
+    return self.parent.get_instance_root(depth + 1)","def get_instance_root(self, depth: int = 0) -> tuple[VSSNode, int]:
+    if not self.parent:
+        raise ValueError(""Starting node is not a branch"")
+    if not self.parent.parent:
+        return self.parent, depth + 1
+    return self.parent.get_instance_root(depth + 1)",52.7734116172345,44.30838154334612,45.601054399276094,47.5,73.68421052631578
+17,python,"def count_instance_children_depth(self) -> int:
+    for child in self.children:
+        if isinstance(child.data, VSSDataBranch):
+            if child.data.is_instance:
+                return 1 + child.count_instance_children_depth()
+    return 0","def count_instance_children_depth(self) -> int:
+    if not self.children:
+        return 0
+    for child in self.children:
+        if isinstance(child, VSSDataBranch) and child.is_instance:
+            return 1 + count_instance_children_depth(child)
+    return 0","def count_instance_children_depth(self) -> int:
+    if not self.children:
+        return 0
+    for child in self.children:
+        if isinstance(child, VSSDataBranch) and child.is_instance:
+            return 1 + count_instance_children_depth(child)
+    return 0",47.76287801690429,32.077142814517714,42.825300930118075,30.434782608695656,85.71428571428571
+18,python,"def find_children_ids(node_ids: list[str], name: str) -> list[str]:
+    ids = []
+    for i in node_ids:
+        if get_expected_parent(i) == name:
+            ids.append(i)
+    return ids","def find_children_ids(node_ids: list[str], name: str) -> list[str]:
+    children_ids = []
+    for node_id in node_ids:
+        parts = node_id.split('_')
+        if len(parts) > 1 and parts[1] == name:
+            children_ids.append(node_id)
+    return children_ids","def find_children_ids(node_ids: list[str], name: str) -> list[str]:
+    children_ids = []
+    for node_id in node_ids:
+        parts = node_id.split('_')
+        if len(parts) > 1 and parts[1] == name:
+            children_ids.append(node_id)
+    return children_ids",60.60297737657008,29.73199273805454,41.895603042735594,76.66666666666667,94.11764705882352
+19,python,"def getattr_nn(o: object, name: str, default: Any | None = None) -> Any:
+    result = getattr(o, name, default)
+    if result is None and default is not None:
+        result = default
+    return result","def getattr_nn(o: object, name: str, default: Any | None = None) -> Any:
+    try:
+        return getattr(o, name)
+    except AttributeError:
+        return default","def getattr_nn(o: object, name: str, default: Any | None = None) -> Any:
+    try:
+        value = getattr(o, name)
+        if value is None:
+            return default
+        return value
+    except AttributeError:
+        return default",54.28198999477352,44.05262339943716,43.07533657965687,50.0,80.0
+20,python,"def traverse_signal_tree(tree: VSSNode, fd: TextIOWrapper, static_uid: bool, add_optional: bool):
+    fd.write('syntax = ""proto3"";\n\n')
+
+    imports = []
+    for node in findall(tree, filter_=lambda n: isinstance(n.data, VSSDataDatatype)):
+        datatype = node.data.datatype
+        if ""."" not in datatype:
+            continue
+        struct_path = Path(node.data.datatype.replace(""."", ""/""))  # type: ignore
+        imports.append(f""{struct_path.parent}/{struct_path.parent.name}.proto"")
+    write_imports(fd, imports)
+
+    # write proto messages to file
+    for node in findall(tree, filter_=lambda node: isinstance(node.data, VSSDataBranch)):
+        fd.write(f""message {node.get_fqn('')} {{"" + ""\n"")
+        print_messages(node.children, fd, static_uid, add_optional)
+        fd.write(""}\n\n"")","```python
+def traverse_signal_tree(tree: VSSNode, fd: TextIOWrapper, static_uid: bool, add_optional: bool):
+    if tree.type == ""signal"":
+        fd.write(f""message {tree.name} {{\n"")
+        if static_uid:
+            fd.write(f""    uint32 static_uid = 1;\n"")
+        if add_optional:
+            fd.write(f""    optional {tree.type} value = 2;\n"")
+        else:
+            fd.write(f""    {tree.type} value = 2;\n"")
+        fd.write(""}\n"")
+    elif tree.type == ""array"":
+        fd.write(f""message {tree.name} {{\n"")
+        if static_uid:
+            fd.write(f""    uint32 static_uid = 1;\n"")
+        fd.write(f""    repeated {tree.subtype} value = 2;\n"")
+        fd.write(""}\n"")
+    elif tree.type == ""map"":
+        fd.write(f""message {tree.name} {{\n"")
+        if static_uid:
+            fd.write(f""    uint32 static_uid = 1;\n"")
+        fd.write(f""    map<string, {tree.subtype}> value = 2;\n"")
+        fd.write(""}\n"")
+    elif tree.type == ""enum"":
+        fd.write(f""enum {tree.name} {{\n"")
+        for item in tree.items:
+            fd.write(f""    {item.name} = {item.value};\n"")
+        fd.write(""}\n"")
+    elif tree.type == ""struct"":
+        fd.write(f""message {tree.name} {{\n"")
+        if static_uid:
+            fd.write(f""    uint32 static_uid = 1;\n"")
+        for child in tree.children:
+            traverse_signal_tree(child, fd, static_uid, add_optional)
+        fd.write(""}\n"")
+    elif tree.type == ""union"":
+        fd.write(f""message {tree.name} {{\n"")
+        if static_uid:
+            fd.write(f""    uint32 static_uid = 1;\n"")
+        fd.write(""    oneof value {\n"")
+        for child in tree.children:
+            traverse_signal_tree(child, fd, static_uid, add_optional)
+        fd.write(""}\n"")
+    elif tree.type == ""complex"":
+        fd.write(f""message {tree.name} {{\n"")
+        if static_uid:
+            fd.write(f""    uint32 static_uid = 1;\n"")
+        for child in tree.children:
+            traverse_signal_tree(child, fd, static_uid, add_optional)
+        fd.write(""}\n"")
+    elif tree.type == ""message"":
+        fd.write(f""message {tree.name} {{\n"")
+        if static_uid:
+            fd.write(f""    uint32 static_uid = 1;\n"")
+        for child in tree.children:
+            traverse_signal_tree(child, fd, static_uid, add_optional)
+        fd.write(""}\n"")
+    elif tree.type == ""import"":
+        fd.write(f""import \","```python
+def traverse_signal_tree(tree: VSSNode, fd: TextIOWrapper, static_uid: bool, add_optional: bool):
+    if tree.type == ""signal"":
+        fd.write(f""message {tree.name} {{\n"")
+        if static_uid:
+            fd.write(f""    uint32 static_uid = 1;\n"")
+        if add_optional:
+            fd.write(f""    optional {tree.type} value = 2;\n"")
+        else:
+            fd.write(f""    {tree.type} value = 2;\n"")
+        fd.write(""}\n"")
+    elif tree.type == ""array"":
+        fd.write(f""message {tree.name} {{\n"")
+        if static_uid:
+            fd.write(f""    uint32 static_uid = 1;\n"")
+        fd.write(f""    repeated {tree.subtype} value = 2;\n"")
+        fd.write(""}\n"")
+    elif tree.type == ""map"":
+        fd.write(f""message {tree.name} {{\n"")
+        if static_uid:
+            fd.write(f""    uint32 static_uid = 1;\n"")
+        fd.write(f""    map<string, {tree.subtype}> value = 2;\n"")
+        fd.write(""}\n"")
+    elif tree.type == ""enum"":
+        fd.write(f""enum {tree.name} {{\n"")
+        for item in tree.items:
+            fd.write(f""    {item.name} = {item.value};\n"")
+        fd.write(""}\n"")
+    elif tree.type == ""struct"":
+        fd.write(f""message {tree.name} {{\n"")
+        if static_uid:
+            fd.write(f""    uint32 static_uid = 1;\n"")
+        for child in tree.children:
+            traverse_signal_tree(child, fd, static_uid, add_optional)
+        fd.write(""}\n"")
+    elif tree.type == ""union"":
+        fd.write(f""message {tree.name} {{\n"")
+        if static_uid:
+            fd.write(f""    uint32 static_uid = 1;\n"")
+        fd.write(""    oneof value {\n"")
+        for child in tree.children:
+            traverse_signal_tree(child, fd, static_uid, add_optional)
+        fd.write(""}\n"")
+    elif tree.type == ""complex"":
+        fd.write(f""message {tree.name} {{\n"")
+        if static_uid:
+            fd.write(f""    uint32 static_uid = 1;\n"")
+        for child in tree.children:
+            traverse_signal_tree(child, fd, static_uid, add_optional)
+        fd.write(""}\n"")
+    elif tree.type == ""message"":
+        fd.write(f""message {tree.name} {{\n"")
+        if static_uid:
+            fd.write(f""    uint32 static_uid = 1;\n"")
+        for child in tree.children:
+            traverse_signal_tree(child, fd, static_uid, add_optional)
+        fd.write(""}\n"")
+    elif tree.type == ""import"":
+        fd.write(f""import \",24.900025352336463,5.190176504112187,17.395797375642235,28.865979381443296,48.148148148148145
+21,python,"def get_instances_meta(root: VSSNode) -> dict[str, list[str]]:
+    meta: dict[str, list[str]] = {}
+    for node in PreOrderIter(root, filter_=lambda n: isinstance(n.data, VSSDataBranch) and n.data.is_instance):
+        if any(c.data.is_instance for c in node.children if isinstance(c.data, VSSDataBranch)):
+            continue
+        instance_root, _ = node.get_instance_root()
+        instance_root_fqn = instance_root.get_fqn()
+
+        instance_name = node.get_fqn().removeprefix(instance_root_fqn + ""."")
+
+        if instance_root_fqn in meta:
+            meta[instance_root_fqn].append(instance_name)
+        else:
+            meta[instance_root_fqn] = [instance_name]
+    return meta","def get_instances_meta(root: VSSNode) -> dict[str, list[str]]:
+    instances = {}
+    def traverse(node: VSSNode, parent_fqn: str):
+        if node.is_terminal():
+            if parent_fqn not in instances:
+                instances[parent_fqn] = []
+            instances[parent_fqn].append(node.name)
+        else:
+            for child in node.children:
+                traverse(child, f""{parent_fqn}.{child.name}"" if parent_fqn else child.name)
+    traverse(root, """")
+    return instances","def get_instances_meta(root: VSSNode) -> dict[str, list[str]]:
+    instances = {}
+    def traverse(node: VSSNode, parent_fqn: str):
+        if node.is_terminal():
+            if parent_fqn not in instances:
+                instances[parent_fqn] = []
+            instances[parent_fqn].append(node.name)
+        else:
+            for child in node.children:
+                traverse(child, f""{parent_fqn}.{child.name}"" if parent_fqn else child.name)
+    traverse(root, """")
+    return instances",26.22948910175722,10.830906482831262,12.52476983975004,44.827586206896555,36.734693877551024
+22,python,"def is_VSS_leaf(node: VSSNode) -> bool:
+   if isinstance(node.data, VSSDataDatatype):
+        return True
+    return False","def is_VSS_leaf(node: VSSNode) -> bool:
+    return isinstance(node.data, VSSDataDatatype)","def is_VSS_leaf(node: VSSNode) -> bool:
+    return isinstance(node.data, VSSDataDatatype)",53.95251422009305,34.1077254951379,31.7023313852343,50.0,100.0
+23,python,"def is_VSS_branch(node: VSSNode) -> bool:
+   if isinstance(node.data, VSSDataBranch):
+        if not node.data.is_instance:
+            return True
+    return False","def is_VSS_branch(node: VSSNode) -> bool:
+    return isinstance(node.data, VSSDataBranch) and not node.is_instance","def is_VSS_branch(node: VSSNode) -> bool:
+    return isinstance(node.data, VSSDataBranch) and not node.is_instance",38.92121923202306,27.429553970075617,26.150059800121895,42.10526315789473,60.0
+24,python,"def is_VSS_branch_instance(node: VSSNode) -> bool:
+    if isinstance(node.data, VSSDataBranch):
+        if node.data.is_instance:
+            return True
+    return False","def is_VSS_branch_instance(node: VSSNode) -> bool:
+    return isinstance(node.data, VSSDataBranch) and node.is_instance","def is_VSS_branch_instance(node: VSSNode) -> bool:
+    return isinstance(node.data, VSSDataBranch) and node.is_instance",39.917796197724655,28.641904579795412,26.584835766658777,44.44444444444444,60.0
+25,python,"def fnv1_32_hash(identifier: bytes) -> int:
+    id_hash = 2166136261
+    for byte in identifier:
+        id_hash = (id_hash * 16777619) & 0xFFFFFFFF
+        id_hash ^= byte
+
+    return id_hash","def fnv1_32_hash(identifier: bytes) -> int:
+    FNV_PRIME = 16777619
+    offset_basis = 2166136261
+    hash = offset_basis
+    for byte in identifier:
+        hash *= FNV_PRIME
+        hash ^= byte
+    return hash","def fnv1_32_hash(identifier: bytes) -> int:
+    FNV_PRIME = 16777619
+    offset_basis = 2166136261
+    hash = offset_basis
+    for byte in identifier:
+        hash = (hash * FNV_PRIME) ^ byte
+    return hash",31.168637442504465,26.332019392396333,31.50042511446362,36.84210526315789,30.0
+28,java,"public View onCreateView(LayoutInflater inflater, ViewGroup container,
+        Bundle savedInstanceState) {
+    mRootView = inflater.inflate(R.layout.card_fragment, container, false);
+    mCardTitle = mRootView.findViewById(R.id.card_name);
+    mCardIcon = mRootView.findViewById(R.id.card_icon);
+    return mRootView;
+}","public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    View root = inflater.inflate(R.layout.card_fragment, container, false);
+    TextView title = (TextView) root.findViewById(R.id.card_title);
+    ImageView icon = (ImageView) root.findViewById(R.id.card_icon);
+    title.setText(getArguments().getString(""title""));
+    icon.setImageResource(getArguments().getInt(""icon""));
+    return root;
+}","public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    View root = inflater.inflate(R.layout.card_fragment, container, false);
+    TextView title = (TextView) root.findViewById(R.id.card_title);
+    ImageView icon = (ImageView) root.findViewById(R.id.card_icon);
+    title.setText(getArguments().getString(""title""));
+    icon.setImageResource(getArguments().getInt(""icon""));
+    return root;
+}",58.665038278821946,36.58350203979106,49.591802590648214,66.66666666666666,81.81818181818183
+29,java,"private void updateControlBarButton(DescriptiveTextWithControlsView.Control buttonContent,
+        ImageButton buttonView) {
+    if (buttonContent != null) {
+        buttonView.setImageDrawable(buttonContent.getIcon());
+        buttonView.setOnClickListener(buttonContent.getOnClickListener());
+        buttonView.setVisibility(View.VISIBLE);
+    } else {
+        buttonView.setVisibility(View.GONE);
+    }
+}","private void updateControlBarButton(DescriptiveTextWithControlsView.Control buttonContent, ImageButton buttonView) {
+    if (buttonContent == null) {
+        buttonView.setVisibility(View.GONE);
+        return;
+    }
+
+    buttonView.setImageResource(buttonContent.getIcon());
+    buttonView.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            buttonContent.getOnClickListener().onClick(view);
+        }
+    });
+    buttonView.setVisibility(View.VISIBLE);
+}","private void updateControlBarButton(DescriptiveTextWithControlsView.Control buttonContent, ImageButton buttonView) {
+    if (buttonContent == null) {
+        buttonView.setVisibility(View.GONE);
+        return;
+    }
+
+    buttonView.setImageResource(buttonContent.getIcon());
+    buttonView.setOnClickListener(v -> buttonContent.getOnClickListener().onClick(v));
+    buttonView.setVisibility(View.VISIBLE);
+}",68.65747115092363,46.86670913916292,47.118014174209016,80.64516129032258,100.0
+30,java,"protected final View getDescriptiveTextOnlyLayoutView() {
+    if (mDescriptiveTextOnlyLayoutView == null) {
+        ViewStub stub = mRootView.findViewById(R.id.descriptive_text_layout);
+        mDescriptiveTextOnlyLayoutView = stub.inflate();
+        mDescriptiveTextOnlyTitle = mDescriptiveTextOnlyLayoutView.findViewById(
+                R.id.primary_text);
+        mDescriptiveTextOnlySubtitle = mDescriptiveTextOnlyLayoutView.findViewById(
+                R.id.secondary_text);
+        mDescriptiveTextOnlyOptionalImage = mDescriptiveTextOnlyLayoutView.findViewById(
+                R.id.optional_image);
+        mDescriptiveTextOnlyTapForMore = mDescriptiveTextOnlyLayoutView.findViewById(
+                R.id.tap_for_more_text);
+    }
+    return mDescriptiveTextOnlyLayoutView;
+}","protected final View getDescriptiveTextOnlyLayoutView() {
+    ViewStub viewStub = (ViewStub) findViewById(R.layout.descriptive_text_only);
+    View view = viewStub.inflate();
+    TextView title = (TextView) view.findViewById(R.id.title);
+    TextView subtitle = (TextView) view.findViewById(R.id.subtitle);
+    ImageView image = (ImageView) view.findViewById(R.id.image);
+    viewStub.setTag(new DescriptiveTextOnlyLayoutView(title, subtitle, image));
+    return view;
+}","protected final View getDescriptiveTextOnlyLayoutView() {
+    ViewStub viewStub = (ViewStub) findViewById(R.layout.descriptive_text_only);
+    View view = viewStub.inflate();
+    TextView title = (TextView) view.findViewById(R.id.title);
+    TextView subtitle = (TextView) view.findViewById(R.id.subtitle);
+    ImageView image = (ImageView) view.findViewById(R.id.image);
+    viewStub.setTag(new DescriptiveTextOnlyLayoutView(title, subtitle, image));
+    return view;
+}",31.737957205180862,12.53463134949088,13.481368594227208,56.81818181818182,44.11764705882353
+31,java,"public void updateHeaderView(CardHeader header) {
+    requireActivity().runOnUiThread(() -> {
+        mRootView.setVisibility(View.VISIBLE);
+        mCardTitle.setText(header.getCardTitle());
+        mCardIcon.setImageDrawable(header.getCardIcon());
+    });
+}","public void updateHeaderView(CardHeader header) {
+    headerView.getRootView().setVisibility(View.VISIBLE);
+    headerView.setTitle(header.getTitle());
+    headerView.setIcon(header.getIcon());
+}","public void updateHeaderView(CardHeader header) {
+    headerView.getRootView().setVisibility(View.VISIBLE);
+    headerView.setTitle(header.getTitle());
+    headerView.setIcon(header.getIcon());
+}",55.068900543077916,29.95197100101508,33.18077402843942,57.14285714285714,100.0
+32,java,"private View getTextBlockLayoutView() {
+    if (mTextBlockLayoutView == null) {
+        ViewStub stub = mRootView.findViewById(R.id.text_block_layout);
+        mTextBlockLayoutView = stub.inflate();
+        mTextBlock = mTextBlockLayoutView.findViewById(R.id.text_block);
+        mTextBlockTapForMore = mTextBlockLayoutView.findViewById(R.id.tap_for_more_text);
+    }
+    return mTextBlockLayoutView;
+}","private View getTextBlockLayoutView() {
+    View view = mStub.inflate();
+    mTextViews = new View[mTextViewsCapacity];
+    int count = view.getChildCount();
+    for (int i = 0; i < count; i++) {
+        View child = view.getChildAt(i);
+        if (child instanceof TextView) {
+            mTextViews[i] = child;
+        }
+    }
+    return view;
+}","private View getTextBlockLayoutView() {
+    View view = mStub.inflate();
+    mTextViews = new View[mTextViewsCapacity];
+    int count = view.getChildCount();
+    for (int i = 0; i < count; i++) {
+        View child = view.getChildAt(i);
+        if (child instanceof TextView) {
+            mTextViews[i] = child;
+        }
+    }
+    return view;
+}",17.278920920491366,7.697823272984978,13.97467859079867,15.625,31.818181818181817
+33,java,"static ComponentName getMediaSource(@NonNull PackageManager packageManager,
+        @NonNull String packageName) {
+    Intent mediaIntent = new Intent();
+    mediaIntent.setPackage(packageName);
+    mediaIntent.setAction(MediaBrowserService.SERVICE_INTERFACE);
+
+    List<ResolveInfo> mediaServices = packageManager.queryIntentServices(mediaIntent,
+            PackageManager.GET_RESOLVED_FILTER);
+
+    if (mediaServices == null || mediaServices.isEmpty()) {
+        return null;
+    }
+    String defaultService = mediaServices.get(0).serviceInfo.name;
+    if (!TextUtils.isEmpty(defaultService)) {
+        return new ComponentName(packageName, defaultService);
+    }
+    return null;
+}","static ComponentName getMediaSource(@NonNull PackageManager packageManager, @NonNull String packageName) {
+    Intent intent = new Intent(packageManager.resolveIntent(new Intent(packageManager.getServiceIntentExtra(packageManager.getServiceInfo(packageManager.getService(packageName, 0), 0).serviceName, MediaBrowserService.class.getName()), null), null);
+    intent.setPackage(packageName);
+    ResolveInfo resolveInfo = packageManager.resolveActivity(intent, PackageManager.MATCH_REQUIRED_ANY);
+    if (resolveInfo == null) {
+        return null;
+    }
+    return new ComponentName(resolveInfo.serviceName, resolveInfo.activityName);
+}","static ComponentName getMediaSource(@NonNull PackageManager packageManager, @NonNull String packageName) {
+    Intent intent = new Intent(packageManager.resolveIntent(new Intent(packageManager.getServiceIntentExtra(packageManager.getServiceInfo(packageManager.getService(packageName, 0), 0).serviceName, MediaBrowserService.class.getName()), null), null);
+    intent.setPackage(packageName);
+    ResolveInfo resolveInfo = packageManager.resolveService(intent, PackageManager.MATCH_REQUIRED_ANY);
+    if (resolveInfo == null) {
+        return null;
+    }
+    return new ComponentName(resolveInfo.serviceName, resolveInfo.activityName);
+}",42.04561795790408,28.41924807007658,30.194490607900924,45.28301886792453,64.28571428571429
+34,java,"private static boolean shouldAddToLaunchables(@NonNull ComponentName componentName,
+        @NonNull Set<String> appsToHide,
+        @NonNull Set<String> customMediaComponents,
+        @AppTypes int appTypesToShow,
+        @AppTypes int componentAppType) {
+    if (appsToHide.contains(componentName.getPackageName())) {
+        return false;
+    }
+    switch (componentAppType) {
+        case APP_TYPE_MEDIA_SERVICES:
+            if (customMediaComponents.contains(componentName.flattenToString())
+                    && (appTypesToShow & APP_TYPE_LAUNCHABLES) != 0) {
+                return false;
+            }
+            return true;
+        case APP_TYPE_LAUNCHABLES:
+            return true;
+        default:
+            Log.e(TAG, ""Invalid componentAppType : "" + componentAppType);
+            return false;
+    }
+}","private static boolean shouldAddToLaunchables(@NonNull ComponentName componentName,
+        @NonNull Set<String> appsToHide,
+        @NonNull Set<String> customMediaComponents,
+        @AppTypes int appTypesToShow,
+        @AppTypes int componentAppType) {
+    if (appsToHide.contains(componentName.getPackageName())) {
+        return false;
+    }
+    if ((appTypesToShow & AppTypes.LAUNCHABLE) != 0 &&
+            (componentAppType & AppTypes.MEDIA_SERVICE) != 0 &&
+            customMediaComponents.contains(componentName.getClassName())) {
+        return false;
+    }
+    return true;
+}","private static boolean shouldAddToLaunchables(@NonNull ComponentName componentName,
+        @NonNull Set<String> appsToHide,
+        @NonNull Set<String> customMediaComponents,
+        @AppTypes int appTypesToShow,
+        @AppTypes int componentAppType) {
+    if (appsToHide.contains(componentName.getPackageName())) {
+        return false;
+    }
+    if ((appTypesToShow & AppTypes.LAUNCHABLE) != 0 &&
+            (componentAppType & AppTypes.MEDIA_SERVICE) != 0 &&
+            customMediaComponents.contains(componentName.getClassName())) {
+        return false;
+    }
+    return true;
+}",61.86418183533259,48.03984716340054,50.21053097158059,63.49206349206349,85.71428571428571
+35,java,"private static void selectMediaSourceAndFinish(Context context, ComponentName componentName,
+        CarMediaManager carMediaManager) {
+    try {
+        carMediaManager.setMediaSource(componentName, CarMediaManager.MEDIA_SOURCE_MODE_BROWSE);
+        if (context instanceof Activity) {
+            ((Activity) context).finish();
+        }
+    } catch (CarNotConnectedException e) {
+        Log.e(TAG, ""Car not connected"", e);
+    }
+}","private static void selectMediaSourceAndFinish(Context context, ComponentName componentName, CarMediaManager carMediaManager) {
+    carMediaManager.setMediaSource(componentName);
+    if (context instanceof Activity) {
+        try {
+            ((Activity) context).finish();
+        } catch (CarNotConnectedException e) {
+            Log.e(""CarMediaManager"", ""Car service unavailable"", e);
+        }
+    }
+}","private static void selectMediaSourceAndFinish(Context context, ComponentName componentName, CarMediaManager carMediaManager) {
+    carMediaManager.setMediaSource(componentName);
+    if (context instanceof Activity) {
+        try {
+            ((Activity) context).finish();
+        } catch (CarNotConnectedException e) {
+            Log.e(""CarMediaManager"", ""Car service unavailable"", e);
+        }
+    }
+}",68.83066265444376,61.305689871011005,62.40405752095758,51.61290322580645,100.0
+36,java,"static boolean isActivityDistractionOptimized(
+        CarPackageManager carPackageManager, String packageName, String activityName) {
+    boolean isDistractionOptimized = false;
+    try {
+        if (carPackageManager != null) {
+            isDistractionOptimized =
+                    carPackageManager.isActivityDistractionOptimized(packageName, activityName);
+        }
+    } catch (CarNotConnectedException e) {
+        Log.e(TAG, ""Car not connected when getting DO info"", e);
+    }
+    return isDistractionOptimized;
+}","static boolean isActivityDistractionOptimized(CarPackageManager carPackageManager, String packageName, String activityName) {
+    if (carPackageManager == null) {
+        Log.e(""CarDistractionOptimizer"", ""CarPackageManager is null"");
+        return false;
+    }
+    try {
+        return carPackageManager.isActivityDistractionOptimized(packageName, activityName);
+    } catch (CarNotConnectedException e) {
+        Log.e(""CarDistractionOptimizer"", ""Car not connected"", e);
+        return false;
+    }
+}","static boolean isActivityDistractionOptimized(CarPackageManager carPackageManager, String packageName, String activityName) {
+    if (carPackageManager == null) {
+        Log.e(""CarDistractionOptimizer"", ""CarPackageManager is null"");
+        return false;
+    }
+    try {
+        return carPackageManager.isActivityDistractionOptimized(packageName, activityName);
+    } catch (CarNotConnectedException e) {
+        Log.e(""CarDistractionOptimizer"", ""Car not connected"", e);
+        return false;
+    }
+}",48.32510112784422,29.108097854360217,29.95585345504624,41.37931034482759,92.85714285714286
+38,java,"private Intent getMapsIntent() {
+    Intent defaultIntent =
+            Intent.makeMainSelectorActivity(Intent.ACTION_MAIN, Intent.CATEGORY_APP_MAPS);
+    PackageManager pm = getPackageManager();
+    ComponentName defaultActivity = defaultIntent.resolveActivity(pm);
+
+    for (String intentUri : getResources().getStringArray(
+            R.array.config_homeCardPreferredMapActivities)) {
+        Intent preferredIntent;
+        try {
+            preferredIntent = Intent.parseUri(intentUri, Intent.URI_ANDROID_APP_SCHEME);
+        } catch (URISyntaxException se) {
+            Log.w(TAG, ""Invalid intent URI in config_homeCardPreferredMapActivities"", se);
+            continue;
+        }
+
+        if (defaultActivity != null && !defaultActivity.getPackageName().equals(
+                preferredIntent.getPackage())) {
+            continue;
+        }
+
+        if (preferredIntent.resolveActivityInfo(pm, /* flags= */ 0) != null) {
+            return preferredIntent;
+        }
+    }
+    return defaultIntent;
+}","private Intent getMapsIntent() {
+    Intent mapsIntent = null;
+    for (Intent intent : defaultApps.get(CATEGORY_MAPS)) {
+        if (intent.resolveActivity(packageManager) != null) {
+            mapsIntent = intent;
+            break;
+        }
+    }
+    return mapsIntent == null ? new Intent(Intent.ACTION_VIEW, Uri.parse(""geo:0,0?q=1"")) : mapsIntent;
+}","private Intent getMapsIntent() {
+    Intent mapsIntent = null;
+    for (Intent intent : defaultApps.get(CATEGORY_MAPS)) {
+        if (intent.resolveActivity(packageManager) != null) {
+            mapsIntent = intent;
+            break;
+        }
+    }
+    return mapsIntent == null ? new Intent(Intent.ACTION_VIEW, Uri.parse(""geo:0,0?q=1"")) : mapsIntent;
+}",10.225604339955483,6.7475275003559405,9.47956518414131,15.151515151515152,9.523809523809524
+39,java,"private void initializeCards() {
+    if (mHomeCardModules == null) {
+        mHomeCardModules = new ArraySet<>();
+        for (String providerClassName : getResources().getStringArray(
+                R.array.config_homeCardModuleClasses)) {
+            try {
+                long reflectionStartTime = System.currentTimeMillis();
+                HomeCardModule cardModule = (HomeCardModule) Class.forName(
+                        providerClassName).newInstance();
+                cardModule.setViewModelProvider(new ViewModelProvider( /* owner= */this));
+                mHomeCardModules.add(cardModule);
+                if (DEBUG) {
+                    long reflectionTime = System.currentTimeMillis() - reflectionStartTime;
+                    Log.d(TAG, ""Initialization of HomeCardModule class "" + providerClassName
+                            + "" took "" + reflectionTime + "" ms"");
+                }
+            } catch (IllegalAccessException | InstantiationException |
+                    ClassNotFoundException e) {
+                Log.w(TAG, ""Unable to create HomeCardProvider class "" + providerClassName, e);
+            }
+        }
+    }
+    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+    for (HomeCardModule cardModule : mHomeCardModules) {
+        transaction.replace(cardModule.getCardResId(), cardModule.getCardView());
+    }
+    transaction.commitNow();
+}","private void initializeCards() {
+    for (String className : cardModuleClassNames) {
+        try {
+            Class<?> clazz = Class.forName(className);
+            HomeCardModule module = (HomeCardModule) clazz.getDeclaredConstructor().newInstance();
+            addCardView(module.getCardView());
+        } catch (ClassNotFoundException e) {
+            Log.e(TAG, ""Could not find class: "" + className);
+        } catch (InstantiationException e) {
+            Log.e(TAG, ""Could not instantiate class: "" + className);
+        } catch (IllegalAccessException e) {
+            Log.e(TAG, ""Could not access class: "" + className);
+        } catch (NoSuchMethodException e) {
+            Log.e(TAG, ""Could not find constructor: "" + className);
+        } catch (InvocationTargetException e) {
+            Log.e(TAG, ""Could not invoke constructor: "" + className);
+        }
+    }
+}","private void initializeCards() {
+    for (String className : cardModuleClassNames) {
+        try {
+            Class<?> clazz = Class.forName(className);
+            HomeCardModule module = (HomeCardModule) clazz.getDeclaredConstructor().newInstance();
+            addCardView(module.getCardView());
+        } catch (ClassNotFoundException e) {
+            Log.e(TAG, ""Could not find class: "" + className);
+        } catch (InstantiationException e) {
+            Log.e(TAG, ""Could not instantiate class: "" + className);
+        } catch (IllegalAccessException e) {
+            Log.e(TAG, ""Could not access class: "" + className);
+        } catch (NoSuchMethodException e) {
+            Log.e(TAG, ""Could not find constructor: "" + className);
+        } catch (InvocationTargetException e) {
+            Log.e(TAG, ""Could not invoke constructor: "" + className);
+        }
+    }
+}",17.546683939500383,7.225978646812681,7.290427440859175,29.67032967032967,26.0
+40,java,"private static void cleanUpExistingTaskViewTasks(List<TaskAppearedInfo> taskAppearedInfos) {
+    ActivityTaskManager atm = ActivityTaskManager.getInstance();
+    for (TaskAppearedInfo taskAppearedInfo : taskAppearedInfos) {
+        TaskInfo taskInfo = taskAppearedInfo.getTaskInfo();
+        if (taskInfo.getWindowingMode() == WINDOWING_MODE_MULTI_WINDOW) {
+            if (DBG) Slog.d(TAG, ""Found the dangling task, removing: "" + taskInfo.taskId);
+            atm.removeTask(taskInfo.taskId);
+        }
+    }
+}","private static void cleanUpExistingTaskViewTasks(List<TaskAppearedInfo> taskAppearedInfos) {
+        for (TaskAppearedInfo taskAppearedInfo : taskAppearedInfos) {
+            if (taskAppearedInfo.isMultiWindow()) {
+                ActivityTaskManager.get().removeTask(taskAppearedInfo.taskId);
+                Log.w(TAG, ""Dangling task: "" + taskAppearedInfo.taskId);
+            }
+        }
+    }","private static void cleanUpExistingTaskViewTasks(List<TaskAppearedInfo> taskAppearedInfos) {
+        for (TaskAppearedInfo taskAppearedInfo : taskAppearedInfos) {
+            if (taskAppearedInfo.isMultiWindow()) {
+                ActivityTaskManager.get().removeTask(taskAppearedInfo.taskId);
+                Log.w(TAG, ""Dangling task: "" + taskAppearedInfo.taskId);
+            }
+        }
+    }",38.52583816452274,25.5956827247383,30.275346701029438,52.77777777777778,45.45454545454545
+41,java,"private void updateMode() {
+    mMode = parseMode(getIntent());
+    setTitle(mMode.mTitleStringId);
+    CarUi.requireToolbar(this).setTitle(mMode.mTitleStringId);
+}","private void updateMode() {
+    String mode = getIntent().getStringExtra(""mode"");
+    if (mode != null) {
+        int modeResourceId = getResources().getIdentifier(mode, ""string"", getPackageName());
+        if (modeResourceId != 0) {
+            setTitle(getString(modeResourceId));
+            ((CarUiToolbar) findViewById(R.id.toolbar)).setTitle(getString(modeResourceId));
+        }
+    }
+}","private void updateMode() {
+    String mode = getIntent().getStringExtra(""mode"");
+    if (mode != null) {
+        int modeResourceId = getResources().getIdentifier(mode, ""string"", getPackageName());
+        if (modeResourceId != 0) {
+            setTitle(getString(modeResourceId));
+            ((CarUiToolbar) findViewById(R.id.toolbar)).setTitle(getString(modeResourceId));
+        }
+    }
+}",28.159340023334146,8.60132510739358,31.02016197006999,28.57142857142857,44.44444444444444
+42,java,"private Chronometer getChronometer() {
+    if (mChronometer == null) {
+        mChronometer = getDescriptiveTextWithControlsLayoutView().findViewById(
+                R.id.optional_timer);
+        mChronometerSeparator = getDescriptiveTextWithControlsLayoutView().findViewById(
+                R.id.optional_timer_separator);
+    }
+    return mChronometer;
+}","private Chronometer getChronometer() {
+    Chronometer chronometer = (Chronometer) findViewById(R.id.chronometer);
+    View separator = findViewById(R.id.separator);
+    chronometer.setSeparatorView(separator);
+    return chronometer;
+}","private Chronometer getChronometer() {
+    Chronometer chronometer = (Chronometer) findViewById(R.id.chronometer);
+    View separator = findViewById(R.id.separator);
+    chronometer.setSeparatorView(separator);
+    return chronometer;
+}",32.91579101004886,13.456320506683921,14.360689687357706,34.61538461538461,69.23076923076923
+43,java,"private View getMediaLayoutView() {
+    if (mMediaLayoutView == null) {
+        ViewStub stub = getRootView().findViewById(R.id.media_layout);
+        mMediaLayoutView = stub.inflate();
+        mMediaTitle = mMediaLayoutView.findViewById(R.id.primary_text);
+        mMediaSubtitle = mMediaLayoutView.findViewById(R.id.secondary_text);
+        View mediaControlBarView = mMediaLayoutView.findViewById(
+                R.id.media_playback_controls_bar);
+        mPresenter.initializeControlsActionBar(mediaControlBarView);
+    }
+    return mMediaLayoutView;
+}","private View getMediaLayoutView() {
+    ViewStub stub = (ViewStub) findViewById(R.id.media_layout_stub);
+    View inflatedView = stub.inflate();
+    View titleView = inflatedView.findViewById(R.id.media_title);
+    View subtitleView = inflatedView.findViewById(R.id.media_subtitle);
+    MediaPlaybackControlsBarPresenter presenter = new MediaPlaybackControlsBarPresenter(this);
+    View controlsBar = inflatedView.findViewById(R.id.media_controls_bar);
+    controlsBar.setPresenter(presenter);
+    return inflatedView;
+}","private View getMediaLayoutView() {
+    ViewStub stub = (ViewStub) findViewById(R.id.media_layout_stub);
+    View inflatedView = stub.inflate();
+    View titleView = inflatedView.findViewById(R.id.media_title);
+    View subtitleView = inflatedView.findViewById(R.id.media_subtitle);
+    MediaPlaybackControlsBarPresenter presenter = new MediaPlaybackControlsBarPresenter(this);
+    View controlsBar = inflatedView.findViewById(R.id.media_controls_bar);
+    controlsBar.setPresenter(presenter);
+    return inflatedView;
+}",42.763150142099015,16.574624158406063,18.150791165402993,60.46511627906976,75.86206896551724
+44,java,"private void updateBackgroundImage(Drawable image) {
+    if (image != null && getCardSize() != null) {
+        int maxDimen = Math.max(getCardSize().getWidth(), getCardSize().getHeight());
+        Size scaledSize = new Size(maxDimen, maxDimen);
+        Bitmap imageBitmap = BitmapUtils.fromDrawable(image, scaledSize);
+        Bitmap blurredBackground = ImageUtils.blur(getContext(), imageBitmap, scaledSize,
+                mBlurRadius);
+
+        getCardBackgroundImage().setImageBitmap(blurredBackground, /* showAnimation= */ true);
+        getCardBackground().setVisibility(View.VISIBLE);
+    }
+}","private void updateBackgroundImage(Drawable image) {
+    int width = image.getIntrinsicWidth();
+    int height = image.getIntrinsicHeight();
+    int size = Math.max(width, height);
+    Bitmap bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
+    Canvas canvas = new Canvas(bitmap);
+    image.setBounds(0, 0, size, size);
+    image.draw(canvas);
+    Bitmap blurredBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+    Paint paint = new Paint();
+    paint.setFilterBitmap(true);
+    paint.setXfermode(new BlurMaskFilter(8, Blur.NORMAL));
+    new Canvas(blurredBitmap).drawBitmap(bitmap, 0, 0, paint);
+    cardView.setBackground(new BitmapDrawable(getResources(), blurredBitmap));
+}","private void updateBackgroundImage(Drawable image) {
+    int width = image.getIntrinsicWidth();
+    int height = image.getIntrinsicHeight();
+    int size = Math.max(width, height);
+    Bitmap bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
+    Canvas canvas = new Canvas(bitmap);
+    image.setBounds(0, 0, size, size);
+    image.draw(canvas);
+    Bitmap blurredBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+    Paint paint = new Paint();
+    paint.setFilterBitmap(true);
+    paint.setXfermode(new BlurMaskFilter(8, Blur.NORMAL));
+    new Canvas(blurredBitmap).drawBitmap(bitmap, 0, 0, paint);
+    cardView.setBackground(new BitmapDrawable(getResources(), blurredBitmap));
+}",28.197910252114518,8.387726147838467,12.024997481702227,44.230769230769226,48.148148148148145
+45,java,"private void updateMediaView(CharSequence title, CharSequence subtitle) {
+    getMediaLayoutView().setVisibility(View.VISIBLE);
+    mMediaTitle.setText(title);
+    mMediaSubtitle.setText(subtitle);
+}","private void updateMediaView(CharSequence title, CharSequence subtitle) {
+    mediaLayout.setVisibility(View.VISIBLE);
+    mediaLayout.setTitle(title);
+    mediaLayout.setSubtitle(subtitle);
+}","private void updateMediaView(CharSequence title, CharSequence subtitle) {
+    mediaLayout.setVisibility(View.VISIBLE);
+    mediaLayout.setTitle(title);
+    mediaLayout.setSubtitle(subtitle);
+}",70.842490254843,59.004687263928076,61.207379018601806,63.1578947368421,100.0
+46,java,"private void updateAudioDuration(DescriptiveTextWithControlsView content) {
+    if (content.getStartTime() > 0) {
+        getChronometer().setVisibility(View.VISIBLE);
+        getChronometer().setBase(content.getStartTime());
+        getChronometer().start();
+        mChronometerSeparator.setVisibility(View.VISIBLE);
+    } else {
+        getChronometer().setVisibility(View.GONE);
+        mChronometerSeparator.setVisibility(View.GONE);
+    }
+}","private void updateAudioDuration(DescriptiveTextWithControlsView content) {
+    if (content.getStartTime() > 0) {
+        chronometer.setVisibility(View.VISIBLE);
+        separator.setVisibility(View.VISIBLE);
+        chronometer.setBase(SystemClock.elapsedRealtime() - content.getStartTime());
+        chronometer.start();
+    } else {
+        chronometer.setVisibility(View.GONE);
+        separator.setVisibility(View.GONE);
+    }
+}","private void updateAudioDuration(DescriptiveTextWithControlsView content) {
+    if (content.getStartTime() > 0) {
+        chronometer.setVisibility(View.VISIBLE);
+        separator.setVisibility(View.VISIBLE);
+        chronometer.setBase(SystemClock.elapsedRealtime() - content.getStartTime());
+        chronometer.start();
+    } else {
+        chronometer.setVisibility(View.GONE);
+        separator.setVisibility(View.GONE);
+    }
+}",65.25100634163793,48.06216298219478,55.164084606579166,57.77777777777777,100.0
+47,java,"public void onCallAdded(Call call) {
+    if (call != null) {
+        call.registerCallback(mCallback);
+    }
+}","public void onCallAdded(Call call) {
+    if (call != null) {
+        call.addCallback(this);
+    }
+}","public void onCallAdded(Call call) {
+    if (call != null) {
+        call.addCallback(this);
+    }
+}",74.36357747171822,79.10665071754359,79.88612070779082,38.46153846153847,100.0
+48,java,"public void onCallRemoved(Call call) {
+    mCurrentCall = null;
+    mCardContent = null;
+    mPresenter.onModelUpdated(this);
+    if (call != null) {
+        call.unregisterCallback(mCallback);
+    }
+}","public void onCallRemoved(Call call) {
+    call.clear();
+    call.setCardContent(null);
+    presenter.onModelUpdated();
+    call.unregisterCallback(this);
+}","public void onCallRemoved(Call call) {
+    call.clear();
+    call.setCardContent(null);
+    presenter.onModelUpdated();
+    call.unregisterCallback(this);
+}",27.14916922548058,15.124760523215706,20.61477352156375,30.0,42.857142857142854
+49,java,"void updateModelWithPhoneNumber(String number) {
+    String formattedNumber = TelecomUtils.getFormattedNumber(mContext, number);
+    mCardContent = new DescriptiveTextWithControlsView(null, formattedNumber,
+            mOngoingCallSubtitle, mElapsedTimeClock.millis(), mMuteButton, mEndCallButton,
+            mDialpadButton);
+    mPresenter.onModelUpdated(this);
+}","void updateModelWithPhoneNumber(String number) {
+    DescriptiveTextWithControlsView view = new DescriptiveTextWithControlsView(number);
+    presenter.updateModel(view);
+}","void updateModelWithPhoneNumber(String number) {
+    DescriptiveTextWithControlsView view = new DescriptiveTextWithControlsView(number);
+    presenter.updateModel(view);
+}",14.306789336892923,11.682950752097785,15.6830954843628,11.11111111111111,18.75
+50,java,"private void initializeAudioControls() {
+    mMuteButton = new DescriptiveTextWithControlsView.Control(
+            mContext.getDrawable(R.drawable.ic_mic_off),
+            v -> {
+                mInCallService.setMuted(mMuteCallToggle);
+                mMuteCallToggle = !mMuteCallToggle;
+            });
+    mEndCallButton = new DescriptiveTextWithControlsView.Control(
+            mContext.getDrawable(R.drawable.ic_call_end_button),
+            v -> mCurrentCall.disconnect());
+    mDialpadButton = new DescriptiveTextWithControlsView.Control(
+            mContext.getDrawable(R.drawable.ic_dialpad), this::onClick);
+}","private void initializeAudioControls() {
+    muteButton.setImageResource(R.drawable.ic_mute);
+    muteButton.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            toggleMute();
+        }
+    });
+
+    endCallButton.setImageResource(R.drawable.ic_end_call);
+    endCallButton.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            endCall();
+        }
+    });
+
+    dialpadButton.setImageResource(R.drawable.ic_dialpad);
+    dialpadButton.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            showDialpad();
+        }
+    });
+}","private void initializeAudioControls() {
+    muteButton.setImageResource(R.drawable.ic_mute);
+    muteButton.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            toggleMute();
+        }
+    });
+
+    endCallButton.setImageResource(R.drawable.ic_end_call);
+    endCallButton.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            endCall();
+        }
+    });
+
+    dialpadButton.setImageResource(R.drawable.ic_dialpad);
+    dialpadButton.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            showDialpad();
+        }
+    });
+}",27.93345279291183,5.992026878339571,8.950340443040359,40.909090909090914,55.88235294117647
+53,cpp,"void DBusConnectionStatusEvent::onListenerAdded(const Listener &_listener, const Subscription _subscription) {
+    (void)_subscription;
+    if (dbusConnection_->isConnected())
+        _listener(AvailabilityStatus::AVAILABLE);
+}","void DBusConnectionStatusEvent::onListenerAdded(const Listener &_listener, const Subscription _subscription) {
+    if (dbusConnectionStatus.isActive()) {
+        _listener.notify(AVAILABLE);
+    }
+}","void DBusConnectionStatusEvent::onListenerAdded(const Listener &_listener, const Subscription _subscription) {
+    if (dbusConnectionStatus.isActive()) {
+        _listener.notify(AVAILABLE);
+    }
+}",55.51627611083381,54.37427682227519,61.16908849062524,56.52173913043478,50.0
+54,cpp,"void joinOnExit(std::uintptr_t conn, std::thread & t) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    if (connections_.end() != connections_.find(conn)) {
+        bool found(false);
+        std::vector<std::thread*>::const_iterator it = threads_.begin();
+        while (!found && it != threads_.end()) {
+            found = (&t == *it++);
+        }
+        if (!found) {
+            threads_.push_back(&t);
+        }
+    }
+}","void joinOnExit(std::uintptr_t conn, std::thread & t) {
+    std::lock_guard<std::mutex> lk(join_mutex);
+    if (conn != 0 && !t.joinable()) {
+        join_list.push_back(t);
+    }
+}","void joinOnExit(std::uintptr_t conn, std::thread & t) {
+    std::lock_guard<std::mutex> lk(join_mutex);
+    if (conn != 0 && !t.joinable()) {
+        join_list.push_back(t);
+    }
+}",26.835115926637226,14.435318690471046,20.015119440630293,43.47826086956522,29.411764705882355
+56,cpp,"void DBusConnection::onRemoveWatch(::DBusWatch* libdbusWatch, void* data) {
+    if (NULL == static_cast<WatchContext*>(data)) {
+        COMMONAPI_ERROR(std::string(__FUNCTION__), ""data (WatchContext) == NULL"");
+    }
+
+    DBusWatch* dbusWatch = static_cast<DBusWatch*>(dbus_watch_get_data(libdbusWatch));
+    if (dbusWatch != NULL) {
+        if(dbusWatch->isReadyToBeWatched()) {
+            dbusWatch->stopWatching();
+        }
+        dbus_watch_set_data(libdbusWatch, NULL, NULL);
+    }
+}","void DBusConnection::onRemoveWatch(::DBusWatch* libdbusWatch, void* data) {
+    libdbusWatch->stopMonitoring();
+    DBusConnection* connection = static_cast<DBusConnection*>(data);
+    connection->m_watches.erase(libdbusWatch);
+}","void DBusConnection::onRemoveWatch(::DBusWatch* libdbusWatch, void* data) {
+    libdbusWatch->stopMonitoring();
+    DBusConnection* connection = static_cast<DBusConnection*>(data);
+    connection->m_watches.erase(libdbusWatch);
+}",33.467651534678275,7.5287191398645685,14.372190029151557,48.333333333333336,63.63636363636363
+57,cpp,"void DBusConnection::onToggleWatch(::DBusWatch* libdbusWatch, void* data) {
+    WatchContext* watchContext = static_cast<WatchContext*>(data);
+
+    if (NULL == watchContext) {
+        COMMONAPI_ERROR(std::string(__FUNCTION__), ""watchContext == NULL"");
+        return;
+    }
+
+    DBusWatch* dbusWatch = static_cast<DBusWatch*>(dbus_watch_get_data(libdbusWatch));
+
+    if (dbusWatch == NULL) {
+        DBusWatch* dbusWatch = new DBusWatch(libdbusWatch, watchContext->mainLoopContext_, watchContext->dbusConnection_);
+        dbusWatch->addDependentDispatchSource(watchContext->dispatchSource_);
+        dbus_watch_set_data(libdbusWatch, dbusWatch, NULL);
+
+        if (dbusWatch->isReadyToBeWatched()) {
+            dbusWatch->startWatching();
+        }
+    } else {
+        if (!dbusWatch->isReadyToBeWatched()) {
+            dbusWatch->stopWatching();
+            dbus_watch_set_data(libdbusWatch, NULL, NULL);
+        } else {
+            dbusWatch->startWatching();
+        }
+    }
+}","void DBusConnection::onToggleWatch(::DBusWatch* libdbusWatch, void* data) {
+    DBusWatch* watch = static_cast<DBusWatch*>(data);
+    if (watch->isReady()) {
+        watch->start();
+    } else {
+        watch->stop();
+    }
+}","void DBusConnection::onToggleWatch(::DBusWatch* libdbusWatch, void* data) {
+    DBusWatch* watch = static_cast<DBusWatch*>(data);
+    if (watch->isReady()) {
+        watch->start();
+    } else {
+        watch->stop();
+    }
+}",20.886138575379036,4.231524551560155,11.403161840088066,52.52525252525253,15.384615384615385
+58,cpp,"const std::shared_ptr<DBusObjectManager> DBusConnection::getDBusObjectManager() {
+    if (!dbusObjectManager_) {
+        std::lock_guard<std::mutex> itsLock(objectManagerGuard_);
+        if (!dbusObjectManager_) {
+            dbusObjectManager_ = std::make_shared<DBusObjectManager>(shared_from_this());
+        }
+    }
+    return dbusObjectManager_;
+}","const std::shared_ptr<DBusObjectManager> DBusConnection::getDBusObjectManager() {
+    std::lock_guard<std::mutex> lock(dbus_object_manager_mutex_);
+    if (!dbus_object_manager_) {
+        dbus_object_manager_ = std::make_shared<DBusObjectManager>(dbus_);
+    }
+    return dbus_object_manager_;
+}","const std::shared_ptr<DBusObjectManager> DBusConnection::getDBusObjectManager() {
+    static std::shared_ptr<DBusObjectManager> instance;
+    std::lock_guard<std::mutex> lock(dbus_object_manager_mutex_);
+    if (!instance) {
+        instance = std::make_shared<DBusObjectManager>(dbus_);
+    }
+    return instance;
+}",50.131064296937865,16.638505369603646,17.219085151481163,66.66666666666666,100.0
+59,cpp,"bool DBusConnection::releaseServiceName(const std::string& serviceName) const {
+    DBusError dbusError;
+    bool isServiceNameReleased = false;
+    std::lock_guard<std::recursive_mutex> dbusConnectionLock(connectionGuard_);
+    auto conIter = connectionNameCount_.find(serviceName);
+    if (conIter != connectionNameCount_.end()) {
+        if (conIter->second == 1) {
+            const int libdbusStatus = dbus_bus_release_name(connection_,
+                            serviceName.c_str(),
+                            &dbusError.libdbusError_);
+            isServiceNameReleased = (libdbusStatus == DBUS_RELEASE_NAME_REPLY_RELEASED);
+            if (isServiceNameReleased) {
+                connectionNameCount_.erase(conIter);
+            }
+        } else {
+            conIter->second--;
+            isServiceNameReleased = true;
+        }
+    }
+    return isServiceNameReleased;
+}","bool DBusConnection::releaseServiceName(const std::string& serviceName) const {
+    std::lock_guard<std::mutex> lock(service_names_mutex_);
+    auto it = service_names_.find(serviceName);
+    if (it == service_names_.end()) {
+        return false;
+    }
+    it->second--;
+    if (it->second == 0) {
+        service_names_.erase(it);
+        dbus_connection_->release_name(it->second);
+    }
+    return true;
+}","bool DBusConnection::releaseServiceName(const std::string& serviceName) const {
+    std::lock_guard<std::mutex> lock(service_names_mutex_);
+    auto it = service_names_.find(serviceName);
+    if (it == service_names_.end()) {
+        return false;
+    }
+    it->second--;
+    if (it->second == 0) {
+        service_names_.erase(it);
+        dbus_connection_->release_name(serviceName);
+    }
+    return true;
+}",30.80610749217709,9.616721193975602,12.179137346161331,61.42857142857143,40.0
+60,cpp,"DBusMessage DBusConnection::convertToDBusMessage(::DBusPendingCall* _libdbusPendingCall) {
+    if (NULL == _libdbusPendingCall) {
+        COMMONAPI_ERROR(std::string(__FUNCTION__), ""_libdbusPendingCall == NULL"");
+        return DBusMessage();
+    }
+
+    ::DBusMessage* libdbusMessage = dbus_pending_call_steal_reply(_libdbusPendingCall);
+    const bool increaseLibdbusMessageReferenceCount = false;
+    DBusMessage dbusMessage(libdbusMessage, increaseLibdbusMessageReferenceCount);
+
+    return dbusMessage;
+}","DBusMessage DBusConnection::convertToDBusMessage(::DBusPendingCall* _libdbusPendingCall) {
+    if (_libdbusPendingCall == nullptr) {
+        return DBusMessage();
+    }
+
+    DBusMessage reply = _libdbusPendingCall->reply();
+    _libdbusPendingCall->release();
+    return reply;
+}","DBusMessage DBusConnection::convertToDBusMessage(::DBusPendingCall* _libdbusPendingCall) {
+    if (_libdbusPendingCall == nullptr) {
+        return DBusMessage();
+    }
+
+    DBusMessage reply = _libdbusPendingCall->reply();
+    _libdbusPendingCall->release();
+    return reply;
+}",31.985322682438998,15.907579320176463,17.802942178810294,35.8974358974359,58.333333333333336
+61,cpp,"void DBusConnection::deleteAsyncHandlers() {
+    std::vector<DBusMessageReplyAsyncHandler*> asyncHandlers;
+    {
+        std::lock_guard<std::mutex> asyncHandlersLock(asyncHandlersToDeleteMutex_);
+        asyncHandlers = asyncHandlersToDelete_;
+        asyncHandlersToDelete_.clear();
+    }
+
+    auto it = asyncHandlers.begin();
+    while(it != asyncHandlers.end()) {
+        delete *it;
+        it = asyncHandlers.erase(it);
+    }
+}","void DBusConnection::deleteAsyncHandlers() {
+    std::unique_lock<std::mutex> lock(mutex_);
+    std::vector<DBusAsyncHandler*> handlers = std::move(async_handlers_);
+    async_handlers_.clear();
+    lock.unlock();
+
+    for (DBusAsyncHandler* handler : handlers) {
+        delete handler;
+    }
+}","void DBusConnection::deleteAsyncHandlers() {
+    std::unique_lock<std::mutex> lock(mutex_);
+    std::vector<DBusAsyncHandler*> handlers = std::move(async_handlers_);
+    lock.unlock();
+
+    for (DBusAsyncHandler* handler : handlers) {
+        delete handler;
+    }
+}",27.800074722159867,4.855047084154351,5.494911668430703,59.183673469387756,41.66666666666667
+62,cpp,"void DBusConnection::handleSignalStates() {
+    std::map<std::shared_ptr<DBusProxyConnection::DBusSignalHandler>, std::set<uint32_t>> tmpHandlers;
+    {
+        std::lock_guard<std::mutex> itsLock(signalStateHandlersMutex_);
+        tmpHandlers = signalStateHandlers_;
+    }
+    for (auto itsHandler : tmpHandlers) {
+        for (uint32_t tag : itsHandler.second) {
+            itsHandler.first->onSpecificError(CommonAPI::CallStatus::SUCCESS, tag);
+        }
+    }
+}","void DBusConnection::handleSignalStates() {
+    std::lock_guard<std::mutex> lock(signal_mutex_);
+    for (auto& signal_state : signal_states_) {
+        if (signal_state.status == SUCCESS) {
+            for (auto& handler : signal_state.handlers) {
+                handler.onSpecificError(signal_state.tag, SUCCESS);
+            }
+        }
+    }
+}","void DBusConnection::handleSignalStates() {
+    std::lock_guard<std::mutex> lock(signal_mutex_);
+    for (auto& signal_state : signal_states_) {
+        if (signal_state.status == SUCCESS) {
+            for (auto& handler : signal_state.handlers) {
+                handler.onSpecificError(signal_state.tag, SUCCESS);
+            }
+        }
+    }
+}",27.649333848098344,7.243330534988143,7.701830944361772,45.65217391304348,50.0
+63,cpp,"void Factory::releaseConnection(const ConnectionId_t& _connectionId) {
+    std::lock_guard<std::recursive_mutex> itsConnectionGuard(connectionsMutex_);
+    auto itsConnection = connections_.find(_connectionId);
+
+    if (itsConnection != connections_.end()) {
+        connections_.erase(_connectionId);
+    }
+}","void Factory::releaseConnection(const ConnectionId_t& _connectionId) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    auto it = connections_.find(_connectionId);
+    if (it != connections_.end()) {
+        connections_.erase(it);
+    }
+}","void Factory::releaseConnection(const ConnectionId_t& _connectionId) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    auto it = connections_.find(_connectionId);
+    if (it != connections_.end()) {
+        connections_.erase(it);
+    }
+}",64.2130571570321,34.11488281065382,35.237345817474555,100.0,87.5
+64,cpp,"void DBusInstanceAvailabilityStatusChangedEvent::SignalHandler::onSignalDBusMessage(const DBusMessage& dbusMessage) {
+    if (dbusMessage.hasMemberName(""InterfacesAdded"")) {
+        instanceAvblStatusEvent_->onInterfacesAddedSignal(dbusMessage);
+    } else if (dbusMessage.hasMemberName(""InterfacesRemoved"")) {
+        instanceAvblStatusEvent_->onInterfacesRemovedSignal(dbusMessage);
+   }
+}","void DBusInstanceAvailabilityStatusChangedEvent::SignalHandler::onSignalDBusMessage(const DBusMessage& dbusMessage) {
+    if (dbusMessage.getMember() == ""InterfacesAdded"") {
+        onInterfacesAdded(dbusMessage);
+    } else if (dbusMessage.getMember() == ""InterfacesRemoved"") {
+        onInterfacesRemoved(dbusMessage);
+    }
+}","void DBusInstanceAvailabilityStatusChangedEvent::SignalHandler::onSignalDBusMessage(const DBusMessage& dbusMessage) {
+    if (dbusMessage.getMember() == ""InterfacesAdded"") {
+        onInterfacesAdded(dbusMessage);
+    } else if (dbusMessage.getMember() == ""InterfacesRemoved"") {
+        onInterfacesRemoved(dbusMessage);
+    }
+}",47.81387645409231,32.28213880040185,42.09025013285051,45.45454545454545,71.42857142857143
+65,cpp,"void DBusInstanceAvailabilityStatusChangedEvent::getAvailableServiceInstances(
+        CommonAPI::CallStatus &_status,
+        std::vector<DBusAddress> &_availableServiceInstances) {
+
+    _availableServiceInstances.clear();
+    DBusObjectManagerStub::DBusObjectPathAndInterfacesDict itsAvailableServiceInstances;
+    registry_->getAvailableServiceInstances(proxy_.getDBusAddress().getService(),
+            proxy_.getDBusAddress().getObjectPath(),
+            itsAvailableServiceInstances);
+
+    _status = CommonAPI::CallStatus::SUCCESS;
+    translate(itsAvailableServiceInstances, _availableServiceInstances);
+}","void DBusInstanceAvailabilityStatusChangedEvent::getAvailableServiceInstances(CommonAPI::CallStatus &_status, std::vector<DBusAddress> &_availableServiceInstances) {
+    std::lock_guard<std::mutex> lock(m_mutex);
+    _status = CommonAPI::CallStatus::SUCCESS;
+    _availableServiceInstances = m_availableServiceInstances;
+}","void DBusInstanceAvailabilityStatusChangedEvent::getAvailableServiceInstances(CommonAPI::CallStatus &_status, std::vector<DBusAddress> &_availableServiceInstances) {
+    std::lock_guard<std::mutex> lock(m_mutex);
+    _status = CommonAPI::CallStatus::SUCCESS;
+    _availableServiceInstances = m_availableServiceInstances;
+}",26.75328100255687,19.40598123122785,20.39935057120742,38.63636363636363,28.57142857142857
+66,cpp,"void DBusInstanceAvailabilityStatusChangedEvent::getServiceInstanceAvailabilityStatus(
+        const std::string &_instance,
+        CallStatus &_callStatus,
+        AvailabilityStatus &_availabilityStatus) {
+
+    CommonAPI::Address itsAddress(""local"", observedCapiInterfaceName_, _instance);
+    DBusAddress itsDBusAddress;
+    DBusAddressTranslator::get()->translate(itsAddress, itsDBusAddress);
+
+    _availabilityStatus = AvailabilityStatus::NOT_AVAILABLE;
+    if (registry_->isServiceInstanceAlive(
+            itsDBusAddress.getInterface(),
+            itsDBusAddress.getService(),
+            itsDBusAddress.getObjectPath())) {
+        _availabilityStatus = AvailabilityStatus::AVAILABLE;
+    }
+    _callStatus = CallStatus::SUCCESS;
+}","void DBusInstanceAvailabilityStatusChangedEvent::getServiceInstanceAvailabilityStatus(const std::string &_instance, CallStatus &_callStatus, AvailabilityStatus &_availabilityStatus) {
+    std::string dbusAddress = _instance;
+    dbusAddress += "".service"";
+    std::string dbusPath = ""/org/freedesktop/systemd1/instance/"" + _instance;
+    std::string dbusInterface = ""org.freedesktop.systemd1.Instance"";
+    std::string dbusMethod = ""GetAvailabilityStatus"";
+    std::string dbusArguments = """";
+    std::string dbusReply;
+    std::string dbusError;
+    std::string dbusErrorName;
+    std::string dbusErrorDetails;
+    std::string dbusErrorReply;
+    std::string dbusErrorReplyDetails;
+    std::string dbusErrorReplyName;
+    std::string dbusErrorReplyBody;
+    std::string dbusErrorReplyBodyDetails;
+    std::string dbusErrorReplyBodyName;
+    std::string dbusErrorReplyBodyDetailsDetails;
+    std::string dbusErrorReplyBodyDetailsDetailsDetails;
+    std::string dbusErrorReplyBodyDetailsDetailsDetailsDetails;
+    std::string dbusErrorReplyBodyDetailsDetailsDetailsDetailsDetails;
+    std::string dbusErrorReplyBodyDetailsDetailsDetailsDetailsDetailsDetails;
+    std::string dbusErrorReplyBodyDetailsDetailsDetailsDetailsDetailsDetailsDetails;
+    std::string dbusErrorReplyBodyDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetails;
+    std::string dbusErrorReplyBodyDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetails;
+    std::string dbusErrorReplyBodyDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetails;
+    std::string dbusErrorReplyBodyDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetails;
+    std::string dbusErrorReplyBodyDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetails;
+    std::string dbusErrorReplyBodyDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetails;
+    std::string dbusErrorReplyBodyDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetails;
+    std::string dbusErrorReplyBodyDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetails;
+    std::string dbusErrorReplyBodyDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetails;
+    std::string dbusErrorReplyBodyDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetails;
+    std::string dbusErrorReplyBodyDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetails;
+    std::string dbusErrorReplyBodyDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetails;
+    std::string dbusErrorReplyBodyDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetails;
+    std::string dbusErrorReplyBodyDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetails;
+    std::string dbusErrorReplyBodyDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetails;
+    std::string dbusErrorReplyBodyDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetails;
+    std::string dbusErrorReplyBodyDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetails;
+    std::string dbusErrorReplyBodyDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetails","void DBusInstanceAvailabilityStatusChangedEvent::getServiceInstanceAvailabilityStatus(const std::string &_instance, CallStatus &_callStatus, AvailabilityStatus &_availabilityStatus) {
+    std::string dbusAddress = _instance;
+    dbusAddress += "".service"";
+    std::string dbusPath = ""/org/freedesktop/systemd1/instance/"" + _instance;
+    std::string dbusInterface = ""org.freedesktop.systemd1.Instance"";
+    std::string dbusMethod = ""GetAvailabilityStatus"";
+    std::string dbusArguments = """";
+    std::string dbusReply;
+    std::string dbusError;
+    std::string dbusErrorName;
+    std::string dbusErrorDetails;
+    std::string dbusErrorReply;
+    std::string dbusErrorReplyDetails;
+    std::string dbusErrorReplyName;
+    std::string dbusErrorReplyBody;
+    std::string dbusErrorReplyBodyDetails;
+    std::string dbusErrorReplyBodyDetailsDetails;
+    std::string dbusErrorReplyBodyDetailsDetailsDetails;
+    std::string dbusErrorReplyBodyDetailsDetailsDetailsDetails;
+    std::string dbusErrorReplyBodyDetailsDetailsDetailsDetailsDetails;
+    std::string dbusErrorReplyBodyDetailsDetailsDetailsDetailsDetailsDetails;
+    std::string dbusErrorReplyBodyDetailsDetailsDetailsDetailsDetailsDetailsDetails;
+    std::string dbusErrorReplyBodyDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetails;
+    std::string dbusErrorReplyBodyDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetails;
+    std::string dbusErrorReplyBodyDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetails;
+    std::string dbusErrorReplyBodyDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetails;
+    std::string dbusErrorReplyBodyDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetails;
+    std::string dbusErrorReplyBodyDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetails;
+    std::string dbusErrorReplyBodyDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetails;
+    std::string dbusErrorReplyBodyDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetails;
+    std::string dbusErrorReplyBodyDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetails;
+    std::string dbusErrorReplyBodyDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetails;
+    std::string dbusErrorReplyBodyDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetails;
+    std::string dbusErrorReplyBodyDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetails;
+    std::string dbusErrorReplyBodyDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetails;
+    std::string dbusErrorReplyBodyDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetails;
+    std::string dbusErrorReplyBodyDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetailsDetails",20.036103505006412,6.516786264059167,18.07207220041093,33.33333333333333,22.22222222222222
+67,cpp,"void DBusInstanceAvailabilityStatusChangedEvent::onInterfacesRemovedSignal(const DBusMessage &_message) {
+    DBusInputStream dbusInputStream(_message);
+    std::string dbusObjectPath;
+    std::vector<std::string> dbusInterfaceNames;
+
+    dbusInputStream >> dbusObjectPath;
+    if (dbusInputStream.hasError()) {
+        COMMONAPI_ERROR(std::string(__FUNCTION__) + "" failed to read object path"");
+    }
+
+    dbusInputStream >> dbusInterfaceNames;
+    if (dbusInputStream.hasError()) {
+        COMMONAPI_ERROR(std::string(__FUNCTION__) + "" failed to read interface names"");
+    }
+
+    for (const auto& dbusInterfaceName : dbusInterfaceNames) {
+        if(auto itsProxy = proxyWeakPtr_.lock() &&
+                dbusInterfaceName == observedDbusInterfaceName_ &&
+                removeInterface(dbusObjectPath, dbusInterfaceName)) {
+            (void)itsProxy;
+            notifyInterfaceStatusChanged(dbusObjectPath, dbusInterfaceName, AvailabilityStatus::NOT_AVAILABLE);
+        }
+    }
+}","void DBusInstanceAvailabilityStatusChangedEvent::onInterfacesRemovedSignal(const DBusMessage &_message) {
+    DBusMessage message = _message.createReply();
+    DBusError error;
+    DBusMessage reply;
+    DBusConnection *connection = getDBusConnection();
+    DBusError error_reply;
+
+    if (!connection) {
+        return;
+    }
+
+    if (!message.getArgs(error, reply)) {
+        return;
+    }
+
+    DBusObjectPath object_path = reply.getDBusObjectPath();
+    DBusString interface_name = reply.getDBusString();
+
+    if (object_path == m_object_path && interface_name == m_interface_name) {
+        m_status = NOT_AVAILABLE;
+        emit statusChanged(m_status);
+    }
+}","void DBusInstanceAvailabilityStatusChangedEvent::onInterfacesRemovedSignal(const DBusMessage &_message) {
+    DBusMessage message = _message.createReply();
+    DBusError error;
+    DBusMessage reply;
+    DBusConnection *connection = getDBusConnection();
+    DBusError error_reply;
+
+    if (!connection) {
+        return;
+    }
+
+    if (!message.getArgs(error, reply)) {
+        return;
+    }
+
+    DBusObjectPath object_path = reply.getDBusObjectPath();
+    DBusString interface_name = reply.getDBusString();
+
+    if (object_path == m_object_path && interface_name == m_interface_name) {
+        m_status = NOT_AVAILABLE;
+        emit statusChanged(m_status);
+    }
+}",29.064819407640634,7.11671184209263,7.860514506418627,35.8974358974359,65.38461538461539
+68,cpp,"void DBusInstanceAvailabilityStatusChangedEvent::notifyInterfaceStatusChanged(
+        const std::string &_objectPath,
+        const std::string &_interfaceName,
+        const AvailabilityStatus &_availability) {
+    CommonAPI::Address itsAddress;
+    DBusAddress itsDBusAddress(proxy_.getDBusAddress().getService(),
+                               _objectPath,
+                               _interfaceName);
+
+    DBusAddressTranslator::get()->translate(itsDBusAddress, itsAddress);
+
+    notifyListeners(itsAddress.getAddress(), _availability);
+}","void DBusInstanceAvailabilityStatusChangedEvent::notifyInterfaceStatusChanged(const std::string &_objectPath, const std::string &_interfaceName, const AvailabilityStatus &_availability) {
+    std::string commonAPIAddress = CommonAPI::getCommonAPIAddress(_objectPath, _interfaceName);
+    AvailabilityStatus status = _availability;
+    emit interfaceStatusChanged(commonAPIAddress, status);
+}","void DBusInstanceAvailabilityStatusChangedEvent::notifyInterfaceStatusChanged(const std::string &_objectPath, const std::string &_interfaceName, const AvailabilityStatus &_availability) {
+    std::string commonAPIAddress = CommonAPI::getCommonAPIAddress(_objectPath, _interfaceName);
+    AvailabilityStatus status = _availability;
+    emit interfaceStatusChanged(commonAPIAddress, status);
+}",51.62731320903768,35.45968452939003,38.67706276352344,41.46341463414634,90.9090909090909
+69,cpp,"void DBusProxyStatusEvent::onListenerAdded(const Listener &_listener,
+                                           const Subscription _subscription) {
+    std::lock_guard<std::recursive_mutex> listenersLock(listenersMutex_);
+
+   std::weak_ptr<DBusProxy> itsdbusProxy = dbusProxy_->shared_from_this();
+    dbusProxy_->getDBusConnection()->proxyPushFunctionToMainLoop<DBusConnection>(
+            DBusProxy::notifySpecificListener,
+            itsdbusProxy,
+            _listener,
+            _subscription);
+}","void DBusProxyStatusEvent::onListenerAdded(const Listener &_listener, const Subscription _subscription) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    auto listener_added = [this, _listener, _subscription]() {
+        listener_added_event.notify_one();
+    };
+    event_scheduler.schedule(listener_added);
+}","void DBusProxyStatusEvent::onListenerAdded(const Listener &_listener, const Subscription _subscription) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    auto listener_added = [this, _listener, _subscription]() {
+        listener_added_event.notify_one();
+    };
+    event_scheduler.schedule(listener_added);
+}",52.54454134187848,35.61099807298962,39.567167294524296,60.0,75.0
+70,cpp,"void DBusProxyStatusEvent::onListenerRemoved(const Listener& _listener,
+                                             const Subscription _subscription) {
+    std::lock_guard<std::recursive_mutex> listenersLock(listenersMutex_);
+    (void)_listener;
+    auto listenerIt = listeners_.begin();
+    while(listenerIt != listeners_.end()) {
+        if(listenerIt->first == _subscription)
+            listenerIt = listeners_.erase(listenerIt);
+        else
+            ++listenerIt;
+    }
+}","void DBusProxyStatusEvent::onListenerRemoved(const Listener& _listener, const Subscription _subscription) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    auto it = std::remove_if(listeners_.begin(), listeners_.end(),
+                             [&](const Listener& listener) {
+                                 return listener.subscription == _subscription;
+                             });
+    listeners_.erase(it, listeners_.end());
+}","void DBusProxyStatusEvent::onListenerRemoved(const Listener& _listener, const Subscription _subscription) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    auto it = std::remove_if(listeners_.begin(), listeners_.end(),
+                             [&](const Listener& listener) {
+                                 return listener.subscription == _subscription;
+                             });
+    listeners_.erase(it, listeners_.end());
+}",45.44575372712881,26.348057922712016,27.756385557231823,56.25,71.42857142857143
+71,cpp,"void DBusProxyBase::addSignalStateHandler(
+            std::shared_ptr<DBusProxyConnection::DBusSignalHandler> _handler,
+            const uint32_t _subscription) {
+    connection_->addSignalStateHandler(_handler, _subscription);
+}","void DBusProxyBase::addSignalStateHandler(std::shared_ptr<DBusProxyConnection::DBusSignalHandler> _handler, const uint32_t _subscription) {
+    m_signal_state_handlers[_subscription].push_back(_handler);
+}","void DBusProxyBase::addSignalStateHandler(std::shared_ptr<DBusProxyConnection::DBusSignalHandler> _handler, const uint32_t _subscription) {
+    m_signal_state_handlers[_subscription].push_back(_handler);
+}",51.73241007071893,38.8751420414402,40.27672046365773,61.111111111111114,66.66666666666666
+72,cpp,"void
+DBusProxyManager::instancesAsyncCallback(
+        std::shared_ptr<Proxy> _proxy,
+        const CommonAPI::CallStatus &_status,
+        const std::vector<DBusAddress> &_availableServiceInstances,
+        GetAvailableInstancesCallback &_call) {
+    (void)_proxy;
+    std::vector<std::string> itsAvailableInstances;
+    if (_status == CommonAPI::CallStatus::SUCCESS) {
+        translate(_availableServiceInstances, itsAvailableInstances);
+    }
+    _call(_status, itsAvailableInstances);
+}","void DBusProxyManager::instancesAsyncCallback(std::shared_ptr<Proxy> _proxy, const CommonAPI::CallStatus &_status, const std::vector<DBusAddress> &_availableServiceInstances, GetAvailableInstancesCallback &_call) {
+    if (_status == CommonAPI::CallStatus::SUCCESS) {
+        std::vector<std::string> availableInstances;
+        for (const auto &_instance : _availableServiceInstances) {
+            availableInstances.push_back(_instance.toString());
+        }
+        _call(CommonAPI::CallStatus::SUCCESS, availableInstances);
+    } else {
+        _call(_status, {});
+    }
+}","void DBusProxyManager::instancesAsyncCallback(std::shared_ptr<Proxy> _proxy, const CommonAPI::CallStatus &_status, const std::vector<DBusAddress> &_availableServiceInstances, GetAvailableInstancesCallback &_call) {
+    if (_status == CommonAPI::CallStatus::SUCCESS) {
+        std::vector<std::string> availableInstances;
+        for (const auto &_instance : _availableServiceInstances) {
+            availableInstances.push_back(_instance.toString());
+        }
+        _call(CommonAPI::CallStatus::SUCCESS, availableInstances);
+    } else {
+        _call(_status, std::vector<std::string>());
+    }
+}",61.87957606350095,35.69762632124721,51.265122377201045,68.88888888888889,91.66666666666666
+73,cpp,"bool DBusObjectManager::handleMessage(const DBusMessage& dbusMessage) {
+    const char* objectPath = dbusMessage.getObjectPath();
+    const char* interfaceName = dbusMessage.getInterface();
+
+    if (NULL == objectPath) {
+        COMMONAPI_ERROR(std::string(__FUNCTION__), "" objectPath == NULL"");
+    }
+    if (NULL == interfaceName) {
+        COMMONAPI_ERROR(std::string(__FUNCTION__), "" interfaceName == NULL"");
+    }
+
+    DBusInterfaceHandlerPath handlerPath(objectPath, interfaceName);
+
+    std::unique_lock<std::recursive_mutex> itsLock(objectPathLock_);
+
+    auto handlerIterator = dbusRegisteredObjectsTable_.find(handlerPath);
+    const bool foundDBusInterfaceHandler = handlerIterator != dbusRegisteredObjectsTable_.end();
+    bool dbusMessageHandled = false;
+
+    if (foundDBusInterfaceHandler) {
+        std::shared_ptr<DBusInterfaceHandler> dbusStubAdapterBase = handlerIterator->second.front();
+        itsLock.unlock();
+        dbusMessageHandled = dbusStubAdapterBase->onInterfaceDBusMessage(dbusMessage);
+        return dbusMessageHandled;
+    } else if (dbusMessage.hasInterfaceName(""org.freedesktop.DBus.Introspectable"")) {
+        dbusMessageHandled = onIntrospectableInterfaceDBusMessage(dbusMessage);
+    }
+
+    return dbusMessageHandled;
+}","bool DBusObjectManager::handleMessage(const DBusMessage& dbusMessage) {
+    if (dbusMessage.isMethodCall()) {
+        const std::string_view interface = dbusMessage.getInterface();
+        const std::string_view objectPath = dbusMessage.getObjectPath();
+        auto it = handlers_.find(objectPath);
+        if (it != handlers_.end()) {
+            auto& handlers = it->second;
+            auto handler = handlers.find(interface);
+            if (handler != handlers.end()) {
+                return handler->second(dbusMessage);
+            }
+        }
+    } else if (dbusMessage.isMethodReturn()) {
+        auto it = handlers_.find(dbusMessage.getObjectPath());
+        if (it != handlers_.end()) {
+            auto& handlers = it->second;
+            auto handler = handlers.find(dbusMessage.getInterface());
+            if (handler != handlers.end()) {
+                handler->second.reply(dbusMessage);
+            }
+        }
+    } else if (dbusMessage.isSignal()) {
+        auto it = handlers_.find(dbusMessage.getObjectPath());
+        if (it != handlers_.end()) {
+            auto& handlers = it->second;
+            auto handler = handlers.find(dbusMessage.getInterface());
+            if (handler != handlers.end()) {
+                handler->second.signal(dbusMessage);
+            }
+        }
+    } else if (dbusMessage.isError()) {
+        auto it = handlers_.find(dbusMessage.getObjectPath());
+        if (it != handlers_.end()) {
+            auto& handlers = it->second;
+            auto handler = handlers.find(dbusMessage.getInterface());
+            if (handler != handlers.end()) {
+                handler->second.error(dbusMessage);
+            }
+        }
+    } else if (dbusMessage.isEndOfSession()) {
+        auto it = handlers_.find(dbusMessage.getObjectPath());
+        if (it != handlers_.end()) {
+            auto& handlers = it->second;
+            auto handler = handlers.find(dbusMessage.getInterface());
+            if (handler != handlers.end()) {
+                handler->second.endOfSession(dbusMessage);
+            }
+        }
+    } else if (dbusMessage.isEndOfSession()) {
+        auto it = handlers_.find(dbusMessage.getObjectPath());
+        if (it != handlers_.end()) {
+            auto& handlers = it->second;
+            auto handler = handlers.find(dbusMessage.getInterface());
+            if (handler != handlers.end()) {
+                handler->second.endOfSession(dbusMessage);
+            }
+        }
+    } else if (dbusMessage.isEndOfSession()) {
+        auto it = handlers_.find(dbusMessage.getObjectPath());
+        if (it != handlers_.end()) {
+            auto& handlers = it->second;
+            auto handler = handlers.find(dbusMessage.getInterface());
+            if (handler != handlers.end()) {
+                handler->second.endOfSession(dbusMessage);
+            }
+        }
+    } else if (dbusMessage.isEndOfSession()) {
+        auto it = handlers_.find(dbusMessage.getObjectPath());
+        if (it != handlers_.end()) {
+            auto& handlers = it->second;
+            auto handler = handlers.find(dbusMessage.getInterface());
+            if (handler != handlers","bool DBusObjectManager::handleMessage(const DBusMessage& dbusMessage) {
+    if (dbusMessage.isMethodCall()) {
+        const std::string_view interface = dbusMessage.getInterface();
+        const std::string_view objectPath = dbusMessage.getObjectPath();
+        auto it = handlers_.find(objectPath);
+        if (it != handlers_.end()) {
+            auto& handlers = it->second;
+            auto handler = handlers.find(interface);
+            if (handler != handlers.end()) {
+                return handler->second(dbusMessage);
+            }
+        }
+    } else if (dbusMessage.isMethodReturn()) {
+        auto it = handlers_.find(dbusMessage.getObjectPath());
+        if (it != handlers_.end()) {
+            auto& handlers = it->second;
+            auto handler = handlers.find(dbusMessage.getInterface());
+            if (handler != handlers.end()) {
+                handler->second.reply(dbusMessage);
+            }
+        }
+    } else if (dbusMessage.isSignal()) {
+        auto it = handlers_.find(dbusMessage.getObjectPath());
+        if (it != handlers_.end()) {
+            auto& handlers = it->second;
+            auto handler = handlers.find(dbusMessage.getInterface());
+            if (handler != handlers.end()) {
+                handler->second.signal(dbusMessage);
+            }
+        }
+    } else if (dbusMessage.isError()) {
+        auto it = handlers_.find(dbusMessage.getObjectPath());
+        if (it != handlers_.end()) {
+            auto& handlers = it->second;
+            auto handler = handlers.find(dbusMessage.getInterface());
+            if (handler != handlers.end()) {
+                handler->second.error(dbusMessage);
+            }
+        }
+    } else if (dbusMessage.isEndOfSession()) {
+        auto it = handlers_.find(dbusMessage.getObjectPath());
+        if (it != handlers_.end()) {
+            auto& handlers = it->second;
+            auto handler = handlers.find(dbusMessage.getInterface());
+            if (handler != handlers.end()) {
+                handler->second.endOfSession(dbusMessage);
+            }
+        }
+    }
+    return false;
+}",25.16261415773479,4.797269932664344,10.597395192483319,36.607142857142854,48.64864864864865
+74,cpp,"bool DBusObjectManager::addDBusInterfaceHandler(const DBusInterfaceHandlerPath& dbusInterfaceHandlerPath,
+                                                std::shared_ptr<DBusInterfaceHandler> dbusInterfaceHandler) {
+    const auto& dbusRegisteredObjectsTableIter = dbusRegisteredObjectsTable_.find(dbusInterfaceHandlerPath);
+    const bool isDBusInterfaceHandlerAlreadyAdded = (dbusRegisteredObjectsTableIter != dbusRegisteredObjectsTable_.end());
+
+    if (isDBusInterfaceHandlerAlreadyAdded) {
+
+        auto handler = find(dbusRegisteredObjectsTableIter->second.begin(), dbusRegisteredObjectsTableIter->second.end(), dbusInterfaceHandler);
+        if (handler != dbusRegisteredObjectsTableIter->second.end()) {
+            if (dbusInterfaceHandlerPath.second == ""org.freedesktop.DBus.ObjectManager"" ||
+                    dbusInterfaceHandlerPath.second == ""org.freedesktop.DBus.Properties"") {
+                return true;
+            }
+            return false;
+        }
+    }
+
+    auto insertSuccess = addToRegisteredObjectsTable(dbusInterfaceHandlerPath, dbusInterfaceHandler);
+    return insertSuccess;
+}","bool DBusObjectManager::addDBusInterfaceHandler(const DBusInterfaceHandlerPath& dbusInterfaceHandlerPath, std::shared_ptr<DBusInterfaceHandler> dbusInterfaceHandler) {
+    if (dbusInterfaceHandlerPath.interface == ""org.freedesktop.DBus.Introspectable"" ||
+        dbusInterfaceHandlerPath.interface == ""org.freedesktop.DBus.Properties"" ||
+        dbusInterfaceHandlerPath.interface == ""org.freedesktop.DBus.ObjectManager"") {
+        if (dbusInterfaceHandlerPath.path == ""/org/freedesktop/DBus"") {
+            return true;
+        }
+    }
+    if (dbusInterfaceHandlerPath.path == ""/org/freedesktop/DBus"") {
+        return true;
+    }
+    if (dbusInterfaceHandlerPath.path == ""/org/freedesktop/DBus/Introspectable"") {
+        return true;
+    }
+    if (dbusInterfaceHandlerPath.path == ""/org/freedesktop/DBus/Properties"") {
+        return true;
+    }
+    if (dbusInterfaceHandlerPath.path == ""/org/freedesktop/DBus/ObjectManager"") {
+        return true;
+    }
+    if (dbusInterfaceHandlerPath.path == ""/org/freedesktop/DBus/ObjectManager/Properties"") {
+        return true;
+    }
+    if (dbusInterfaceHandlerPath.path == ""/org/freedesktop/DBus/ObjectManager/Introspectable"") {
+        return true;
+    }
+    if (dbusInterfaceHandlerPath.path == ""/org/freedesktop/DBus/ObjectManager/Introspectable/Properties"") {
+        return true;
+    }
+    if (dbusInterfaceHandlerPath.path == ""/org/freedesktop/DBus/ObjectManager/Introspectable/Properties/Properties"") {
+        return true;
+    }
+    if (dbusInterfaceHandlerPath.path == ""/org/freedesktop/DBus/ObjectManager/Introspectable/Properties/Introspectable"") {
+        return true;
+    }
+    if (dbusInterfaceHandlerPath.path == ""/org/freedesktop/DBus/ObjectManager/Introspectable/Properties/ObjectManager"") {
+        return true;
+    }
+    if (dbusInterfaceHandlerPath.path == ""/org/freedesktop/DBus/ObjectManager/Introspectable/Properties/ObjectManager/Properties"") {
+        return true;
+    }
+    if (dbusInterfaceHandlerPath.path == ""/org/freedesktop/DBus/ObjectManager/Introspectable/Properties/ObjectManager/Introspectable"") {
+        return true;
+    }
+    if (dbusInterfaceHandlerPath.path == ""/org/freedesktop/DBus/ObjectManager/Introspectable/Properties/ObjectManager/Introspectable/Properties"") {
+        return true;
+    }
+    if (dbusInterfaceHandlerPath.path == ""/org/freedesktop/DBus/ObjectManager/Introspectable/Properties/ObjectManager/Introspectable/Introspectable"") {
+        return true;
+    }
+    if (dbusInterfaceHandlerPath.path == ""/org/freedesktop/DBus/ObjectManager/Introspectable/Properties/ObjectManager/Introspectable/Introspectable/Properties"") {
+        return true;
+    }
+    if (dbusInterfaceHandlerPath.","bool DBusObjectManager::addDBusInterfaceHandler(const DBusInterfaceHandlerPath& dbusInterfaceHandlerPath, std::shared_ptr<DBusInterfaceHandler> dbusInterfaceHandler) {
+    if (dbusInterfaceHandlerPath.interface == ""org.freedesktop.DBus.Introspectable"" ||
+        dbusInterfaceHandlerPath.interface == ""org.freedesktop.DBus.Properties"" ||
+        dbusInterfaceHandlerPath.interface == ""org.freedesktop.DBus.ObjectManager"") {
+        if (dbusInterfaceHandlerPath.path == ""/org/freedesktop/DBus"") {
+            return true;
+        }
+    }
+    if (dbusInterfaceHandlerPath.path == ""/org/freedesktop/DBus"") {
+        return true;
+    }
+    if (dbusInterfaceHandlerPath.path == ""/org/freedesktop/DBus/Introspectable"") {
+        return true;
+    }
+    if (dbusInterfaceHandlerPath.path == ""/org/freedesktop/DBus/Properties"") {
+        return true;
+    }
+    if (dbusInterfaceHandlerPath.path == ""/org/freedesktop/DBus/ObjectManager"") {
+        return true;
+    }
+    if (dbusInterfaceHandlerPath.path == ""/org/freedesktop/DBus/ObjectManager/Properties"") {
+        return true;
+    }
+    if (dbusInterfaceHandlerPath.path == ""/org/freedesktop/DBus/ObjectManager/Introspectable"") {
+        return true;
+    }
+    if (dbusInterfaceHandlerPath.path == ""/org/freedesktop/DBus/ObjectManager/Introspectable/Properties"") {
+        return true;
+    }
+    if (dbusInterfaceHandlerPath.path == ""/org/freedesktop/DBus/ObjectManager/Introspectable/Properties/Properties"") {
+        return true;
+    }
+    if (dbusInterfaceHandlerPath.path == ""/org/freedesktop/DBus/ObjectManager/Introspectable/Properties/Introspectable"") {
+        return true;
+    }
+    if (dbusInterfaceHandlerPath.path == ""/org/freedesktop/DBus/ObjectManager/Introspectable/Properties/ObjectManager"") {
+        return true;
+    }
+    if (dbusInterfaceHandlerPath.path == ""/org/freedesktop/DBus/ObjectManager/Introspectable/Properties/ObjectManager/Properties"") {
+        return true;
+    }
+    if (dbusInterfaceHandlerPath.path == ""/org/freedesktop/DBus/ObjectManager/Introspectable/Properties/ObjectManager/Introspectable"") {
+        return true;
+    }
+    if (dbusInterfaceHandlerPath.path == ""/org/freedesktop/DBus/ObjectManager/Introspectable/Properties/ObjectManager/Introspectable/Properties"") {
+        return true;
+    }
+    if (dbusInterfaceHandlerPath.path == ""/org/freedesktop/DBus/ObjectManager/Introspectable/Properties/ObjectManager/Introspectable/Introspectable"") {
+        return true;
+    }
+    if (dbusInterfaceHandlerPath.path == ""/org/freedesktop/DBus/ObjectManager/Introspectable/Properties/ObjectManager/Introspectable/Introspectable/Properties"") {
+        return true;
+    }
+    if (dbusInterfaceHandlerPath.",21.914325612484326,6.558264758817248,18.400624992707364,38.88888888888889,23.809523809523807
+75,cpp,"bool DBusObjectManager::addToRegisteredObjectsTable(DBusInterfaceHandlerPath ifpath, std::shared_ptr<DBusInterfaceHandler> handler) {
+    auto handlerRecord = dbusRegisteredObjectsTable_.find(ifpath);
+    if (handlerRecord == dbusRegisteredObjectsTable_.end()) {
+        dbusRegisteredObjectsTable_.insert({
+            ifpath,
+            std::vector<std::shared_ptr<DBusInterfaceHandler>>({handler})
+        });
+    }
+    else {
+        std::vector<std::shared_ptr<DBusInterfaceHandler>> handlerList = handlerRecord->second;
+        auto adapter = find(handlerList.begin(), handlerList.end(), handler);
+        if (adapter != handlerList.end()) {
+            return false;
+        }
+        else {
+            handlerList.push_back(handler);
+            handlerRecord->second = handlerList;
+        }
+    }
+    return true;
+}","bool DBusObjectManager::addToRegisteredObjectsTable(DBusInterfaceHandlerPath ifpath, std::shared_ptr<DBusInterfaceHandler> handler) {
+    if (registeredObjectsTable.find(ifpath) == registeredObjectsTable.end()) {
+        registeredObjectsTable[ifpath] = handler;
+        return true;
+    }
+    return false;
+}","bool DBusObjectManager::addToRegisteredObjectsTable(DBusInterfaceHandlerPath ifpath, std::shared_ptr<DBusInterfaceHandler> handler) {
+    if (registeredObjectsTable.find(ifpath) == registeredObjectsTable.end()) {
+        registeredObjectsTable[ifpath] = handler;
+        return true;
+    }
+    return false;
+}",24.004124372569876,8.420064517218607,15.40366188872355,48.19277108433735,24.0
+78,c,"void send_positive_reset_response(uint8_t reset_type) {
+  int ret;
+  uint8_t positive_sid = UDS_SID_ECU_RESET + 0x40;
+
+  uint8_t tx_data[] = {positive_sid, reset_type};
+
+  ret = isotp_send(&send_ctx, can_dev, tx_data, sizeof(tx_data), &tx_addr,
+                   &rx_addr, send_complete_cb, NULL);
+  if (ret != ISOTP_N_OK) {
+    LOG_ERR(""Error while sending data to ID %d [%d]\n"", tx_addr.std_id, ret);
+  }
+}","void send_positive_reset_response(uint8_t reset_type) {
+    uint8_t positive_response_sid = 0x7E;
+    uint8_t payload[2];
+    payload[0] = positive_response_sid;
+    payload[1] = reset_type;
+    uint8_t length = 2;
+    uint8_t *pdu = malloc(length + 2);
+    pdu[0] = 0x01;
+    pdu[1] = length;
+    memcpy(pdu + 2, payload, length);
+    uint8_t status = iso_tp_send(pdu, length + 2);
+    if (status != 0) {
+        printf(""Error sending positive reset response\n"");
+    }
+    free(pdu);
+}","void send_positive_reset_response(uint8_t reset_type) {
+    uint8_t positive_response_sid = 0x7E;
+    uint8_t payload[2];
+    payload[0] = positive_response_sid;
+    payload[1] = reset_type;
+    uint8_t length = 2;
+    uint8_t *pdu = malloc(length + 2);
+    pdu[0] = 0x01;
+    pdu[1] = length;
+    memcpy(pdu + 2, payload, length);
+    uint8_t status = iso_tp_send(pdu, length + 2);
+    if (status != 0) {
+        printf(""Error sending positive reset response\n"");
+    }
+    free(pdu);
+}",20.31977413167856,5.641089306230014,7.545315598380843,15.151515151515152,52.94117647058824
+79,c,"void handle_ecu_reset(uint8_t *data, size_t len) {
+  if (len != 2) {
+    send_negative_response(UDS_SID_ECU_RESET,
+                           UDS_NRC_INCORRECT_MESSAGE_LENGTH_OR_INVALID_FORMAT);
+    return;
+  }
+
+  uint8_t reset_type = data[1];
+
+  if (reset_type == UDS_RESET_TYPE_HARD) {
+    send_positive_reset_response(UDS_RESET_TYPE_HARD);
+
+    k_sleep(K_MSEC(100));
+
+    LOG_DBG(""Hard reset\n"");
+    sys_reboot(SYS_REBOOT_COLD);
+  } else {
+    send_negative_response(UDS_SID_ECU_RESET,
+                           UDS_NRC_SUBFUNCTION_NOT_SUPPORTED);
+  }
+}","void handle_ecu_reset(uint8_t *data, size_t len) {
+    if (len != 2) {
+        return;
+    }
+
+    uint8_t reset_type = data[1];
+
+    if (reset_type == 0x01) {
+        send_positive_response();
+        system_reboot();
+    } else {
+        send_negative_response();
+    }
+}","void handle_ecu_reset(uint8_t *data, size_t len) {
+    if (len != 2) {
+        send_negative_response();
+        return;
+    }
+
+    uint8_t reset_type = data[1];
+
+    if (reset_type == 0x01) {
+        send_positive_response();
+        system_reboot();
+    } else {
+        send_negative_response();
+    }
+}",50.92114537078282,54.81320018219152,56.623319285435855,25.581395348837212,66.66666666666666
+80,c,"void send_request_download_response() {
+  int ret;
+  uint8_t positive_sid = UDS_SID_REQUEST_DOWNLOAD + 0x40;
+
+
+  uint8_t tx_data[] = {
+    positive_sid,
+    0x20,  // positive response code
+    0x00,
+    0xD2,  // block size = 258 - 2
+  };
+
+  ret = isotp_send(&send_ctx, can_dev, tx_data, sizeof(tx_data), &tx_addr,
+                   &rx_addr, send_complete_cb, NULL);
+  if (ret != ISOTP_N_OK) {
+    LOG_ERR(""Error while sending data to ID %d [%d]\n"", tx_addr.std_id, ret);
+  }
+}","void send_request_download_response() {
+    uint8_t request_id = 0x10;
+    uint8_t response_id = request_id + 1;
+    uint8_t response_length = 4;
+    uint8_t response_data[4];
+    uint8_t max_block_length = 0x00D2;
+
+    response_data[0] = (response_id >> 8) & 0xFF;
+    response_data[1] = response_id & 0xFF;
+    response_data[2] = response_length;
+    response_data[3] = max_block_length;
+
+    if (can_send_message(response_id, response_data, response_length) != CAN_OK) {
+        printf(""Error sending request download response\n"");
+    }
+}","void send_request_download_response() {
+    uint8_t request_id = 0x10;
+    uint8_t response_id = request_id + 1;
+    uint8_t response_length = 4;
+    uint8_t response_data[4];
+    uint8_t max_block_length = 0x00D2;
+
+    response_data[0] = (response_id >> 8) & 0xFF;
+    response_data[1] = response_id & 0xFF;
+    response_data[2] = response_length;
+    response_data[3] = max_block_length;
+
+    if (can_send_message(response_id, response_data, response_length) != CAN_OK) {
+        printf(""Error sending request download response\n"");
+    }
+}",21.02470937779265,2.620369910284488,2.72846760088612,18.75,60.0
+81,c,"static void send_transfer_data_response(uint8_t block_sequence_counter) {
+  int ret;
+  uint8_t positive_sid = UDS_SID_TRANSFER_DATA + 0x40;
+
+  uint8_t tx_data[] = {positive_sid, block_sequence_counter};
+
+  ret = isotp_send(&send_ctx, can_dev, tx_data, sizeof(tx_data), &tx_addr,
+                   &rx_addr, send_complete_cb, NULL);
+  if (ret != ISOTP_N_OK) {
+    LOG_ERR(""Error while sending data to ID %d [%d]\n"", tx_addr.std_id, ret);
+  }
+}","static void send_transfer_data_response(uint8_t block_sequence_counter) {
+    uint8_t response[2];
+    response[0] = 0x78;
+    response[1] = block_sequence_counter;
+
+    if (can_send_message(response, 2) != CAN_OK) {
+        printf(""Error sending transfer data response\n"");
+    }
+}","static void send_transfer_data_response(uint8_t block_sequence_counter) {
+    uint8_t response[2];
+    response[0] = 0x78;
+    response[1] = block_sequence_counter;
+
+    if (can_send_message(response, 2) != CAN_OK) {
+        printf(""Error sending transfer data response\n"");
+    }
+}",14.621937721586214,9.0619356815352,11.190521087162603,14.705882352941178,23.52941176470588
+82,c,"static void send_routine_control_result(uint16_t routine_id, uint8_t result) {
+  int ret;
+  uint8_t positive_sid = UDS_SID_ROUTINE_CONTROL + 0x40;
+
+  uint8_t tx_data[] = {positive_sid, 0x1, (routine_id >> 8) & 0xFF,
+                       routine_id & 0xFF, result};
+
+  ret = isotp_send(&send_ctx, can_dev, tx_data, sizeof(tx_data), &tx_addr,
+                   &rx_addr, send_complete_cb, NULL);
+  if (ret != ISOTP_N_OK) {
+    LOG_ERR(""Error while sending data to ID %d [%d]\n"", tx_addr.std_id, ret);
+  }
+}","static void send_routine_control_result(uint16_t routine_id, uint8_t result) {
+    uint8_t buffer[5];
+    uint8_t routine_control_type = 0x01;
+    uint8_t routine_control_id = (uint8_t)(routine_id & 0xFF);
+    uint8_t routine_control_result = result;
+
+    buffer[0] = routine_control_type;
+    buffer[1] = routine_control_id;
+    buffer[2] = routine_control_result;
+    buffer[3] = 0x00;
+    buffer[4] = 0x00;
+
+    if (can_send_iso_tp(buffer, 5, 0x31) != 0) {
+        printf(""Error sending routine control result\n"");
+    }
+}","static void send_routine_control_result(uint16_t routine_id, uint8_t result) {
+    uint8_t buffer[5];
+    uint8_t routine_control_type = 0x01;
+    uint8_t routine_control_id = (uint8_t)(routine_id & 0xFF);
+    uint8_t routine_control_result = result;
+
+    buffer[0] = routine_control_type;
+    buffer[1] = routine_control_id;
+    buffer[2] = routine_control_result;
+    buffer[3] = 0x00;
+    buffer[4] = 0x00;
+
+    if (can_send_iso_tp(buffer, 5, 0x31) != 0) {
+        printf(""Error sending routine control result\n"");
+    }
+}",26.903331534280095,13.171287826122255,13.801012669972486,25.64102564102564,55.00000000000001
+83,c,"static void send_transer_exit_positive_response() {
+  int ret;
+  uint8_t positive_sid = UDS_SID_REQUEST_TRANSFER_EXIT + 0x40;
+
+  uint8_t tx_data[] = {positive_sid};
+
+  ret = isotp_send(&send_ctx, can_dev, tx_data, sizeof(tx_data), &tx_addr,
+                   &rx_addr, send_complete_cb, NULL);
+  if (ret != ISOTP_N_OK) {
+    LOG_ERR(""Error while sending data to ID %d [%d]\n"", tx_addr.std_id, ret);
+  }
+}","static void send_transer_exit_positive_response() {
+    uint8_t request_sid = 0x10;
+    uint8_t response[2];
+    uint8_t i;
+
+    response[0] = request_sid | 0x40;
+    response[1] = 0x00;
+
+    for (i = 0; i < 2; i++) {
+        if (can_send_message(response[i])) {
+            break;
+        }
+        delay_ms(10);
+    }
+
+    if (i == 2) {
+        printf(""Error: Failed to send transfer exit positive response\n"");
+    }
+}","static void send_transer_exit_positive_response() {
+    uint8_t request_sid = 0x10;
+    uint8_t response[2];
+    uint8_t i;
+
+    response[0] = request_sid | 0x40;
+    response[1] = 0x00;
+
+    for (i = 0; i < 2; i++) {
+        if (can_send_message(response[i])) {
+            break;
+        }
+        delay_ms(10);
+    }
+
+    if (i == 2) {
+        printf(""Error: Failed to send transfer exit positive response\n"");
+    }
+}",14.984021847668288,6.688071957304445,8.399530584883854,18.181818181818183,26.666666666666668
+85,c,"static inline uint8_t map_from_can_id(uint32_t can_id) {
+  for (int i = 0; i < TRANSLATABLE_ADDRESSES_LEN; i++) {
+    if (id_mapping[i] == can_id) {
+      return i;
+    }
+  }
+
+  return 0xff;
+}","static inline uint8_t map_from_can_id(uint32_t can_id) {
+    uint8_t i;
+    for (i = 0; i < sizeof(id_mapping) / sizeof(id_mapping[0]); i++) {
+        if (id_mapping[i] == can_id) {
+            return i;
+        }
+    }
+    return 0xff;
+}","static inline uint8_t map_from_can_id(uint32_t can_id) {
+    uint8_t i;
+    for (i = 0; i < sizeof(id_mapping) / sizeof(id_mapping[0]); i++) {
+        if (id_mapping[i] == can_id) {
+            return i;
+        }
+    }
+    return 0xff;
+}",62.38283718567769,65.82199215756273,74.18554706133851,66.66666666666666,42.857142857142854
+86,c,"static void lin2can_remove_rx_filter(const struct device *dev, int filter_id) {
+  struct lin2can_data *data = dev->data;
+
+ if (filter_id == TRANSLATABLE_ADDRESSES_LEN) {
+    for (int i = 0; i < TRANSLATABLE_ADDRESSES_LEN; i++) {
+      data->incoming_callbacks[i].callback = 0;
+    }
+
+    return;
+  }
+
+  if (filter_id >= TRANSLATABLE_ADDRESSES_LEN) {
+    return;
+  }
+  data->incoming_callbacks[filter_id].callback = 0;
+}","static void lin2can_remove_rx_filter(const struct device *dev, int filter_id) {
+	int i;
+
+	if (filter_id == -1) {
+		for (i = 0; i < ARRAY_SIZE(dev->rx_filters); i++) {
+			dev->rx_filters[i].cb = NULL;
+		}
+	} else if (filter_id >= 0 && filter_id < ARRAY_SIZE(dev->rx_filters)) {
+		dev->rx_filters[filter_id].cb = NULL;
+	}
+}","static void lin2can_remove_rx_filter(const struct device *dev, int filter_id) {
+	int i;
+
+	if (filter_id == -1) {
+		for (i = 0; i < ARRAY_SIZE(dev->rx_filters); i++) {
+			dev->rx_filters[i].cb = NULL;
+		}
+	} else if (filter_id >= 0 && filter_id < ARRAY_SIZE(dev->rx_filters)) {
+		dev->rx_filters[filter_id].cb = NULL;
+	}
+}",37.67374639030288,31.66055347829785,32.69902835620561,42.857142857142854,43.47826086956522
+87,c,"static bool lin_outgoing_cb(struct lin_frame *frame, void *user_data) {
+  const struct device *dev = (const struct device *)user_data;
+  struct lin2can_data *data = dev->data;
+  struct k_msgq *outgoing_frame_buffer = data->outgoing_frame_queue;
+
+  struct lin2can_outgoing_frame_t outgoing;
+  if (k_msgq_get(outgoing_frame_buffer, &outgoing, K_NO_WAIT)) {
+    return false;
+  }
+
+  memcpy(frame, &outgoing.frame, sizeof(*frame));
+
+  LOG_DBG(""Calling can tx callback"");
+
+  outgoing.callback(dev, 0, outgoing.user_data);
+
+  return true;
+}","static bool lin_outgoing_cb(struct lin_frame *frame, void *user_data) {
+    struct lin_context *ctx = user_data;
+    struct lin_frame *out_frame;
+
+    if (list_empty(&ctx->out_queue)) {
+        return false;
+    }
+
+    out_frame = list_first_entry(&ctx->out_queue, struct lin_frame, list);
+    list_del(&out_frame->list);
+
+    memcpy(ctx->tx_buffer, out_frame->data, out_frame->len);
+    ctx->tx_len = out_frame->len;
+
+    out_frame->completion_cb(out_frame->completion_data);
+
+    return true;
+}","static bool lin_outgoing_cb(struct lin_frame *frame, void *user_data) {
+    struct lin_context *ctx = user_data;
+    struct lin_frame *out_frame;
+
+    if (list_empty(&ctx->out_queue)) {
+        return false;
+    }
+
+    out_frame = list_first_entry(&ctx->out_queue, struct lin_frame, list);
+    list_del(&out_frame->list);
+
+    memcpy(ctx->tx_buffer, out_frame->data, out_frame->len);
+    ctx->tx_len = out_frame->len;
+
+    out_frame->completion_cb(out_frame->completion_data);
+
+    return true;
+}",34.54773345889697,21.430497010298748,23.656988549427073,43.103448275862064,50.0
+88,c,"static void lin_incoming_cb(const struct lin_frame *frame, void *user_data) {
+  const struct device *dev = (const struct device *)user_data;
+  const struct lin2can_data *data = dev->data;
+
+ uint8_t mapped_id = frame->data[0] >> 6;
+
+  __ASSERT(mapped_id < TRANSLATABLE_ADDRESSES_LEN, ""Unexpected LIN-ID: %x"",
+           mapped_id);
+
+  LOG_DBG(""Incoming can frame with can id %x"", id_mapping[mapped_id]);
+
+ if (!data->incoming_callbacks[mapped_id].callback) {
+    return;
+  }
+
+  struct can_frame translated = {
+    .id = id_mapping[mapped_id],
+    .dlc = 8,
+  };
+  memcpy(translated.data, frame->data, frame->len);
+
+  translated.data[0] = frame->data[0] & 0x3f;
+
+  LOG_DBG(""Calling according can callback"");
+
+  data->incoming_callbacks[mapped_id].callback(
+      dev, &translated, data->incoming_callbacks[mapped_id].user_data);
+}","static void lin_incoming_cb(const struct lin_frame *frame, void *user_data) {
+    uint8_t can_id_index = (frame->data[0] >> 6) & 0x03;
+    uint32_t can_id = 0;
+    uint8_t can_dlc = frame->dlc;
+    uint8_t can_data[8];
+    uint8_t i;
+
+    switch (can_id_index) {
+        case 0:
+            can_id = 0x123;
+            break;
+        case 1:
+            can_id = 0x456;
+            break;
+        case 2:
+            can_id = 0x789;
+            break;
+        case 3:
+            can_id = 0xABC;
+            break;
+        default:
+            return;
+    }
+
+    for (i = 0; i < can_dlc; i++) {
+        can_data[i] = frame->data[i + 1];
+    }
+
+    struct can_frame can_frame = {
+        .id = can_id,
+        .dlc = can_dlc,
+        .data = can_data
+    };
+
+    if (user_data) {
+        ((void (*)(struct can_frame))user_data)(&can_frame);
+    }
+}","static void lin_incoming_cb(const struct lin_frame *frame, void *user_data) {
+    uint8_t can_id_index = (frame->data[0] >> 6) & 0x03;
+    uint32_t can_id = 0;
+    uint8_t can_dlc = frame->dlc;
+    uint8_t can_data[8];
+    uint8_t i;
+
+    switch (can_id_index) {
+        case 0:
+            can_id = 0x123;
+            break;
+        case 1:
+            can_id = 0x456;
+            break;
+        case 2:
+            can_id = 0x789;
+            break;
+        case 3:
+            can_id = 0xABC;
+            break;
+        default:
+            return;
+    }
+
+    for (i = 0; i < can_dlc; i++) {
+        can_data[i] = frame->data[i + 1];
+    }
+
+    struct can_frame can_frame = {
+        .id = can_id,
+        .dlc = can_dlc,
+        .data = can_data
+    };
+
+    if (user_data) {
+        ((void (*)(struct can_frame))user_data)(&can_frame);
+    }
+}",31.02521043490559,14.065790404812988,17.90861455320017,47.12643678160919,45.0
+89,c,"static int hv_shield_init(const struct device* dev) {
+  const struct hv_shield_config_t* config = dev->config;
+  struct hv_shield_data_t* data = dev->data;
+
+  int err = gpio_pin_configure_dt(&config->oe_gpio_spec, GPIO_OUTPUT_INACTIVE);
+  if (err) {
+    LOG_ERR(""Error setting up Output enable pin (%d)"", err);
+    return err;
+  }
+
+  memset(&data->registers, 0, sizeof(data->registers));
+
+  err = _hv_shield_update(dev);
+  if (err) {
+    LOG_ERR(""Error writing registers (%d)"", err);
+    return err;
+  }
+
+  err = gpio_pin_set_dt(&config->oe_gpio_spec, 1);
+  if (err) {
+    LOG_ERR(""Error setting enabling output (%d)"", err);
+  }
+
+  return err;
+}","static int hv_shield_init(const struct device* dev) {
+    int ret;
+
+    ret = gpio_request(dev->data->oe_gpio, ""hv_shield_oe"");
+    if (ret < 0) {
+        dev_err(dev, ""Failed to request OE GPIO: %d\n"", ret);
+        return ret;
+    }
+
+    ret = gpio_direction_output(dev->data->oe_gpio, 0);
+    if (ret < 0) {
+        dev_err(dev, ""Failed to set OE GPIO direction: %d\n"", ret);
+        gpio_free(dev->data->oe_gpio);
+        return ret;
+    }
+
+    regulator_enable(dev->data->reg);
+    if (regulator_is_suspended(dev->data->reg)) {
+        dev_err(dev, ""Failed to enable regulator\n"");
+        gpio_free(dev->data->oe_gpio);
+        return -EIO;
+    }
+
+    memset(dev->data->reg_base, 0, dev->data->reg_size);
+
+    ret = i2c_write(dev->data->i2c, dev->data->reg_base, dev->data->reg_size);
+    if (ret < 0) {
+        dev_err(dev, ""Failed to write to I2C register: %d\n"", ret);
+        gpio_free(dev->data->oe_gpio);
+        regulator_disable(dev->data->reg);
+        return ret;
+    }
+
+    gpio_set_value(dev->data->oe_gpio, 1);
+
+    return 0;
+}","static int hv_shield_init(const struct device* dev) {
+    int ret;
+
+    ret = gpio_request(dev->data->oe_gpio, ""hv_shield_oe"");
+    if (ret < 0) {
+        dev_err(dev, ""Failed to request OE GPIO: %d\n"", ret);
+        return ret;
+    }
+
+    ret = gpio_direction_output(dev->data->oe_gpio, 0);
+    if (ret < 0) {
+        dev_err(dev, ""Failed to set OE GPIO direction: %d\n"", ret);
+        gpio_free(dev->data->oe_gpio);
+        return ret;
+    }
+
+    ret = regulator_enable(dev->data->reg);
+    if (ret < 0) {
+        dev_err(dev, ""Failed to enable regulator: %d\n"", ret);
+        gpio_free(dev->data->oe_gpio);
+        return ret;
+    }
+
+    memset(dev->data->reg_base, 0, dev->data->reg_size);
+
+    ret = i2c_write(dev->data->i2c, dev->data->reg_base, dev->data->reg_size);
+    if (ret < 0) {
+        dev_err(dev, ""Failed to write to I2C register: %d\n"", ret);
+        gpio_free(dev->data->oe_gpio);
+        regulator_disable(dev->data->reg);
+        return ret;
+    }
+
+    gpio_set_value(dev->data->oe_gpio, 1);
+
+    return 0;
+}",22.441028885789237,7.576098880942488,11.92153699882034,34.78260869565217,35.483870967741936
+90,c,"static int hvs_set_dac_gain(const struct device* dev,
+                            uint8_t dac,
+                            enum hv_shield_dac_gains_t gain) {
+  if (dac > 1) return -EINVAL;
+
+  struct hv_shield_data_t* data = dev->data;
+  switch (dac) {
+    case 0:
+      data->registers.dac0 = gain;
+      break;
+    case 1:
+      data->registers.dac1 = gain;
+      break;
+    default:
+      return -EINVAL;
+  }
+
+  return _hv_shield_update(dev);
+}","static int hvs_set_dac_gain(const struct device* dev, uint8_t dac, enum hv_shield_dac_gains_t gain) {
+    if (dac > 1) {
+        return -EINVAL;
+    }
+
+    hvs_dac_gain_cache[dac] = gain;
+    hvs_update_dac_gain(dev, dac);
+
+    return 0;
+}","static int hvs_set_dac_gain(const struct device* dev, uint8_t dac, enum hv_shield_dac_gains_t gain) {
+    if (dac > 1) {
+        return -EINVAL;
+    }
+
+    hvs_dac_gain_cache[dac] = gain;
+    hvs_update_dac_gain(dev, dac);
+
+    return 0;
+}",38.11410536797446,35.06242978730814,39.642795512340896,40.909090909090914,36.84210526315789
+91,c,"static int hvs_set_gpio_output_enable(const struct device* dev,
+                                      uint8_t index,
+                                      bool enable) {
+  if (index > 31) return -EINVAL;
+
+  struct hv_shield_data_t* data = dev->data;
+
+  if (index % 8 < 4) {
+    index += 4;
+  } else {
+    index -= 4;
+  }
+
+  if (enable) {
+    data->registers.gpio_output |= 1 << index;
+  } else {
+    data->registers.gpio_output &= ~(1 << index);
+  }
+
+  return _hv_shield_update(dev);
+}","static int hvs_set_gpio_output_enable(const struct device* dev, uint8_t index, bool enable) {
+    uint8_t reg_index;
+    uint8_t bit_index;
+
+    if (index > 31) {
+        return -EINVAL;
+    }
+
+    reg_index = (index / 8);
+    bit_index = (index % 8);
+
+    uint8_t mask = (1 << bit_index);
+
+    if (enable) {
+        dev->config->gpio_output_enable_reg[reg_index] |= mask;
+    } else {
+        dev->config->gpio_output_enable_reg[reg_index] &= ~mask;
+    }
+
+    hvs_write_gpio_output_enable(dev, dev->config->gpio_output_enable_reg);
+
+    return 0;
+}","static int hvs_set_gpio_output_enable(const struct device* dev, uint8_t index, bool enable) {
+    uint8_t reg_index;
+    uint8_t bit_index;
+
+    if (index > 31) {
+        return -EINVAL;
+    }
+
+    reg_index = (index / 8);
+    bit_index = (index % 8);
+
+    uint8_t mask = (1 << bit_index);
+
+    if (enable) {
+        dev->config->gpio_output_enable_reg[reg_index] |= mask;
+    } else {
+        dev->config->gpio_output_enable_reg[reg_index] &= ~mask;
+    }
+
+    hvs_write_gpio_output_enable(dev, dev->config->gpio_output_enable_reg);
+
+    return 0;
+}",33.70108939958121,28.85103243849207,29.61684717241137,47.16981132075472,29.166666666666668
+92,c,"static void can_router_frame_cb(const struct device *dev,
+                                struct can_frame *frame,
+                                void *user_data) {
+  const struct device *to = user_data;
+
+  const int err = can_send(to, frame, K_NO_WAIT, can_router_tx_cb, NULL);
+  if (err) {
+    LOG_WRN(""Can send failed (%d)"", err);
+    return;
+  }
+
+  LOG_DBG(""Routed frame from %s to %s"", dev->name, to->name);
+}","static void can_router_frame_cb(const struct device *dev, struct can_frame *frame, void *user_data) {
+	struct can_device *can_dev = user_data;
+
+	if (can_dev && can_dev->can_bus) {
+		int ret = can_bus_send(can_dev->can_bus, frame, 0);
+
+		if (ret == 0) {
+			dev_dbg(dev, ""CAN frame forwarded to %d\n"", can_dev->id);
+		} else {
+			dev_warn(dev, ""CAN frame forwarding failed\n"");
+		}
+	}
+}","static void can_router_frame_cb(const struct device *dev, struct can_frame *frame, void *user_data) {
+	struct can_device *can_dev = user_data;
+
+	if (can_dev && can_dev->can_bus) {
+		int ret = can_bus_send(can_dev->can_bus, frame, 0);
+
+		if (ret == 0) {
+			dev_dbg(dev, ""CAN frame forwarded to %d\n"", can_dev->id);
+		} else {
+			dev_warn(dev, ""CAN frame forwarding failed\n"");
+		}
+	}
+}",48.7383770907688,25.639784746935273,30.14705694947329,47.5,91.66666666666666
+93,c,"int can_router_register(const struct can_router_entry_t *entries,
+                        int entry_count) {
+  LOG_DBG(""Registering %d can router entries"", entry_count);
+  for (int i = 0; i < entry_count; i++) {
+    const int err =
+        can_add_rx_filter(*entries[i].from, can_router_frame_cb,
+                          (void *)*entries[i].to, &entries[i].filter);
+    if (err) {
+      return err;
+    }
+  }
+
+  LOG_DBG(""Registered %d can router entries"", entry_count);
+
+  return 0;
+}","int can_router_register(const struct can_router_entry_t *entries, int entry_count) {
+    int i;
+    for (i = 0; i < entry_count; i++) {
+        if (can_filter_register(entries[i].source_if, entries[i].filter, entries[i].callback, entries[i].user_data)) {
+            return -1;
+        }
+    }
+    return 0;
+}","int can_router_register(const struct can_router_entry_t *entries, int entry_count) {
+    int i;
+    for (i = 0; i < entry_count; i++) {
+        if (can_filter_register(entries[i].source_if, entries[i].filter, entries[i].callback, entries[i].user_data)) {
+            return -1;
+        }
+    }
+    return 0;
+}",40.33719343472117,28.231015253787373,33.0033420091248,36.95652173913043,63.1578947368421
+94,c,"static int can_router_sysinit() {
+  LOG_DBG(""Initializing can router"");
+
+  STRUCT_SECTION_FOREACH (can_router_table_t, table) {
+    int err = can_router_register(table->entries, table->entry_count);
+    if (err) {
+      LOG_ERR(""could not register can router"");
+      return err;
+    }
+  }
+
+  return 0;
+}","```c
+static int can_router_sysinit() {
+    int i;
+    uint32_t can_id;
+    uint32_t can_mask;
+    uint32_t can_filter;
+    uint32_t can_bus;
+    uint32_t can_domain;
+    uint32_t can_priority;
+    uint32_t can_flags;
+    uint32_t can_length;
+    uint32_t can_type;
+    uint32_t can_frame_type;
+    uint32_t can_extended;
+    uint32_t can_remote;
+    uint32_t can_fifo;
+    uint32_t can_fifo_index;
+    uint32_t can_fifo_size;
+    uint32_t can_fifo_max_size;
+    uint32_t can_fifo_threshold;
+    uint32_t can_fifo_overflow_threshold;
+    uint32_t can_fifo_overflow_action;
+    uint32_t can_fifo_underflow_action;
+    uint32_t can_fifo_overflow_count;
+    uint32_t can_fifo_underflow_count;
+    uint32_t can_fifo_overflow_timestamp;
+    uint32_t can_fifo_underflow_timestamp;
+    uint32_t can_fifo_overflow_counter;
+    uint32_t can_fifo_underflow_counter;
+    uint32_t can_fifo_overflow_timestamp_counter;
+    uint32_t can_fifo_underflow_timestamp_counter;
+    uint32_t can_fifo_overflow_timestamp_counter_max;
+    uint32_t can_fifo_underflow_timestamp_counter_max;
+    uint32_t can_fifo_overflow_timestamp_counter_min;
+    uint32_t can_fifo_underflow_timestamp_counter_min;
+    uint32_t can_fifo_overflow_timestamp_counter_avg;
+    uint32_t can_fifo_underflow_timestamp_counter_avg;
+    uint32_t can_fifo_overflow_timestamp_counter_stddev;
+    uint32_t can_fifo_underflow_timestamp_counter_stddev;
+    uint32_t can_fifo_overflow_timestamp_counter_max_count;
+    uint32_t can_fifo_underflow_timestamp_counter_max_count;
+    uint32_t can_fifo_overflow_timestamp_counter_min_count;
+    uint32_t can_fifo_underflow_timestamp_counter_min_count;
+    uint32_t can_fifo_overflow_timestamp_counter_avg_count;
+    uint32_t can_fifo_underflow_timestamp_counter_avg_count;
+    uint32_t can_fifo_overflow_timestamp_counter_stddev_count;
+    uint32_t can_fifo_underflow_timestamp_counter_stddev_count;
+    uint32_t can_fifo_overflow_timestamp_counter_max_time;
+    uint32_t can_fifo_underflow_timestamp_counter_max_time;
+    uint32_t can_fifo_overflow_timestamp_counter_min_time;
+    uint32_t can_fifo_underflow","```c
+static int can_router_sysinit() {
+    int i;
+    uint32_t can_id;
+    uint32_t can_mask;
+    uint32_t can_filter;
+    uint32_t can_bus;
+    uint32_t can_domain;
+    uint32_t can_priority;
+    uint32_t can_flags;
+    uint32_t can_length;
+    uint32_t can_type;
+    uint32_t can_frame_type;
+    uint32_t can_extended;
+    uint32_t can_remote;
+    uint32_t can_fifo;
+    uint32_t can_fifo_index;
+    uint32_t can_fifo_size;
+    uint32_t can_fifo_max_size;
+    uint32_t can_fifo_threshold;
+    uint32_t can_fifo_overflow_threshold;
+    uint32_t can_fifo_overflow_action;
+    uint32_t can_fifo_underflow_action;
+    uint32_t can_fifo_overflow_count;
+    uint32_t can_fifo_underflow_count;
+    uint32_t can_fifo_overflow_timestamp;
+    uint32_t can_fifo_underflow_timestamp;
+    uint32_t can_fifo_overflow_counter;
+    uint32_t can_fifo_underflow_counter;
+    uint32_t can_fifo_overflow_timestamp_counter;
+    uint32_t can_fifo_underflow_timestamp_counter;
+    uint32_t can_fifo_overflow_timestamp_counter_max;
+    uint32_t can_fifo_underflow_timestamp_counter_max;
+    uint32_t can_fifo_overflow_timestamp_counter_min;
+    uint32_t can_fifo_underflow_timestamp_counter_min;
+    uint32_t can_fifo_overflow_timestamp_counter_avg;
+    uint32_t can_fifo_underflow_timestamp_counter_avg;
+    uint32_t can_fifo_overflow_timestamp_counter_stddev;
+    uint32_t can_fifo_underflow_timestamp_counter_stddev;
+    uint32_t can_fifo_overflow_timestamp_counter_max_count;
+    uint32_t can_fifo_underflow_timestamp_counter_max_count;
+    uint32_t can_fifo_overflow_timestamp_counter_min_count;
+    uint32_t can_fifo_underflow_timestamp_counter_min_count;
+    uint32_t can_fifo_overflow_timestamp_counter_avg_count;
+    uint32_t can_fifo_underflow_timestamp_counter_avg_count;
+    uint32_t can_fifo_overflow_timestamp_counter_stddev_count;
+    uint32_t can_fifo_underflow_timestamp_counter_stddev_count;
+    uint32_t can_fifo_overflow_timestamp_counter_max_time;
+    uint32_t can_fifo_underflow_timestamp_counter_max_time;
+    uint32_t can_fifo_overflow_timestamp_counter_min_time;
+    uint32_t can_fifo_underflow",14.004715506055437,2.47785167191409,9.862849432767433,10.344827586206897,33.33333333333333
+95,c,"static int hvs_set_masked_raw(const struct device* port,
+                              gpio_port_pins_t mask,
+                              gpio_port_value_t value) {
+  const struct hv_shield_gpio_config_t* config = port->config;
+
+  for (int i = 0; i < config->lv_gpios_count; i++) {
+    if (!(mask & BIT(i))) continue;
+
+    int ret = gpio_pin_set(config->lv_gpios[i].port, config->lv_gpios[i].pin,
+                           !!(value & BIT(i)));
+    if (ret < 0) {
+      LOG_ERR(""Error settings gpio %d (error %d)"", i, ret);
+      return ret;
+    }
+  }
+
+  return 0;
+}","static int hvs_set_masked_raw(const struct device* port, gpio_port_pins_t mask, gpio_port_value_t value) {
+    int ret;
+    int i;
+
+    for (i = 0; i < GPIO_NUM_PINS; i++) {
+        if ((mask & (1 << i)) != 0) {
+            ret = gpio_set_pin(port, i, (value & (1 << i)) ? GPIO_PIN_HIGH : GPIO_PIN_LOW);
+            if (ret < 0) {
+                dev_err(port, ""Failed to set GPIO %d\n"", i);
+                return ret;
+            }
+        }
+    }
+
+    return 0;
+}","static int hvs_set_masked_raw(const struct device* port, gpio_port_pins_t mask, gpio_port_value_t value) {
+    int ret;
+    int i;
+
+    for (i = 0; i < GPIO_NUM_PINS; i++) {
+        if ((mask & (1 << i)) != 0) {
+            ret = gpio_set_pin(port, i, (value & (1 << i)) ? GPIO_PIN_HIGH : GPIO_PIN_LOW);
+            if (ret < 0) {
+                dev_err(port, ""Failed to set GPIO %d\n"", i);
+                return ret;
+            }
+        }
+    }
+
+    return 0;
+}",41.47727206214239,35.325541022694104,40.23152636538001,28.8135593220339,61.53846153846154
+96,c,"static int al_get_free_cb_slots(const struct device *dev, uint8_t *free_slots) {
+  struct abstract_lin_data *data = dev->data;
+
+  if (free_slots == NULL) {
+    return -EINVAL;
+  }
+
+  *free_slots = CONFIG_ABSTRACT_LIN_MAX_FRAME_COUNT - data->used_callbacks;
+
+  return 0;
+}","static int al_get_free_cb_slots(const struct device *dev, uint8_t *free_slots) {
+    if (free_slots == NULL) {
+        return -EINVAL;
+    }
+
+    *free_slots = al_max_cb_slots - al_used_cb_slots;
+
+    return 0;
+}","static int al_get_free_cb_slots(const struct device *dev, uint8_t *free_slots) {
+    if (free_slots == NULL) {
+        return -EINVAL;
+    }
+
+    *free_slots = al_max_cb_slots - al_used_cb_slots;
+
+    return 0;
+}",57.26267781676262,60.562229523054434,61.82181507732941,66.66666666666666,40.0
+97,c,"static int al_register_incoming_cb(const struct device *dev,
+                                   abstract_lin_incoming_callback_t callback,
+                                   uint8_t frame_id,
+                                   uint8_t frame_size,
+                                   void *user_data) {
+  struct abstract_lin_data *data = dev->data;
+
+  if (callback == NULL || frame_id > 0x3F || frame_size < 1 || frame_size > 8) {
+    return -EINVAL;
+  }
+
+  int free_index = allocate_callback(data, frame_id);
+  if (free_index < 0) {
+    return free_index;
+  }
+
+  data->callbacks[free_index].frame_id = frame_id;
+  data->callbacks[free_index].frame_size = frame_size;
+  data->callbacks[free_index].type = INCOMING;
+  data->callbacks[free_index].incoming_cb = callback;
+  data->callbacks[free_index].user_data = user_data;
+
+  return 0;
+}","static int al_register_incoming_cb(const struct device *dev, abstract_lin_incoming_callback_t callback, uint8_t frame_id, uint8_t frame_size, void *user_data) {
+    if (frame_id > 0x3F || frame_size < 1 || frame_size > 8) {
+        return -EINVAL;
+    }
+
+    int slot = find_free_cb_slot();
+    if (slot < 0) {
+        return -ENOMEM;
+    }
+
+    cb_slots[slot].callback = callback;
+    cb_slots[slot].frame_id = frame_id;
+    cb_slots[slot].frame_size = frame_size;
+    cb_slots[slot].user_data = user_data;
+    cb_slots[slot].used = 1;
+
+    return slot;
+}","static int al_register_incoming_cb(const struct device *dev, abstract_lin_incoming_callback_t callback, uint8_t frame_id, uint8_t frame_size, void *user_data) {
+    if (frame_id > 0x3F || frame_size < 1 || frame_size > 8) {
+        return -EINVAL;
+    }
+
+    int slot = find_free_cb_slot();
+    if (slot < 0) {
+        return -ENOMEM;
+    }
+
+    cb_slots[slot].callback = callback;
+    cb_slots[slot].frame_id = frame_id;
+    cb_slots[slot].frame_size = frame_size;
+    cb_slots[slot].user_data = user_data;
+    cb_slots[slot].used = 1;
+
+    return slot;
+}",43.82689720970853,47.22853255361426,49.017431635359905,33.82352941176471,45.23809523809524
+98,c,"static int al_register_outgoing_cb(const struct device *dev,
+                                   abstract_lin_outgoing_callback_t callback,
+                                   uint8_t frame_id,
+                                   uint8_t frame_size,
+                                   void *user_data) {
+  struct abstract_lin_data *data = dev->data;
+
+  if (callback == NULL || frame_id > 0x3F || frame_size < 1 || frame_size > 8) {
+    return -EINVAL;
+  }
+
+  int free_index = allocate_callback(data, frame_id);
+  if (free_index < 0) {
+    return free_index;
+  }
+
+  data->callbacks[free_index].frame_id = frame_id;
+  data->callbacks[free_index].frame_size = frame_size;
+  data->callbacks[free_index].type = OUTGOING;
+  data->callbacks[free_index].outgoing_cb = callback;
+  data->callbacks[free_index].user_data = user_data;
+
+  return 0;
+}","static int al_register_outgoing_cb(const struct device *dev, abstract_lin_outgoing_callback_t callback, uint8_t frame_id, uint8_t frame_size, void *user_data) {
+    if (frame_id > 0x3F || frame_size < 1 || frame_size > 8) {
+        return -EINVAL;
+    }
+
+    int slot = find_free_outgoing_cb_slot(dev);
+    if (slot < 0) {
+        return -ENOMEM;
+    }
+
+    outgoing_cb_slots[slot].callback = callback;
+    outgoing_cb_slots[slot].frame_id = frame_id;
+    outgoing_cb_slots[slot].frame_size = frame_size;
+    outgoing_cb_slots[slot].user_data = user_data;
+    outgoing_cb_slots[slot].used = true;
+
+    return 0;
+}","static int al_register_outgoing_cb(const struct device *dev, abstract_lin_outgoing_callback_t callback, uint8_t frame_id, uint8_t frame_size, void *user_data) {
+    if (frame_id > 0x3F || frame_size < 1 || frame_size > 8) {
+        return -EINVAL;
+    }
+
+    int slot = find_free_outgoing_cb_slot(dev);
+    if (slot < 0) {
+        return -ENOMEM;
+    }
+
+    outgoing_cb_slots[slot].callback = callback;
+    outgoing_cb_slots[slot].frame_id = frame_id;
+    outgoing_cb_slots[slot].frame_size = frame_size;
+    outgoing_cb_slots[slot].user_data = user_data;
+    outgoing_cb_slots[slot].used = true;
+
+    return 0;
+}",48.64137138964041,48.55582576890083,50.28136847313418,33.82352941176471,61.904761904761905
+99,c,"int abstract_lin_scheduler_set_active_table(
+    abstract_lin_scheduler_handle_t sched, size_t table_index) {
+  if (table_index >= sched->table_count) {
+    return -ENOENT;
+  }
+
+  bool active_before = sched->current_table != -1;
+
+  if (active_before) {
+    k_sem_take(&sched->active, K_FOREVER);
+  }
+
+  sched->current_table = table_index;
+  sched->current_table_entry = 0;  // start from the beginning again.
+
+  k_sem_give(&sched->active);
+
+  return 0;
+}","int abstract_lin_scheduler_set_active_table(struct abstract_lin_scheduler *scheduler, int table_index)
+{
+	if (table_index < 0 || table_index >= scheduler->num_tables) {
+		return -1;
+	}
+
+	sem_wait(&scheduler->table_lock);
+
+	scheduler->active_table = table_index;
+	scheduler->entry_ptr = scheduler->tables[table_index];
+
+	sem_post(&scheduler->table_lock);
+
+	return 0;
+}","int abstract_lin_scheduler_set_active_table(struct abstract_lin_scheduler *scheduler, int table_index)
+{
+	if (table_index < 0 || table_index >= scheduler->num_tables) {
+		return -1;
+	}
+
+	sem_wait(&scheduler->table_lock);
+
+	scheduler->active_table = table_index;
+	scheduler->entry_ptr = scheduler->tables[table_index];
+
+	sem_post(&scheduler->table_lock);
+
+	return 0;
+}",30.751960024872048,9.74720907864249,11.155367862950985,42.10526315789473,60.0
+100,c,"void abstract_lin_scheduler_disable(abstract_lin_scheduler_handle_t sched) {
+  if (sched->current_table == -1) {
+    return;  // already stopped.
+  }
+
+  k_sem_take(&sched->active, K_FOREVER);
+
+  sched->current_table = -1;
+}","void abstract_lin_scheduler_disable(abstract_lin_scheduler_handle_t sched) {
+    if (sched->is_stopped) {
+        return;
+    }
+
+    sem_wait(&sched->sem);
+    sched->active_schedule_table_index = -1;
+    sem_post(&sched->sem);
+}","void abstract_lin_scheduler_disable(abstract_lin_scheduler_handle_t sched) {
+    if (sched->is_stopped) {
+        return;
+    }
+
+    sem_wait(&sched->sem);
+    sched->active_schedule_table_index = -1;
+    sem_post(&sched->sem);
+}",51.05464073514023,23.758717623824147,25.45984531673679,55.00000000000001,100.0

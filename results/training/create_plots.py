@@ -13,11 +13,11 @@ project_root_str = os.getenv("PROJECT_ROOT")
 PROJECT_ROOT = Path(project_root_str)
 
 DATASET_TYPE = "core"
-MODEL_SIZE = "1b"
+MODEL_SIZE = "12b"
 
 INPUT_DIR = PROJECT_ROOT / "results" / "training"
-OUTPUT_DIR = PROJECT_ROOT / "results" / "training" / "plots" / MODEL_SIZE / DATASET_TYPE
-TRAINER_STATE_FILENAME = f"v1_{MODEL_SIZE}_{DATASET_TYPE}_trainer_state.json"  # adjust if your file is named differently
+OUTPUT_DIR = PROJECT_ROOT / "results" / "training" / "plots" / f"{MODEL_SIZE}_v2" / DATASET_TYPE
+TRAINER_STATE_FILENAME = f"{MODEL_SIZE}_{DATASET_TYPE}_v2_trainer_state.json"  # adjust if your file is named differently
 
 TRAIN_PLOT_NAME = "loss_by_step__train.png"
 EVAL_PLOT_NAME = "loss_by_step__eval.png"
