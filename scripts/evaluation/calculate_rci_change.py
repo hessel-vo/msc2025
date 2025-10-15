@@ -11,7 +11,7 @@ PROJECT_ROOT = Path(os.getenv("PROJECT_ROOT"))
 
 RESULTS_SUBFOLDER = "adapted"
 MODEL_SIZE = "12b"
-DATASET_TYPE = "core"
+DATASET_TYPE = "extended"
 
 INPUT_FOLDER = f"results/benchmark/{RESULTS_SUBFOLDER}/to_process/processed_results"
 OUTPUT_FOLDER = "results/evaluation/rci_diff"

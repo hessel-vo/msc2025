@@ -1,0 +1,3 @@
+test_name,bleu_score,corpus_rouge1,corpus_rouge2,corpus_rougeL,corpus_bertscore_f1
+adapted_12b_extended-xl-short-one,12.62,48.21,21.85,41.09,76.00
+adapted_12b_extended-xl-short-one-rci,12.28,47.53,21.63,40.74,75.71

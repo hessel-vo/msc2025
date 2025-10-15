@@ -1,0 +1,9 @@
+test_name,language,bleu_score,corpus_rouge1,corpus_rouge2,corpus_rougeL,corpus_bertscore_f1
+adapted_12b_extended-xl-long-three,c,6.51,46.05,16.68,35.51,70.85
+adapted_12b_extended-xl-long-three,cpp,10.24,45.62,17.60,34.19,70.62
+adapted_12b_extended-xl-long-three,java,12.05,48.84,20.05,38.23,71.01
+adapted_12b_extended-xl-long-three,python,15.50,50.89,22.63,41.50,72.98
+adapted_12b_extended-xl-long-three-rci,c,8.24,47.98,18.43,36.87,71.59
+adapted_12b_extended-xl-long-three-rci,cpp,10.68,45.70,17.31,35.10,71.20
+adapted_12b_extended-xl-long-three-rci,java,12.32,49.85,21.07,38.13,71.66
+adapted_12b_extended-xl-long-three-rci,python,14.93,52.57,23.75,42.06,72.98
