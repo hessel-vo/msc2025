@@ -19,7 +19,7 @@ from codebleu import calc_codebleu
 INPUT_MODEL_NAME = "gemma-3-12b-it"
 MODEL_SIZE = "12b"
 RESULTS_SUBFOLDER = "adapted"  # "baseline" or "adapted"
-DATASET_TYPE = "core"
+DATASET_TYPE = "extended"
 TASK = "generation"
 
 if RESULTS_SUBFOLDER == "adapted":
