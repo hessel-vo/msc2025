@@ -16,8 +16,8 @@ import evaluate
 # Constants for the model and results folder
 INPUT_MODEL_NAME = "gemma-3-12b-it"
 MODEL_SIZE = "12b"
-RESULTS_SUBFOLDER = "adapted" # "baseline" or "adapted"
-DATASET_TYPE = "extended"
+RESULTS_SUBFOLDER = "baseline" # "baseline" or "adapted"
+DATASET_TYPE = "core"
 TASK = "summarization"
 
 if RESULTS_SUBFOLDER == "adapted":
