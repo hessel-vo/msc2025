@@ -17,7 +17,7 @@ PROJECT_ROOT = Path(project_root_str)
 HF_TOKEN = os.getenv('HUGGING_FACE_HUB_TOKEN')
 MODEL_ID = "google/gemma-3-12b-it"
 RESULT_TYPE = "baseline" # "baseline" or "adapted" for model eval
-DATASET_TYPE = "extended"
+DATASET_TYPE = "core"
 
 MODEL_SIZE = MODEL_ID.split("-")[2]
 ADAPTER_ID = PROJECT_ROOT / "scripts" / "training" / f"new_{MODEL_SIZE}_{DATASET_TYPE}_trained_models" / "final_adapter"
@@ -148,7 +148,7 @@ def run_benchmark():
     if subset == "subset":
         summary_type = "summary_long"
         INPUT_CSV_PATH = PROJECT_ROOT / "benchmark_dataset" / "benchmark_dataset_subset.csv"
-        PROMPTS_DIR = PROJECT_ROOT / "benchmark_dataset" / "prompts" / "created_prompts" / task_type / "subset"
+        PROMPTS_DIR = PROJECT_ROOT / "benchmark_dataset" / "prompts" / "created_prompts" / task_type / "subset_context"
         OUTPUT_FILENAME = OUTPUT_DIR / f"{MODEL_NAME}_{task_type}_subset_results.csv"
     
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
