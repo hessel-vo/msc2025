@@ -12,7 +12,7 @@ load_dotenv()
 project_root_str = os.getenv("PROJECT_ROOT")
 PROJECT_ROOT = Path(project_root_str)
 
-DATASET_TYPE = "extended"
+DATASET_TYPE = "core"
 MODEL_SIZE = "12b"
 
 INPUT_DIR = PROJECT_ROOT / "results" / "training"
@@ -86,7 +86,7 @@ def main():
         ax.plot(train_df["step"], train_df["loss"], linewidth=1.5)
         ax.set_xlabel("Step")
         ax.set_ylabel("Training loss")
-        ax.set_title("Training loss by step")
+        ax.set_title(f"Training loss by step - {MODEL_SIZE.upper()} - {DATASET_TYPE.capitalize()} dataset - v2")
         ax.grid(True, alpha=0.3)
         fig.tight_layout()
         out_path = OUTPUT_DIR / TRAIN_PLOT_NAME
@@ -102,7 +102,7 @@ def main():
         ax.plot(eval_df["step"], eval_df["eval_loss"], marker="o", linestyle="-", linewidth=1.5)
         ax.set_xlabel("Step")
         ax.set_ylabel("Validation loss")
-        ax.set_title("Validation loss by step")
+        ax.set_title(f"Validation loss by step - {MODEL_SIZE.upper()} - {DATASET_TYPE.capitalize()} dataset - v2")
         ax.grid(True, alpha=0.3)
         fig.tight_layout()
         out_path = OUTPUT_DIR / EVAL_PLOT_NAME
@@ -129,7 +129,7 @@ def main():
 
         ax.set_xlabel("Step")
         ax.set_ylabel("Loss")
-        ax.set_title("Loss by step (train + validation)")
+        ax.set_title(f"Loss by step (train + validation) - {MODEL_SIZE.upper()} - {DATASET_TYPE.capitalize()} dataset - v2")
         ax.grid(True, alpha=0.3)
         if lines:
             ax.legend(lines, labels, fontsize="small", title="Series")
