@@ -17,7 +17,7 @@ PROJECT_ROOT = Path(project_root_str)
 HF_TOKEN = os.getenv('HUGGING_FACE_HUB_TOKEN')
 MODEL_ID = "google/gemma-3-12b-it"
 RESULT_TYPE = "adapted" # "baseline" or "adapted" for model eval
-DATASET_TYPE = "core"
+DATASET_TYPE = "extended"
 
 MODEL_SIZE = MODEL_ID.split("-")[2]
 ADAPTER_ID = PROJECT_ROOT / "scripts" / "training" / f"new_{MODEL_SIZE}_{DATASET_TYPE}_trained_models" / "final_adapter"
