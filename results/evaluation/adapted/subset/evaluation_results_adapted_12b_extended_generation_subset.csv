@@ -1,0 +1,299 @@
+id,language,reference,generated,generated_rci,codebleu,ngram_match_score,weighted_ngram_match_score,syntax_match_score,dataflow_match_score
+2,python,"def is_datatype(cls, value: Any, datatype: str) -> bool:
+    t = cls.get_type(datatype)
+    if t is None:
+        raise DatatypesException(f""Unsupported datatype: {datatype}"")
+    return t[1](value)","def is_datatype(cls, value: Any, datatype: str) -> bool:
+    datatype = resolve_datatype(datatype, cls.fqn)
+    datatype_info = Datatypes.get_type(datatype)
+    if not datatype_info:
+        raise DatatypesException(f""Not a valid type: '{datatype}'"")
+    return datatype_info[1](value)","def is_datatype(cls, value: Any, datatype: str) -> bool:
+    datatype = resolve_datatype(datatype, cls.fqn)
+    datatype_info = Datatypes.get_type(datatype)
+    if not datatype_info:
+        raise DatatypesException(f""Not a valid type: '{datatype}'"")
+    return datatype_info[1](value)",49.63507318013273,28.949230658291597,38.05260052377777,61.53846153846154,70.0
+3,python,"def is_xintx(value: Any, signed: bool, bits: int):
+    values = [value]
+    if isinstance(value, list):
+        values = value
+
+    for v in values:
+        if not isinstance(v, int):
+            return False
+        if not signed and v < 0:
+            return False
+        max = 2**bits - 1
+        min = 0
+        if signed:
+            max = 2 ** (bits - 1) - 1
+            min = -(2 ** (bits - 1))
+        if not (v <= max and v >= min):
+            return False
+    return True","    if isinstance(value, list):
+        return all(is_xintx(v, signed, bits) for v in value)
+    if not isinstance(value, int):
+        return False
+    if signed:
+        min_val = -(2**(bits - 1))
+        max_val = 2**(bits - 1) - 1
+    else:
+        min_val = 0
+        max_val = 2**bits - 1
+    return min_val <= value <= max_val","    if isinstance(value, list):
+        return all(is_xintx(v, signed, bits) for v in value)
+    if not isinstance(value, int):
+        return False
+    if signed:
+        min_val = -(2**(bits - 1))
+        max_val = 2**(bits - 1) - 1
+    else:
+        min_val = 0
+        max_val = 2**bits - 1
+    return min_val <= value <= max_val",26.022770218507574,12.969685108309855,14.888019532344195,49.2063492063492,27.027027027027028
+5,python,"def get_fqn_namespaced_datatypes(fqn: str | None = None) -> dict[str, str]:
+    if not fqn:
+        return {}
+    fqn_namespaced_datatypes = {}
+    for t in dynamic_datatypes:
+        if fqn.startswith(t):
+            continue
+
+        if fqn.startswith(""."".join(t.split(""."")[:-1])):
+            fqn_namespaced_datatypes[(t.split(""."")[-1])] = t
+
+    if fqn_namespaced_datatypes:
+        log.debug(f""Namespaced datatypes, {fqn=}, {fqn_namespaced_datatypes=}"")
+    return fqn_namespaced_datatypes","    fqn_namespaced_datatypes = {}
+    if fqn:
+        fqn_namespaced_datatypes = {
+            fqn + ""."" + t: t for t in dynamic_datatypes if t.startswith(fqn + ""."")
+        }
+    return fqn_namespaced_datatypes","    fqn_namespaced_datatypes = {}
+    if fqn:
+        fqn_namespaced_datatypes = {
+            fqn + ""."" + t: t for t in dynamic_datatypes if t.startswith(fqn + ""."")
+        }
+    return fqn_namespaced_datatypes",12.249129279988697,4.809249025758677,5.356249575677595,20.3125,18.51851851851852
+28,java,"public View onCreateView(LayoutInflater inflater, ViewGroup container,
+        Bundle savedInstanceState) {
+    mRootView = inflater.inflate(R.layout.card_fragment, container, false);
+    mCardTitle = mRootView.findViewById(R.id.card_name);
+    mCardIcon = mRootView.findViewById(R.id.card_icon);
+    return mRootView;
+}","        mRootView = inflater.inflate(R.layout.card_fragment, container, false);
+        mCardTitle = mRootView.findViewById(R.id.card_title);
+        mCardIcon = mRootView.findViewById(R.id.card_icon);
+        return mRootView;
+    }","public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mRootView = inflater.inflate(R.layout.card_fragment, container, false);
+        mCardTitle = mRootView.findViewById(R.id.card_title);
+        mCardIcon = mRootView.findViewById(R.id.card_icon);
+        return mRootView;
+    }",56.18274309620447,41.145136470799244,45.03364736183008,70.37037037037037,68.18181818181817
+29,java,"private void updateControlBarButton(DescriptiveTextWithControlsView.Control buttonContent,
+        ImageButton buttonView) {
+    if (buttonContent != null) {
+        buttonView.setImageDrawable(buttonContent.getIcon());
+        buttonView.setOnClickListener(buttonContent.getOnClickListener());
+        buttonView.setVisibility(View.VISIBLE);
+    } else {
+        buttonView.setVisibility(View.GONE);
+    }
+}","    private void updateControlBarButton(DescriptiveTextWithControlsView.Control buttonContent, ImageButton buttonView) {
+        buttonView.setImageDrawable(buttonContent.getImage());
+        buttonView.setOnClickListener(buttonContent.getOnClickListener());
+        buttonView.setVisibility(buttonContent == null ? View.GONE : View.VISIBLE);
+    }","    private void updateControlBarButton(DescriptiveTextWithControlsView.Control buttonContent, ImageButton buttonView) {
+        buttonView.setImageDrawable(buttonContent.getImage());
+        buttonView.setOnClickListener(buttonContent.getOnClickListener());
+        buttonView.setVisibility(buttonContent == null ? View.GONE : View.VISIBLE);
+    }",51.55599555655846,29.307039675207996,29.963537533104684,58.06451612903226,88.88888888888889
+31,java,"public void updateHeaderView(CardHeader header) {
+    requireActivity().runOnUiThread(() -> {
+        mRootView.setVisibility(View.VISIBLE);
+        mCardTitle.setText(header.getCardTitle());
+        mCardIcon.setImageDrawable(header.getCardIcon());
+    });
+}","requireActivity().runOnUiThread(() -> {
+    mCardTitle.setText(header.getTitle());
+    mCardIcon.setImageDrawable(header.getIcon());
+    mCardBackground.setVisibility(View.VISIBLE);
+});","requireActivity().runOnUiThread(() -> {
+    mCardTitle.setText(header.getTitle());
+    mCardIcon.setImageDrawable(header.getIcon());
+    mCardBackground.setVisibility(View.VISIBLE);
+});",35.54137364425763,7.455044878047051,7.32949731803112,60.71428571428571,66.66666666666666
+53,cpp,"void DBusConnectionStatusEvent::onListenerAdded(const Listener &_listener, const Subscription _subscription) {
+    (void)_subscription;
+    if (dbusConnection_->isConnected())
+        _listener(AvailabilityStatus::AVAILABLE);
+}","void DBusConnectionStatusEvent::onListenerAdded(const Listener &_listener, const Subscription _subscription) {
+    if (dbusConnection_->isConnected()) {
+        _listener.onConnectionStatus(AvailabilityStatus::AVAILABLE);
+    }
+}","void DBusConnectionStatusEvent::onListenerAdded(const Listener &_listener, const Subscription _subscription) {
+    if (dbusConnection_->isConnected()) {
+        _listener.onConnectionStatus(AvailabilityStatus::AVAILABLE);
+    }
+}",58.0994096751414,57.575756362022545,63.95231712115176,60.86956521739131,50.0
+54,cpp,"void joinOnExit(std::uintptr_t conn, std::thread & t) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    if (connections_.end() != connections_.find(conn)) {
+        bool found(false);
+        std::vector<std::thread*>::const_iterator it = threads_.begin();
+        while (!found && it != threads_.end()) {
+            found = (&t == *it++);
+        }
+        if (!found) {
+            threads_.push_back(&t);
+        }
+    }
+}","    std::unique_ptr<CompletionHelper> & helper = CompletionHelper::get();
+    if (helper) {
+        std::lock_guard<std::mutex> lock(helper->mutex_);
+        if (helper->connections_.count(conn) == 0) {
+            helper->threads_.push_back(&t);
+        }
+    }
+}","    std::unique_ptr<CompletionHelper> & helper = CompletionHelper::get();
+    if (helper) {
+        std::lock_guard<std::mutex> lock(helper->mutex_);
+        if (helper->connections_.count(conn) == 0) {
+            helper->threads_.push_back(&t);
+        }
+    }
+}",12.09574090978213,2.555465616350934,3.6280095317289915,30.434782608695656,11.76470588235294
+58,cpp,"const std::shared_ptr<DBusObjectManager> DBusConnection::getDBusObjectManager() {
+    if (!dbusObjectManager_) {
+        std::lock_guard<std::mutex> itsLock(objectManagerGuard_);
+        if (!dbusObjectManager_) {
+            dbusObjectManager_ = std::make_shared<DBusObjectManager>(shared_from_this());
+        }
+    }
+    return dbusObjectManager_;
+}","const std::shared_ptr<DBusObjectManager> DBusConnection::getDBusObjectManager() {
+    std::lock_guard<std::mutex> itsLock(dbusObjectManagerMutex_);
+    if (dbusObjectManager_ == nullptr) {
+        dbusObjectManager_ = std::make_shared<DBusObjectManager>(shared_from_this());
+    }
+    return dbusObjectManager_;
+}","const std::shared_ptr<DBusObjectManager> DBusConnection::getDBusObjectManager() {
+    std::lock_guard<std::mutex> itsLock(dbusObjectManagerMutex_);
+    if (dbusObjectManager_ == nullptr) {
+        dbusObjectManager_ = std::make_shared<DBusObjectManager>(shared_from_this());
+    }
+    return dbusObjectManager_;
+}",53.15860854930487,44.04854612371905,44.22691371452609,74.35897435897436,50.0
+78,c,"void send_positive_reset_response(uint8_t reset_type) {
+  int ret;
+  uint8_t positive_sid = UDS_SID_ECU_RESET + 0x40;
+
+  uint8_t tx_data[] = {positive_sid, reset_type};
+
+  ret = isotp_send(&send_ctx, can_dev, tx_data, sizeof(tx_data), &tx_addr,
+                   &rx_addr, send_complete_cb, NULL);
+  if (ret != ISOTP_N_OK) {
+    LOG_ERR(""Error while sending data to ID %d [%d]\n"", tx_addr.std_id, ret);
+  }
+}","  int ret;
+  uint8_t tx_data[] = {UDS_SID_ECU_RESET + 0x40, reset_type};
+  ret = isotp_send(&send_ctx, can_dev, tx_data, sizeof(tx_data), &tx_addr,
+                   &rx_addr, send_complete_cb, NULL);
+  if (ret != ISOTP_N_OK) {
+    LOG_ERR(""Error while sending data to ID %d [%d]\n"", tx_addr.std_id, ret);
+  }
+}","void send_positive_reset_response(uint8_t reset_type) {
+  int ret;
+  uint8_t tx_data[] = {UDS_SID_ECU_RESET + 0x40, reset_type};
+  ret = isotp_send(&send_ctx, can_dev, tx_data, sizeof(tx_data), &tx_addr,
+                   &rx_addr, send_complete_cb, NULL);
+  if (ret != ISOTP_N_OK) {
+    LOG_ERR(""Error while sending data to ID %d [%d]\n"", tx_addr.std_id, ret);
+  }
+}",62.658052472155845,68.05874357106343,68.84797612148151,66.66666666666666,47.05882352941176
+79,c,"void handle_ecu_reset(uint8_t *data, size_t len) {
+  if (len != 2) {
+    send_negative_response(UDS_SID_ECU_RESET,
+                           UDS_NRC_INCORRECT_MESSAGE_LENGTH_OR_INVALID_FORMAT);
+    return;
+  }
+
+  uint8_t reset_type = data[1];
+
+  if (reset_type == UDS_RESET_TYPE_HARD) {
+    send_positive_reset_response(UDS_RESET_TYPE_HARD);
+
+    k_sleep(K_MSEC(100));
+
+    LOG_DBG(""Hard reset\n"");
+    sys_reboot(SYS_REBOOT_COLD);
+  } else {
+    send_negative_response(UDS_SID_ECU_RESET,
+                           UDS_NRC_SUBFUNCTION_NOT_SUPPORTED);
+  }
+}","  if (len != 2) {
+    send_negative_response(UDS_SID_ECU_RESET,
+                           UDS_NRC_INCORRECT_MESSAGE_LENGTH_OR_INVALID_FORMAT);
+    return;
+  }
+
+  uint8_t reset_type = data[1];
+
+  if (reset_type == UDS_RESET_TYPE_HARD) {
+    send_positive_reset_response(reset_type);
+    k_reboot(0);
+  } else {
+    send_negative_response(UDS_SID_ECU_RESET,
+                           UDS_NRC_SUBFUNCTION_NOT_SUPPORTED);
+  }
+}","  if (len != 2) {
+    send_negative_response(UDS_SID_ECU_RESET,
+                           UDS_NRC_INCORRECT_MESSAGE_LENGTH_OR_INVALID_FORMAT);
+    return;
+  }
+
+  uint8_t reset_type = data[1];
+
+  if (reset_type == UDS_RESET_TYPE_HARD) {
+    send_positive_reset_response(reset_type);
+    k_reboot(0);
+  } else {
+    send_negative_response(UDS_SID_ECU_RESET,
+                           UDS_NRC_SUBFUNCTION_NOT_SUPPORTED);
+  }
+}",58.96966925896725,61.556407666083835,63.85715309071537,60.46511627906976,50.0
+80,c,"void send_request_download_response() {
+  int ret;
+  uint8_t positive_sid = UDS_SID_REQUEST_DOWNLOAD + 0x40;
+
+
+  uint8_t tx_data[] = {
+    positive_sid,
+    0x20,  // positive response code
+    0x00,
+    0xD2,  // block size = 258 - 2
+  };
+
+  ret = isotp_send(&send_ctx, can_dev, tx_data, sizeof(tx_data), &tx_addr,
+                   &rx_addr, send_complete_cb, NULL);
+  if (ret != ISOTP_N_OK) {
+    LOG_ERR(""Error while sending data to ID %d [%d]\n"", tx_addr.std_id, ret);
+  }
+}","  int ret;
+  uint8_t tx_data[] = {UDS_SID_REQUEST_DOWNLOAD + 0x40, 0x00, 0xD2, 0x00};
+  ret = isotp_send(&send_ctx, can_dev, tx_data, sizeof(tx_data), &tx_addr,
+                   &rx_addr, send_complete_cb, NULL);
+  if (ret != ISOTP_N_OK) {
+    LOG_ERR(""Error while sending data to ID %d [%d]\n"", tx_addr.std_id, ret);
+  }
+}","void send_request_download_response() {
+  int ret;
+  uint8_t tx_data[] = {UDS_SID_REQUEST_DOWNLOAD + 0x40, 0x00, 0xD2};
+  ret = isotp_send(&send_ctx, can_dev, tx_data, sizeof(tx_data), &tx_addr,
+                   &rx_addr, send_complete_cb, NULL);
+  if (ret != ISOTP_N_OK) {
+    LOG_ERR(""Error while sending data to ID %d [%d]\n"", tx_addr.std_id, ret);
+  }
+}",55.223781666877926,46.89064173697326,51.92115159720513,68.75,53.333333333333336
