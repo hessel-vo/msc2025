@@ -5,6 +5,7 @@ Per-column heatmap for experiment deltas (adapted − base).
 Update:
 - Color scales stay ABOVE each column, but are now THIN, VERTICAL bars.
 - Columns made thinner to reduce overall figure width.
+- NEW: tighter vertical spacing (smaller top margin, smaller hspace, shorter top row).
 
 CSV format:
     test_name,CodeBLEU,BLEU,ROUGE-1,ROUGE-2,ROUGE-L,BERTScore
@@ -53,18 +54,23 @@ TICK_LABEL_FONTSIZE = 7
 TITLE = "Per-metric heatmap of Δ (adapted − base); colors are not comparable across metrics"
 SUPTITLES = False
 
-# —— layout sizing (tuned to be narrower) ——
-HEIGHT_PER_ROW = 0.28
+# —— layout sizing (narrow) ——
+HEIGHT_PER_ROW = 0.20
 BASE_FIG_H = 1.5
-WIDTH_PER_COL = 1.25   # ↓ narrower columns; try 1.1–1.3 if you need thinner
+WIDTH_PER_COL = 1.25
 BASE_FIG_W = 0.9
-GRID_WSPACE = 0.10     # small spacing between columns
+GRID_WSPACE = 0.10     # spacing between columns
 
 # —— thin vertical colorbar (above each column) ——
 CBAR_REL_WIDTH = 0.10   # fraction of the top cell width (0–1). Smaller = thinner bar.
-CBAR_REL_HEIGHT = 0.3  # fraction of the top cell height (0–1)
+CBAR_REL_HEIGHT = 0.70  # fraction of the top cell height (0–1)
 CBAR_TICK_FONTSIZE = 7
 CBAR_TITLE_FONTSIZE = 8
+
+# —— NEW: tighter vertical spacing controls ——
+TOP_MARGIN = 0.96       # was 0.90; move axes area up under the title
+GRID_HSPACE_ROWS = 0.00 # was 0.12; reduce gap between colorbars row and heatmap row
+TOPROW_HEIGHT_RATIO = 0.1  # was 0.40; make the top row shorter
 # ==================================
 
 
@@ -119,8 +125,13 @@ def draw_per_column_heatmap(df: pd.DataFrame):
 
     fig = plt.figure(figsize=(fig_w, fig_h), dpi=DPI, constrained_layout=False)
     # 2 rows: row 0 = vertical colorbars area; row 1 = heatmap tiles
-    gs = GridSpec(nrows=2, ncols=n_cols, height_ratios=[0.40, 1.0],  # give the top row a bit of height
-                  hspace=0.12, wspace=GRID_WSPACE, figure=fig)
+    gs = GridSpec(
+        nrows=2, ncols=n_cols,
+        height_ratios=[TOPROW_HEIGHT_RATIO, 1.0],  # <<< SHRUNK TOP ROW
+        hspace=GRID_HSPACE_ROWS,                   # <<< LESS GAP BETWEEN ROWS
+        wspace=GRID_WSPACE,
+        figure=fig
+    )
 
     for j, metric in enumerate(METRICS):
         # — Heatmap cell (bottom row) —
@@ -131,12 +142,8 @@ def draw_per_column_heatmap(df: pd.DataFrame):
         norm = TwoSlopeNorm(vmin=-half, vcenter=0.0, vmax=half)
 
         im = ax.imshow(
-            col_vals,
-            cmap=CMAP,
-            norm=norm,
-            aspect="auto",
-            interpolation="nearest",
-            origin="upper",
+            col_vals, cmap=CMAP, norm=norm,
+            aspect="auto", interpolation="nearest", origin="upper",
         )
 
         # Row labels only on left-most col
@@ -165,8 +172,7 @@ def draw_per_column_heatmap(df: pd.DataFrame):
                 if abs(val) >= ANNOTATION_MIN_ABS:
                     ax.text(
                         0, r, ANNOTATION_FMT.format(val),
-                        ha="center", va="center",
-                        fontsize=ANNOT_FONTSIZE,
+                        ha="center", va="center", fontsize=ANNOT_FONTSIZE,
                         color="black" if abs(val) < half * 0.65 else "white",
                     )
 
@@ -175,15 +181,12 @@ def draw_per_column_heatmap(df: pd.DataFrame):
             ax.vlines(x=0.5, ymin=-0.5, ymax=n_rows - 0.5, colors="k", linewidth=0.6, alpha=0.4)
 
         # — Thin vertical colorbar ABOVE this column —
-        # Use a full-width "holder" axis (top row), then put a skinny inset inside it.
         holder_ax = fig.add_subplot(gs[0, j])
         holder_ax.axis("off")
-
-        # Inset occupies a fraction of the holder's width/height; centered.
         cax = inset_axes(
             holder_ax,
-            width=f"{CBAR_REL_WIDTH*100:.1f}%",   # as percentage of holder width
-            height=f"{CBAR_REL_HEIGHT*100:.1f}%", # as percentage of holder height
+            width=f"{CBAR_REL_WIDTH*100:.1f}%",   # % of holder width
+            height=f"{CBAR_REL_HEIGHT*100:.1f}%", # % of holder height
             loc="center"
         )
         cb = plt.colorbar(im, cax=cax, orientation="vertical")
@@ -192,23 +195,14 @@ def draw_per_column_heatmap(df: pd.DataFrame):
         cb.set_ticklabels([f"{-half:.2f}", "0", f"{half:.2f}"])
         cax.set_title(metric, fontsize=CBAR_TITLE_FONTSIZE, pad=2)
 
-    # Title and note
-    fig.suptitle(TITLE, fontsize=11, y=0.98)
-    if SUPTITLES:
-        fig.text(
-            0.5, 0.962,
-            "Note: Each metric column uses its own symmetric color scale centered at 0; "
-            "colors are not comparable across columns. Numbers are raw Δ.",
-            ha="center", va="top", fontsize=9
-        )
-
-    # Tight layout and save
+    # Tighter overall top margin (pull axes up under the title)
     plt.subplots_adjust(
-        top=0.90,
+        top=TOP_MARGIN,  # <<< was 0.90
         bottom=0.05,
         left=0.28 if FIG_LEFT_LABELS else 0.06,
         right=0.985
     )
+
     fig.savefig(OUTPUT_PATH, dpi=DPI, bbox_inches="tight")
     print(f"Saved figure to: {OUTPUT_PATH}")
 
