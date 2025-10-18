@@ -2,10 +2,11 @@
 """
 Per-column heatmap for experiment deltas (adapted − base).
 
-Update:
-- Color scales stay ABOVE each column, but are now THIN, VERTICAL bars.
-- Columns made thinner to reduce overall figure width.
-- NEW: tighter vertical spacing (smaller top margin, smaller hspace, shorter top row).
+Updates:
+- Color scales stay ABOVE each column as THIN, VERTICAL bars.
+- Narrower columns and tighter vertical spacing.
+- Removed overall plot title/suptitle code.
+- Removed manual half-range support.
 
 CSV format:
     test_name,CodeBLEU,BLEU,ROUGE-1,ROUGE-2,ROUGE-L,BERTScore
@@ -26,20 +27,13 @@ DPI = 200
 # Which columns to visualize (order is kept)
 METRICS = ["CodeBLEU", "BLEU", "ROUGE-1", "ROUGE-2", "ROUGE-L", "BERTScore"]
 
-# Column scaling strategy: "p95_abs" (recommended), "max_abs", or "manual"
+# Column scaling strategy: "p95_abs" (recommended) or "max_abs"
 COLUMN_SCALE_MODE = "p95_abs"
-
-# Manual limits (only used if COLUMN_SCALE_MODE == "manual")
-# Limits must be symmetric around 0; provide the POSITIVE half-range for each metric.
-MANUAL_HALF_RANGES = {}
 
 # Show annotation text inside cells?
 ANNOTATE_CELLS = True
 ANNOTATION_FMT = "{:+.2f}"  # e.g., +1.57 / -0.34
 ANNOTATION_MIN_ABS = 0.00   # hide annotation if |Δ| < threshold
-
-# Sort rows (experiments) by an overall score to improve readability?
-ROW_SORT_MODE = "none"  # "none" or "mean_scaled"
 
 # Visually separate generation vs summarization columns?
 COLUMN_DIVIDERS_AFTER = [0]  # [] for none
@@ -51,30 +45,29 @@ ROW_LABEL_FONTSIZE = 8
 COL_LABEL_FONTSIZE = 9
 ANNOT_FONTSIZE = 7
 TICK_LABEL_FONTSIZE = 7
-TITLE = "Per-metric heatmap of Δ (adapted − base); colors are not comparable across metrics"
-SUPTITLES = False
 
 # —— layout sizing (narrow) ——
 HEIGHT_PER_ROW = 0.20
 BASE_FIG_H = 1.5
-WIDTH_PER_COL = 1.25
+WIDTH_PER_COL = 1
 BASE_FIG_W = 0.9
 GRID_WSPACE = 0.10     # spacing between columns
 
 # —— thin vertical colorbar (above each column) ——
 CBAR_REL_WIDTH = 0.10   # fraction of the top cell width (0–1). Smaller = thinner bar.
-CBAR_REL_HEIGHT = 0.70  # fraction of the top cell height (0–1)
+CBAR_REL_HEIGHT = 0.50  # fraction of the top cell height (0–1)
 CBAR_TICK_FONTSIZE = 7
 CBAR_TITLE_FONTSIZE = 8
 
-# —— NEW: tighter vertical spacing controls ——
-TOP_MARGIN = 0.96       # was 0.90; move axes area up under the title
-GRID_HSPACE_ROWS = 0.00 # was 0.12; reduce gap between colorbars row and heatmap row
-TOPROW_HEIGHT_RATIO = 0.1  # was 0.40; make the top row shorter
+# —— tight vertical spacing controls ——
+TOP_MARGIN = 0.96       # overall top margin
+GRID_HSPACE_ROWS = 0.00 # gap between colorbars row and heatmap row
+TOPROW_HEIGHT_RATIO = 0.10  # relative height of the top row
 # ==================================
 
 
-def compute_half_range(series: pd.Series, mode: str, manual_val: float | None = None) -> float:
+def compute_half_range(series: pd.Series, mode: str) -> float:
+    """Compute symmetric half-range for a metric column."""
     s = pd.to_numeric(series, errors="coerce").dropna().values
     if s.size == 0:
         return 1.0
@@ -82,38 +75,16 @@ def compute_half_range(series: pd.Series, mode: str, manual_val: float | None = 
         half = float(np.quantile(np.abs(s), 0.95))
     elif mode == "max_abs":
         half = float(np.max(np.abs(s)))
-    elif mode == "manual":
-        if manual_val is None:
-            raise ValueError("Manual half-range requested but not provided for a metric.")
-        half = float(manual_val)
     else:
         raise ValueError(f"Unknown COLUMN_SCALE_MODE: {mode}")
     return half or 1.0
 
-
-def build_row_order(df: pd.DataFrame, metrics: list[str], half_ranges: dict[str, float]) -> list[int]:
-    if ROW_SORT_MODE == "none":
-        return list(range(len(df)))
-    elif ROW_SORT_MODE == "mean_scaled":
-        scaled = []
-        for m in metrics:
-            hr = half_ranges[m]
-            scaled.append(df[m] / hr)
-        scores = np.vstack([s.values for s in scaled]).T.mean(axis=1)
-        return np.argsort(-scores).tolist()
-    else:
-        raise ValueError(f"Unknown ROW_SORT_MODE: {ROW_SORT_MODE}")
-
-
 def draw_per_column_heatmap(df: pd.DataFrame):
     # Half-ranges per column
-    half_ranges = {}
-    for m in METRICS:
-        manual_val = MANUAL_HALF_RANGES.get(m) if COLUMN_SCALE_MODE == "manual" else None
-        half_ranges[m] = compute_half_range(df[m], COLUMN_SCALE_MODE, manual_val)
+    half_ranges = {m: compute_half_range(df[m], COLUMN_SCALE_MODE) for m in METRICS}
 
     # Row order
-    row_order = build_row_order(df, METRICS, half_ranges)
+    row_order = list(range(len(df)))
     df_sorted = df.iloc[row_order].reset_index(drop=True)
 
     n_rows = df_sorted.shape[0]
@@ -127,8 +98,8 @@ def draw_per_column_heatmap(df: pd.DataFrame):
     # 2 rows: row 0 = vertical colorbars area; row 1 = heatmap tiles
     gs = GridSpec(
         nrows=2, ncols=n_cols,
-        height_ratios=[TOPROW_HEIGHT_RATIO, 1.0],  # <<< SHRUNK TOP ROW
-        hspace=GRID_HSPACE_ROWS,                   # <<< LESS GAP BETWEEN ROWS
+        height_ratios=[TOPROW_HEIGHT_RATIO, 1.0],
+        hspace=GRID_HSPACE_ROWS,
         wspace=GRID_WSPACE,
         figure=fig
     )
@@ -195,9 +166,9 @@ def draw_per_column_heatmap(df: pd.DataFrame):
         cb.set_ticklabels([f"{-half:.2f}", "0", f"{half:.2f}"])
         cax.set_title(metric, fontsize=CBAR_TITLE_FONTSIZE, pad=2)
 
-    # Tighter overall top margin (pull axes up under the title)
+    # Tight overall margins
     plt.subplots_adjust(
-        top=TOP_MARGIN,  # <<< was 0.90
+        top=TOP_MARGIN,
         bottom=0.05,
         left=0.28 if FIG_LEFT_LABELS else 0.06,
         right=0.985
